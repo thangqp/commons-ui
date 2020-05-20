@@ -142,7 +142,8 @@ const TopBar = (props) => {
             <Toolbar>
                 <PowsyblLogo className={classes.logo} onClick={onLogoClick}/>
                 <Typography variant="h6" className={classes.title} onClick={onLogoClick}>
-                    Study app
+                    <span style={{fontWeight:"bold"}}>Grid</span>
+                    <span style={{color:"#68C5BF"}}>Study</span>
                 </Typography>
                 <div className={classes.grow} />
 
@@ -168,7 +169,8 @@ const TopBar = (props) => {
                                     <PowsyblLogo className={classes.menuIcon}  />
                                 </ListItemIcon>
                                 <ListItemText >
-                                    Study app
+                                    <span style={{fontWeight:"bold"}}>Grid</span>
+                                    <span style={{color:"#68C5BF"}}>Study</span>
                                 </ListItemText>
                             </StyledMenuItem>
                         </StyledMenu>
