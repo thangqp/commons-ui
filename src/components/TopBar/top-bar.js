@@ -28,7 +28,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import AppsIcon from '@material-ui/icons/Apps';
 import FullscreenExitIcon from '@material-ui/icons/FullscreenExit';
 
-import {ReactComponent as PowsyblLogo} from "./powsybl_logo.svg";
+import {ReactComponent as PowsyblLogo} from "powsybl_logo.svg";
 import PropTypes from "prop-types";
 import {useSelector} from "react-redux";
 import FullscreenIcon from '@material-ui/icons/Fullscreen';
@@ -57,19 +57,19 @@ const StyledMenu = withStyles({
     paper: {
         border: '1px solid #d3d4d5',
     },})(props => (
-        <Menu
-            elevation={0}
-            getContentAnchorEl={null}
-            anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'center',
-            }}
-            transformOrigin={{
-                vertical: 'top',
-                horizontal: 'center',
-            }}
-            {...props}
-        />
+    <Menu
+        elevation={0}
+        getContentAnchorEl={null}
+        anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'center',
+        }}
+        transformOrigin={{
+            vertical: 'top',
+            horizontal: 'center',
+        }}
+        {...props}
+    />
 ));
 
 const StyledMenuItem = withStyles(theme => ({
@@ -116,9 +116,9 @@ const TopBar = (props) => {
 
     const onParametersClick = () => {
         handleCloseGeneralMenu();
-      if (props.onParametersClick) {
-          props.onParametersClick();
-      }
+        if (props.onParametersClick) {
+            props.onParametersClick();
+        }
     };
 
     const onLogoClick = () => {
@@ -142,8 +142,7 @@ const TopBar = (props) => {
             <Toolbar>
                 <PowsyblLogo className={classes.logo} onClick={onLogoClick}/>
                 <Typography variant="h6" className={classes.title} onClick={onLogoClick}>
-                    <span style={{fontWeight:"bold"}}>Grid</span>
-                    <span style={{color:"#68C5BF"}}>Study</span>
+                    Study app
                 </Typography>
                 <div className={classes.grow} />
 
@@ -169,72 +168,71 @@ const TopBar = (props) => {
                                     <PowsyblLogo className={classes.menuIcon}  />
                                 </ListItemIcon>
                                 <ListItemText >
-                                    <span style={{fontWeight:"bold"}}>Grid</span>
-                                    <span style={{color:"#68C5BF"}}>Study</span>
+                                    Study app
                                 </ListItemText>
                             </StyledMenuItem>
                         </StyledMenu>
-                        </div>
+                    </div>
                 )}
 
                 <h3>{user !== null ? user.profile.name : ""}</h3>
 
                 {user && (
-                <div>
-                    <Button
-                        aria-controls="general-menu"
-                        aria-haspopup="true"
-                        onClick={handleClickGeneralMenu}
-                    >
-                        <MenuIcon/>
-                    </Button>
+                    <div>
+                        <Button
+                            aria-controls="general-menu"
+                            aria-haspopup="true"
+                            onClick={handleClickGeneralMenu}
+                        >
+                            <MenuIcon/>
+                        </Button>
 
-                    <StyledMenu
-                        id="general-menu"
-                        anchorEl={anchorElGeneralMenu}
-                        keepMounted
-                        open={Boolean(anchorElGeneralMenu)}
-                        onClose={handleCloseGeneralMenu}
-                    >
-                        <StyledMenuItem onClick={onParametersClick}>
-                            <ListItemIcon>
-                                <SettingsIcon fontSize="small" />
-                            </ListItemIcon>
-                            <ListItemText>
-                                <FormattedMessage id="settings"/>
-                            </ListItemText>
-                        </StyledMenuItem>
-                        {
-                            fullScreenSupported() ?  (
-                                <StyledMenuItem onClick={requestOrExitFullScreen}>
-                                {
-                                    isFullScreen ? (<>
-                                    <ListItemIcon>
-                                        <FullscreenExitIcon fontSize="small" />
-                                    </ListItemIcon>
-                                    <ListItemText>
-                                        <FormattedMessage id="exitFullScreen"/>
-                                    </ListItemText> </>) : (<>
-                                    <ListItemIcon>
-                                        <FullscreenIcon fontSize="small" />
-                                    </ListItemIcon>
-                                    <ListItemText>
-                                        <FormattedMessage id="goFullScreen"/>
-                                    </ListItemText></>)
-                                }
-                                </StyledMenuItem>) : <></>
-                        }
-                        <StyledMenuItem onClick={props.onLogoutClick}>
-                            <ListItemIcon>
-                                <ExitToAppIcon fontSize="small" />
-                            </ListItemIcon>
-                            <ListItemText >
-                                <FormattedMessage id="logout"/>
-                            </ListItemText>
-                        </StyledMenuItem>
-                    </StyledMenu>
-                </div>
-                    )}
+                        <StyledMenu
+                            id="general-menu"
+                            anchorEl={anchorElGeneralMenu}
+                            keepMounted
+                            open={Boolean(anchorElGeneralMenu)}
+                            onClose={handleCloseGeneralMenu}
+                        >
+                            <StyledMenuItem onClick={onParametersClick}>
+                                <ListItemIcon>
+                                    <SettingsIcon fontSize="small" />
+                                </ListItemIcon>
+                                <ListItemText>
+                                    <FormattedMessage id="settings"/>
+                                </ListItemText>
+                            </StyledMenuItem>
+                            {
+                                fullScreenSupported() ?  (
+                                    <StyledMenuItem onClick={requestOrExitFullScreen}>
+                                        {
+                                            isFullScreen ? (<>
+                                                <ListItemIcon>
+                                                    <FullscreenExitIcon fontSize="small" />
+                                                </ListItemIcon>
+                                                <ListItemText>
+                                                    <FormattedMessage id="exitFullScreen"/>
+                                                </ListItemText> </>) : (<>
+                                                <ListItemIcon>
+                                                    <FullscreenIcon fontSize="small" />
+                                                </ListItemIcon>
+                                                <ListItemText>
+                                                    <FormattedMessage id="goFullScreen"/>
+                                                </ListItemText></>)
+                                        }
+                                    </StyledMenuItem>) : <></>
+                            }
+                            <StyledMenuItem onClick={props.onLogoutClick}>
+                                <ListItemIcon>
+                                    <ExitToAppIcon fontSize="small" />
+                                </ListItemIcon>
+                                <ListItemText >
+                                    <FormattedMessage id="logout"/>
+                                </ListItemText>
+                            </StyledMenuItem>
+                        </StyledMenu>
+                    </div>
+                )}
             </Toolbar>
         </AppBar>
     )
