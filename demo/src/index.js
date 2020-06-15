@@ -6,14 +6,57 @@
  */
 
 import React, {Component} from 'react'
+import {Provider} from 'react-redux'
 import {render} from 'react-dom'
 
 import TopBar from '../../src/components/TopBar'
+import {store} from "./redux/store";
+import {IntlProvider} from 'react-intl';
 
-export default class Demo {
-  render() {
-    <TopBar onParametersClick={() => console.log("settings")} onLogoutClick={() => console.log("logout")} />
-  }
-}
+import messages_en from "./translations/en.json";
+import messages_fr from "./translations/fr.json";
 
-render(<Demo/>, document.querySelector('#demo'))
+import {createMuiTheme, ThemeProvider} from '@material-ui/core/styles';
+
+const messages = {
+    'en': messages_en,
+    'fr': messages_fr
+};
+
+const language = navigator.language.split(/[-_]/)[0];  //
+
+export const LIGHT_THEME = 'Light';
+
+const lightTheme = createMuiTheme({
+    palette: {
+        type: 'light',
+    }
+});
+
+const darkTheme = createMuiTheme({
+    palette: {
+        type: 'dark',
+    }
+});
+
+const getMuiTheme = (theme) => {
+    if (theme === LIGHT_THEME) {
+        return lightTheme;
+    } else {
+        return darkTheme;
+    }
+};
+
+const Demo = () => {
+    return (
+      <ThemeProvider theme={getMuiTheme('Dark')}>
+          <IntlProvider locale={language} messages={messages[language]}>
+              <Provider store={store}>
+                <TopBar onParametersClick={() => console.log("settings")} onLogoutClick={() => console.log("logout")} />
+              </Provider>
+          </IntlProvider>
+      </ThemeProvider>
+  )
+};
+
+render(<Demo/>, document.querySelector('#demo'));

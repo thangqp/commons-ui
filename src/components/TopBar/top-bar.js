@@ -8,7 +8,6 @@
 import React, {useRef, useState} from "react";
 
 import {FormattedMessage} from "react-intl";
-import {useHistory} from 'react-router-dom';
 
 import AppBar from "@material-ui/core/AppBar";
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
@@ -28,7 +27,6 @@ import ListItemText from '@material-ui/core/ListItemText';
 import AppsIcon from '@material-ui/icons/Apps';
 import FullscreenExitIcon from '@material-ui/icons/FullscreenExit';
 
-import {ReactComponent as PowsyblLogo} from "powsybl_logo.svg";
 import PropTypes from "prop-types";
 import {useSelector} from "react-redux";
 import FullscreenIcon from '@material-ui/icons/Fullscreen';
@@ -97,7 +95,7 @@ const TopBar = (props) => {
 
     const [isFullScreen, setIsFullScreen] = useState(false);
 
-    const history = useHistory();
+    //const history = useHistory();
 
     const handleClickGeneralMenu = event => {
         setAnchorElGeneralMenu(event.currentTarget);
@@ -123,7 +121,7 @@ const TopBar = (props) => {
 
     const onLogoClick = () => {
         handleCloseAppsMenu();
-        history.replace("/");
+        //history.replace("/");
     };
 
     function onFullScreenChange (isFullScreen) {
@@ -140,7 +138,7 @@ const TopBar = (props) => {
             <FullScreen ref={fullScreenRef} onFullScreenChange={onFullScreenChange} onFullScreenError={(e) => console.debug("full screen error : " + e.message)}>
             </FullScreen>
             <Toolbar>
-                <PowsyblLogo className={classes.logo} onClick={onLogoClick}/>
+                <h2>Logo</h2>
                 <Typography variant="h6" className={classes.title} onClick={onLogoClick}>
                     Study app
                 </Typography>
@@ -165,7 +163,7 @@ const TopBar = (props) => {
                         >
                             <StyledMenuItem onClick={onLogoClick}>
                                 <ListItemIcon>
-                                    <PowsyblLogo className={classes.menuIcon}  />
+                                    <h2>Logo</h2>
                                 </ListItemIcon>
                                 <ListItemText >
                                     Study app
