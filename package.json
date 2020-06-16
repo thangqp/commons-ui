@@ -1,6 +1,6 @@
 {
   "name": "common-components",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "common-components React component",
   "main": "lib/index.js",
   "module": "es/index.js",
