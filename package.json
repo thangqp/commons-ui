@@ -1,6 +1,6 @@
 {
-  "name": "common-components",
-  "version": "1.0.3",
+  "name": "@gridsuite/common-components",
+  "version": "0.0.1",
   "description": "common-components React component",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -20,7 +20,6 @@
     "test:watch": "nwb test-react --server"
   },
   "dependencies": {
-    "@chamseddinebhd/commons-ui": "^1.0.1",
     "redux": "^4.0.5"
   },
   "peerDependencies": {
@@ -38,10 +37,13 @@
     "react-request-fullscreen": "^1.1.2",
     "react-router-dom": "^5.1.2"
   },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+   },
   "author": "",
   "homepage": "",
   "license": "MIT",
-  "repository": "",
+  "repository": "git://github.com/gridsuite/commons-ui.git",
   "keywords": [
     "react-component"
   ]
