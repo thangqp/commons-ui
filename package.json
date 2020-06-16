@@ -1,6 +1,6 @@
 {
   "name": "common-components",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "common-components React component",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -20,6 +20,7 @@
     "test:watch": "nwb test-react --server"
   },
   "dependencies": {
+    "@chamseddinebhd/commons-ui": "^1.0.1",
     "redux": "^4.0.5"
   },
   "peerDependencies": {
