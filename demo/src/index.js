@@ -52,7 +52,7 @@ const Demo = () => {
       <ThemeProvider theme={getMuiTheme('Dark')}>
           <IntlProvider locale={language} messages={messages[language]}>
               <Provider store={store}>
-                <TopBar onParametersClick={() => console.log("settings")} onLogoutClick={() => console.log("logout")} />
+                <TopBar onParametersClick={() => console.log("settings")} onLogoutClick={() => console.log("logout")} onLogoClick={() => console.log("logo")} user={{profile : {name : "Jhone Doe"}}} />
               </Provider>
           </IntlProvider>
       </ThemeProvider>
