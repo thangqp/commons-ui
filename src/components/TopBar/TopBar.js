@@ -27,7 +27,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import AppsIcon from '@material-ui/icons/Apps';
 import FullscreenExitIcon from '@material-ui/icons/FullscreenExit';
 
-import PowsyblLogo from '-!react-svg-loader!../images/powsybl_logo.svg';
+import PowsyblLogo from '-!@svgr/webpack!../images/powsybl_logo.svg';
 import PropTypes from "prop-types";
 import FullscreenIcon from '@material-ui/icons/Fullscreen';
 import FullScreen, {fullScreenSupported} from "react-request-fullscreen";
