@@ -1,9 +1,8 @@
 {
   "name": "@gridsuite/common-components",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "common-components React component",
   "main": "lib/index.js",
-  "module": "es/index.js",
   "files": [
     "css",
     "es",
@@ -20,27 +19,26 @@
     "test:watch": "nwb test-react --server"
   },
   "dependencies": {
-    "@material-ui/core": "^4.9.5",
+    "@material-ui/core": "latest",
     "@material-ui/icons": "^4.5.1",
+    "react-intl": "^3.11.0",
     "react-request-fullscreen": "^1.1.2",
-    "react-intl": "^3.11.0"
+    "prop-types": "latest"
   },
   "peerDependencies": {
     "react": "16.x"
   },
   "devDependencies": {
-    "@material-ui/core": "^4.9.5",
-    "@material-ui/icons": "^4.5.1",
-    "@reduxjs/toolkit": "^1.3.6",
-    "nwb": "^0.25.2",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
-    "react-redux": "^7.2.0",
-    "react-router-dom": "^5.1.2"
+    "bufferutil": "^4.0.1",
+    "inferno": "^7.4.2",
+    "nwb": "^0.25.x",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-svg-loader": "^3.0.3",
+    "type-fest": "^0.13.1",
+    "utf-8-validate": "^5.0.2",
+    "webpack-plugin-serve": "^1.0.1"
   },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
-   },
   "author": "",
   "homepage": "",
   "license": "MIT",

@@ -5,12 +5,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, {Component} from 'react'
-import {Provider} from 'react-redux'
+import React from 'react'
 import {render} from 'react-dom'
 
 import TopBar from '../../src/components/TopBar'
-import {store} from "./redux/store";
 import {IntlProvider} from 'react-intl';
 
 import messages_en from "./translations/en.json";
@@ -39,23 +37,15 @@ const darkTheme = createMuiTheme({
     }
 });
 
-const getMuiTheme = (theme) => {
-    if (theme === LIGHT_THEME) {
-        return lightTheme;
-    } else {
-        return darkTheme;
-    }
-};
-
 const Demo = () => {
     return (
-      <ThemeProvider theme={getMuiTheme('Dark')}>
-          <IntlProvider locale={language} messages={messages[language]}>
-              <Provider store={store}>
-                <TopBar onParametersClick={() => console.log("settings")} onLogoutClick={() => console.log("logout")} onLogoClick={() => console.log("logo")} user={{profile : {name : "Jhone Doe"}}} />
-              </Provider>
-          </IntlProvider>
-      </ThemeProvider>
+        <div>
+            <IntlProvider locale={language} messages={messages[language]}>
+            <ThemeProvider theme={lightTheme}>
+                    <TopBar appName="StudyGrid" onParametersClick={() => console.log("settings")} onLogoutClick={() => console.log("logout")} onLogoClick={() => console.log("logo")} user={{profile : {name : "Jhone Doe"}}} />
+            </ThemeProvider>
+            </IntlProvider>
+        </div>
   )
 };
 
