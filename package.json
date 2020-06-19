@@ -26,15 +26,14 @@
     "prop-types": "latest"
   },
   "peerDependencies": {
-    "react": "16.x"
+    "react": "^16.x",
+    "react-dom": "^16.x"
   },
   "devDependencies": {
     "@svgr/webpack": "^5.4.0",
     "bufferutil": "^4.0.1",
     "inferno": "^7.4.2",
     "nwb": "^0.25.x",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
     "type-fest": "^0.13.1",
     "utf-8-validate": "^5.0.2",
     "webpack-plugin-serve": "^1.0.1"
