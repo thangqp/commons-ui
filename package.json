@@ -1,5 +1,5 @@
 {
-  "name": "@gridsuite/common-components",
+  "name": "@gridsuite/commons-ui",
   "version": "1.0.0",
   "description": "common-components React component",
   "main": "lib/index.js",
