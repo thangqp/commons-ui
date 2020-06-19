@@ -11,13 +11,13 @@ jobs:
           persist-credentials: false
           path: 'commons-ui'
 
-      - name: build commons-ui-consumer
+      - name: build commons-ui
         run: |
           cd $GITHUB_WORKSPACE/commons-ui
           npm install
           npm run build
 
-      - name: broadcast event
+      - name: broadcast commons-ui-updated event
         uses: gridsuite/broadcast-event@master
         with:
           token: ${{ secrets.REPO_ACCESS_TOKEN }}
