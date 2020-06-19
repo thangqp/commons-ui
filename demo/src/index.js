@@ -29,7 +29,7 @@ const darkTheme = createMuiTheme({
 const Demo = () => {
     return (
         <div>
-            <ThemeProvider theme={lightTheme}>
+            <ThemeProvider theme={darkTheme}>
                     <TopBar appName="StudyGrid" onParametersClick={() => console.log("settings")} onLogoutClick={() => console.log("logout")} onLogoClick={() => console.log("logo")} user={{profile : {name : "Jhone Doe"}}} />
             </ThemeProvider>
         </div>
