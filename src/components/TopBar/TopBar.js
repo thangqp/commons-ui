@@ -32,6 +32,18 @@ import PropTypes from "prop-types";
 import FullscreenIcon from '@material-ui/icons/Fullscreen';
 import FullScreen, {fullScreenSupported} from "react-request-fullscreen";
 
+
+import {IntlProvider} from 'react-intl';
+import messages_en from "../translations/en.json";
+import messages_fr from "../translations/fr.json";
+
+const messages = {
+    'en': messages_en,
+    'fr': messages_fr
+};
+
+const language = navigator.language.split(/[-_]/)[0];  //
+
 const useStyles = makeStyles(() => ({
     grow: {
         flexGrow: 1,
@@ -129,6 +141,7 @@ const TopBar = ({appName, onParametersClick, onLogoutClick, onLogoClick, user}) 
     }
 
     return (
+        <IntlProvider locale={language} messages={messages[language]}>
         <AppBar position="static" color="default" className={classes.appBar}>
             <FullScreen ref={fullScreenRef} onFullScreenChange={onFullScreenChange} onFullScreenError={(e) => console.debug("full screen error : " + e.message)}>
             </FullScreen>
@@ -228,6 +241,7 @@ const TopBar = ({appName, onParametersClick, onLogoutClick, onLogoClick, user}) 
                 )}
             </Toolbar>
         </AppBar>
+        </IntlProvider>
     )
 };
 
