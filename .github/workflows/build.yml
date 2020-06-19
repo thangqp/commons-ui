@@ -1,21 +1,24 @@
 name: CI
-
 on: [push]
 
 jobs:
-  build-and-deploy:
-
+  build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2 # If you're using actions/checkout@v2 you must set persist-credentials to false in most cases for the deployment to work correctly.
+      - name: Checkout commons-ui
+        uses: actions/checkout@v2
         with:
           persist-credentials: false
+          path: 'commons-ui'
 
-      - name: Install, Build
-        env:
-          CI: false
+      - name: build commons-ui-consumer
         run: |
+          cd $GITHUB_WORKSPACE/commons-ui
           npm install
-          npm run-script build
+          npm run build
+
+      - name: broadcast event
+        uses: gridsuite/broadcast-event@master
+        with:
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          event-type: commons-ui-updated
