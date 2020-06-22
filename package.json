@@ -30,6 +30,8 @@
     "react-dom": "^16.13.1"
   },
   "devDependencies": {
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
     "@svgr/webpack": "^5.4.0",
     "bufferutil": "^4.0.1",
     "inferno": "^7.4.2",
