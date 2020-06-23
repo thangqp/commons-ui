@@ -38,6 +38,9 @@
     "utf-8-validate": "^5.0.2",
     "webpack-plugin-serve": "^1.0.1"
   },
+  "publishConfig": {
+    "registry":"https://npm.pkg.github.com"
+  },
   "author": "",
   "homepage": "",
   "license": "MPL",
