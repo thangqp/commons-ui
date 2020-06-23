@@ -12,8 +12,6 @@ import TopBar from '../../src/components/TopBar'
 
 import {createMuiTheme, ThemeProvider} from '@material-ui/core/styles';
 
-export const LIGHT_THEME = 'Light';
-
 const lightTheme = createMuiTheme({
     palette: {
         type: 'light',
@@ -30,7 +28,7 @@ const Demo = () => {
     return (
         <div>
             <ThemeProvider theme={lightTheme}>
-                    <TopBar appName="StudyGrid" onParametersClick={() => console.log("settings")} onLogoutClick={() => console.log("logout")} onLogoClick={() => console.log("logo")} user={{profile : {name : "Jhon Doe"}}} />
+                    <TopBar appName="StudyGrid" onParametersClick={() => console.log("settings")} onLogoutClick={() => console.log("logout")} onLogoClick={() => console.log("logo")} user={{profile : {name : "John Doe"}}} />
             </ThemeProvider>
         </div>
   )

@@ -5,19 +5,19 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout commons-ui
+      - name: Checkout sources
         uses: actions/checkout@v2
         with:
           persist-credentials: false
           path: 'commons-ui'
 
-      - name: build commons-ui
+      - name: Build
         run: |
           cd $GITHUB_WORKSPACE/commons-ui
           npm install
           npm run build
 
-      - name: broadcast commons-ui-updated event
+      - name: Broadcast update event
         uses: gridsuite/broadcast-event@master
         with:
           token: ${{ secrets.REPO_ACCESS_TOKEN }}
