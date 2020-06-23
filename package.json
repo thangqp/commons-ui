@@ -31,6 +31,10 @@
     "react-dom": "^16.13.1"
   },
   "devDependencies": {
+    "@material-ui/icons": "^4.5.1",
+    "@material-ui/core": "^4.9.5",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
     "bufferutil": "^4.0.1",
     "inferno": "^7.4.2",
     "nwb": "^0.25.x",
@@ -39,7 +43,7 @@
     "webpack-plugin-serve": "^1.0.1"
   },
   "publishConfig": {
-    "registry":"https://npm.pkg.github.com"
+    "registry": "https://npm.pkg.github.com"
   },
   "author": "gridsuite team",
   "homepage": "https://github.com/gridsuite",
