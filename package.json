@@ -41,8 +41,8 @@
   "publishConfig": {
     "registry":"https://npm.pkg.github.com"
   },
-  "author": "",
-  "homepage": "",
+  "author": "gridsuite team",
+  "homepage": "https://github.com/gridsuite",
   "license": "MPL",
   "repository": "git://github.com/gridsuite/commons-ui.git"
 }
