@@ -19,23 +19,18 @@
     "test:watch": "nwb test-react --server"
   },
   "dependencies": {
+    "react-intl": "^3.11.0",
     "react-request-fullscreen": "^1.1.2",
     "prop-types": "15.7.2",
     "@svgr/webpack": "^5.4.0"
   },
   "peerDependencies": {
-    "react-intl": "^3.11.0",
-    "@material-ui/core": "^4.9.5",
     "@material-ui/icons": "^4.5.1",
+    "@material-ui/core": "^4.9.5",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
   },
   "devDependencies": {
-    "react-intl": "^3.11.0",
-    "@material-ui/core": "^4.9.5",
-    "@material-ui/icons": "^4.5.1",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
     "bufferutil": "^4.0.1",
     "inferno": "^7.4.2",
     "nwb": "^0.25.x",
