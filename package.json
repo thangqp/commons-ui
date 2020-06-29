@@ -1,6 +1,6 @@
 {
   "name": "@gridsuite/commons-ui",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "common react components for gridsuite applications",
   "main": "lib/index.js",
   "files": [
@@ -19,10 +19,11 @@
     "test:watch": "nwb test-react --server"
   },
   "dependencies": {
-    "react-intl": "^3.11.0",
-    "react-request-fullscreen": "^1.1.2",
+    "@svgr/webpack": "^5.4.0",
+    "chmits-commons-ui": "^1.0.0",
     "prop-types": "15.7.2",
-    "@svgr/webpack": "^5.4.0"
+    "react-intl": "^3.11.0",
+    "react-request-fullscreen": "^1.1.2"
   },
   "peerDependencies": {
     "@material-ui/icons": "^4.5.1",
@@ -41,9 +42,6 @@
     "type-fest": "^0.13.1",
     "utf-8-validate": "^5.0.2",
     "webpack-plugin-serve": "^1.0.1"
-  },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
   },
   "author": "gridsuite team",
   "homepage": "https://github.com/gridsuite",
