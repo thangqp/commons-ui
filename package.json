@@ -1,6 +1,6 @@
 {
   "name": "@gridsuite/commons-ui",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "common react components for gridsuite applications",
   "main": "lib/index.js",
   "files": [
@@ -41,9 +41,6 @@
     "type-fest": "^0.13.1",
     "utf-8-validate": "^5.0.2",
     "webpack-plugin-serve": "^1.0.1"
-  },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
   },
   "author": "gridsuite team",
   "homepage": "https://github.com/gridsuite",
