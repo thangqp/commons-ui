@@ -19,11 +19,10 @@
     "test:watch": "nwb test-react --server"
   },
   "dependencies": {
-    "@svgr/webpack": "^5.4.0",
-    "chmits-commons-ui": "^1.0.0",
-    "prop-types": "15.7.2",
     "react-intl": "^3.11.0",
-    "react-request-fullscreen": "^1.1.2"
+    "react-request-fullscreen": "^1.1.2",
+    "prop-types": "15.7.2",
+    "@svgr/webpack": "^5.4.0"
   },
   "peerDependencies": {
     "@material-ui/icons": "^4.5.1",
