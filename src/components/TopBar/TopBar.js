@@ -81,7 +81,7 @@ const StyledMenuItem = withStyles(theme => ({
     },
 }))(MenuItem);
 
-const TopBar = ({appName, onParametersClick, onLogoutClick, onLogoClick, user}) => {
+const TopBar = ({appName, appColor, onParametersClick, onLogoutClick, onLogoClick, user}) => {
     const classes = useStyles();
 
     const [anchorElGeneralMenu, setAnchorElGeneralMenu] = React.useState(null);
@@ -134,8 +134,9 @@ const TopBar = ({appName, onParametersClick, onLogoutClick, onLogoClick, user}) 
             </FullScreen>
             <Toolbar>
                 <PowsyblLogo className={classes.logo} onClick={onLogoClick}/>
-                <Typography variant="h6" className={classes.title} onClick={onLogoClick}>
-                    {appName}
+                <Typography variant="h4" className={classes.title} onClick={onLogoClick}>
+                    <span style={{fontWeight:"bold"}}>Grid</span>
+                    <span style={{color:appColor}}>{appName}</span>
                 </Typography>
                 <div className={classes.grow} />
 
@@ -161,7 +162,8 @@ const TopBar = ({appName, onParametersClick, onLogoutClick, onLogoClick, user}) 
                                     <PowsyblLogo className={classes.menuIcon}  />
                                 </ListItemIcon>
                                 <ListItemText >
-                                    {appName}
+                                    <span style={{fontWeight:"bold"}}>Grid</span>
+                                    <span style={{color:appColor}}>{appName}</span>
                                 </ListItemText>
                             </StyledMenuItem>
                         </StyledMenu>

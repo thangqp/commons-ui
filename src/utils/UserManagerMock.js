@@ -52,7 +52,7 @@ export class UserManagerMock {
     }
 
     getUser() {
-        return Promise.resolve(JSON.parse(sessionStorage.getItem("powsybl-study-app-mock-user")));
+        return Promise.resolve(JSON.parse(sessionStorage.getItem("powsybl-gridsuite-mock-user")));
     }
 
     signinSilent() {
@@ -63,7 +63,7 @@ export class UserManagerMock {
 
     signinSilentCallback() {
         console.log('signinSilentCallback..............');
-        sessionStorage.setItem("powsybl-study-app-mock-user", JSON.stringify(this.user));
+        sessionStorage.setItem("powsybl-gridsuite-mock-user", JSON.stringify(this.user));
         this.events.userLoadedCallbacks.forEach(c => c(this.user));
         return Promise.resolve("");
     }
@@ -74,12 +74,12 @@ export class UserManagerMock {
     }
 
     signoutRedirect() {
-        sessionStorage.setItem("powsybl-study-app-mock-user", null);
+        sessionStorage.setItem("powsybl-gridsuite-mock-user", null);
         window.location = ".";
         return Promise.resolve(null);
     }
     signinRedirectCallback() {
-        sessionStorage.setItem("powsybl-study-app-mock-user", JSON.stringify(this.user));
+        sessionStorage.setItem("powsybl-gridsuite-mock-user", JSON.stringify(this.user));
         this.events.userLoadedCallbacks.forEach(c => c(this.user));
         return Promise.resolve("");
     }
