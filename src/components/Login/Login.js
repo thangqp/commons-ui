@@ -45,7 +45,7 @@ const Login = ({onLoginClick, disabled}) => {
             <Typography variant="body2" color="textSecondary" align="center">
                 {'Copyright © '}
                 <Link color="inherit" href="#">
-                    Grid Suite
+                    GridSuite
                 </Link>{' '}
                 {new Date().getFullYear()}
                 {'.'}
