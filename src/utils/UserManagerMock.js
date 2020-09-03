@@ -56,16 +56,16 @@ export class UserManagerMock {
     }
 
     signinSilent() {
-        console.log('signinSilent..............');
-        this.signinSilentCallback().then(() => console.log("signinSilentCallback called"));
-        return Promise.resolve(this.user);
+        console.info('signinSilent..............');
+        const localStorageUser = localStorage.getItem("powsybl-gridsuite-mock-user");
+        sessionStorage.setItem("powsybl-gridsuite-mock-user", localStorageUser);
+        this.events.userLoadedCallbacks.forEach(c => c(this.user));
+        return Promise.resolve(JSON.parse(localStorageUser));
     }
 
     signinSilentCallback() {
-        console.log('signinSilentCallback..............');
-        sessionStorage.setItem("powsybl-gridsuite-mock-user", JSON.stringify(this.user));
-        this.events.userLoadedCallbacks.forEach(c => c(this.user));
-        return Promise.resolve("");
+        console.error("Unsupported, iframe signinSilentCallback in UserManagerMock (dev mode)");
+        return Promise.reject();
     }
 
     signinRedirect() {
@@ -75,11 +75,13 @@ export class UserManagerMock {
 
     signoutRedirect() {
         sessionStorage.setItem("powsybl-gridsuite-mock-user", null);
+        localStorage.setItem("powsybl-gridsuite-mock-user", null);
         window.location = ".";
         return Promise.resolve(null);
     }
     signinRedirectCallback() {
         sessionStorage.setItem("powsybl-gridsuite-mock-user", JSON.stringify(this.user));
+        localStorage.setItem("powsybl-gridsuite-mock-user", JSON.stringify(this.user));
         this.events.userLoadedCallbacks.forEach(c => c(this.user));
         return Promise.resolve("");
     }
