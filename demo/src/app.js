@@ -57,6 +57,7 @@ const AppContent = () => {
         initializeAuthenticationDev(dispatch, matchSilentRenewCallbackUrl != null)
             .then((userManager) => {
                 setUserManager({ instance: userManager, error: null });
+                userManager.signinSilent();
             })
             .catch(function (error) {
                 setUserManager({ instance: null, error: error.message });
