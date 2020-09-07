@@ -81,7 +81,7 @@ const StyledMenuItem = withStyles(theme => ({
     },
 }))(MenuItem);
 
-const TopBar = ({appName, appColor, onParametersClick, onLogoutClick, onLogoClick, user}) => {
+const TopBar = ({appName, appColor, onParametersClick, onLogoutClick, onLogoClick, user, children}) => {
     const classes = useStyles();
 
     const [anchorElGeneralMenu, setAnchorElGeneralMenu] = React.useState(null);
@@ -138,8 +138,8 @@ const TopBar = ({appName, appColor, onParametersClick, onLogoutClick, onLogoClic
                     <span style={{fontWeight:"bold"}}>Grid</span>
                     <span style={{color:appColor}}>{appName}</span>
                 </Typography>
+                {children}
                 <div className={classes.grow} />
-
                 {user && (
                     <div>
                         <Button
