@@ -22,6 +22,7 @@ jobs:
                   npm run build
 
             - name: Broadcast update event
+              if: github.ref == 'refs/heads/master'
               uses: gridsuite/broadcast-event@master
               with:
                   token: ${{ secrets.REPO_ACCESS_TOKEN }}
