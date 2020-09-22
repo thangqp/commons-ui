@@ -8,11 +8,14 @@
 export const USER = 'USER';
 
 export function setLoggedUser(user) {
-    return { type: USER, user : user};
+    return { type: USER, user: user };
 }
 
 export const SIGNIN_CALLBACK_ERROR = 'SIGNIN_CALLBACK_ERROR';
 
 export function setSignInCallbackError(signInCallbackError) {
-    return { type: SIGNIN_CALLBACK_ERROR, signInCallbackError : signInCallbackError};
+    return {
+        type: SIGNIN_CALLBACK_ERROR,
+        signInCallbackError: signInCallbackError,
+    };
 }

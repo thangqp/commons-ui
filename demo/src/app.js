@@ -5,30 +5,29 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react';
 
-import TopBar from '../../src/components/TopBar'
+import TopBar from '../../src/components/TopBar';
 
-import {createMuiTheme, ThemeProvider} from '@material-ui/core/styles';
-import AuthenticationRouter from "../../src/components/AuthenticationRouter";
-import {initializeAuthenticationDev,logout} from "../../src/utils/AuthService";
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import AuthenticationRouter from '../../src/components/AuthenticationRouter';
+import {
+    initializeAuthenticationDev,
+    logout,
+} from '../../src/utils/AuthService';
 import { useRouteMatch } from 'react-router';
 import { IntlProvider } from 'react-intl';
 
-import {
-    BrowserRouter,
-    useHistory,
-    useLocation
-} from "react-router-dom";
+import { BrowserRouter, useHistory, useLocation } from 'react-router-dom';
 
-import {top_bar_en, top_bar_fr, login_fr, login_en,} from  "../../src/index"
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Typography from "@material-ui/core/Typography";
-import Box from "@material-ui/core/Box";
+import { top_bar_en, top_bar_fr, login_fr, login_en } from '../../src/index';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
 
 const messages = {
-    en: {...login_en, ...top_bar_en },
-    fr: {...login_fr, ...top_bar_fr },
+    en: { ...login_en, ...top_bar_en },
+    fr: { ...login_fr, ...top_bar_fr },
 };
 
 const language = navigator.language.split(/[-_]/)[0]; // language without region code
@@ -36,14 +35,17 @@ const language = navigator.language.split(/[-_]/)[0]; // language without region
 const lightTheme = createMuiTheme({
     palette: {
         type: 'light',
-    }
+    },
 });
 
 const AppContent = () => {
     const history = useHistory();
     const location = useLocation();
 
-    const [userManager, setUserManager] = useState({instance: null, error : null});
+    const [userManager, setUserManager] = useState({
+        instance: null,
+        error: null,
+    });
     const [user, setUser] = useState(null);
 
     let matchSilentRenewCallbackUrl = useRouteMatch({
@@ -51,10 +53,17 @@ const AppContent = () => {
         exact: true,
     });
 
-    const dispatch = (e) => {if (e.type === 'USER' ) {setUser(e.user)}};
+    const dispatch = (e) => {
+        if (e.type === 'USER') {
+            setUser(e.user);
+        }
+    };
 
     useEffect(() => {
-        initializeAuthenticationDev(dispatch, matchSilentRenewCallbackUrl != null)
+        initializeAuthenticationDev(
+            dispatch,
+            matchSilentRenewCallbackUrl != null
+        )
             .then((userManager) => {
                 setUserManager({ instance: userManager, error: null });
                 userManager.signinSilent();
@@ -66,37 +75,46 @@ const AppContent = () => {
     }, []);
 
     return (
-            <IntlProvider locale={language} messages={messages[language]}>
-                <ThemeProvider theme={lightTheme}>
-                    <CssBaseline />
-                    <TopBar appName="DemoApp"
-                            onParametersClick={() => console.log("settings")}
-                            onLogoutClick={() =>  logout(dispatch, userManager.instance)}
-                            onLogoClick={() => console.log("logo")}
-                            user={user} />
-                    {
-                        user !== null ?
-                            (<Box mt={20}>
-                                <Typography variant="h3"  color="textPrimary" align="center">Connected</Typography>
-                            </Box>
-                        ) :
-                            (<AuthenticationRouter userManager={userManager}
-                                                   signInCallbackError={null}
-                                                   dispatch={dispatch}
-                                                   history={history}
-                                                   location={location}/>)
-                    }
-                </ThemeProvider>
-            </IntlProvider>)
+        <IntlProvider locale={language} messages={messages[language]}>
+            <ThemeProvider theme={lightTheme}>
+                <CssBaseline />
+                <TopBar
+                    appName="DemoApp"
+                    onParametersClick={() => console.log('settings')}
+                    onLogoutClick={() => logout(dispatch, userManager.instance)}
+                    onLogoClick={() => console.log('logo')}
+                    user={user}
+                />
+                {user !== null ? (
+                    <Box mt={20}>
+                        <Typography
+                            variant="h3"
+                            color="textPrimary"
+                            align="center"
+                        >
+                            Connected
+                        </Typography>
+                    </Box>
+                ) : (
+                    <AuthenticationRouter
+                        userManager={userManager}
+                        signInCallbackError={null}
+                        dispatch={dispatch}
+                        history={history}
+                        location={location}
+                    />
+                )}
+            </ThemeProvider>
+        </IntlProvider>
+    );
 };
 
 const App = () => {
     return (
-        <BrowserRouter basename={'/'} >
-            <AppContent/>
+        <BrowserRouter basename={'/'}>
+            <AppContent />
         </BrowserRouter>
-    )
+    );
 };
 
 export default App;
-

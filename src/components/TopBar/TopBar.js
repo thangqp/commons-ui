@@ -5,16 +5,16 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, {useRef, useState} from "react";
+import React, { useRef, useState } from 'react';
 
-import {FormattedMessage} from "react-intl";
+import { FormattedMessage } from 'react-intl';
 
-import AppBar from "@material-ui/core/AppBar";
+import AppBar from '@material-ui/core/AppBar';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
-import {makeStyles} from "@material-ui/core/styles";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
+import { makeStyles } from '@material-ui/core/styles';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
 import SettingsIcon from '@material-ui/icons/Settings';
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
@@ -28,9 +28,9 @@ import AppsIcon from '@material-ui/icons/Apps';
 import FullscreenExitIcon from '@material-ui/icons/FullscreenExit';
 
 import PowsyblLogo from '-!@svgr/webpack!../images/powsybl_logo.svg';
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 import FullscreenIcon from '@material-ui/icons/Fullscreen';
-import FullScreen, {fullScreenSupported} from "react-request-fullscreen";
+import FullScreen, { fullScreenSupported } from 'react-request-fullscreen';
 
 const useStyles = makeStyles(() => ({
     grow: {
@@ -39,7 +39,7 @@ const useStyles = makeStyles(() => ({
     logo: {
         width: 48,
         height: 48,
-        cursor: 'pointer'
+        cursor: 'pointer',
     },
     menuIcon: {
         width: 24,
@@ -47,14 +47,15 @@ const useStyles = makeStyles(() => ({
     },
     title: {
         marginLeft: 18,
-        cursor: 'pointer'
-    }
+        cursor: 'pointer',
+    },
 }));
 
 const StyledMenu = withStyles({
     paper: {
         border: '1px solid #d3d4d5',
-    },})(props => (
+    },
+})((props) => (
     <Menu
         elevation={0}
         getContentAnchorEl={null}
@@ -70,7 +71,7 @@ const StyledMenu = withStyles({
     />
 ));
 
-const StyledMenuItem = withStyles(theme => ({
+const StyledMenuItem = withStyles((theme) => ({
     root: {
         '&:focus': {
             backgroundColor: theme.palette.primary.main,
@@ -81,7 +82,15 @@ const StyledMenuItem = withStyles(theme => ({
     },
 }))(MenuItem);
 
-const TopBar = ({appName, appColor, onParametersClick, onLogoutClick, onLogoClick, user, children}) => {
+const TopBar = ({
+    appName,
+    appColor,
+    onParametersClick,
+    onLogoutClick,
+    onLogoClick,
+    user,
+    children,
+}) => {
     const classes = useStyles();
 
     const [anchorElGeneralMenu, setAnchorElGeneralMenu] = React.useState(null);
@@ -92,14 +101,14 @@ const TopBar = ({appName, appColor, onParametersClick, onLogoutClick, onLogoClic
 
     const [isFullScreen, setIsFullScreen] = useState(false);
 
-    const handleClickGeneralMenu = event => {
+    const handleClickGeneralMenu = (event) => {
         setAnchorElGeneralMenu(event.currentTarget);
     };
 
     const handleCloseGeneralMenu = () => {
         setAnchorElGeneralMenu(null);
     };
-    const handleClickAppsMenu = event => {
+    const handleClickAppsMenu = (event) => {
         setAnchorElAppsMenu(event.currentTarget);
     };
 
@@ -119,24 +128,33 @@ const TopBar = ({appName, appColor, onParametersClick, onLogoutClick, onLogoClic
         onLogoClick();
     };
 
-    function onFullScreenChange (isFullScreen) {
+    function onFullScreenChange(isFullScreen) {
         setIsFullScreen(isFullScreen);
     }
 
-    function requestOrExitFullScreen () {
+    function requestOrExitFullScreen() {
         setAnchorElGeneralMenu(null);
         fullScreenRef.current.fullScreen();
     }
 
     return (
         <AppBar position="static" color="default" className={classes.appBar}>
-            <FullScreen ref={fullScreenRef} onFullScreenChange={onFullScreenChange} onFullScreenError={(e) => console.debug("full screen error : " + e.message)}>
-            </FullScreen>
+            <FullScreen
+                ref={fullScreenRef}
+                onFullScreenChange={onFullScreenChange}
+                onFullScreenError={(e) =>
+                    console.debug('full screen error : ' + e.message)
+                }
+            ></FullScreen>
             <Toolbar>
-                <PowsyblLogo className={classes.logo} onClick={onLogoClick}/>
-                <Typography variant="h4" className={classes.title} onClick={onLogoClick}>
-                    <span style={{fontWeight:"bold"}}>Grid</span>
-                    <span style={{color:appColor}}>{appName}</span>
+                <PowsyblLogo className={classes.logo} onClick={onLogoClick} />
+                <Typography
+                    variant="h4"
+                    className={classes.title}
+                    onClick={onLogoClick}
+                >
+                    <span style={{ fontWeight: 'bold' }}>Grid</span>
+                    <span style={{ color: appColor }}>{appName}</span>
                 </Typography>
                 {children}
                 <div className={classes.grow} />
@@ -147,7 +165,7 @@ const TopBar = ({appName, appColor, onParametersClick, onLogoutClick, onLogoClic
                             aria-haspopup="true"
                             onClick={handleClickAppsMenu}
                         >
-                            <AppsIcon/>
+                            <AppsIcon />
                         </Button>
 
                         <StyledMenu
@@ -159,18 +177,22 @@ const TopBar = ({appName, appColor, onParametersClick, onLogoutClick, onLogoClic
                         >
                             <StyledMenuItem onClick={onLogoClicked}>
                                 <ListItemIcon>
-                                    <PowsyblLogo className={classes.menuIcon}  />
+                                    <PowsyblLogo className={classes.menuIcon} />
                                 </ListItemIcon>
-                                <ListItemText >
-                                    <span style={{fontWeight:"bold"}}>Grid</span>
-                                    <span style={{color:appColor}}>{appName}</span>
+                                <ListItemText>
+                                    <span style={{ fontWeight: 'bold' }}>
+                                        Grid
+                                    </span>
+                                    <span style={{ color: appColor }}>
+                                        {appName}
+                                    </span>
                                 </ListItemText>
                             </StyledMenuItem>
                         </StyledMenu>
                     </div>
                 )}
 
-                <h3>{user !== null ? user.profile.name : ""}</h3>
+                <h3>{user !== null ? user.profile.name : ''}</h3>
 
                 {user && (
                     <div>
@@ -179,7 +201,7 @@ const TopBar = ({appName, appColor, onParametersClick, onLogoutClick, onLogoClic
                             aria-haspopup="true"
                             onClick={handleClickGeneralMenu}
                         >
-                            <MenuIcon/>
+                            <MenuIcon />
                         </Button>
 
                         <StyledMenu
@@ -194,35 +216,58 @@ const TopBar = ({appName, appColor, onParametersClick, onLogoutClick, onLogoClic
                                     <SettingsIcon fontSize="small" />
                                 </ListItemIcon>
                                 <ListItemText>
-                                    <FormattedMessage id="top-bar/settings" defaultMessage={"Settings"}/>
+                                    <FormattedMessage
+                                        id="top-bar/settings"
+                                        defaultMessage={'Settings'}
+                                    />
                                 </ListItemText>
                             </StyledMenuItem>
-                            {
-                                fullScreenSupported() ?  (
-                                    <StyledMenuItem onClick={requestOrExitFullScreen}>
-                                        {
-                                            isFullScreen ? (<>
-                                                <ListItemIcon>
-                                                    <FullscreenExitIcon fontSize="small" />
-                                                </ListItemIcon>
-                                                <ListItemText>
-                                                    <FormattedMessage id="top-bar/exitFullScreen" defaultMessage={"Exit full screen mode"}/>
-                                                </ListItemText> </>) : (<>
-                                                <ListItemIcon>
-                                                    <FullscreenIcon fontSize="small" />
-                                                </ListItemIcon>
-                                                <ListItemText>
-                                                    <FormattedMessage id="top-bar/goFullScreen" defaultMessage={"Full screen"}/>
-                                                </ListItemText></>)
-                                        }
-                                    </StyledMenuItem>) : <></>
-                            }
+                            {fullScreenSupported() ? (
+                                <StyledMenuItem
+                                    onClick={requestOrExitFullScreen}
+                                >
+                                    {isFullScreen ? (
+                                        <>
+                                            <ListItemIcon>
+                                                <FullscreenExitIcon fontSize="small" />
+                                            </ListItemIcon>
+                                            <ListItemText>
+                                                <FormattedMessage
+                                                    id="top-bar/exitFullScreen"
+                                                    defaultMessage={
+                                                        'Exit full screen mode'
+                                                    }
+                                                />
+                                            </ListItemText>{' '}
+                                        </>
+                                    ) : (
+                                        <>
+                                            <ListItemIcon>
+                                                <FullscreenIcon fontSize="small" />
+                                            </ListItemIcon>
+                                            <ListItemText>
+                                                <FormattedMessage
+                                                    id="top-bar/goFullScreen"
+                                                    defaultMessage={
+                                                        'Full screen'
+                                                    }
+                                                />
+                                            </ListItemText>
+                                        </>
+                                    )}
+                                </StyledMenuItem>
+                            ) : (
+                                <></>
+                            )}
                             <StyledMenuItem onClick={onLogoutClick}>
                                 <ListItemIcon>
                                     <ExitToAppIcon fontSize="small" />
                                 </ListItemIcon>
-                                <ListItemText >
-                                    <FormattedMessage id="top-bar/logout" defaultMessage={"Logout"}/>
+                                <ListItemText>
+                                    <FormattedMessage
+                                        id="top-bar/logout"
+                                        defaultMessage={'Logout'}
+                                    />
                                 </ListItemText>
                             </StyledMenuItem>
                         </StyledMenu>
@@ -230,11 +275,11 @@ const TopBar = ({appName, appColor, onParametersClick, onLogoutClick, onLogoClic
                 )}
             </Toolbar>
         </AppBar>
-    )
+    );
 };
 
 TopBar.propTypes = {
-    onParametersClick: PropTypes.func
+    onParametersClick: PropTypes.func,
 };
 
 export default TopBar;

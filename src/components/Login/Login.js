@@ -14,7 +14,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import {FormattedMessage} from "react-intl";
+import { FormattedMessage } from 'react-intl';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     },
     submit: {
         margin: theme.spacing(3, 0, 2),
-        borderRadius: '30px'
+        borderRadius: '30px',
     },
     logo: {
         width: 64,
@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const Login = ({onLoginClick, disabled}) => {
+const Login = ({ onLoginClick, disabled }) => {
     const classes = useStyles();
 
     function Copyright() {
@@ -60,7 +60,11 @@ const Login = ({onLoginClick, disabled}) => {
                     <LockOutlinedIcon />
                 </Avatar>
                 <Typography component="h1" variant="h5">
-                    <FormattedMessage id="login/login" defaultMessage={"login"}/> ?
+                    <FormattedMessage
+                        id="login/login"
+                        defaultMessage={'login'}
+                    />{' '}
+                    ?
                 </Typography>
 
                 <Button
@@ -71,7 +75,10 @@ const Login = ({onLoginClick, disabled}) => {
                     className={classes.submit}
                     onClick={onLoginClick}
                 >
-                    <FormattedMessage id="login/connection" defaultMessage={"connection"}/>
+                    <FormattedMessage
+                        id="login/connection"
+                        defaultMessage={'connection'}
+                    />
                 </Button>
             </div>
             <Box mt={2}>
