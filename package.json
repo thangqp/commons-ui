@@ -47,7 +47,22 @@
         "puppeteer": "^5.3.0",
         "type-fest": "^0.13.1",
         "utf-8-validate": "^5.0.2",
-        "webpack-plugin-serve": "^1.0.1"
+        "webpack-plugin-serve": "^1.0.1",
+        "babel-eslint": "^10.1.0",
+        "eslint": "^7.9.0",
+        "prettier": "2.0.5",
+        "eslint-config-prettier": "^2.9.0",
+        "eslint-loader": "^4.0.2",
+        "eslint-plugin-prettier": "^2.6.0"
+    },
+    "eslintConfig": {
+        "parser": "babel-eslint",
+        "extends": [
+            "plugin:prettier/recommended"
+        ],
+        "rules": {
+            "prettier/prettier": "warn"
+        }
     },
     "author": "gridsuite team",
     "homepage": "https://github.com/gridsuite",

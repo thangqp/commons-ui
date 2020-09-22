@@ -1,5 +1,18 @@
 process.env.CHROME_BIN = require('puppeteer').executablePath();
 
+var extraWebpackConfig = {
+    module: {
+        rules: [
+            {
+                test: /\.js$/,
+                enforce: 'pre',
+                loader: 'eslint-loader',
+                exclude: /node_modules/,
+            },
+        ],
+    },
+};
+
 module.exports = {
     type: 'react-component',
     karma: {
@@ -8,5 +21,8 @@ module.exports = {
     npm: {
         esModules: false,
         umd: false,
+    },
+    webpack: {
+        extra: extraWebpackConfig,
     },
 };
