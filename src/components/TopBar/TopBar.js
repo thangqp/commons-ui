@@ -238,7 +238,7 @@ const TopBar = ({
                                                         'Exit full screen mode'
                                                     }
                                                 />
-                                            </ListItemText>{' '}
+                                            </ListItemText>
                                         </>
                                     ) : (
                                         <>
