@@ -26,9 +26,9 @@ it('renders', () => {
         render(
             <TopBar
                 appName="DemoApp"
-                onParametersClick={() => console.log('settings')}
-                onLogoutClick={() => logout(dispatch, userManager.instance)}
-                onLogoClick={() => console.log('logo')}
+                onParametersClick={() => {}}
+                onLogoutClick={() => {}}
+                onLogoClick={() => {}}
                 user={null}
             />,
             container

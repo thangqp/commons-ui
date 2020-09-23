@@ -12,7 +12,7 @@ const SignInCallbackHandler = ({ userManager, handleSignInCallback }) => {
         if (userManager !== null) {
             handleSignInCallback();
         }
-    }, [userManager]);
+    }, [userManager, handleSignInCallback]);
 
     return <h1> </h1>;
 };

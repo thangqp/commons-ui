@@ -15,7 +15,7 @@ const SilentRenewCallbackHandler = ({
         if (userManager !== null) {
             handleSilentRenewCallback();
         }
-    }, [userManager]);
+    }, [userManager, handleSilentRenewCallback]);
 
     return <h1>Technical token renew window, you should not see this</h1>;
 };
