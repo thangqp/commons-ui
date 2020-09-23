@@ -250,7 +250,7 @@ const TopBar = ({
                                     />
                                 </ListItemText>
                             </StyledMenuItem>
-                            {fullScreenSupported() ? (
+                            {fullScreenSupported() && (
                                 <StyledMenuItem
                                     onClick={requestOrExitFullScreen}
                                 >
@@ -284,8 +284,6 @@ const TopBar = ({
                                         </>
                                     )}
                                 </StyledMenuItem>
-                            ) : (
-                                <></>
                             )}
                             <StyledMenuItem onClick={onLogoutClick}>
                                 <ListItemIcon>
