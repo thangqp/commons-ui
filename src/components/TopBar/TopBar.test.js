@@ -21,6 +21,8 @@ afterEach(() => {
     container = null;
 });
 
+const apps = [{"name" : "App1", "url" : "/app1"}, {"name" : "App2", "url" : "/app2"}];
+
 it('renders', () => {
     act(() => {
         render(
@@ -30,6 +32,7 @@ it('renders', () => {
                 onLogoutClick={() => {}}
                 onLogoClick={() => {}}
                 user={null}
+                apps = {apps}
             />,
             container
         );

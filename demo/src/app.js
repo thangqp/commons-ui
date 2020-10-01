@@ -66,6 +66,8 @@ const AppContent = () => {
         }
     };
 
+    const apps = [{"name" : "App1", "url" : "/app1"}, {"name" : "App2", "url" : "/app2"}];
+
     useEffect(() => {
         initializeAuthenticationDev(
             dispatch,
@@ -92,6 +94,7 @@ const AppContent = () => {
                     onLogoutClick={() => logout(dispatch, userManager.instance)}
                     onLogoClick={() => console.log('logo')}
                     user={user}
+                    appsAndUrls = {apps}
                 />
                 {user !== null ? (
                     <Box mt={20}>
