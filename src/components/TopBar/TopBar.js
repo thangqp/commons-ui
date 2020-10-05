@@ -181,11 +181,8 @@ const TopBar = ({
                         >
                             {appsAndUrls &&
                                 appsAndUrls.map((item) => (
-                                    <StyledMenuItem onClick={onLogoClicked}>
-                                        <a
-                                            href={item.url}
-                                            className={classes.link}
-                                        >
+                                    <a href={item.url} className={classes.link}>
+                                        <StyledMenuItem onClick={onLogoClicked}>
                                             <ListItemIcon>
                                                 <PowsyblLogo
                                                     className={classes.menuIcon}
@@ -205,27 +202,30 @@ const TopBar = ({
                                                     {item.name}
                                                 </span>
                                             </ListItemText>
-                                        </a>
-                                    </StyledMenuItem>
+                                        </StyledMenuItem>
+                                    </a>
                                 ))}
 
-                            {appsAndUrls === null && (
-                                <StyledMenuItem onClick={onLogoClicked}>
-                                    <ListItemIcon>
-                                        <PowsyblLogo
-                                            className={classes.menuIcon}
-                                        />
-                                    </ListItemIcon>
-                                    <ListItemText>
-                                        <span style={{ fontWeight: 'bold' }}>
-                                            Grid
-                                        </span>
-                                        <span style={{ color: appColor }}>
-                                            {appName}
-                                        </span>
-                                    </ListItemText>
-                                </StyledMenuItem>
-                            )}
+                            {appsAndUrls === null ||
+                                (appsAndUrls.length === 0 && (
+                                    <StyledMenuItem onClick={onLogoClicked}>
+                                        <ListItemIcon>
+                                            <PowsyblLogo
+                                                className={classes.menuIcon}
+                                            />
+                                        </ListItemIcon>
+                                        <ListItemText>
+                                            <span
+                                                style={{ fontWeight: 'bold' }}
+                                            >
+                                                Grid
+                                            </span>
+                                            <span style={{ color: appColor }}>
+                                                {appName}
+                                            </span>
+                                        </ListItemText>
+                                    </StyledMenuItem>
+                                ))}
                         </StyledMenu>
                     </div>
                 )}
