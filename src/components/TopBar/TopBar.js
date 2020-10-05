@@ -49,6 +49,9 @@ const useStyles = makeStyles(() => ({
         marginLeft: 18,
         cursor: 'pointer',
     },
+    link: {
+        textDecoration: 'none',
+    },
 }));
 
 const StyledMenu = withStyles({
@@ -179,21 +182,30 @@ const TopBar = ({
                             {appsAndUrls &&
                                 appsAndUrls.map((item) => (
                                     <StyledMenuItem onClick={onLogoClicked}>
-                                        <ListItemIcon>
-                                            <PowsyblLogo
-                                                className={classes.menuIcon}
-                                            />
-                                        </ListItemIcon>
-                                        <ListItemText>
-                                            <span
-                                                style={{ fontWeight: 'bold' }}
-                                            >
-                                                Grid
-                                            </span>
-                                            <span style={{ color: appColor }}>
-                                                {item.name}
-                                            </span>
-                                        </ListItemText>
+                                        <a
+                                            href={item.url}
+                                            className={classes.link}
+                                        >
+                                            <ListItemIcon>
+                                                <PowsyblLogo
+                                                    className={classes.menuIcon}
+                                                />
+                                            </ListItemIcon>
+                                            <ListItemText>
+                                                <span
+                                                    style={{
+                                                        fontWeight: 'bold',
+                                                    }}
+                                                >
+                                                    Grid
+                                                </span>
+                                                <span
+                                                    style={{ color: appColor }}
+                                                >
+                                                    {item.name}
+                                                </span>
+                                            </ListItemText>
+                                        </a>
                                     </StyledMenuItem>
                                 ))}
 
