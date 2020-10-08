@@ -27,7 +27,6 @@ import ListItemText from '@material-ui/core/ListItemText';
 import AppsIcon from '@material-ui/icons/Apps';
 import FullscreenExitIcon from '@material-ui/icons/FullscreenExit';
 
-import PowsyblLogo from '-!@svgr/webpack!../images/powsybl_logo.svg';
 import PropTypes from 'prop-types';
 import FullscreenIcon from '@material-ui/icons/Fullscreen';
 import FullScreen, { fullScreenSupported } from 'react-request-fullscreen';
@@ -40,6 +39,7 @@ const useStyles = makeStyles(() => ({
         width: 48,
         height: 48,
         cursor: 'pointer',
+        marginBottom: 8,
     },
     menuIcon: {
         width: 24,
@@ -85,6 +85,7 @@ const StyledMenuItem = withStyles((theme) => ({
 const TopBar = ({
     appName,
     appColor,
+    appLogo,
     onParametersClick,
     onLogoutClick,
     onLogoClick,
@@ -145,9 +146,11 @@ const TopBar = ({
                 onFullScreenError={(e) =>
                     console.debug('full screen error : ' + e.message)
                 }
-            ></FullScreen>
+            />
             <Toolbar>
-                <PowsyblLogo className={classes.logo} onClick={onLogoClick} />
+                <div className={classes.logo} onClick={onLogoClick}>
+                    {appLogo}
+                </div>
                 <Typography
                     variant="h4"
                     className={classes.title}
@@ -176,9 +179,6 @@ const TopBar = ({
                             onClose={handleCloseAppsMenu}
                         >
                             <StyledMenuItem onClick={onLogoClicked}>
-                                <ListItemIcon>
-                                    <PowsyblLogo className={classes.menuIcon} />
-                                </ListItemIcon>
                                 <ListItemText>
                                     <span style={{ fontWeight: 'bold' }}>
                                         Grid
