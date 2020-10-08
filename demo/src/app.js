@@ -79,7 +79,8 @@ const AppContent = () => {
             <ThemeProvider theme={lightTheme}>
                 <CssBaseline />
                 <TopBar
-                    appName="DemoApp"
+                    appName="Demo"
+                    appColor="#808080"
                     onParametersClick={() => console.log('settings')}
                     onLogoutClick={() => logout(dispatch, userManager.instance)}
                     onLogoClick={() => console.log('logo')}

@@ -7,6 +7,8 @@ import { act } from 'react-dom/test-utils';
 
 import TopBar from './TopBar';
 
+import { ReactComponent as PowsyblLogo } from '../images/powsybl_logo.svg';
+
 let container = null;
 beforeEach(() => {
     // setup a DOM element as a render target
@@ -25,7 +27,9 @@ it('renders', () => {
     act(() => {
         render(
             <TopBar
-                appName="DemoApp"
+                appName="Demo"
+                appColor="#808080"
+                appLogo={<PowsyblLogo />}
                 onParametersClick={() => console.log('settings')}
                 onLogoutClick={() => logout(dispatch, userManager.instance)}
                 onLogoClick={() => console.log('logo')}
@@ -35,6 +39,6 @@ it('renders', () => {
         );
     });
     expect(container.textContent).toBe(
-        '.powsybl_logo_svg__st0{fill:#ffb259}.powsybl_logo_svg__st1{fill:#6f2277}.powsybl_logo_svg__st2{fill:#fd495c}GridDemoApp'
+        '.powsybl_logo_svg__st0{fill:#ffb259}.powsybl_logo_svg__st1{fill:#6f2277}.powsybl_logo_svg__st2{fill:#fd495c}GridDemo'
     );
 });
