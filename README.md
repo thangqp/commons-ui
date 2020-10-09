@@ -16,7 +16,10 @@ to `@gridsuite/commons-ui:'file:../path/to/the/commons-ui'` then type `npm insta
 If you want to deploy a new version of commons-ui in the [NPM package registry](https://www.npmjs.com/package/@gridsuite/commons-ui),
 you need to follow the steps below:
 
--   [Test you package](https://docs.npmjs.com/creating-and-publishing-scoped-public-packages#testing-your-package): `npm install`
--   [Login on the command line to the npm registry](https://docs.npmjs.com/logging-in-to-an-npm-enterprise-registry-from-the-command-line): `npm login`
--   [Update and commit the new version in the package.json file](https://github.com/gridsuite/commons-ui/blob/master/package.json)
--   [Publish the modified package](https://docs.npmjs.com/creating-and-publishing-scoped-public-packages#publishing-scoped-public-packages): `npm publish`
+- Update and commit the new version in [package.json](https://github.com/gridsuite/commons-ui/blob/master/package.json)
+- [Tag your last commit](https://semver.org/) : `git tag <tag>`
+- Push tag and commit : `git push --atomic origin <branch name> <tag>`
+- Checkout the tag in a fresh repo copy : `cd $(mktemp -d) && git clone commons-ui` then `cd commons-ui && git checkout <tag>`
+- [Test your package](https://docs.npmjs.com/creating-and-publishing-scoped-public-packages#testing-your-package): `npm install`
+- [Login on the command line to the npm registry](https://docs.npmjs.com/logging-in-to-an-npm-enterprise-registry-from-the-command-line): `npm login`
+- [Publish the package](https://docs.npmjs.com/creating-and-publishing-scoped-public-packages#publishing-scoped-public-packages): `npm publish`

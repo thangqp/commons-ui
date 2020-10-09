@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import SignInCallbackHandler from '../SignInCallbackHandler';
 import {
@@ -23,6 +23,15 @@ const AuthenticationRouter = ({
     history,
     location,
 }) => {
+    const handleSigninCallbackClosure = useCallback(
+        () => handleSigninCallback(dispatch, history, userManager.instance),
+        [dispatch, history, userManager.instance]
+    );
+    const handleSilentRenewCallbackClosure = useCallback(
+        () =>
+            handleSilentRenewCallback(dispatch, history, userManager.instance),
+        [dispatch, history, userManager.instance]
+    );
     return (
         <React.Fragment>
             {userManager.error !== null && (
@@ -37,20 +46,14 @@ const AuthenticationRouter = ({
                 <Route exact path="/sign-in-callback">
                     <SignInCallbackHandler
                         userManager={userManager.instance}
-                        handleSignInCallback={() =>
-                            handleSigninCallback(
-                                dispatch,
-                                history,
-                                userManager.instance
-                            )
-                        }
+                        handleSignInCallback={handleSigninCallbackClosure}
                     />
                 </Route>
                 <Route exact path="/silent-renew-callback">
                     <SilentRenewCallbackHandler
                         userManager={userManager.instance}
-                        handleSilentRenewCallback={() =>
-                            handleSilentRenewCallback(userManager.instance)
+                        handleSilentRenewCallback={
+                            handleSilentRenewCallbackClosure
                         }
                     />
                 </Route>

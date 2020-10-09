@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import TopBar from '../../src/components/TopBar';
 
@@ -48,10 +48,17 @@ const AppContent = () => {
     });
     const [user, setUser] = useState(null);
 
-    let matchSilentRenewCallbackUrl = useRouteMatch({
+    const matchSilentRenewCallbackUrl = useRouteMatch({
         path: '/silent-renew-callback',
         exact: true,
     });
+
+    // Get the routeMatch at page load, so we ignore the exhaustive deps check
+    const initialMatchSilentRenewCallbackUrl = useCallback(
+        () => matchSilentRenewCallbackUrl,
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        []
+    )();
 
     const dispatch = (e) => {
         if (e.type === 'USER') {
@@ -62,7 +69,7 @@ const AppContent = () => {
     useEffect(() => {
         initializeAuthenticationDev(
             dispatch,
-            matchSilentRenewCallbackUrl != null
+            initialMatchSilentRenewCallbackUrl != null
         )
             .then((userManager) => {
                 setUserManager({ instance: userManager, error: null });
@@ -72,7 +79,8 @@ const AppContent = () => {
                 setUserManager({ instance: null, error: error.message });
                 console.debug('error when creating userManager');
             });
-    }, []);
+        // Note: initialMatchSilentRenewCallbackUrl doesn't change
+    }, [initialMatchSilentRenewCallbackUrl]);
 
     return (
         <IntlProvider locale={language} messages={messages[language]}>
