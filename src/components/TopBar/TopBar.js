@@ -50,7 +50,7 @@ const useStyles = makeStyles(() => ({
         cursor: 'pointer',
     },
     link: {
-        textDecoration: 'none'
+        textDecoration: 'none',
     },
 }));
 
@@ -195,7 +195,10 @@ const TopBar = ({
                                                     Grid
                                                 </span>
                                                 <span
-                                                    style={{ color: appColor, fontWeight: 'bold', }}
+                                                    style={{
+                                                        color: appColor,
+                                                        fontWeight: 'bold',
+                                                    }}
                                                 >
                                                     {item.name}
                                                 </span>

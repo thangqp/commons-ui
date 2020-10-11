@@ -96,7 +96,7 @@ const AppContent = () => {
                 <TopBar
                     appName="Demo"
                     appColor="#808080"
-                    appLogo= <PowsyblLogo/>
+                    appLogo=<PowsyblLogo />
                     onParametersClick={() => console.log('settings')}
                     onLogoutClick={() => logout(dispatch, userManager.instance)}
                     onLogoClick={() => console.log('logo')}
