@@ -69,7 +69,7 @@ const AppContent = () => {
     };
 
     const apps = [
-        { name: 'App1', url: '/app1' },
+        { name: 'App1', url: '/app1', appColor: 'red' },
         { name: 'App2', url: '/app2' },
     ];
 
