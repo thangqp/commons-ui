@@ -25,6 +25,8 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 
+import PowsyblLogo from '-!@svgr/webpack!../images/powsybl_logo.svg';
+
 const messages = {
     en: { ...login_en, ...top_bar_en },
     fr: { ...login_fr, ...top_bar_fr },
@@ -94,6 +96,7 @@ const AppContent = () => {
                 <TopBar
                     appName="Demo"
                     appColor="#808080"
+                    appLogo= <PowsyblLogo/>
                     onParametersClick={() => console.log('settings')}
                     onLogoutClick={() => logout(dispatch, userManager.instance)}
                     onLogoClick={() => console.log('logo')}
