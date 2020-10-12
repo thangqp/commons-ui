@@ -51,7 +51,7 @@ const useStyles = makeStyles(() => ({
     },
     link: {
         textDecoration: 'none',
-        color: 'inherit'
+        color: 'inherit',
     },
 }));
 
@@ -197,7 +197,11 @@ const TopBar = ({
                                                 </span>
                                                 <span
                                                     style={{
-                                                        color: item.appColor === undefined ? 'grey' : item.appColor ,
+                                                        color:
+                                                            item.appColor ===
+                                                            undefined
+                                                                ? 'grey'
+                                                                : item.appColor,
                                                         fontWeight: 'bold',
                                                     }}
                                                 >
