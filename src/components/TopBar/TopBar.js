@@ -185,7 +185,11 @@ const TopBar = ({
                         >
                             {appsAndUrls &&
                                 appsAndUrls.map((item) => (
-                                    <a href={item.url} className={classes.link}>
+                                    <a
+                                        href={item.url}
+                                        className={classes.link}
+                                        target="_blank"
+                                    >
                                         <StyledMenuItem onClick={onLogoClicked}>
                                             <ListItemText>
                                                 <span
