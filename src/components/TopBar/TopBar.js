@@ -189,6 +189,7 @@ const TopBar = ({
                                         href={item.url}
                                         className={classes.link}
                                         target="_blank"
+                                        rel="noopener noreferrer"
                                     >
                                         <StyledMenuItem onClick={onLogoClicked}>
                                             <ListItemText>
