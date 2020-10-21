@@ -8,6 +8,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
 import TopBar from '../../src/components/TopBar';
+import SnackBar from '../../src/components/SnackBar';
 
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import AuthenticationRouter from '../../src/components/AuthenticationRouter';
@@ -122,6 +123,10 @@ const AppContent = () => {
                         location={location}
                     />
                 )}
+                <SnackBar
+                    variant={'warning'} // The value can be: 'success', 'error', 'warning', 'info', 'default'
+                    message={'Notification message snackbar'} // Message to be displayed in snackbar
+                />
             </ThemeProvider>
         </IntlProvider>
     );

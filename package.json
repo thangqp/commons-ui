@@ -19,6 +19,7 @@
         "test:watch": "nwb test-react --server"
     },
     "dependencies": {
+        "notistack": "^1.0.1",
         "oidc-client": "^1.10.1",
         "jwt-decode": "^2.2.0",
         "react-intl": "^3.11.0",
