@@ -8,19 +8,23 @@
 import React, { useEffect } from 'react';
 import Paper from '@material-ui/core/Paper';
 import { useSnackbar } from 'notistack';
+import { createMuiTheme } from '@material-ui/core/styles';
 
 const NotificationMessageSnackBar = (data) => {
     const { enqueueSnackbar } = useSnackbar();
+    createMuiTheme({
+        typography: {
+            useNextVariants: true,
+        },
+    });
 
     useEffect(() => {
-        window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true;
-        if (data.message) {
+        if (data.message.message && data.message.variant) {
             enqueueSnackbar(data.message.message, {
                 variant: data.message.variant,
             });
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [data.message.message, data.message.variant]);
+    }, [enqueueSnackbar, data.message.message, data.message.variant]);
 
     return <Paper></Paper>;
 };
