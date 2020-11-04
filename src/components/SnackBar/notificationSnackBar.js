@@ -8,15 +8,9 @@
 import React, { useEffect } from 'react';
 import Paper from '@material-ui/core/Paper';
 import { useSnackbar } from 'notistack';
-import { createMuiTheme } from '@material-ui/core/styles';
 
 const NotificationMessageSnackBar = (data) => {
     const { enqueueSnackbar } = useSnackbar();
-    createMuiTheme({
-        typography: {
-            useNextVariants: true,
-        },
-    });
 
     useEffect(() => {
         if (data.message.message && data.message.variant) {
