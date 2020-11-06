@@ -27,6 +27,7 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 
 import PowsyblLogo from '-!@svgr/webpack!../images/powsybl_logo.svg';
+import Button from '@material-ui/core/Button';
 
 const messages = {
     en: { ...login_en, ...top_bar_en },
@@ -50,6 +51,7 @@ const AppContent = () => {
         error: null,
     });
     const [user, setUser] = useState(null);
+    const [showNotification, setShowNotification] = useState(false);
 
     const matchSilentRenewCallbackUrl = useRouteMatch({
         path: '/silent-renew-callback',
@@ -90,6 +92,14 @@ const AppContent = () => {
         // Note: initialMatchSilentRenewCallbackUrl doesn't change
     }, [initialMatchSilentRenewCallbackUrl]);
 
+    const showSnackBar = () => {
+        if (showNotification) {
+            setShowNotification(false);
+        } else {
+            setShowNotification(true);
+        }
+    };
+
     return (
         <IntlProvider locale={language} messages={messages[language]}>
             <ThemeProvider theme={lightTheme}>
@@ -123,9 +133,13 @@ const AppContent = () => {
                         location={location}
                     />
                 )}
+                <Button variant="contained" onClick={showSnackBar}>
+                    Show snackbar
+                </Button>
                 <SnackBar
                     variant={'warning'} // Variant can be: 'success', 'error', 'warning', 'info', 'default'
                     message={'Notification message snackbar'} // Message to be displayed in snackbar
+                    showNotification={showNotification}
                 />
             </ThemeProvider>
         </IntlProvider>
