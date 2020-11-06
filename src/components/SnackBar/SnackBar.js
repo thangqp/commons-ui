@@ -6,12 +6,27 @@
  */
 
 import React, { createRef } from 'react';
-
-import { SnackbarProvider } from 'notistack';
-import NotificationMessageSnackBar from './notificationSnackBar';
+import { SnackbarProvider, useSnackbar } from 'notistack';
 import Button from '@material-ui/core/Button';
+import PropTypes from "prop-types";
 
-const SnackBar = (message, variant) => {
+const Notification = (props) => {
+    const { enqueueSnackbar } = useSnackbar();
+    const variant = props.variant;
+
+    const handleClickVariant = (variant) => () => {
+        // Variant can be: 'success', 'error', 'warning', 'info', 'default'
+        enqueueSnackbar(props.message, { variant });
+    };
+
+    return (
+        <Button variant="contained" onClick={handleClickVariant(variant)}>
+            Show snackbar
+        </Button>
+    );
+};
+
+const SnackBar = (props) => {
     const notistackRef = createRef();
 
     const onClickDismiss = (key) => () => {
@@ -20,7 +35,7 @@ const SnackBar = (message, variant) => {
 
     return (
         <SnackbarProvider
-            maxSnack={0}
+            maxSnack={1} // maxSnack : max number of notifications can be displayed
             anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
             hideIconVariant
             ref={notistackRef}
@@ -33,9 +48,14 @@ const SnackBar = (message, variant) => {
                 </Button>
             )}
         >
-            <NotificationMessageSnackBar message={message} variant={variant} />
+            <Notification message={props.message} variant={props.variant} />
         </SnackbarProvider>
     );
+};
+
+SnackBar.propTypes = {
+    message: PropTypes.string.isRequired,
+    variant: PropTypes.string.isRequired,
 };
 
 export default SnackBar;

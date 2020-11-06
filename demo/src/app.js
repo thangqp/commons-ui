@@ -124,7 +124,7 @@ const AppContent = () => {
                     />
                 )}
                 <SnackBar
-                    variant={'warning'} // The value can be: 'success', 'error', 'warning', 'info', 'default'
+                    variant={'warning'} // Variant can be: 'success', 'error', 'warning', 'info', 'default'
                     message={'Notification message snackbar'} // Message to be displayed in snackbar
                 />
             </ThemeProvider>
