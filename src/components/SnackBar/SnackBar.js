@@ -8,7 +8,7 @@
 import React, { createRef } from 'react';
 import { SnackbarProvider, useSnackbar } from 'notistack';
 import Button from '@material-ui/core/Button';
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
 const Notification = (props) => {
     const { enqueueSnackbar } = useSnackbar();
