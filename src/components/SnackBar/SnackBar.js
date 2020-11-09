@@ -36,7 +36,7 @@ const SnackBar = (props) => {
         <>
             {showNotification && (
                 <SnackbarProvider
-                    maxSnack={1} // maxSnack : max number of notifications can be displayed
+                    maxSnack={props.maxSnack}
                     anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
                     hideIconVariant
                     ref={notistackRef}
@@ -62,6 +62,8 @@ const SnackBar = (props) => {
 SnackBar.propTypes = {
     message: PropTypes.string.isRequired,
     variant: PropTypes.string.isRequired,
+    maxSnack: PropTypes.number.isRequired,
+    showNotification: PropTypes.bool.isRequired,
 };
 
 export default SnackBar;

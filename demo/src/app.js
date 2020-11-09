@@ -142,7 +142,8 @@ const AppContent = () => {
                 <SnackBar
                     variant={'warning'} // Variant can be: 'success', 'error', 'warning', 'info', 'default'
                     message={'Notification message snackbar'} // Message to be displayed in snackbar
-                    showNotification={showNotification}
+                    maxSnack={1} // maxSnack : max number of notifications can be displayed
+                    showNotification={showNotification} // Set it to true if you want to show snack bar
                 />
             </ThemeProvider>
         </IntlProvider>
