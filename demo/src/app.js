@@ -52,6 +52,7 @@ const AppContent = () => {
     });
     const [user, setUser] = useState(null);
     const [showNotification, setShowNotification] = useState(false);
+    const [buttonText, setButtonText] = useState('Show snackbar');
 
     const matchSilentRenewCallbackUrl = useRouteMatch({
         path: '/silent-renew-callback',
@@ -95,8 +96,10 @@ const AppContent = () => {
     const showSnackBar = () => {
         if (showNotification) {
             setShowNotification(false);
+            setButtonText('Show snackbar');
         } else {
             setShowNotification(true);
+            setButtonText('Hide snackbar');
         }
     };
 
@@ -134,7 +137,7 @@ const AppContent = () => {
                     />
                 )}
                 <Button variant="contained" onClick={showSnackBar}>
-                    Show snackbar
+                    {buttonText}
                 </Button>
                 <SnackBar
                     variant={'warning'} // Variant can be: 'success', 'error', 'warning', 'info', 'default'

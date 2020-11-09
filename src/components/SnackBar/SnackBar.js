@@ -15,17 +15,11 @@ const Notification = (props) => {
     const { enqueueSnackbar } = useSnackbar();
     const variant = props.variant;
 
-    /*const handleClickVariant = (variant) => () => {
-        // Variant can be: 'success', 'error', 'warning', 'info', 'default'
-        enqueueSnackbar(props.message, { variant });
-    };*/
-
     useEffect(() => {
         if (props) {
             enqueueSnackbar(props.message, { variant });
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [props.message, props.variant]);
+    }, [enqueueSnackbar, props, variant]);
 
     return <Paper></Paper>;
 };
