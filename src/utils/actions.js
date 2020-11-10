@@ -5,6 +5,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+export const DARK_THEME = 'Dark';
+export const LIGHT_THEME = 'Light';
+export const USE_ID = 'Id';
+export const USE_NAME = 'Name';
+
 export const USER = 'USER';
 
 export function setLoggedUser(user) {

@@ -33,6 +33,12 @@ import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 
 import PowsyblLogo from '-!@svgr/webpack!../images/powsybl_logo.svg';
+import {
+    LIGHT_THEME,
+    DARK_THEME,
+    USE_ID,
+    USE_NAME,
+} from '../../src/utils/actions';
 
 const messages = {
     en: { ...login_en, ...top_bar_en },
@@ -46,6 +52,20 @@ const lightTheme = createMuiTheme({
         type: 'light',
     },
 });
+
+const darkTheme = createMuiTheme({
+    palette: {
+        type: 'dark',
+    },
+});
+
+const getMuiTheme = (theme) => {
+    if (theme === LIGHT_THEME) {
+        return lightTheme;
+    } else {
+        return darkTheme;
+    }
+};
 
 const useStyles = makeStyles((theme) => ({
     success: {
@@ -86,6 +106,10 @@ const AppContent = () => {
     });
     const [user, setUser] = useState(null);
 
+    const [theme, setTheme] = useState('Light');
+
+    const [userName, setUserName] = React.useState('Name');
+
     // Can't use lazy initializer because useRouteMatch is a hook
     const [initialMatchSilentRenewCallbackUrl] = useState(
         useRouteMatch({
@@ -97,6 +121,22 @@ const AppContent = () => {
     const dispatch = (e) => {
         if (e.type === 'USER') {
             setUser(e.user);
+        }
+    };
+
+    const handleDisplayMode = () => {
+        if (theme === LIGHT_THEME) {
+            setTheme(DARK_THEME);
+        } else {
+            setTheme(LIGHT_THEME);
+        }
+    };
+
+    const handleDisplayEquipment = () => {
+        if (userName === USE_ID) {
+            setUserName(USE_NAME);
+        } else {
+            setUserName(USE_ID);
         }
     };
 
@@ -132,7 +172,7 @@ const AppContent = () => {
 
     return (
         <IntlProvider locale={language} messages={messages[language]}>
-            <ThemeProvider theme={lightTheme}>
+            <ThemeProvider theme={getMuiTheme(theme)}>
                 <SnackbarProvider hideIconVariant={false}>
                     <CssBaseline />
                     <TopBar
@@ -144,8 +184,14 @@ const AppContent = () => {
                             logout(dispatch, userManager.instance)
                         }
                         onLogoClick={() => console.log('logo')}
+                        onDisplayModeClick={() => handleDisplayMode()}
+                        onDisplayEquipmentClick={() => handleDisplayEquipment()}
+                        onAboutClick={() => console.log('about')}
                         user={user}
                         appsAndUrls={apps}
+                        selectedTheme={theme}
+                        showSelectedEquipment={true}
+                        selectedEquipment={userName}
                     />
                     {user !== null ? (
                         <Box mt={20}>
