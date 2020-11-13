@@ -40,7 +40,10 @@ import PropTypes from 'prop-types';
 import FullscreenIcon from '@material-ui/icons/Fullscreen';
 import FullScreen, { fullScreenSupported } from 'react-request-fullscreen';
 
-import { DARK_THEME, LIGHT_THEME, USE_ID, USE_NAME } from '../../utils/actions';
+import { USER_ID, USER_NAME } from '../../utils/actions';
+
+export const DARK_THEME = 'Dark';
+export const LIGHT_THEME = 'Light';
 
 const useStyles = makeStyles((theme) => ({
     grow: {
@@ -443,8 +446,8 @@ const TopBar = ({
                                         }}
                                     >
                                         <ToggleButton
-                                            value={USE_ID}
-                                            aria-label={USE_ID}
+                                            value={USER_ID}
+                                            aria-label={USER_ID}
                                             className={classes.toggleButton}
                                         >
                                             <FormattedMessage
@@ -453,8 +456,8 @@ const TopBar = ({
                                             />
                                         </ToggleButton>
                                         <ToggleButton
-                                            value={USE_NAME}
-                                            aria-label={USE_NAME}
+                                            value={USER_NAME}
+                                            aria-label={USER_NAME}
                                             className={classes.toggleButton}
                                         >
                                             <FormattedMessage

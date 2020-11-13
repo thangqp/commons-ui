@@ -33,12 +33,10 @@ import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 
 import PowsyblLogo from '-!@svgr/webpack!../images/powsybl_logo.svg';
-import {
-    LIGHT_THEME,
-    DARK_THEME,
-    USE_ID,
-    USE_NAME,
-} from '../../src/utils/actions';
+import { USER_ID, USER_NAME } from '../../src/utils/actions';
+
+export const DARK_THEME = 'Dark';
+export const LIGHT_THEME = 'Light';
 
 const messages = {
     en: { ...login_en, ...top_bar_en },
@@ -133,10 +131,10 @@ const AppContent = () => {
     };
 
     const handleDisplayEquipment = () => {
-        if (userName === USE_ID) {
-            setUserName(USE_NAME);
+        if (userName === USER_ID) {
+            setUserName(USER_NAME);
         } else {
-            setUserName(USE_ID);
+            setUserName(USER_ID);
         }
     };
 
