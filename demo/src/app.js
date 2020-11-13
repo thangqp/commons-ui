@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { createRef, useCallback, useEffect, useState } from 'react';
 
 import TopBar from '../../src/components/TopBar';
 import SnackBar from '../../src/components/SnackBar';
@@ -25,9 +25,10 @@ import { top_bar_en, top_bar_fr, login_fr, login_en } from '../../src/index';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-
+import { makeStyles } from '@material-ui/core/styles';
 import PowsyblLogo from '-!@svgr/webpack!../images/powsybl_logo.svg';
 import Button from '@material-ui/core/Button';
+import { SnackbarProvider } from 'notistack';
 
 const messages = {
     en: { ...login_en, ...top_bar_en },
@@ -42,17 +43,31 @@ const lightTheme = createMuiTheme({
     },
 });
 
+const useStyles = makeStyles((theme) => ({
+    success: {
+        backgroundColor: '#43a047',
+    },
+    error: {
+        backgroundColor: '#d32f2f',
+    },
+    warning: {
+        backgroundColor: '#ffa000',
+    },
+}));
+
 const AppContent = () => {
     const history = useHistory();
     const location = useLocation();
+    const classes = useStyles();
+    const notistackRef = createRef();
 
     const [userManager, setUserManager] = useState({
         instance: null,
         error: null,
     });
     const [user, setUser] = useState(null);
-    const [showNotification, setShowNotification] = useState(false);
-    const [buttonText, setButtonText] = useState('Show snackbar');
+    const [variantSnackbar, setVariantSnackbar] = useState('');
+    const [messageSnackbar, setMessageSnackbar] = useState('');
 
     const matchSilentRenewCallbackUrl = useRouteMatch({
         path: '/silent-renew-callback',
@@ -77,6 +92,12 @@ const AppContent = () => {
         { name: 'App2', url: '/app2' },
     ];
 
+    const buttons = [
+        { variant: 'success', message: 'Successfully done the operation.' },
+        { variant: 'error', message: 'Something went wrong.' },
+        { variant: 'warning', message: 'Be careful of what you just did!' },
+    ];
+
     useEffect(() => {
         initializeAuthenticationDev(
             dispatch,
@@ -93,14 +114,15 @@ const AppContent = () => {
         // Note: initialMatchSilentRenewCallbackUrl doesn't change
     }, [initialMatchSilentRenewCallbackUrl]);
 
-    const showSnackBar = () => {
-        if (showNotification) {
-            setShowNotification(false);
-            setButtonText('Show snackbar');
-        } else {
-            setShowNotification(true);
-            setButtonText('Hide snackbar');
+    const handleClick = (button) => {
+        if (button) {
+            setVariantSnackbar(button.variant);
+            setMessageSnackbar(button.message);
         }
+    };
+
+    const onClickDismiss = (key) => () => {
+        notistackRef.current.closeSnackbar(key);
     };
 
     return (
@@ -136,15 +158,36 @@ const AppContent = () => {
                         location={location}
                     />
                 )}
-                <Button variant="contained" onClick={showSnackBar}>
-                    {buttonText}
-                </Button>
-                <SnackBar
-                    variant={'warning'} // Variant can be: 'success', 'error', 'warning', 'info', 'default'
-                    message={'Notification message snackbar'} // Message to be displayed in snackbar
-                    maxSnack={1} // maxSnack : max number of notifications can be displayed
-                    showNotification={showNotification} // Set it to true if you want to show snack bar
-                />
+                {buttons.map((button) => (
+                    <Button
+                        key={button.variant}
+                        variant="contained"
+                        className={classes[button.variant]}
+                        onClick={() => handleClick(button)}
+                        style={{ float: 'left', color: '#fff', margin: '5px' }}
+                    >
+                        {button.variant}
+                    </Button>
+                ))}
+                <SnackbarProvider
+                    maxSnack={3}
+                    anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
+                    hideIconVariant
+                    ref={notistackRef}
+                    action={(key) => (
+                        <Button
+                            onClick={onClickDismiss(key)}
+                            style={{ color: '#fff', fontSize: '20px' }}
+                        >
+                            ✖
+                        </Button>
+                    )}
+                >
+                    <SnackBar
+                        variant={variantSnackbar} // Variant can be: 'success', 'error', 'warning', 'info', 'default'
+                        message={messageSnackbar} // Message to be displayed in snackbar
+                    />
+                </SnackbarProvider>
             </ThemeProvider>
         </IntlProvider>
     );
