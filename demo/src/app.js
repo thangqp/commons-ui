@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import TopBar from '../../src/components/TopBar';
 
@@ -50,17 +50,13 @@ const AppContent = () => {
     });
     const [user, setUser] = useState(null);
 
-    const matchSilentRenewCallbackUrl = useRouteMatch({
-        path: '/silent-renew-callback',
-        exact: true,
-    });
-
-    // Get the routeMatch at page load, so we ignore the exhaustive deps check
-    const initialMatchSilentRenewCallbackUrl = useCallback(
-        () => matchSilentRenewCallbackUrl,
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        []
-    )();
+    // Can't use lazy initializer because useRouteMatch is a hook
+    const [initialMatchSilentRenewCallbackUrl] = useState(
+        useRouteMatch({
+            path: '/silent-renew-callback',
+            exact: true,
+        })
+    );
 
     const dispatch = (e) => {
         if (e.type === 'USER') {
