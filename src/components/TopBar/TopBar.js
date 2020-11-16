@@ -129,11 +129,6 @@ const TopBar = ({
         }
     };
 
-    const onLogoClicked = () => {
-        handleCloseAppsMenu();
-        onLogoClick();
-    };
-
     function onFullScreenChange(isFullScreen) {
         setIsFullScreen(isFullScreen);
     }
@@ -191,7 +186,9 @@ const TopBar = ({
                                         target="_blank"
                                         rel="noopener noreferrer"
                                     >
-                                        <StyledMenuItem onClick={onLogoClicked}>
+                                        <StyledMenuItem
+                                            onClick={handleCloseAppsMenu}
+                                        >
                                             <ListItemText>
                                                 <span
                                                     style={{
