@@ -25,7 +25,6 @@ import { top_bar_en, top_bar_fr, login_fr, login_en } from '../../src/index';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import { makeStyles } from '@material-ui/core/styles';
 import PowsyblLogo from '-!@svgr/webpack!../images/powsybl_logo.svg';
 import Button from '@material-ui/core/Button';
 import { SnackbarProvider } from 'notistack';
@@ -43,22 +42,9 @@ const lightTheme = createMuiTheme({
     },
 });
 
-const useStyles = makeStyles((theme) => ({
-    success: {
-        backgroundColor: '#43a047',
-    },
-    error: {
-        backgroundColor: '#d32f2f',
-    },
-    warning: {
-        backgroundColor: '#ffa000',
-    },
-}));
-
 const AppContent = () => {
     const history = useHistory();
     const location = useLocation();
-    const classes = useStyles();
     const notistackRef = createRef();
 
     const [userManager, setUserManager] = useState({
@@ -66,8 +52,6 @@ const AppContent = () => {
         error: null,
     });
     const [user, setUser] = useState(null);
-    const [variantSnackbar, setVariantSnackbar] = useState('');
-    const [messageSnackbar, setMessageSnackbar] = useState('');
 
     const matchSilentRenewCallbackUrl = useRouteMatch({
         path: '/silent-renew-callback',
@@ -95,7 +79,6 @@ const AppContent = () => {
     const buttons = [
         { variant: 'success', message: 'Successfully done the operation.' },
         { variant: 'error', message: 'Something went wrong.' },
-        { variant: 'warning', message: 'Be careful of what you just did!' },
     ];
 
     useEffect(() => {
@@ -113,13 +96,6 @@ const AppContent = () => {
             });
         // Note: initialMatchSilentRenewCallbackUrl doesn't change
     }, [initialMatchSilentRenewCallbackUrl]);
-
-    const handleClick = (button) => {
-        if (button) {
-            setVariantSnackbar(button.variant);
-            setMessageSnackbar(button.message);
-        }
-    };
 
     const onClickDismiss = (key) => () => {
         notistackRef.current.closeSnackbar(key);
@@ -158,19 +134,8 @@ const AppContent = () => {
                         location={location}
                     />
                 )}
-                {buttons.map((button) => (
-                    <Button
-                        key={button.variant}
-                        variant="contained"
-                        className={classes[button.variant]}
-                        onClick={() => handleClick(button)}
-                        style={{ float: 'left', color: '#fff', margin: '5px' }}
-                    >
-                        {button.variant}
-                    </Button>
-                ))}
                 <SnackbarProvider
-                    maxSnack={3}
+                    maxSnack={2}
                     anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
                     hideIconVariant
                     ref={notistackRef}
@@ -183,10 +148,14 @@ const AppContent = () => {
                         </Button>
                     )}
                 >
-                    <SnackBar
-                        variant={variantSnackbar} // Variant can be: 'success', 'error', 'warning', 'info', 'default'
-                        message={messageSnackbar} // Message to be displayed in snackbar
-                    />
+                    {buttons.map((button) => (
+                        <SnackBar
+                            variant={button.variant} // Variant can be: 'success', 'error', 'warning', 'info', 'default'
+                            message={button.message} // Message can be show in snackbar notification
+                            showBtnAction={false} // If you want to call snackbar via button set it a true
+                            textBtnAction={button.variant} // If you want to call snackbar via button add the custom text
+                        />
+                    ))}
                 </SnackbarProvider>
             </ThemeProvider>
         </IntlProvider>
