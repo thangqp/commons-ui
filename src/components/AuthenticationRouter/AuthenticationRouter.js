@@ -28,9 +28,8 @@ const AuthenticationRouter = ({
         [dispatch, history, userManager.instance]
     );
     const handleSilentRenewCallbackClosure = useCallback(
-        () =>
-            handleSilentRenewCallback(dispatch, history, userManager.instance),
-        [dispatch, history, userManager.instance]
+        () => handleSilentRenewCallback(userManager.instance),
+        [userManager.instance]
     );
     return (
         <React.Fragment>

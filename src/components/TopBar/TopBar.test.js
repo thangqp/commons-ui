@@ -7,6 +7,8 @@ import { act } from 'react-dom/test-utils';
 
 import TopBar from './TopBar';
 
+import PowsyblLogo from '../images/powsybl_logo.svg';
+
 let container = null;
 beforeEach(() => {
     // setup a DOM element as a render target
@@ -21,20 +23,26 @@ afterEach(() => {
     container = null;
 });
 
+const apps = [
+    { name: 'App1', url: '/app1' },
+    { name: 'App2', url: '/app2' },
+];
+
 it('renders', () => {
     act(() => {
         render(
             <TopBar
-                appName="DemoApp"
+                appName="Demo"
+                appColor="#808080"
+                appLogo={PowsyblLogo}
                 onParametersClick={() => {}}
                 onLogoutClick={() => {}}
                 onLogoClick={() => {}}
                 user={null}
+                apps={apps}
             />,
             container
         );
     });
-    expect(container.textContent).toBe(
-        '.powsybl_logo_svg__st0{fill:#ffb259}.powsybl_logo_svg__st1{fill:#6f2277}.powsybl_logo_svg__st2{fill:#fd495c}GridDemoApp'
-    );
+    expect(container.textContent).toContain('GridDemo');
 });

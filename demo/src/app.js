@@ -25,6 +25,8 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 
+import PowsyblLogo from '-!@svgr/webpack!../images/powsybl_logo.svg';
+
 const messages = {
     en: { ...login_en, ...top_bar_en },
     fr: { ...login_fr, ...top_bar_fr },
@@ -62,6 +64,11 @@ const AppContent = () => {
         }
     };
 
+    const apps = [
+        { name: 'App1', url: '/app1', appColor: 'red' },
+        { name: 'App2', url: '/app2' },
+    ];
+
     useEffect(() => {
         initializeAuthenticationDev(
             dispatch,
@@ -83,11 +90,14 @@ const AppContent = () => {
             <ThemeProvider theme={lightTheme}>
                 <CssBaseline />
                 <TopBar
-                    appName="DemoApp"
+                    appName="Demo"
+                    appColor="#808080"
+                    appLogo=<PowsyblLogo />
                     onParametersClick={() => console.log('settings')}
                     onLogoutClick={() => logout(dispatch, userManager.instance)}
                     onLogoClick={() => console.log('logo')}
                     user={user}
+                    appsAndUrls={apps}
                 />
                 {user !== null ? (
                     <Box mt={20}>
