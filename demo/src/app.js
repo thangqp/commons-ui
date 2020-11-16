@@ -152,7 +152,7 @@ const AppContent = () => {
                         <SnackBar
                             variant={button.variant} // Variant can be: 'success', 'error', 'warning', 'info', 'default'
                             message={button.message} // Message can be show in snackbar notification
-                            showBtnAction={false} // If you want to call snackbar via button set it a true
+                            showBtnAction={true} // If you want to call snackbar via button set it a true
                             textBtnAction={button.variant} // If you want to call snackbar via button add the custom text
                         />
                     ))}
