@@ -181,6 +181,7 @@ const TopBar = ({
                             {appsAndUrls &&
                                 appsAndUrls.map((item) => (
                                     <a
+                                        key={item.name}
                                         href={item.url}
                                         className={classes.link}
                                         target="_blank"
