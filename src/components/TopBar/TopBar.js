@@ -129,11 +129,6 @@ const TopBar = ({
         }
     };
 
-    const onLogoClicked = () => {
-        handleCloseAppsMenu();
-        onLogoClick();
-    };
-
     function onFullScreenChange(isFullScreen) {
         setIsFullScreen(isFullScreen);
     }
@@ -186,12 +181,15 @@ const TopBar = ({
                             {appsAndUrls &&
                                 appsAndUrls.map((item) => (
                                     <a
+                                        key={item.name}
                                         href={item.url}
                                         className={classes.link}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                     >
-                                        <StyledMenuItem onClick={onLogoClicked}>
+                                        <StyledMenuItem
+                                            onClick={handleCloseAppsMenu}
+                                        >
                                             <ListItemText>
                                                 <span
                                                     style={{
@@ -250,7 +248,7 @@ const TopBar = ({
                                     />
                                 </ListItemText>
                             </StyledMenuItem>
-                            {fullScreenSupported() ? (
+                            {fullScreenSupported() && (
                                 <StyledMenuItem
                                     onClick={requestOrExitFullScreen}
                                 >
@@ -284,8 +282,6 @@ const TopBar = ({
                                         </>
                                     )}
                                 </StyledMenuItem>
-                            ) : (
-                                <></>
                             )}
                             <StyledMenuItem onClick={onLogoutClick}>
                                 <ListItemIcon>

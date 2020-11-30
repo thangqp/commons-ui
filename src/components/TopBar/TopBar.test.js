@@ -4,8 +4,10 @@ import expect from 'expect';
 import React from 'react';
 import { render, unmountComponentAtNode } from 'react-dom';
 import { act } from 'react-dom/test-utils';
+import { IntlProvider } from 'react-intl';
 
 import TopBar from './TopBar';
+import { top_bar_en } from '../../';
 
 import PowsyblLogo from '../images/powsybl_logo.svg';
 
@@ -24,25 +26,29 @@ afterEach(() => {
 });
 
 const apps = [
-    { name: 'App1', url: '/app1' },
+    { name: 'App1', url: '/app1', appColor: 'blue' },
     { name: 'App2', url: '/app2' },
 ];
 
 it('renders', () => {
     act(() => {
         render(
-            <TopBar
-                appName="Demo"
-                appColor="#808080"
-                appLogo={PowsyblLogo}
-                onParametersClick={() => {}}
-                onLogoutClick={() => {}}
-                onLogoClick={() => {}}
-                user={null}
-                apps={apps}
-            />,
+            <IntlProvider locale="en" messages={top_bar_en}>
+                <TopBar
+                    appName="Demo"
+                    appColor="#808080"
+                    appLogo={PowsyblLogo}
+                    onParametersClick={() => {}}
+                    onLogoutClick={() => {}}
+                    onLogoClick={() => {}}
+                    user={{ profile: { name: 'Username' } }}
+                    appsAndUrls={apps}
+                >
+                    <p>testchild</p>
+                </TopBar>
+            </IntlProvider>,
             container
         );
     });
-    expect(container.textContent).toContain('GridDemo');
+    expect(container.textContent).toContain('GridDemotestchildUsername');
 });
