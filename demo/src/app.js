@@ -127,19 +127,6 @@ const StyledMenuItem = withStyles((theme) => ({
 
 const EquipmentDisplay = ({ handleDisplay, toggleState }) => {
     const classes = useStyles();
-    const [useMode, setUseMode] = React.useState(toggleState);
-
-    const handleDisplayEquipment = () => {
-        if (useMode === USE_ID) {
-            setUseMode(USE_NAME);
-        } else {
-            setUseMode(USE_ID);
-        }
-    };
-
-    useEffect(() => {
-        handleDisplay(useMode);
-    }, [useMode, handleDisplay]);
 
     return (
         <StyledMenuItem
@@ -159,9 +146,9 @@ const EquipmentDisplay = ({ handleDisplay, toggleState }) => {
             </ListItemText>
             <ToggleButtonGroup
                 exclusive
-                value={useMode}
+                value={toggleState}
                 className={classes.toggleDisplay}
-                onChange={handleDisplayEquipment}
+                onChange={handleDisplay}
             >
                 <ToggleButton
                     value={USE_ID}
@@ -221,7 +208,13 @@ const AppContent = () => {
         }
     };
 
-    const handleClickToggle = (val) => setToggleState(val);
+    const handleClickToggle = () => {
+        if (toggleState === USE_ID) {
+            setToggleState(USE_NAME);
+        } else {
+            setToggleState(USE_ID);
+        }
+    };
 
     const apps = [
         { name: 'App1', url: '/app1', appColor: 'red' },
