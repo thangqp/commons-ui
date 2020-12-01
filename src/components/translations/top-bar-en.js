@@ -5,7 +5,7 @@ const top_bar_en = {
     'top-bar/exitFullScreen': 'Exit full screen mode',
     'top-bar/about': 'About',
     'top-bar/displayMode': 'Display mode',
-    'top-bar/equipmentDisplay': 'Equipment display',
+    'top-bar/equipmentDisplay': 'Equipment labels',
     'top-bar/id': 'Id',
     'top-bar/name': 'Name',
 };

@@ -14,6 +14,7 @@ import {
     createMuiTheme,
     makeStyles,
     ThemeProvider,
+    withStyles,
 } from '@material-ui/core/styles';
 import AuthenticationRouter from '../../src/components/AuthenticationRouter';
 import {
@@ -32,11 +33,18 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 
+import ListItemText from '@material-ui/core/ListItemText';
+import { FormattedMessage } from 'react-intl';
+import ToggleButton from '@material-ui/lab/ToggleButton';
+import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
+import MenuItem from '@material-ui/core/MenuItem';
+
 import PowsyblLogo from '-!@svgr/webpack!../images/powsybl_logo.svg';
-import { USER_ID, USER_NAME } from '../../src/utils/actions';
 
 export const DARK_THEME = 'Dark';
 export const LIGHT_THEME = 'Light';
+export const USE_ID = 'Id';
+export const USE_NAME = 'Name';
 
 const messages = {
     en: { ...login_en, ...top_bar_en },
@@ -75,6 +83,18 @@ const useStyles = makeStyles((theme) => ({
     warning: {
         backgroundColor: '#ffa000',
     },
+    sizeLabel: {
+        fontSize: '16px',
+    },
+    toggleDisplay: {
+        marginLeft: '15px',
+        pointerEvents: 'auto',
+    },
+    toggleButton: {
+        height: '30px',
+        padding: '7px',
+        textTransform: 'capitalize',
+    },
 }));
 
 const MyButton = (props) => {
@@ -94,6 +114,77 @@ const MyButton = (props) => {
     );
 };
 
+const StyledMenuItem = withStyles((theme) => ({
+    root: {
+        '&:focus': {
+            backgroundColor: theme.palette.primary.main,
+            '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
+                color: theme.palette.common.white,
+            },
+        },
+    },
+}))(MenuItem);
+
+const EquipmentDisplay = ({ handleDisplay, toggleState }) => {
+    const classes = useStyles();
+    const [useMode, setUseMode] = React.useState(toggleState);
+
+    const handleDisplayEquipment = () => {
+        if (useMode === USE_ID) {
+            setUseMode(USE_NAME);
+        } else {
+            setUseMode(USE_ID);
+        }
+    };
+
+    useEffect(() => {
+        handleDisplay(useMode);
+    }, [useMode, handleDisplay]);
+
+    return (
+        <StyledMenuItem
+            style={{
+                opacity: '1',
+                paddingBottom: '10px',
+            }}
+            disabled={true}
+        >
+            <ListItemText>
+                <Typography className={classes.sizeLabel}>
+                    <FormattedMessage
+                        id="top-bar/equipmentDisplay"
+                        defaultMessage={'Equipment display'}
+                    />
+                </Typography>
+            </ListItemText>
+            <ToggleButtonGroup
+                exclusive
+                value={useMode}
+                className={classes.toggleDisplay}
+                onChange={handleDisplayEquipment}
+            >
+                <ToggleButton
+                    value={USE_ID}
+                    aria-label={USE_ID}
+                    className={classes.toggleButton}
+                >
+                    <FormattedMessage id="top-bar/id" defaultMessage={'Id'} />
+                </ToggleButton>
+                <ToggleButton
+                    value={USE_NAME}
+                    aria-label={USE_NAME}
+                    className={classes.toggleButton}
+                >
+                    <FormattedMessage
+                        id="top-bar/name"
+                        defaultMessage={'Name'}
+                    />
+                </ToggleButton>
+            </ToggleButtonGroup>
+        </StyledMenuItem>
+    );
+};
+
 const AppContent = () => {
     const history = useHistory();
     const location = useLocation();
@@ -106,7 +197,7 @@ const AppContent = () => {
 
     const [theme, setTheme] = useState('Light');
 
-    const [userName, setUserName] = React.useState('Name');
+    const [toggleState, setToggleState] = useState(USE_ID);
 
     // Can't use lazy initializer because useRouteMatch is a hook
     const [initialMatchSilentRenewCallbackUrl] = useState(
@@ -130,13 +221,7 @@ const AppContent = () => {
         }
     };
 
-    const handleDisplayEquipment = () => {
-        if (userName === USER_ID) {
-            setUserName(USER_NAME);
-        } else {
-            setUserName(USER_ID);
-        }
-    };
+    const handleClickToggle = (val) => setToggleState(val);
 
     const apps = [
         { name: 'App1', url: '/app1', appColor: 'red' },
@@ -183,13 +268,17 @@ const AppContent = () => {
                         }
                         onLogoClick={() => console.log('logo')}
                         onDisplayModeClick={() => handleDisplayMode()}
-                        onDisplayEquipmentClick={() => handleDisplayEquipment()}
                         onAboutClick={() => console.log('about')}
                         user={user}
                         appsAndUrls={apps}
                         selectedTheme={theme}
-                        showSelectedEquipment={true}
-                        selectedEquipment={userName}
+                        equipmentDisplay={
+                            <EquipmentDisplay
+                                handleDisplay={handleClickToggle}
+                                toggleState={toggleState}
+                            />
+                        }
+                        selectedEquipment={toggleState}
                     />
                     {user !== null ? (
                         <Box mt={20}>

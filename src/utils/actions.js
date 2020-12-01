@@ -5,9 +5,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-export const USER_ID = 'Id';
-export const USER_NAME = 'Name';
-
 export const USER = 'USER';
 
 export function setLoggedUser(user) {

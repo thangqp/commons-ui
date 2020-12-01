@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { FormattedMessage } from 'react-intl';
 
@@ -40,10 +40,12 @@ import PropTypes from 'prop-types';
 import FullscreenIcon from '@material-ui/icons/Fullscreen';
 import FullScreen, { fullScreenSupported } from 'react-request-fullscreen';
 
-import { USER_ID, USER_NAME } from '../../utils/actions';
+import Popper from '@material-ui/core/Popper';
+import Paper from '@material-ui/core/Paper';
+import MenuList from '@material-ui/core/MenuList';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 
-export const DARK_THEME = 'Dark';
-export const LIGHT_THEME = 'Light';
+import { DARK_THEME, LIGHT_THEME } from '../../../demo/src/app';
 
 const useStyles = makeStyles((theme) => ({
     grow: {
@@ -69,13 +71,13 @@ const useStyles = makeStyles((theme) => ({
     },
     name: {
         backgroundColor: darken(theme.palette.background.paper, 0.1),
-        padding: '8px',
+        paddingTop: '10px',
         borderRadius: '100%',
         fontWeight: '400',
         textTransform: 'uppercase',
         cursor: 'pointer',
-        minHeight: '45px',
-        minWidth: '45px',
+        height: '48px',
+        width: '48px',
     },
     arrowIcon: {
         fontSize: '40px',
@@ -92,8 +94,19 @@ const useStyles = makeStyles((theme) => ({
     borderBottom: {
         borderBottom: '1px solid #ccc',
     },
+    borderTop: {
+        borderTop: '1px solid #ccc',
+    },
     sizeLabel: {
         fontSize: '16px',
+    },
+    showHideMenu: {
+        padding: '0',
+        borderRadius: '25px',
+    },
+    toggleDisplay: {
+        marginLeft: '15px',
+        pointerEvents: 'auto',
     },
 }));
 
@@ -132,19 +145,9 @@ const CustomListItemIcon = withStyles((theme) => ({
     root: {
         minWidth: '30px',
         paddingRight: '15px',
-        borderRadius: '15px',
+        borderRadius: '25px',
     },
 }))(ListItemIcon);
-
-const CustomArrowButton = withStyles((theme) => ({
-    root: {
-        minWidth: '30px',
-        padding: '0',
-        '&:focus, &:hover, &:visited, &:active': {
-            borderRadius: '15px',
-        },
-    },
-}))(Button);
 
 const TopBar = ({
     appName,
@@ -157,28 +160,27 @@ const TopBar = ({
     children,
     appsAndUrls,
     onDisplayModeClick,
-    onDisplayEquipmentClick,
     onAboutClick,
     selectedTheme,
-    showSelectedEquipment,
+    equipmentDisplay,
     selectedEquipment,
 }) => {
     const classes = useStyles();
+    const anchorRef = React.useRef(null);
 
-    const [anchorElGeneralMenu, setAnchorElGeneralMenu] = React.useState(null);
-
+    const [anchorElSettingsMenu, setAnchorElSettingsMenu] = React.useState(
+        false
+    );
     const [anchorElAppsMenu, setAnchorElAppsMenu] = React.useState(null);
-
     const fullScreenRef = useRef(null);
-
     const [isFullScreen, setIsFullScreen] = useState(false);
 
-    const handleClickGeneralMenu = (event) => {
-        setAnchorElGeneralMenu(event.currentTarget);
+    const handleToggleSettingsMenu = () => {
+        setAnchorElSettingsMenu(true);
     };
 
-    const handleCloseGeneralMenu = () => {
-        setAnchorElGeneralMenu(null);
+    const handleCloseSettingsMenu = () => {
+        setAnchorElSettingsMenu(false);
     };
     const handleClickAppsMenu = (event) => {
         setAnchorElAppsMenu(event.currentTarget);
@@ -189,46 +191,46 @@ const TopBar = ({
     };
 
     const onParametersClicked = () => {
-        handleCloseGeneralMenu();
+        setAnchorElSettingsMenu(false);
         if (onParametersClick) {
             onParametersClick();
         }
     };
 
     function onFullScreenChange(isFullScreen) {
+        setAnchorElSettingsMenu(false);
         setIsFullScreen(isFullScreen);
     }
 
     function requestOrExitFullScreen() {
-        setAnchorElGeneralMenu(null);
+        setAnchorElSettingsMenu(false);
         fullScreenRef.current.fullScreen();
     }
 
-    const abbrivationFromUserName = () => {
+    const abbreviationFromUserName = () => {
         const tab = user.profile.name.split(' ').map((x) => x.charAt(0));
         return tab[0] + tab[tab.length - 1];
     };
 
     const onDisplayModeClicked = () => {
-        handleCloseGeneralMenu();
+        setAnchorElSettingsMenu(false);
         if (onDisplayModeClick) {
             onDisplayModeClick();
         }
     };
 
-    const onDisplayEquipmentClicked = () => {
-        handleCloseGeneralMenu();
-        if (onDisplayEquipmentClick) {
-            onDisplayEquipmentClick();
-        }
-    };
-
     const onAboutClicked = () => {
-        handleCloseGeneralMenu();
+        setAnchorElSettingsMenu(false);
         if (onAboutClick) {
             onAboutClick();
         }
     };
+
+    useEffect(() => {
+        if (selectedEquipment) {
+            handleCloseSettingsMenu();
+        }
+    }, [selectedEquipment]);
 
     return (
         <AppBar position="static" color="default" className={classes.appBar}>
@@ -309,23 +311,22 @@ const TopBar = ({
                         </StyledMenu>
                     </div>
                 )}
-
-                <h3>{user !== null ? user.profile.name : ''}</h3>
-
                 {user && (
-                    <>
-                        <CustomArrowButton
-                            aria-controls="general-menu"
+                    <div>
+                        {/* Button width abbreviation and arrow icon */}
+                        <Button
+                            ref={anchorRef}
+                            aria-controls="settings-menu"
                             aria-haspopup="true"
-                            onClick={handleClickGeneralMenu}
+                            className={classes.showHideMenu}
+                            onClick={handleToggleSettingsMenu}
                         >
-                            <span
-                                className={classes.name}
-                                onClick={handleClickGeneralMenu}
-                            >
-                                {user !== null ? abbrivationFromUserName() : ''}
+                            <span className={classes.name}>
+                                {user !== null
+                                    ? abbreviationFromUserName()
+                                    : ''}
                             </span>
-                            {anchorElGeneralMenu ? (
+                            {anchorElSettingsMenu ? (
                                 <ArrowDropUpIcon
                                     className={classes.arrowIcon}
                                 />
@@ -334,252 +335,230 @@ const TopBar = ({
                                     className={classes.arrowIcon}
                                 />
                             )}
-                        </CustomArrowButton>
-                        <StyledMenu
-                            id="general-menu"
-                            anchorEl={anchorElGeneralMenu}
-                            keepMounted
-                            open={Boolean(anchorElGeneralMenu)}
-                            onClose={handleCloseGeneralMenu}
-                            autoFocus={false}
+                        </Button>
+
+                        {/* Settings menu */}
+                        <Popper
+                            open={anchorElSettingsMenu}
+                            anchorEl={anchorRef.current}
+                            transition
                         >
-                            {/* user info */}
-                            <StyledMenuItem
-                                className={classes.borderBottom}
-                                disabled={true}
-                                style={{ opacity: '1' }}
-                            >
-                                <CustomListItemIcon>
-                                    <PersonIcon fontSize="small" />
-                                </CustomListItemIcon>
-                                <ListItemText disabled={false}>
-                                    {user !== null && (
-                                        <span className={classes.sizeLabel}>
-                                            {user.profile.name} <br />
-                                            <span className={classes.userMail}>
-                                                {user.profile.email}
-                                            </span>
-                                        </span>
-                                    )}
-                                </ListItemText>
-                            </StyledMenuItem>
-
-                            {/* Display mode */}
-                            <StyledMenuItem
-                                disabled={true}
-                                style={{ opacity: '1' }}
-                                className={
-                                    !showSelectedEquipment
-                                        ? classes.borderBottom
-                                        : ''
-                                }
-                            >
-                                <ListItemText>
-                                    <Typography
-                                        variant="span"
-                                        className={classes.sizeLabel}
-                                    >
-                                        <FormattedMessage
-                                            id="top-bar/displayMode"
-                                            defaultMessage={'Display mode'}
-                                        />
-                                    </Typography>
-                                </ListItemText>
-                                <ToggleButtonGroup
-                                    exclusive
-                                    value={selectedTheme}
-                                    aria-label="text alignment"
-                                    style={{
-                                        marginLeft: '15px',
-                                        pointerEvents: 'auto',
-                                    }}
-                                    onChange={onDisplayModeClicked}
+                            <Paper>
+                                <ClickAwayListener
+                                    onClickAway={handleCloseSettingsMenu}
                                 >
-                                    <ToggleButton
-                                        value={LIGHT_THEME}
-                                        aria-label={LIGHT_THEME}
-                                        className={classes.toggleButton}
-                                        style={{ minWidth: '44px' }}
-                                    >
-                                        <Brightness1Icon fontSize="small" />
-                                    </ToggleButton>
-                                    <ToggleButton
-                                        value={DARK_THEME}
-                                        aria-label={DARK_THEME}
-                                        className={classes.toggleButton}
-                                        style={{ minWidth: '44px' }}
-                                    >
-                                        <Brightness3Icon fontSize="small" />
-                                    </ToggleButton>
-                                </ToggleButtonGroup>
-                            </StyledMenuItem>
-
-                            {/* Equipment display */}
-                            {showSelectedEquipment && (
-                                <StyledMenuItem
-                                    className={classes.borderBottom}
-                                    style={{ opacity: '1' }}
-                                    disabled={true}
-                                >
-                                    <ListItemText>
-                                        <Typography
-                                            variant="span"
-                                            className={classes.sizeLabel}
+                                    <MenuList id="settings-menu">
+                                        {/* user info */}
+                                        <StyledMenuItem
+                                            className={classes.borderBottom}
+                                            disabled={true}
+                                            style={{ opacity: '1' }}
                                         >
-                                            <FormattedMessage
-                                                id="top-bar/equipmentDisplay"
-                                                defaultMessage={
-                                                    'Equipment display'
+                                            <CustomListItemIcon>
+                                                <PersonIcon fontSize="small" />
+                                            </CustomListItemIcon>
+                                            <ListItemText disabled={false}>
+                                                {user !== null && (
+                                                    <span
+                                                        className={
+                                                            classes.sizeLabel
+                                                        }
+                                                    >
+                                                        {user.profile.name}{' '}
+                                                        <br />
+                                                        <span
+                                                            className={
+                                                                classes.userMail
+                                                            }
+                                                        >
+                                                            {user.profile.email}
+                                                        </span>
+                                                    </span>
+                                                )}
+                                            </ListItemText>
+                                        </StyledMenuItem>
+
+                                        {/* Display mode */}
+                                        <StyledMenuItem
+                                            disabled={true}
+                                            style={{
+                                                opacity: '1',
+                                                paddingTop: '10px',
+                                                paddingBottom: '10px',
+                                            }}
+                                        >
+                                            <ListItemText>
+                                                <Typography
+                                                    className={
+                                                        classes.sizeLabel
+                                                    }
+                                                >
+                                                    <FormattedMessage
+                                                        id="top-bar/displayMode"
+                                                        defaultMessage={
+                                                            'Display mode'
+                                                        }
+                                                    />
+                                                </Typography>
+                                            </ListItemText>
+                                            <ToggleButtonGroup
+                                                exclusive
+                                                value={selectedTheme}
+                                                className={
+                                                    classes.toggleDisplay
                                                 }
-                                            />
-                                        </Typography>
-                                    </ListItemText>
-                                    <ToggleButtonGroup
-                                        exclusive
-                                        value={selectedEquipment}
-                                        aria-label="text alignment"
-                                        onChange={onDisplayEquipmentClicked}
-                                        style={{
-                                            marginLeft: '15px',
-                                            minWidth: '45px',
-                                            pointerEvents: 'auto',
-                                        }}
-                                    >
-                                        <ToggleButton
-                                            value={USER_ID}
-                                            aria-label={USER_ID}
-                                            className={classes.toggleButton}
+                                                onChange={onDisplayModeClicked}
+                                            >
+                                                <ToggleButton
+                                                    style={{ minWidth: '43px' }}
+                                                    value={LIGHT_THEME}
+                                                    aria-label={LIGHT_THEME}
+                                                    className={
+                                                        classes.toggleButton
+                                                    }
+                                                >
+                                                    <Brightness1Icon fontSize="small" />
+                                                </ToggleButton>
+                                                <ToggleButton
+                                                    style={{ minWidth: '43px' }}
+                                                    value={DARK_THEME}
+                                                    aria-label={DARK_THEME}
+                                                    className={
+                                                        classes.toggleButton
+                                                    }
+                                                >
+                                                    <Brightness3Icon fontSize="small" />
+                                                </ToggleButton>
+                                            </ToggleButtonGroup>
+                                        </StyledMenuItem>
+
+                                        {/* Equipment display */}
+                                        {equipmentDisplay}
+
+                                        {/* Settings */}
+                                        <StyledMenuItem
+                                            onClick={onParametersClicked}
+                                            className={classes.borderTop}
                                         >
-                                            <FormattedMessage
-                                                id="top-bar/id"
-                                                defaultMessage={'Id'}
-                                            />
-                                        </ToggleButton>
-                                        <ToggleButton
-                                            value={USER_NAME}
-                                            aria-label={USER_NAME}
-                                            className={classes.toggleButton}
-                                        >
-                                            <FormattedMessage
-                                                id="top-bar/name"
-                                                defaultMessage={'Name'}
-                                            />
-                                        </ToggleButton>
-                                    </ToggleButtonGroup>
-                                </StyledMenuItem>
-                            )}
-
-                            {/* Settings */}
-                            <StyledMenuItem onClick={onParametersClicked}>
-                                <CustomListItemIcon>
-                                    <SettingsIcon fontSize="small" />
-                                </CustomListItemIcon>
-                                <ListItemText>
-                                    <Typography
-                                        variant="span"
-                                        className={classes.sizeLabel}
-                                    >
-                                        <FormattedMessage
-                                            id="top-bar/settings"
-                                            defaultMessage={'Settings'}
-                                        />
-                                    </Typography>
-                                </ListItemText>
-                            </StyledMenuItem>
-
-                            {/* About */}
-                            <StyledMenuItem
-                                className={classes.borderBottom}
-                                disabled={true}
-                                style={{ opacity: '1' }}
-                                onClick={onAboutClicked}
-                            >
-                                <CustomListItemIcon>
-                                    <HelpOutlineIcon fontSize="small" />
-                                </CustomListItemIcon>
-                                <ListItemText>
-                                    <Typography
-                                        variant="span"
-                                        className={classes.sizeLabel}
-                                    >
-                                        <FormattedMessage
-                                            id="top-bar/about"
-                                            defaultMessage={'About'}
-                                        />
-                                    </Typography>
-                                </ListItemText>
-                            </StyledMenuItem>
-
-                            {/* Full screen */}
-                            {fullScreenSupported() && (
-                                <StyledMenuItem
-                                    onClick={requestOrExitFullScreen}
-                                >
-                                    {isFullScreen ? (
-                                        <>
                                             <CustomListItemIcon>
-                                                <FullscreenExitIcon fontSize="small" />
+                                                <SettingsIcon fontSize="small" />
                                             </CustomListItemIcon>
                                             <ListItemText>
                                                 <Typography
-                                                    variant="span"
                                                     className={
                                                         classes.sizeLabel
                                                     }
                                                 >
                                                     <FormattedMessage
-                                                        id="top-bar/exitFullScreen"
+                                                        id="top-bar/settings"
                                                         defaultMessage={
-                                                            'Exit full screen mode'
+                                                            'Settings'
                                                         }
                                                     />
                                                 </Typography>
                                             </ListItemText>
-                                        </>
-                                    ) : (
-                                        <>
+                                        </StyledMenuItem>
+
+                                        {/* About */}
+                                        <StyledMenuItem
+                                            className={classes.borderBottom}
+                                            disabled={true}
+                                            style={{ opacity: '1' }}
+                                            onClick={onAboutClicked}
+                                        >
                                             <CustomListItemIcon>
-                                                <FullscreenIcon fontSize="small" />
+                                                <HelpOutlineIcon fontSize="small" />
                                             </CustomListItemIcon>
                                             <ListItemText>
                                                 <Typography
-                                                    variant="span"
                                                     className={
                                                         classes.sizeLabel
                                                     }
                                                 >
                                                     <FormattedMessage
-                                                        id="top-bar/goFullScreen"
+                                                        id="top-bar/about"
+                                                        defaultMessage={'About'}
+                                                    />
+                                                </Typography>
+                                            </ListItemText>
+                                        </StyledMenuItem>
+
+                                        {/* Full screen */}
+                                        {fullScreenSupported() && (
+                                            <StyledMenuItem
+                                                onClick={
+                                                    requestOrExitFullScreen
+                                                }
+                                            >
+                                                {isFullScreen ? (
+                                                    <>
+                                                        <CustomListItemIcon>
+                                                            <FullscreenExitIcon fontSize="small" />
+                                                        </CustomListItemIcon>
+                                                        <ListItemText>
+                                                            <Typography
+                                                                className={
+                                                                    classes.sizeLabel
+                                                                }
+                                                            >
+                                                                <FormattedMessage
+                                                                    id="top-bar/exitFullScreen"
+                                                                    defaultMessage={
+                                                                        'Exit full screen mode'
+                                                                    }
+                                                                />
+                                                            </Typography>
+                                                        </ListItemText>
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <CustomListItemIcon>
+                                                            <FullscreenIcon fontSize="small" />
+                                                        </CustomListItemIcon>
+                                                        <ListItemText>
+                                                            <Typography
+                                                                className={
+                                                                    classes.sizeLabel
+                                                                }
+                                                            >
+                                                                <FormattedMessage
+                                                                    id="top-bar/goFullScreen"
+                                                                    defaultMessage={
+                                                                        'Full screen'
+                                                                    }
+                                                                />
+                                                            </Typography>
+                                                        </ListItemText>
+                                                    </>
+                                                )}
+                                            </StyledMenuItem>
+                                        )}
+
+                                        {/* Loggout */}
+                                        <StyledMenuItem onClick={onLogoutClick}>
+                                            <CustomListItemIcon>
+                                                <ExitToAppIcon fontSize="small" />
+                                            </CustomListItemIcon>
+                                            <ListItemText>
+                                                <Typography
+                                                    className={
+                                                        classes.sizeLabel
+                                                    }
+                                                >
+                                                    <FormattedMessage
+                                                        id="top-bar/logout"
                                                         defaultMessage={
-                                                            'Full screen'
+                                                            'Logout'
                                                         }
                                                     />
                                                 </Typography>
                                             </ListItemText>
-                                        </>
-                                    )}
-                                </StyledMenuItem>
-                            )}
-
-                            {/* Loggout */}
-                            <StyledMenuItem onClick={onLogoutClick}>
-                                <CustomListItemIcon>
-                                    <ExitToAppIcon fontSize="small" />
-                                </CustomListItemIcon>
-                                <ListItemText>
-                                    <Typography
-                                        variant="span"
-                                        className={classes.sizeLabel}
-                                    >
-                                        <FormattedMessage
-                                            id="top-bar/logout"
-                                            defaultMessage={'Logout'}
-                                        />
-                                    </Typography>
-                                </ListItemText>
-                            </StyledMenuItem>
-                        </StyledMenu>
-                    </>
+                                        </StyledMenuItem>
+                                    </MenuList>
+                                </ClickAwayListener>
+                            </Paper>
+                        </Popper>
+                    </div>
                 )}
             </Toolbar>
         </AppBar>
@@ -589,11 +568,8 @@ const TopBar = ({
 TopBar.propTypes = {
     onParametersClick: PropTypes.func,
     onDisplayModeClick: PropTypes.func,
-    onDisplayEquipmentClick: PropTypes.func,
     onAboutClick: PropTypes.func,
     selectedTheme: PropTypes.string.isRequired,
-    showSelectedEquipment: PropTypes.bool.isRequired,
-    selectedEquipment: PropTypes.string.isRequired,
 };
 
 export default TopBar;
