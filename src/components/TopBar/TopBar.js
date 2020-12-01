@@ -569,7 +569,7 @@ TopBar.propTypes = {
     onParametersClick: PropTypes.func,
     onDisplayModeClick: PropTypes.func,
     onAboutClick: PropTypes.func,
-    selectedTheme: PropTypes.string.isRequired,
+    selectedTheme: PropTypes.string,
 };
 
 export default TopBar;
