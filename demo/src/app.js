@@ -14,7 +14,6 @@ import {
     createMuiTheme,
     makeStyles,
     ThemeProvider,
-    withStyles,
 } from '@material-ui/core/styles';
 import AuthenticationRouter from '../../src/components/AuthenticationRouter';
 import {
@@ -33,18 +32,9 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 
-import ListItemText from '@material-ui/core/ListItemText';
-import { FormattedMessage } from 'react-intl';
-import ToggleButton from '@material-ui/lab/ToggleButton';
-import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
-import MenuItem from '@material-ui/core/MenuItem';
-
 import PowsyblLogo from '-!@svgr/webpack!../images/powsybl_logo.svg';
 
-export const DARK_THEME = 'Dark';
-export const LIGHT_THEME = 'Light';
-export const USE_ID = 'Id';
-export const USE_NAME = 'Name';
+import { DARK_THEME, LIGHT_THEME } from '../../src/components/TopBar/TopBar';
 
 const messages = {
     en: { ...login_en, ...top_bar_en },
@@ -83,18 +73,6 @@ const useStyles = makeStyles((theme) => ({
     warning: {
         backgroundColor: '#ffa000',
     },
-    sizeLabel: {
-        fontSize: '16px',
-    },
-    toggleDisplay: {
-        marginLeft: '15px',
-        pointerEvents: 'auto',
-    },
-    toggleButton: {
-        height: '30px',
-        padding: '7px',
-        textTransform: 'capitalize',
-    },
 }));
 
 const MyButton = (props) => {
@@ -114,64 +92,6 @@ const MyButton = (props) => {
     );
 };
 
-const StyledMenuItem = withStyles((theme) => ({
-    root: {
-        '&:focus': {
-            backgroundColor: theme.palette.primary.main,
-            '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
-                color: theme.palette.common.white,
-            },
-        },
-    },
-}))(MenuItem);
-
-const EquipmentDisplay = ({ handleDisplay, toggleState }) => {
-    const classes = useStyles();
-
-    return (
-        <StyledMenuItem
-            style={{
-                opacity: '1',
-                paddingBottom: '10px',
-            }}
-            disabled={true}
-        >
-            <ListItemText>
-                <Typography className={classes.sizeLabel}>
-                    <FormattedMessage
-                        id="top-bar/equipmentDisplay"
-                        defaultMessage={'Equipment display'}
-                    />
-                </Typography>
-            </ListItemText>
-            <ToggleButtonGroup
-                exclusive
-                value={toggleState}
-                className={classes.toggleDisplay}
-                onChange={handleDisplay}
-            >
-                <ToggleButton
-                    value={USE_ID}
-                    aria-label={USE_ID}
-                    className={classes.toggleButton}
-                >
-                    <FormattedMessage id="top-bar/id" defaultMessage={'Id'} />
-                </ToggleButton>
-                <ToggleButton
-                    value={USE_NAME}
-                    aria-label={USE_NAME}
-                    className={classes.toggleButton}
-                >
-                    <FormattedMessage
-                        id="top-bar/name"
-                        defaultMessage={'Name'}
-                    />
-                </ToggleButton>
-            </ToggleButtonGroup>
-        </StyledMenuItem>
-    );
-};
-
 const AppContent = () => {
     const history = useHistory();
     const location = useLocation();
@@ -183,8 +103,6 @@ const AppContent = () => {
     const [user, setUser] = useState(null);
 
     const [theme, setTheme] = useState('Light');
-
-    const [toggleState, setToggleState] = useState(USE_ID);
 
     // Can't use lazy initializer because useRouteMatch is a hook
     const [initialMatchSilentRenewCallbackUrl] = useState(
@@ -205,14 +123,6 @@ const AppContent = () => {
             setTheme(DARK_THEME);
         } else {
             setTheme(LIGHT_THEME);
-        }
-    };
-
-    const handleClickToggle = () => {
-        if (toggleState === USE_ID) {
-            setToggleState(USE_NAME);
-        } else {
-            setToggleState(USE_ID);
         }
     };
 
@@ -266,12 +176,8 @@ const AppContent = () => {
                         appsAndUrls={apps}
                         selectedTheme={theme}
                         equipmentDisplay={
-                            <EquipmentDisplay
-                                handleDisplay={handleClickToggle}
-                                toggleState={toggleState}
-                            />
+                            'Here add the component that manages the display of equipments'
                         }
-                        selectedEquipment={toggleState}
                     />
                     {user !== null ? (
                         <Box mt={20}>
