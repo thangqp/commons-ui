@@ -36,6 +36,7 @@ const useStyles = makeStyles(() => ({
         flexGrow: 1,
     },
     logo: {
+        flexShrink: 0,
         width: 48,
         height: 48,
         cursor: 'pointer',
