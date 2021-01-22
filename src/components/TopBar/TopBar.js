@@ -34,6 +34,7 @@ import FullScreen, { fullScreenSupported } from 'react-request-fullscreen';
 const useStyles = makeStyles(() => ({
     grow: {
         flexGrow: 1,
+        display: 'flex',
     },
     logo: {
         flexShrink: 0,
@@ -160,8 +161,7 @@ const TopBar = ({
                     <span style={{ fontWeight: 'bold' }}>Grid</span>
                     <span style={{ color: appColor }}>{appName}</span>
                 </Typography>
-                {children}
-                <div className={classes.grow} />
+                <div className={classes.grow}>{children}</div>
                 {user && (
                     <div>
                         <Button
