@@ -222,8 +222,6 @@ const TopBar = ({
     };
 
     const onDisplayModeClicked = () => {
-        setAnchorElSettingsMenu(false);
-        setMenuOpen(false);
         if (onDisplayModeClick) {
             onDisplayModeClick();
         }
