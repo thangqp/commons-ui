@@ -73,7 +73,6 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: '100%',
         fontWeight: '400',
         textTransform: 'uppercase',
-        cursor: 'pointer',
         height: '48px',
         width: '48px',
     },
@@ -178,13 +177,15 @@ const TopBar = ({
     const [anchorElAppsMenu, setAnchorElAppsMenu] = React.useState(null);
     const fullScreenRef = useRef(null);
     const [isFullScreen, setIsFullScreen] = useState(false);
-
+    const [isMenuOpen, setMenuOpen] = useState(false);
     const handleToggleSettingsMenu = () => {
         setAnchorElSettingsMenu(true);
+        setMenuOpen(true);
     };
 
     const handleCloseSettingsMenu = () => {
         setAnchorElSettingsMenu(false);
+        setMenuOpen(false);
     };
     const handleClickAppsMenu = (event) => {
         setAnchorElAppsMenu(event.currentTarget);
@@ -222,6 +223,7 @@ const TopBar = ({
 
     const onDisplayModeClicked = () => {
         setAnchorElSettingsMenu(false);
+        setMenuOpen(false);
         if (onDisplayModeClick) {
             onDisplayModeClick();
         }
@@ -328,6 +330,11 @@ const TopBar = ({
                             aria-haspopup="true"
                             className={classes.showHideMenu}
                             onClick={handleToggleSettingsMenu}
+                            style={
+                                isMenuOpen
+                                    ? { cursor: 'initial' }
+                                    : { cursor: 'pointer' }
+                            }
                         >
                             <span className={classes.name}>
                                 {user !== null
