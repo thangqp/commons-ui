@@ -118,13 +118,13 @@ const AppContent = () => {
         }
     };
 
-    const handleDisplayMode = () => {
-        if (theme === LIGHT_THEME) {
-            setTheme(DARK_THEME);
-        } else {
-            setTheme(LIGHT_THEME);
-        }
+    const handleDisplayMode = (mode) => {
+        setTheme(mode);
     };
+
+    function switchTheme(theme) {
+        return theme === DARK_THEME ? LIGHT_THEME : DARK_THEME;
+    }
 
     const apps = [
         { name: 'App1', url: '/app1', appColor: 'red' },
@@ -170,7 +170,9 @@ const AppContent = () => {
                             logout(dispatch, userManager.instance)
                         }
                         onLogoClick={() => console.log('logo')}
-                        onDisplayModeClick={() => handleDisplayMode()}
+                        onDisplayModeClick={() =>
+                            handleDisplayMode(switchTheme(theme))
+                        }
                         onAboutClick={() => console.log('about')}
                         user={user}
                         appsAndUrls={apps}

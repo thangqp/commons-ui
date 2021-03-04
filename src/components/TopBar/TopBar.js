@@ -221,9 +221,9 @@ const TopBar = ({
         }
     };
 
-    const onDisplayModeClicked = () => {
+    const onDisplayModeClicked = (mode) => {
         if (onDisplayModeClick) {
-            onDisplayModeClick();
+            onDisplayModeClick(mode);
         }
     };
 
