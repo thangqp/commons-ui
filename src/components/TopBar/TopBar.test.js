@@ -52,5 +52,3 @@ it('renders', () => {
     });
     expect(container.textContent).toContain('GridDemotestchildJD');
 });
-
-
