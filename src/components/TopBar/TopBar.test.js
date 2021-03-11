@@ -50,7 +50,7 @@ it('renders', () => {
             container
         );
     });
-    expect(container.textContent).toContain('GridDemotestchildU');
+    expect(container.textContent).toContain('GridDemotestchildJD');
 });
 
 
