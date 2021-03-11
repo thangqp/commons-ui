@@ -5,9 +5,6 @@ const top_bar_fr = {
     'top-bar/exitFullScreen': 'Quitter mode plein écran',
     'top-bar/about': 'A propos',
     'top-bar/displayMode': "Mode d'affichage",
-    'top-bar/equipmentDisplay': 'Labels des équipements',
-    'top-bar/id': 'id',
-    'top-bar/name': 'Nom',
 };
 
 export default top_bar_fr;

@@ -409,12 +409,7 @@ const TopBar = ({
                                                         classes.sizeLabel
                                                     }
                                                 >
-                                                    <FormattedMessage
-                                                        id="top-bar/displayMode"
-                                                        defaultMessage={
-                                                            'Display mode'
-                                                        }
-                                                    />
+                                                    <FormattedMessage id="top-bar/displayMode" />
                                                 </Typography>
                                             </ListItemText>
                                             <ToggleButtonGroup
@@ -473,12 +468,7 @@ const TopBar = ({
                                                         classes.sizeLabel
                                                     }
                                                 >
-                                                    <FormattedMessage
-                                                        id="top-bar/settings"
-                                                        defaultMessage={
-                                                            'Settings'
-                                                        }
-                                                    />
+                                                    <FormattedMessage id="top-bar/settings" />
                                                 </Typography>
                                             </ListItemText>
                                         </StyledMenuItem>
@@ -499,10 +489,7 @@ const TopBar = ({
                                                         classes.sizeLabel
                                                     }
                                                 >
-                                                    <FormattedMessage
-                                                        id="top-bar/about"
-                                                        defaultMessage={'About'}
-                                                    />
+                                                    <FormattedMessage id="top-bar/about" />
                                                 </Typography>
                                             </ListItemText>
                                         </StyledMenuItem>
@@ -525,12 +512,7 @@ const TopBar = ({
                                                                     classes.sizeLabel
                                                                 }
                                                             >
-                                                                <FormattedMessage
-                                                                    id="top-bar/exitFullScreen"
-                                                                    defaultMessage={
-                                                                        'Exit full screen mode'
-                                                                    }
-                                                                />
+                                                                <FormattedMessage id="top-bar/exitFullScreen" />
                                                             </Typography>
                                                         </ListItemText>
                                                     </>
@@ -545,12 +527,7 @@ const TopBar = ({
                                                                     classes.sizeLabel
                                                                 }
                                                             >
-                                                                <FormattedMessage
-                                                                    id="top-bar/goFullScreen"
-                                                                    defaultMessage={
-                                                                        'Full screen'
-                                                                    }
-                                                                />
+                                                                <FormattedMessage id="top-bar/goFullScreen" />
                                                             </Typography>
                                                         </ListItemText>
                                                     </>
@@ -569,12 +546,7 @@ const TopBar = ({
                                                         classes.sizeLabel
                                                     }
                                                 >
-                                                    <FormattedMessage
-                                                        id="top-bar/logout"
-                                                        defaultMessage={
-                                                            'Logout'
-                                                        }
-                                                    />
+                                                    <FormattedMessage id="top-bar/logout" />
                                                 </Typography>
                                             </ListItemText>
                                         </StyledMenuItem>
