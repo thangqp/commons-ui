@@ -99,13 +99,13 @@ const useStyles = makeStyles((theme) => ({
         padding: '0',
         borderRadius: '25px',
     },
-    toggleThemeButtonGroup: {
+    toggleButtonGroup: {
         marginLeft: '15px',
         pointerEvents: 'auto',
     },
-    toggleThemeButton: {
+    toggleButton: {
         height: '30px',
-        width: '45px',
+        width: '48px',
         padding: '7px',
         textTransform: 'capitalize',
     },
@@ -152,6 +152,8 @@ const CustomListItemIcon = withStyles((theme) => ({
 
 export const DARK_THEME = 'Dark';
 export const LIGHT_THEME = 'Light';
+export const USE_ID = 'Id';
+export const USE_NAME = 'Name';
 
 const TopBar = ({
     appName,
@@ -163,10 +165,11 @@ const TopBar = ({
     user,
     children,
     appsAndUrls,
-    onDisplayModeClick,
     onAboutClick,
-    selectedTheme,
-    equipmentDisplay,
+    onThemeClick,
+    theme,
+    onEquipmentLabellingClick,
+    equipmentLabelling,
     selectedEquipment,
 }) => {
     const classes = useStyles();
@@ -222,9 +225,15 @@ const TopBar = ({
         }
     };
 
-    const onDisplayModeClicked = (mode) => {
-        if (onDisplayModeClick) {
-            onDisplayModeClick(mode);
+    const changeTheme = (mode) => {
+        if (onThemeClick) {
+            onThemeClick(mode);
+        }
+    };
+
+    const changeEquipmentLabelling = (labelling) => {
+        if (onEquipmentLabellingClick) {
+            onEquipmentLabellingClick(labelling);
         }
     };
 
@@ -420,18 +429,18 @@ const TopBar = ({
                                             </ListItemText>
                                             <ToggleButtonGroup
                                                 exclusive
-                                                value={selectedTheme}
+                                                value={theme}
                                                 size="large"
                                                 className={
-                                                    classes.toggleThemeButtonGroup
+                                                    classes.toggleButtonGroup
                                                 }
-                                                onChange={onDisplayModeClicked}
+                                                onChange={changeTheme}
                                             >
                                                 <ToggleButton
                                                     value={LIGHT_THEME}
                                                     aria-label={LIGHT_THEME}
                                                     className={
-                                                        classes.toggleThemeButton
+                                                        classes.toggleButton
                                                     }
                                                 >
                                                     <Brightness1Icon fontSize="small" />
@@ -440,7 +449,7 @@ const TopBar = ({
                                                     value={DARK_THEME}
                                                     aria-label={DARK_THEME}
                                                     className={
-                                                        classes.toggleThemeButton
+                                                        classes.toggleButton
                                                     }
                                                 >
                                                     <Brightness3Icon fontSize="small" />
@@ -448,16 +457,73 @@ const TopBar = ({
                                             </ToggleButtonGroup>
                                         </StyledMenuItem>
 
-                                        {/* Equipment display */}
-                                        <StyledMenuItem
-                                            disabled={true}
-                                            style={{
-                                                whiteSpace: 'normal',
-                                                opacity: '1',
-                                            }}
-                                        >
-                                            {equipmentDisplay}
-                                        </StyledMenuItem>
+                                        {/*/!* Equipment labelling *!/*/}
+                                        {/*If the callback onEquipmentLabellingClick is not defined, equipment labelling component isn't displayed*/}
+                                        {onEquipmentLabellingClick && (
+                                            <StyledMenuItem
+                                                disabled={true}
+                                                style={{
+                                                    opacity: '1',
+                                                    // padding: '0',
+                                                    paddingTop: '10px',
+                                                    paddingBottom: '10px',
+                                                }}
+                                            >
+                                                <ListItemText>
+                                                    <Typography
+                                                        className={
+                                                            classes.sizeLabel
+                                                        }
+                                                    >
+                                                        <FormattedMessage
+                                                            id="top-bar/equipmentLabel"
+                                                            defaultMessage={
+                                                                'Equipment label'
+                                                            }
+                                                        />
+                                                    </Typography>
+                                                </ListItemText>
+                                                <ToggleButtonGroup
+                                                    exclusive
+                                                    value={equipmentLabelling}
+                                                    className={
+                                                        classes.toggleButtonGroup
+                                                    }
+                                                    onChange={
+                                                        changeEquipmentLabelling
+                                                    }
+                                                >
+                                                    <ToggleButton
+                                                        value={USE_ID}
+                                                        aria-label={USE_ID}
+                                                        className={
+                                                            classes.toggleButton
+                                                        }
+                                                    >
+                                                        <FormattedMessage
+                                                            id="top-bar/id"
+                                                            defaultMessage={
+                                                                'Id'
+                                                            }
+                                                        />
+                                                    </ToggleButton>
+                                                    <ToggleButton
+                                                        value={USE_NAME}
+                                                        aria-label={USE_NAME}
+                                                        className={
+                                                            classes.toggleButton
+                                                        }
+                                                    >
+                                                        <FormattedMessage
+                                                            id="top-bar/name"
+                                                            defaultMessage={
+                                                                'Name'
+                                                            }
+                                                        />
+                                                    </ToggleButton>
+                                                </ToggleButtonGroup>
+                                            </StyledMenuItem>
+                                        )}
 
                                         {/* Settings */}
                                         <StyledMenuItem

@@ -34,7 +34,12 @@ import Button from '@material-ui/core/Button';
 
 import PowsyblLogo from '-!@svgr/webpack!../images/powsybl_logo.svg';
 
-import { DARK_THEME, LIGHT_THEME } from '../../src/components/TopBar/TopBar';
+import {
+    DARK_THEME,
+    LIGHT_THEME,
+    USE_ID,
+    USE_NAME,
+} from '../../src/components/TopBar/TopBar';
 
 const messages = {
     en: { ...login_en, ...top_bar_en },
@@ -104,6 +109,8 @@ const AppContent = () => {
 
     const [theme, setTheme] = useState('Light');
 
+    const [equipmentLabelling, setEquipmentLabelling] = useState('Id');
+
     // Can't use lazy initializer because useRouteMatch is a hook
     const [initialMatchSilentRenewCallbackUrl] = useState(
         useRouteMatch({
@@ -118,13 +125,21 @@ const AppContent = () => {
         }
     };
 
-    const handleDisplayMode = (mode) => {
-        setTheme(mode);
+    const handleThemeClicked = (theme) => {
+        setTheme(theme);
     };
 
-    function switchTheme(theme) {
+    const switchTheme = (theme) => {
         return theme === DARK_THEME ? LIGHT_THEME : DARK_THEME;
-    }
+    };
+
+    const handleEquipmentLabellingClicked = (labelling) => {
+        setEquipmentLabelling(labelling);
+    };
+
+    const switchEquipmentLabelling = (labelling) => {
+        return labelling === USE_ID ? USE_NAME : USE_ID;
+    };
 
     const apps = [
         { name: 'App1', url: '/app1', appColor: 'red' },
@@ -170,16 +185,19 @@ const AppContent = () => {
                             logout(dispatch, userManager.instance)
                         }
                         onLogoClick={() => console.log('logo')}
-                        onDisplayModeClick={() =>
-                            handleDisplayMode(switchTheme(theme))
+                        onThemeClick={() =>
+                            handleThemeClicked(switchTheme(theme))
                         }
+                        theme={theme}
                         onAboutClick={() => console.log('about')}
+                        onEquipmentLabellingClick={() =>
+                            handleEquipmentLabellingClicked(
+                                switchEquipmentLabelling(equipmentLabelling)
+                            )
+                        }
+                        equipmentLabelling={equipmentLabelling}
                         user={user}
                         appsAndUrls={apps}
-                        selectedTheme={theme}
-                        equipmentDisplay={
-                            'Here add the component that manages the display of equipments'
-                        }
                     />
                     {user !== null ? (
                         <Box mt={20}>
