@@ -104,7 +104,7 @@ const AppContent = () => {
 
     const [theme, setTheme] = useState('Light');
 
-    const [equipmentLabelling, setEquipmentLabelling] = useState('Id');
+    const [equipmentLabelling, setEquipmentLabelling] = useState(false);
 
     // Can't use lazy initializer because useRouteMatch is a hook
     const [initialMatchSilentRenewCallbackUrl] = useState(

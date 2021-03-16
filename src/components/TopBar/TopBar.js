@@ -152,8 +152,6 @@ const CustomListItemIcon = withStyles((theme) => ({
 
 export const DARK_THEME = 'Dark';
 export const LIGHT_THEME = 'Light';
-export const LABEL_BY_ID = 'Id';
-export const LABEL_BY_NAME = 'Name';
 
 const TopBar = ({
     appName,
@@ -494,8 +492,7 @@ const TopBar = ({
                                                     }
                                                 >
                                                     <ToggleButton
-                                                        value={LABEL_BY_ID}
-                                                        aria-label={LABEL_BY_ID}
+                                                        value={false}
                                                         className={
                                                             classes.toggleButton
                                                         }
@@ -508,10 +505,7 @@ const TopBar = ({
                                                         />
                                                     </ToggleButton>
                                                     <ToggleButton
-                                                        value={LABEL_BY_NAME}
-                                                        aria-label={
-                                                            LABEL_BY_NAME
-                                                        }
+                                                        value={true}
                                                         className={
                                                             classes.toggleButton
                                                         }
