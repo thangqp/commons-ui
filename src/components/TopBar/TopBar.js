@@ -653,9 +653,11 @@ const TopBar = ({
 
 TopBar.propTypes = {
     onParametersClick: PropTypes.func,
-    onDisplayModeClick: PropTypes.func,
+    onThemeClick: PropTypes.func,
+    theme: PropTypes.string,
     onAboutClick: PropTypes.func,
-    selectedTheme: PropTypes.string,
+    onEquipmentLabellingClick: PropTypes.func,
+    equipmentLabelling: PropTypes.bool,
 };
 
 export default TopBar;
