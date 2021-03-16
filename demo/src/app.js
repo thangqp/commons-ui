@@ -34,12 +34,7 @@ import Button from '@material-ui/core/Button';
 
 import PowsyblLogo from '-!@svgr/webpack!../images/powsybl_logo.svg';
 
-import {
-    DARK_THEME,
-    LIGHT_THEME,
-    USE_ID,
-    USE_NAME,
-} from '../../src/components/TopBar/TopBar';
+import { LIGHT_THEME } from '../../src/components/TopBar/TopBar';
 
 const messages = {
     en: { ...login_en, ...top_bar_en },
@@ -125,20 +120,12 @@ const AppContent = () => {
         }
     };
 
-    const handleThemeClicked = (theme) => {
+    const handleThemeClick = (theme) => {
         setTheme(theme);
     };
 
-    const switchTheme = (theme) => {
-        return theme === DARK_THEME ? LIGHT_THEME : DARK_THEME;
-    };
-
-    const handleEquipmentLabellingClicked = (labelling) => {
+    const handleEquipmentLabellingClick = (labelling) => {
         setEquipmentLabelling(labelling);
-    };
-
-    const switchEquipmentLabelling = (labelling) => {
-        return labelling === USE_ID ? USE_NAME : USE_ID;
     };
 
     const apps = [
@@ -185,15 +172,11 @@ const AppContent = () => {
                             logout(dispatch, userManager.instance)
                         }
                         onLogoClick={() => console.log('logo')}
-                        onThemeClick={() =>
-                            handleThemeClicked(switchTheme(theme))
-                        }
+                        onThemeClick={handleThemeClick}
                         theme={theme}
                         onAboutClick={() => console.log('about')}
-                        onEquipmentLabellingClick={() =>
-                            handleEquipmentLabellingClicked(
-                                switchEquipmentLabelling(equipmentLabelling)
-                            )
+                        onEquipmentLabellingClick={
+                            handleEquipmentLabellingClick
                         }
                         equipmentLabelling={equipmentLabelling}
                         user={user}

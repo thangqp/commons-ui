@@ -152,8 +152,8 @@ const CustomListItemIcon = withStyles((theme) => ({
 
 export const DARK_THEME = 'Dark';
 export const LIGHT_THEME = 'Light';
-export const USE_ID = 'Id';
-export const USE_NAME = 'Name';
+export const LABEL_BY_ID = 'Id';
+export const LABEL_BY_NAME = 'Name';
 
 const TopBar = ({
     appName,
@@ -225,15 +225,15 @@ const TopBar = ({
         }
     };
 
-    const changeTheme = (mode) => {
+    const changeTheme = (event, value) => {
         if (onThemeClick) {
-            onThemeClick(mode);
+            onThemeClick(value);
         }
     };
 
-    const changeEquipmentLabelling = (labelling) => {
+    const changeEquipmentLabelling = (event, value) => {
         if (onEquipmentLabellingClick) {
-            onEquipmentLabellingClick(labelling);
+            onEquipmentLabellingClick(value);
         }
     };
 
@@ -494,8 +494,8 @@ const TopBar = ({
                                                     }
                                                 >
                                                     <ToggleButton
-                                                        value={USE_ID}
-                                                        aria-label={USE_ID}
+                                                        value={LABEL_BY_ID}
+                                                        aria-label={LABEL_BY_ID}
                                                         className={
                                                             classes.toggleButton
                                                         }
@@ -508,8 +508,10 @@ const TopBar = ({
                                                         />
                                                     </ToggleButton>
                                                     <ToggleButton
-                                                        value={USE_NAME}
-                                                        aria-label={USE_NAME}
+                                                        value={LABEL_BY_NAME}
+                                                        aria-label={
+                                                            LABEL_BY_NAME
+                                                        }
                                                         className={
                                                             classes.toggleButton
                                                         }
