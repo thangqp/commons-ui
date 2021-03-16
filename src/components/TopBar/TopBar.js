@@ -83,11 +83,6 @@ const useStyles = makeStyles((theme) => ({
         fontSize: '14px',
         display: 'block',
     },
-    toggleButton: {
-        height: '30px',
-        padding: '7px',
-        textTransform: 'capitalize',
-    },
     borderBottom: {
         borderBottom: '1px solid #ccc',
     },
@@ -95,7 +90,7 @@ const useStyles = makeStyles((theme) => ({
         borderTop: '1px solid #ccc',
     },
     settingsMenu: {
-        maxWidth: '330px',
+        maxWidth: '385px',
     },
     sizeLabel: {
         fontSize: '16px',
@@ -104,9 +99,15 @@ const useStyles = makeStyles((theme) => ({
         padding: '0',
         borderRadius: '25px',
     },
-    toggleDisplay: {
+    toggleThemeButtonGroup: {
         marginLeft: '15px',
         pointerEvents: 'auto',
+    },
+    toggleThemeButton: {
+        height: '30px',
+        width: '45px',
+        padding: '7px',
+        textTransform: 'capitalize',
     },
 }));
 
@@ -409,37 +410,37 @@ const TopBar = ({
                                                         classes.sizeLabel
                                                     }
                                                 >
-                                                    <FormattedMessage id="top-bar/displayMode" />
+                                                    <FormattedMessage
+                                                        id="top-bar/displayMode"
+                                                        defaultMessage={
+                                                            'Display mode'
+                                                        }
+                                                    />
                                                 </Typography>
                                             </ListItemText>
                                             <ToggleButtonGroup
                                                 exclusive
                                                 value={selectedTheme}
+                                                size="large"
                                                 className={
-                                                    classes.toggleDisplay
+                                                    classes.toggleThemeButtonGroup
                                                 }
                                                 onChange={onDisplayModeClicked}
                                             >
                                                 <ToggleButton
-                                                    style={{
-                                                        minWidth: '43px',
-                                                    }}
                                                     value={LIGHT_THEME}
                                                     aria-label={LIGHT_THEME}
                                                     className={
-                                                        classes.toggleButton
+                                                        classes.toggleThemeButton
                                                     }
                                                 >
                                                     <Brightness1Icon fontSize="small" />
                                                 </ToggleButton>
                                                 <ToggleButton
-                                                    style={{
-                                                        minWidth: '43px',
-                                                    }}
                                                     value={DARK_THEME}
                                                     aria-label={DARK_THEME}
                                                     className={
-                                                        classes.toggleButton
+                                                        classes.toggleThemeButton
                                                     }
                                                 >
                                                     <Brightness3Icon fontSize="small" />
@@ -449,7 +450,11 @@ const TopBar = ({
 
                                         {/* Equipment display */}
                                         <StyledMenuItem
-                                            style={{ whiteSpace: 'normal' }}
+                                            disabled={true}
+                                            style={{
+                                                whiteSpace: 'normal',
+                                                opacity: '1',
+                                            }}
                                         >
                                             {equipmentDisplay}
                                         </StyledMenuItem>
@@ -468,7 +473,12 @@ const TopBar = ({
                                                         classes.sizeLabel
                                                     }
                                                 >
-                                                    <FormattedMessage id="top-bar/settings" />
+                                                    <FormattedMessage
+                                                        id="top-bar/settings"
+                                                        defaultMessage={
+                                                            'Settings'
+                                                        }
+                                                    />
                                                 </Typography>
                                             </ListItemText>
                                         </StyledMenuItem>
@@ -489,7 +499,10 @@ const TopBar = ({
                                                         classes.sizeLabel
                                                     }
                                                 >
-                                                    <FormattedMessage id="top-bar/about" />
+                                                    <FormattedMessage
+                                                        id="top-bar/about"
+                                                        defaultMessage={'About'}
+                                                    />
                                                 </Typography>
                                             </ListItemText>
                                         </StyledMenuItem>
@@ -512,7 +525,12 @@ const TopBar = ({
                                                                     classes.sizeLabel
                                                                 }
                                                             >
-                                                                <FormattedMessage id="top-bar/exitFullScreen" />
+                                                                <FormattedMessage
+                                                                    id="top-bar/exitFullScreen"
+                                                                    defaultMessage={
+                                                                        'Exit full screen mode'
+                                                                    }
+                                                                />
                                                             </Typography>
                                                         </ListItemText>
                                                     </>
@@ -527,7 +545,12 @@ const TopBar = ({
                                                                     classes.sizeLabel
                                                                 }
                                                             >
-                                                                <FormattedMessage id="top-bar/goFullScreen" />
+                                                                <FormattedMessage
+                                                                    id="top-bar/goFullScreen"
+                                                                    defaultMessage={
+                                                                        'Full screen'
+                                                                    }
+                                                                />
                                                             </Typography>
                                                         </ListItemText>
                                                     </>
@@ -546,7 +569,12 @@ const TopBar = ({
                                                         classes.sizeLabel
                                                     }
                                                 >
-                                                    <FormattedMessage id="top-bar/logout" />
+                                                    <FormattedMessage
+                                                        id="top-bar/logout"
+                                                        defaultMessage={
+                                                            'Logout'
+                                                        }
+                                                    />
                                                 </Typography>
                                             </ListItemText>
                                         </StyledMenuItem>
