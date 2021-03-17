@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import { FormattedMessage } from 'react-intl';
 
@@ -170,7 +170,6 @@ const TopBar = ({
     theme,
     onEquipmentLabellingClick,
     equipmentLabelling,
-    selectedEquipment,
 }) => {
     const classes = useStyles();
     const anchorRef = React.useRef(null);
@@ -243,12 +242,6 @@ const TopBar = ({
             onAboutClick();
         }
     };
-
-    useEffect(() => {
-        if (selectedEquipment) {
-            handleCloseSettingsMenu();
-        }
-    }, [selectedEquipment]);
 
     return (
         <AppBar position="static" color="default" className={classes.appBar}>
