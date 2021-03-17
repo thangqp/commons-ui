@@ -31,7 +31,7 @@ import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import PersonIcon from '@material-ui/icons/Person';
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import Brightness3Icon from '@material-ui/icons/Brightness3';
-import Brightness1Icon from '@material-ui/icons/Brightness1';
+import WbSunnyIcon from '@material-ui/icons/WbSunny';
 
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
@@ -224,13 +224,13 @@ const TopBar = ({
     };
 
     const changeTheme = (event, value) => {
-        if (onThemeClick) {
+        if (onThemeClick && value !== null) {
             onThemeClick(value);
         }
     };
 
     const changeEquipmentLabelling = (event, value) => {
-        if (onEquipmentLabellingClick) {
+        if (onEquipmentLabellingClick && value !== null) {
             onEquipmentLabellingClick(value);
         }
     };
@@ -441,7 +441,7 @@ const TopBar = ({
                                                         classes.toggleButton
                                                     }
                                                 >
-                                                    <Brightness1Icon fontSize="small" />
+                                                    <WbSunnyIcon fontSize="small" />
                                                 </ToggleButton>
                                                 <ToggleButton
                                                     value={DARK_THEME}
