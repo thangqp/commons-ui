@@ -102,7 +102,7 @@ const AppContent = () => {
     });
     const [user, setUser] = useState(null);
 
-    const [theme, setTheme] = useState('Light');
+    const [theme, setTheme] = useState(LIGHT_THEME);
 
     const [equipmentLabelling, setEquipmentLabelling] = useState(false);
 
