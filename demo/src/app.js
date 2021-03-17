@@ -34,6 +34,8 @@ import Button from '@material-ui/core/Button';
 
 import PowsyblLogo from '-!@svgr/webpack!../images/powsybl_logo.svg';
 
+import { LIGHT_THEME } from '../../src/components/TopBar/TopBar';
+
 const messages = {
     en: { ...login_en, ...top_bar_en },
     fr: { ...login_fr, ...top_bar_fr },
@@ -46,6 +48,20 @@ const lightTheme = createMuiTheme({
         type: 'light',
     },
 });
+
+const darkTheme = createMuiTheme({
+    palette: {
+        type: 'dark',
+    },
+});
+
+const getMuiTheme = (theme) => {
+    if (theme === LIGHT_THEME) {
+        return lightTheme;
+    } else {
+        return darkTheme;
+    }
+};
 
 const useStyles = makeStyles((theme) => ({
     success: {
@@ -86,6 +102,10 @@ const AppContent = () => {
     });
     const [user, setUser] = useState(null);
 
+    const [theme, setTheme] = useState(LIGHT_THEME);
+
+    const [equipmentLabelling, setEquipmentLabelling] = useState(false);
+
     // Can't use lazy initializer because useRouteMatch is a hook
     const [initialMatchSilentRenewCallbackUrl] = useState(
         useRouteMatch({
@@ -98,6 +118,14 @@ const AppContent = () => {
         if (e.type === 'USER') {
             setUser(e.user);
         }
+    };
+
+    const handleThemeClick = (theme) => {
+        setTheme(theme);
+    };
+
+    const handleEquipmentLabellingClick = (labelling) => {
+        setEquipmentLabelling(labelling);
     };
 
     const apps = [
@@ -132,7 +160,7 @@ const AppContent = () => {
 
     return (
         <IntlProvider locale={language} messages={messages[language]}>
-            <ThemeProvider theme={lightTheme}>
+            <ThemeProvider theme={getMuiTheme(theme)}>
                 <SnackbarProvider hideIconVariant={false}>
                     <CssBaseline />
                     <TopBar
@@ -144,6 +172,13 @@ const AppContent = () => {
                             logout(dispatch, userManager.instance)
                         }
                         onLogoClick={() => console.log('logo')}
+                        onThemeClick={handleThemeClick}
+                        theme={theme}
+                        onAboutClick={() => console.log('about')}
+                        onEquipmentLabellingClick={
+                            handleEquipmentLabellingClick
+                        }
+                        equipmentLabelling={equipmentLabelling}
                         user={user}
                         appsAndUrls={apps}
                     >

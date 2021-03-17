@@ -41,7 +41,7 @@ it('renders', () => {
                     onParametersClick={() => {}}
                     onLogoutClick={() => {}}
                     onLogoClick={() => {}}
-                    user={{ profile: { name: 'Username' } }}
+                    user={{ profile: { name: 'John Doe' } }}
                     appsAndUrls={apps}
                 >
                     <p>testchild</p>
@@ -50,5 +50,5 @@ it('renders', () => {
             container
         );
     });
-    expect(container.textContent).toContain('GridDemotestchildUsername');
+    expect(container.textContent).toContain('GridDemotestchildJD');
 });
