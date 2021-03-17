@@ -307,6 +307,7 @@ TopBar.propTypes = {
     onParametersClick: PropTypes.func,
     onLogoutClick: PropTypes.func,
     onLogoClick: PropTypes.func,
+    appName: PropTypes.string,
     appColor: PropTypes.string,
     appLogo: PropTypes.object,
     user: PropTypes.object,
