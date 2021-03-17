@@ -181,7 +181,13 @@ const AppContent = () => {
                         equipmentLabelling={equipmentLabelling}
                         user={user}
                         appsAndUrls={apps}
-                    />
+                    >
+                        <div style={{ paddingLeft: 10, paddingRight: 10 }}>
+                            foobar-bazfoobar
+                        </div>
+                        <div style={{ flexGrow: 1 }}></div>
+                        <div>baz</div>
+                    </TopBar>
                     {user !== null ? (
                         <Box mt={20}>
                             <Typography

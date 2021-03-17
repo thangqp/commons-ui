@@ -48,8 +48,10 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 const useStyles = makeStyles((theme) => ({
     grow: {
         flexGrow: 1,
+        display: 'flex',
     },
     logo: {
+        flexShrink: 0,
         width: 48,
         height: 48,
         cursor: 'pointer',
@@ -269,8 +271,7 @@ const TopBar = ({
                     <span style={{ fontWeight: 'bold' }}>Grid</span>
                     <span style={{ color: appColor }}>{appName}</span>
                 </Typography>
-                {children}
-                <div className={classes.grow} />
+                <div className={classes.grow}>{children}</div>
                 {user && (
                     <div>
                         <Button
