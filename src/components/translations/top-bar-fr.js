@@ -8,6 +8,7 @@ const top_bar_fr = {
     'top-bar/equipmentLabel': 'Label des équipements',
     'top-bar/id': 'Id',
     'top-bar/name': 'Nom',
+    'top-bar/language': 'Langue',
 };
 
 export default top_bar_fr;

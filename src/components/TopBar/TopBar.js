@@ -32,6 +32,7 @@ import PersonIcon from '@material-ui/icons/Person';
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import Brightness3Icon from '@material-ui/icons/Brightness3';
 import WbSunnyIcon from '@material-ui/icons/WbSunny';
+import ComputerIcon from '@material-ui/icons/Computer';
 
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
@@ -111,6 +112,10 @@ const useStyles = makeStyles((theme) => ({
         padding: '7px',
         textTransform: 'capitalize',
     },
+    languageToggleButton: {
+        height: '30px',
+        width: '48px',
+    },
 }));
 
 const StyledMenu = withStyles({
@@ -154,6 +159,11 @@ const CustomListItemIcon = withStyles((theme) => ({
 
 export const DARK_THEME = 'Dark';
 export const LIGHT_THEME = 'Light';
+export const SYSTEM = 'sys';
+export const ENGLISH = 'en';
+export const FRENCH = 'fr';
+const EN = 'EN';
+const FR = 'FR';
 
 const TopBar = ({
     appName,
@@ -170,6 +180,8 @@ const TopBar = ({
     theme,
     onEquipmentLabellingClick,
     equipmentLabelling,
+    onLanguageClick,
+    language,
 }) => {
     const classes = useStyles();
     const anchorRef = React.useRef(null);
@@ -233,6 +245,12 @@ const TopBar = ({
     const changeEquipmentLabelling = (event, value) => {
         if (onEquipmentLabellingClick && value !== null) {
             onEquipmentLabellingClick(value);
+        }
+    };
+
+    const changeLanguage = (event, value) => {
+        if (onLanguageClick && value !== null) {
+            onLanguageClick(value);
         }
     };
 
@@ -514,6 +532,68 @@ const TopBar = ({
                                                 </ToggleButtonGroup>
                                             </StyledMenuItem>
                                         )}
+                                        {/*Languages */}
+                                        <StyledMenuItem
+                                            disabled={true}
+                                            style={{
+                                                opacity: '1',
+                                                // padding: '0',
+                                                paddingTop: '10px',
+                                                paddingBottom: '10px',
+                                            }}
+                                        >
+                                            <ListItemText>
+                                                <Typography
+                                                    className={
+                                                        classes.sizeLabel
+                                                    }
+                                                >
+                                                    <FormattedMessage
+                                                        id="top-bar/language"
+                                                        defaultMessage={
+                                                            'Language'
+                                                        }
+                                                    />
+                                                </Typography>
+                                            </ListItemText>
+                                            <ToggleButtonGroup
+                                                exclusive
+                                                value={language}
+                                                className={
+                                                    classes.toggleButtonGroup
+                                                }
+                                                onChange={changeLanguage}
+                                                aria-label="text formatting"
+                                            >
+                                                <ToggleButton
+                                                    value={SYSTEM}
+                                                    aria-label={SYSTEM}
+                                                    className={
+                                                        classes.languageToggleButton
+                                                    }
+                                                >
+                                                    <ComputerIcon />
+                                                </ToggleButton>
+                                                <ToggleButton
+                                                    value={ENGLISH}
+                                                    aria-label={ENGLISH}
+                                                    className={
+                                                        classes.languageToggleButton
+                                                    }
+                                                >
+                                                    {EN}
+                                                </ToggleButton>
+                                                <ToggleButton
+                                                    value={FRENCH}
+                                                    aria-label={FRENCH}
+                                                    className={
+                                                        classes.toggleButton
+                                                    }
+                                                >
+                                                    {FR}
+                                                </ToggleButton>
+                                            </ToggleButtonGroup>
+                                        </StyledMenuItem>
 
                                         {/* Settings */}
                                         <StyledMenuItem
@@ -660,6 +740,8 @@ TopBar.propTypes = {
     onAboutClick: PropTypes.func,
     onEquipmentLabellingClick: PropTypes.func,
     equipmentLabelling: PropTypes.bool,
+    onLanguageClick: PropTypes.func,
+    language: PropTypes.string,
 };
 
 export default TopBar;

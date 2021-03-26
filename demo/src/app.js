@@ -34,14 +34,14 @@ import Button from '@material-ui/core/Button';
 
 import PowsyblLogo from '-!@svgr/webpack!../images/powsybl_logo.svg';
 
-import { LIGHT_THEME } from '../../src/components/TopBar/TopBar';
+import { LIGHT_THEME, SYSTEM } from '../../src/components/TopBar/TopBar';
 
 const messages = {
     en: { ...login_en, ...top_bar_en },
     fr: { ...login_fr, ...top_bar_fr },
 };
 
-const language = navigator.language.split(/[-_]/)[0]; // language without region code
+let language = navigator.language.split(/[-_]/)[0]; // language without region code
 
 const lightTheme = createMuiTheme({
     palette: {
@@ -106,6 +106,8 @@ const AppContent = () => {
 
     const [equipmentLabelling, setEquipmentLabelling] = useState(false);
 
+    const [currentLanguage, setCurrentLanguage] = useState(SYSTEM);
+
     // Can't use lazy initializer because useRouteMatch is a hook
     const [initialMatchSilentRenewCallbackUrl] = useState(
         useRouteMatch({
@@ -126,6 +128,14 @@ const AppContent = () => {
 
     const handleEquipmentLabellingClick = (labelling) => {
         setEquipmentLabelling(labelling);
+    };
+
+    const handleLanguageClick = (currentLanguage) => {
+        setCurrentLanguage(currentLanguage);
+        language =
+            currentLanguage === 'sys'
+                ? navigator.language.split(/[-_]/)[0]
+                : currentLanguage;
     };
 
     const apps = [
@@ -179,6 +189,8 @@ const AppContent = () => {
                             handleEquipmentLabellingClick
                         }
                         equipmentLabelling={equipmentLabelling}
+                        onLanguageClick={handleLanguageClick}
+                        language={currentLanguage}
                         user={user}
                         appsAndUrls={apps}
                     >
