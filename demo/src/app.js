@@ -111,7 +111,7 @@ const AppContent = () => {
 
     const [equipmentLabelling, setEquipmentLabelling] = useState(false);
 
-    const [currentLanguage, setCurrentLanguage] = useState(SYSTEM);
+    const [currentLanguage, setCurrentLanguage] = useState(ENGLISH);
 
     // Can't use lazy initializer because useRouteMatch is a hook
     const [initialMatchSilentRenewCallbackUrl] = useState(
