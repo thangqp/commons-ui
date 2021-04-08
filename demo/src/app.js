@@ -34,7 +34,12 @@ import Button from '@material-ui/core/Button';
 
 import PowsyblLogo from '-!@svgr/webpack!../images/powsybl_logo.svg';
 
-import { LIGHT_THEME, SYSTEM } from '../../src/components/TopBar/TopBar';
+import {
+    LIGHT_THEME,
+    SYSTEM,
+    ENGLISH,
+    FRENCH,
+} from '../../src/components/TopBar/TopBar';
 
 const messages = {
     en: { ...login_en, ...top_bar_en },
@@ -132,10 +137,14 @@ const AppContent = () => {
 
     const handleLanguageClick = (currentLanguage) => {
         setCurrentLanguage(currentLanguage);
-        language =
-            currentLanguage === 'sys'
-                ? navigator.language.split(/[-_]/)[0]
-                : currentLanguage;
+        if (currentLanguage === SYSTEM) {
+            const sysLanguage = navigator.language.split(/[-_]/)[0];
+            language = [FRENCH, ENGLISH].includes(sysLanguage)
+                ? sysLanguage
+                : ENGLISH;
+        } else {
+            language = currentLanguage;
+        }
     };
 
     const apps = [
