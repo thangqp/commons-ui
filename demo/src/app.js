@@ -46,7 +46,7 @@ const messages = {
     fr: { ...login_fr, ...top_bar_fr },
 };
 
-let language = navigator.language.split(/[-_]/)[0]; // language without region code
+let language = ENGLISH;
 
 const lightTheme = createMuiTheme({
     palette: {
