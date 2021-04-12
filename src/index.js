@@ -9,7 +9,13 @@ export {
     dispatchUser,
     getPreLoginPath,
 } from './utils/AuthService';
-export { DARK_THEME, LIGHT_THEME } from './components/TopBar/TopBar';
+export {
+    DARK_THEME,
+    LIGHT_THEME,
+    SYSTEM,
+    ENGLISH,
+    FRENCH,
+} from './components/TopBar/TopBar';
 export {
     USER,
     setLoggedUser,
