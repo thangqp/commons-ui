@@ -516,7 +516,9 @@ const TopBar = ({
                                         )}
 
                                         {/* Settings */}
+                                        {/*If the callback onParametersClicked is not defined, parameters component is disable*/}
                                         <StyledMenuItem
+                                            disabled={!onParametersClick}
                                             onClick={onParametersClicked}
                                             className={classes.borderTop}
                                         >
