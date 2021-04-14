@@ -46,8 +46,6 @@ const messages = {
     fr: { ...login_fr, ...top_bar_fr },
 };
 
-let language = ENGLISH;
-
 const lightTheme = createMuiTheme({
     palette: {
         type: 'light',
@@ -111,7 +109,9 @@ const AppContent = () => {
 
     const [equipmentLabelling, setEquipmentLabelling] = useState(false);
 
-    const [currentLanguage, setCurrentLanguage] = useState(ENGLISH);
+    const [languageButtonValue, setLanguageButtonValue] = useState(ENGLISH);
+
+    const [language, setLanguage] = useState(ENGLISH);
 
     // Can't use lazy initializer because useRouteMatch is a hook
     const [initialMatchSilentRenewCallbackUrl] = useState(
@@ -135,15 +135,15 @@ const AppContent = () => {
         setEquipmentLabelling(labelling);
     };
 
-    const handleLanguageClick = (currentLanguage) => {
-        setCurrentLanguage(currentLanguage);
-        if (currentLanguage === SYSTEM) {
+    const handleLanguageClick = (pickedLanguage) => {
+        setLanguageButtonValue(pickedLanguage);
+        if (pickedLanguage === SYSTEM) {
             const sysLanguage = navigator.language.split(/[-_]/)[0];
-            language = [FRENCH, ENGLISH].includes(sysLanguage)
-                ? sysLanguage
-                : ENGLISH;
+            setLanguage(
+                [FRENCH, ENGLISH].includes(sysLanguage) ? sysLanguage : ENGLISH
+            );
         } else {
-            language = currentLanguage;
+            setLanguage(pickedLanguage);
         }
     };
 
@@ -199,7 +199,7 @@ const AppContent = () => {
                         }
                         equipmentLabelling={equipmentLabelling}
                         onLanguageClick={handleLanguageClick}
-                        language={currentLanguage}
+                        language={languageButtonValue}
                         user={user}
                         appsAndUrls={apps}
                     >
