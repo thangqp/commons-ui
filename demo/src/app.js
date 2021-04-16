@@ -109,9 +109,9 @@ const AppContent = () => {
 
     const [equipmentLabelling, setEquipmentLabelling] = useState(false);
 
-    const [languageButtonValue, setLanguageButtonValue] = useState(ENGLISH);
-
     const [language, setLanguage] = useState(ENGLISH);
+
+    const [computedLanguage, setComputedLanguage] = useState(ENGLISH);
 
     // Can't use lazy initializer because useRouteMatch is a hook
     const [initialMatchSilentRenewCallbackUrl] = useState(
@@ -136,14 +136,14 @@ const AppContent = () => {
     };
 
     const handleLanguageClick = (pickedLanguage) => {
-        setLanguageButtonValue(pickedLanguage);
+        setLanguage(pickedLanguage);
         if (pickedLanguage === SYSTEM) {
             const sysLanguage = navigator.language.split(/[-_]/)[0];
-            setLanguage(
+            setComputedLanguage(
                 [FRENCH, ENGLISH].includes(sysLanguage) ? sysLanguage : ENGLISH
             );
         } else {
-            setLanguage(pickedLanguage);
+            setComputedLanguage(pickedLanguage);
         }
     };
 
@@ -178,7 +178,10 @@ const AppContent = () => {
     }, [initialMatchSilentRenewCallbackUrl]);
 
     return (
-        <IntlProvider locale={language} messages={messages[language]}>
+        <IntlProvider
+            locale={computedLanguage}
+            messages={messages[computedLanguage]}
+        >
             <ThemeProvider theme={getMuiTheme(theme)}>
                 <SnackbarProvider hideIconVariant={false}>
                     <CssBaseline />
@@ -199,7 +202,7 @@ const AppContent = () => {
                         }
                         equipmentLabelling={equipmentLabelling}
                         onLanguageClick={handleLanguageClick}
-                        language={languageButtonValue}
+                        language={language}
                         user={user}
                         appsAndUrls={apps}
                     >
