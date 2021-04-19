@@ -468,7 +468,7 @@ const TopBar = ({
                                         </StyledMenuItem>
 
                                         {/*/!* Equipment labelling *!/*/}
-                                        {/*If the callback onEquipmentLabellingClick is not defined, equipment labelling component isn't displayed*/}
+                                        {/*If the callback onEquipmentLabellingClick is undefined, equipment labelling component should not be displayed*/}
                                         {onEquipmentLabellingClick && (
                                             <StyledMenuItem
                                                 disabled={true}
@@ -595,7 +595,9 @@ const TopBar = ({
                                         </StyledMenuItem>
 
                                         {/* Settings */}
+                                        {/*If the callback onParametersClicked is undefined, parameters component should be disabled*/}
                                         <StyledMenuItem
+                                            disabled={!onParametersClick}
                                             onClick={onParametersClicked}
                                             className={classes.borderTop}
                                         >
