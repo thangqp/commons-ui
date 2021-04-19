@@ -740,8 +740,8 @@ TopBar.propTypes = {
     onAboutClick: PropTypes.func,
     onEquipmentLabellingClick: PropTypes.func,
     equipmentLabelling: PropTypes.bool,
-    onLanguageClick: PropTypes.func,
-    language: PropTypes.string,
+    onLanguageClick: PropTypes.func.isRequired,
+    language: PropTypes.string.isRequired,
 };
 
 export default TopBar;
