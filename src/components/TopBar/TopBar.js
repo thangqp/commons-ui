@@ -159,9 +159,9 @@ const CustomListItemIcon = withStyles((theme) => ({
 
 export const DARK_THEME = 'Dark';
 export const LIGHT_THEME = 'Light';
-export const SYSTEM = 'sys';
-export const ENGLISH = 'en';
-export const FRENCH = 'fr';
+export const LANG_SYSTEM = 'sys';
+export const LANG_ENGLISH = 'en';
+export const LANG_FRENCH = 'fr';
 const EN = 'EN';
 const FR = 'FR';
 
@@ -474,6 +474,7 @@ const TopBar = ({
                                                 disabled={true}
                                                 style={{
                                                     opacity: '1',
+                                                    // padding: '0',
                                                     paddingTop: '10px',
                                                     paddingBottom: '10px',
                                                 }}
@@ -561,11 +562,10 @@ const TopBar = ({
                                                     classes.toggleButtonGroup
                                                 }
                                                 onChange={changeLanguage}
-                                                aria-label="text formatting"
                                             >
                                                 <ToggleButton
-                                                    value={SYSTEM}
-                                                    aria-label={SYSTEM}
+                                                    value={LANG_SYSTEM}
+                                                    aria-label={LANG_SYSTEM}
                                                     className={
                                                         classes.languageToggleButton
                                                     }
@@ -573,8 +573,8 @@ const TopBar = ({
                                                     <ComputerIcon />
                                                 </ToggleButton>
                                                 <ToggleButton
-                                                    value={ENGLISH}
-                                                    aria-label={ENGLISH}
+                                                    value={LANG_ENGLISH}
+                                                    aria-label={LANG_ENGLISH}
                                                     className={
                                                         classes.languageToggleButton
                                                     }
@@ -582,8 +582,8 @@ const TopBar = ({
                                                     {EN}
                                                 </ToggleButton>
                                                 <ToggleButton
-                                                    value={FRENCH}
-                                                    aria-label={FRENCH}
+                                                    value={LANG_FRENCH}
+                                                    aria-label={LANG_FRENCH}
                                                     className={
                                                         classes.toggleButton
                                                     }

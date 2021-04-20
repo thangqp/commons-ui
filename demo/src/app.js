@@ -36,9 +36,9 @@ import PowsyblLogo from '-!@svgr/webpack!../images/powsybl_logo.svg';
 
 import {
     LIGHT_THEME,
-    SYSTEM,
-    ENGLISH,
-    FRENCH,
+    LANG_SYSTEM,
+    LANG_ENGLISH,
+    LANG_FRENCH,
 } from '../../src/components/TopBar/TopBar';
 
 const messages = {
@@ -109,9 +109,9 @@ const AppContent = () => {
 
     const [equipmentLabelling, setEquipmentLabelling] = useState(false);
 
-    const [language, setLanguage] = useState(ENGLISH);
+    const [language, setLanguage] = useState(LANG_ENGLISH);
 
-    const [computedLanguage, setComputedLanguage] = useState(ENGLISH);
+    const [computedLanguage, setComputedLanguage] = useState(LANG_ENGLISH);
 
     // Can't use lazy initializer because useRouteMatch is a hook
     const [initialMatchSilentRenewCallbackUrl] = useState(
@@ -137,10 +137,12 @@ const AppContent = () => {
 
     const handleLanguageClick = (pickedLanguage) => {
         setLanguage(pickedLanguage);
-        if (pickedLanguage === SYSTEM) {
+        if (pickedLanguage === LANG_SYSTEM) {
             const sysLanguage = navigator.language.split(/[-_]/)[0];
             setComputedLanguage(
-                [FRENCH, ENGLISH].includes(sysLanguage) ? sysLanguage : ENGLISH
+                [LANG_FRENCH, LANG_ENGLISH].includes(sysLanguage)
+                    ? sysLanguage
+                    : LANG_ENGLISH
             );
         } else {
             setComputedLanguage(pickedLanguage);

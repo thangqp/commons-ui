@@ -12,9 +12,9 @@ export {
 export {
     DARK_THEME,
     LIGHT_THEME,
-    SYSTEM,
-    ENGLISH,
-    FRENCH,
+    LANG_SYSTEM,
+    LANG_ENGLISH,
+    LANG_FRENCH,
 } from './components/TopBar/TopBar';
 export {
     USER,
