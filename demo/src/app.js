@@ -52,17 +52,11 @@ const lightTheme = createMuiTheme({
     palette: {
         type: 'light',
     },
-    link: {
-        color: 'blue',
-    },
 });
 
 const darkTheme = createMuiTheme({
     palette: {
         type: 'dark',
-    },
-    link: {
-        color: 'blue',
     },
 });
 
@@ -119,7 +113,7 @@ const styles = (theme) => ({
         cursor: 'initial',
     },
     tableCellColor: {
-        color: theme.link.color,
+        color: 'blue',
     },
     header: {
         backgroundColor: 'lightblue',
