@@ -23,7 +23,10 @@
         "jwt-decode": "^2.2.0",
         "react-request-fullscreen": "^1.1.2",
         "prop-types": "15.7.2",
-        "@svgr/webpack": "^5.4.0"
+        "@svgr/webpack": "^5.4.0",
+        "memoize-one": "^5.1.1",
+        "react-virtualized": "^9.21.2",
+        "clsx": "^1.0.4"
     },
     "peerDependencies": {
         "notistack": "^1.0.1",
