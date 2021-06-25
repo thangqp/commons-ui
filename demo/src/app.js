@@ -80,8 +80,6 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const cellPadding = 16;
-
 const styles = (theme) => ({
     flexContainer: {
         display: 'flex',
@@ -107,7 +105,7 @@ const styles = (theme) => ({
     },
     tableCell: {
         flex: 1,
-        padding: cellPadding,
+        padding: '16px',
     },
     noClick: {
         cursor: 'initial',
@@ -273,7 +271,7 @@ const AppContent = () => {
                     </TopBar>
                     {user !== null ? (
                         <div>
-                            <Box mt={10}>
+                            <Box mt={20}>
                                 <Typography
                                     variant="h3"
                                     color="textPrimary"
