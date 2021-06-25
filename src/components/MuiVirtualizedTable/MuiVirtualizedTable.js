@@ -83,10 +83,10 @@ class MuiVirtualizedTable extends React.PureComponent {
                     this.computeDataWidth(col.label)
                 );
                 /* calculate for each row the width, and keep the max  */
-                for (let i = 0; i < this.props.rowCount; ++i) {
+                for (let i = 0; i < this.props.rows.length; ++i) {
                     let text = this.getDisplayValue(
                         col,
-                        this.props.rowGetter({ index: i })[col.dataKey]
+                        this.rowGetter({ index: i })[col.dataKey]
                     );
                     size = Math.max(size, this.computeDataWidth(text));
                 }
@@ -149,7 +149,7 @@ class MuiVirtualizedTable extends React.PureComponent {
         );
     };
 
-    cellRenderer = ({ cellData, columnIndex, rowIndex, width }) => {
+    cellRenderer = ({ cellData, columnIndex, rowIndex }) => {
         const { columns, classes, rowHeight, onCellClick, rows } = this.props;
 
         let displayedValue = this.getDisplayValue(
@@ -185,7 +185,6 @@ class MuiVirtualizedTable extends React.PureComponent {
                         onCellClick(rows[rowIndex], columns[columnIndex]);
                     }
                 }}
-                width={width}
             >
                 {displayedValue}
             </TableCell>
@@ -241,6 +240,18 @@ class MuiVirtualizedTable extends React.PureComponent {
         );
     };
 
+    reorderedIndex = this.reorderIndex(
+        this.state.key,
+        this.state.direction,
+        this.props.filter,
+        this.props.rows
+    );
+
+    getIndexFor = (index) => {
+        return index < this.reorderedIndex.length ? this.reorderedIndex[index] : 0;
+    };
+    rowGetter = ({ index }) => this.props.rows[this.getIndexFor(index)];
+
     render() {
         const {
             classes,
@@ -251,16 +262,6 @@ class MuiVirtualizedTable extends React.PureComponent {
             ...tableProps
         } = this.props;
 
-        const reorderedIndex = this.reorderIndex(
-            this.state.key,
-            this.state.direction,
-            this.props.filter,
-            this.props.rows
-        );
-
-        const getIndexFor = (index) => {
-            return index < reorderedIndex.length ? reorderedIndex[index] : 0;
-        };
         const sizes = this.sizes(this.props.columns);
         return (
             <AutoSizer>
@@ -275,11 +276,9 @@ class MuiVirtualizedTable extends React.PureComponent {
                         headerHeight={headerHeight}
                         className={classes.table}
                         {...tableProps}
-                        rowCount={reorderedIndex.length}
+                        rowCount={this.reorderedIndex.length}
                         rowClassName={this.getRowClassName}
-                        rowGetter={({ index }) =>
-                            this.props.rows[getIndexFor(index)]
-                        }
+                        rowGetter={this.rowGetter}
                     >
                         {columns.map(({ dataKey, ...other }, index) => {
                             return (
