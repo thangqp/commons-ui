@@ -248,7 +248,9 @@ class MuiVirtualizedTable extends React.PureComponent {
     );
 
     getIndexFor = (index) => {
-        return index < this.reorderedIndex.length ? this.reorderedIndex[index] : 0;
+        return index < this.reorderedIndex.length
+            ? this.reorderedIndex[index]
+            : 0;
     };
     rowGetter = ({ index }) => this.props.rows[this.getIndexFor(index)];
 
