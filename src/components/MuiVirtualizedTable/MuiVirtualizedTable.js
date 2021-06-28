@@ -137,28 +137,6 @@ class MuiVirtualizedTable extends React.PureComponent {
         );
     };
 
-    simpleHeader = ({ label, columnIndex, width }) => {
-        const { headerHeight, columns, classes } = this.props;
-        return (
-            <div
-                className={clsx(
-                    classes.tableCell,
-                    classes.flexContainer,
-                    classes.header
-                )}
-                style={{
-                    width: { width },
-                    height: headerHeight,
-                    justifyContent: columns[columnIndex].numeric
-                        ? 'flex-end'
-                        : 'baseline',
-                }}
-            >
-                <span>{label}</span>
-            </div>
-        );
-    };
-
     getRowClassName = ({ index }) => {
         const { classes, onRowClick } = this.props;
 
@@ -276,6 +254,7 @@ class MuiVirtualizedTable extends React.PureComponent {
             ? this.reorderedIndex[index]
             : 0;
     };
+
     rowGetter = ({ index }) => this.props.rows[this.getIndexFor(index)];
 
     render() {
@@ -320,11 +299,9 @@ class MuiVirtualizedTable extends React.PureComponent {
                                                 key: { dataKey },
                                             });
                                         } else {
-                                            return this.simpleHeader({
+                                            return this.headerRenderer({
                                                 ...headerProps,
-                                                width: sizes[dataKey],
                                                 columnIndex: index,
-                                                key: { dataKey },
                                             });
                                         }
                                     }}
