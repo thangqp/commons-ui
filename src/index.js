@@ -10,6 +10,13 @@ export {
     dispatchUser,
     getPreLoginPath,
 } from './utils/AuthService';
+
+export {
+    DEFAULT_CELL_PADDING,
+    DEFAULT_HEADER_HEIGHT,
+    DEFAULT_ROW_HEIGHT,
+} from './components/MuiVirtualizedTable/MuiVirtualizedTable';
+
 export {
     DARK_THEME,
     LIGHT_THEME,

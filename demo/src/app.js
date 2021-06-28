@@ -42,6 +42,7 @@ import {
     LANG_FRENCH,
 } from '../../src/components/TopBar/TopBar';
 import MuiVirtualizedTable from '../../src/components/MuiVirtualizedTable';
+import { DEFAULT_CELL_PADDING } from '../../src/components/MuiVirtualizedTable/MuiVirtualizedTable';
 
 const messages = {
     en: { ...login_en, ...top_bar_en },
@@ -105,7 +106,7 @@ const styles = (theme) => ({
     },
     tableCell: {
         flex: 1,
-        padding: '16px',
+        padding: DEFAULT_CELL_PADDING + 'px',
     },
     noClick: {
         cursor: 'initial',
@@ -115,6 +116,7 @@ const styles = (theme) => ({
     },
     header: {
         backgroundColor: 'lightblue',
+        fontWeight: 'bold',
     },
     rowBackgroundDark: {
         backgroundColor: '#81BEF7',
@@ -284,6 +286,7 @@ const AppContent = () => {
                             <Box style={{ minHeight: '200px' }}>
                                 <VirtualizedTable
                                     rows={rows}
+                                    sortable={true}
                                     columns={[
                                         {
                                             label: 'header1',

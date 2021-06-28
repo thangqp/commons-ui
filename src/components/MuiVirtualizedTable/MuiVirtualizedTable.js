@@ -21,12 +21,14 @@ function getTextWidth(text) {
     return metrics.width;
 }
 
-const cellPadding = 16;
+export const DEFAULT_CELL_PADDING = 16;
+export const DEFAULT_HEADER_HEIGHT = 48;
+export const DEFAULT_ROW_HEIGHT = 48;
 
 class MuiVirtualizedTable extends React.PureComponent {
     static defaultProps = {
-        headerHeight: 48,
-        rowHeight: 48,
+        headerHeight: DEFAULT_HEADER_HEIGHT,
+        rowHeight: DEFAULT_ROW_HEIGHT,
     };
 
     state = {
@@ -68,7 +70,7 @@ class MuiVirtualizedTable extends React.PureComponent {
     });
 
     computeDataWidth = (text) => {
-        return getTextWidth(text || '') + 2 * cellPadding;
+        return getTextWidth(text || '') + 2 * DEFAULT_CELL_PADDING;
     };
 
     sizes = memoize((columns) => {
@@ -132,6 +134,28 @@ class MuiVirtualizedTable extends React.PureComponent {
             >
                 <span>{label}</span>
             </TableSortLabel>
+        );
+    };
+
+    simpleHeader = ({ label, columnIndex, width }) => {
+        const { headerHeight, columns, classes } = this.props;
+        return (
+            <div
+                className={clsx(
+                    classes.tableCell,
+                    classes.flexContainer,
+                    classes.header
+                )}
+                style={{
+                    width: { width },
+                    height: headerHeight,
+                    justifyContent: columns[columnIndex].numeric
+                        ? 'flex-end'
+                        : 'baseline',
+                }}
+            >
+                <span>{label}</span>
+            </div>
         );
     };
 
@@ -261,6 +285,7 @@ class MuiVirtualizedTable extends React.PureComponent {
             rowHeight,
             headerHeight,
             rowCount,
+            sortable,
             ...tableProps
         } = this.props;
 
@@ -286,14 +311,23 @@ class MuiVirtualizedTable extends React.PureComponent {
                             return (
                                 <Column
                                     key={dataKey}
-                                    headerRenderer={(headerProps) =>
-                                        this.sortableHeader({
-                                            ...headerProps,
-                                            width: sizes[dataKey],
-                                            columnIndex: index,
-                                            key: { dataKey },
-                                        })
-                                    }
+                                    headerRenderer={(headerProps) => {
+                                        if (sortable) {
+                                            return this.sortableHeader({
+                                                ...headerProps,
+                                                width: sizes[dataKey],
+                                                columnIndex: index,
+                                                key: { dataKey },
+                                            });
+                                        } else {
+                                            return this.simpleHeader({
+                                                ...headerProps,
+                                                width: sizes[dataKey],
+                                                columnIndex: index,
+                                                key: { dataKey },
+                                            });
+                                        }
+                                    }}
                                     className={classes.flexContainer}
                                     cellRenderer={this.cellRenderer}
                                     dataKey={dataKey}
