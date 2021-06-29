@@ -73,7 +73,7 @@ class MuiVirtualizedTable extends React.PureComponent {
         return getTextWidth(text || '') + 2 * DEFAULT_CELL_PADDING;
     };
 
-    sizes = memoize((columns) => {
+    sizes = memoize((columns, rows) => {
         let sizes = {};
         columns.forEach((col) => {
             if (col.width) {
@@ -85,7 +85,7 @@ class MuiVirtualizedTable extends React.PureComponent {
                     this.computeDataWidth(col.label)
                 );
                 /* calculate for each row the width, and keep the max  */
-                for (let i = 0; i < this.props.rows.length; ++i) {
+                for (let i = 0; i < rows.length; ++i) {
                     let text = this.getDisplayValue(
                         col,
                         this.rowGetter({ index: i })[col.dataKey]
@@ -164,15 +164,15 @@ class MuiVirtualizedTable extends React.PureComponent {
                 component="div"
                 className={clsx(classes.tableCell, classes.flexContainer, {
                     [classes.noClick]:
-                        displayedValue === undefined ||
-                        onCellClick == null ||
-                        columns[columnIndex].clickable === undefined ||
-                        !columns[columnIndex].clickable,
+                    displayedValue === undefined ||
+                    onCellClick == null ||
+                    columns[columnIndex].clickable === undefined ||
+                    !columns[columnIndex].clickable,
                     [classes.tableCellColor]:
-                        displayedValue === undefined ||
-                        (onCellClick !== null &&
-                            columns[columnIndex].clickable !== undefined &&
-                            columns[columnIndex].clickable),
+                    displayedValue === undefined ||
+                    (onCellClick !== null &&
+                        columns[columnIndex].clickable !== undefined &&
+                        columns[columnIndex].clickable),
                 })}
                 variant="body"
                 style={{ height: rowHeight }}
@@ -256,10 +256,10 @@ class MuiVirtualizedTable extends React.PureComponent {
     };
 
     rowGetter = ({ index }) => this.props.rows[this.getIndexFor(index)];
-
     render() {
         const {
             classes,
+            rows,
             columns,
             rowHeight,
             headerHeight,
@@ -268,7 +268,7 @@ class MuiVirtualizedTable extends React.PureComponent {
             ...tableProps
         } = this.props;
 
-        const sizes = this.sizes(this.props.columns);
+        const sizes = this.sizes(this.props.columns, this.props.rows);
         return (
             <AutoSizer>
                 {({ height, width }) => (
@@ -282,7 +282,7 @@ class MuiVirtualizedTable extends React.PureComponent {
                         headerHeight={headerHeight}
                         className={classes.table}
                         {...tableProps}
-                        rowCount={this.reorderedIndex.length}
+                        rowCount={rows.length}
                         rowClassName={this.getRowClassName}
                         rowGetter={this.rowGetter}
                     >
