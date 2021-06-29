@@ -186,8 +186,9 @@ const TopBar = ({
     const classes = useStyles();
     const anchorRef = React.useRef(null);
 
-    const [anchorElSettingsMenu, setAnchorElSettingsMenu] =
-        React.useState(false);
+    const [anchorElSettingsMenu, setAnchorElSettingsMenu] = React.useState(
+        false
+    );
     const [anchorElAppsMenu, setAnchorElAppsMenu] = React.useState(null);
     const fullScreenRef = useRef(null);
     const [isFullScreen, setIsFullScreen] = useState(false);
