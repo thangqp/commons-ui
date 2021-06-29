@@ -215,8 +215,7 @@ const AppContent = () => {
 
     const rows = [
         {
-            key1:
-                'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Eu tincidunt tortor aliquam nulla facilisi',
+            key1: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Eu tincidunt tortor aliquam nulla facilisi',
             key2: 'row1_val2',
             key3: 'row1_val3',
         },
