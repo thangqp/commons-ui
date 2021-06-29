@@ -73,7 +73,7 @@ class MuiVirtualizedTable extends React.PureComponent {
         return getTextWidth(text || '') + 2 * DEFAULT_CELL_PADDING;
     };
 
-    sizes = memoize((columns, rows) => {
+    sizes = memoize((columns, rows, rowGetter) => {
         let sizes = {};
         columns.forEach((col) => {
             if (col.width) {
@@ -88,7 +88,7 @@ class MuiVirtualizedTable extends React.PureComponent {
                 for (let i = 0; i < rows.length; ++i) {
                     let text = this.getDisplayValue(
                         col,
-                        this.rowGetter({ index: i })[col.dataKey]
+                        rowGetter({ index: i })[col.dataKey]
                     );
                     size = Math.max(size, this.computeDataWidth(text));
                 }
@@ -139,7 +139,6 @@ class MuiVirtualizedTable extends React.PureComponent {
 
     getRowClassName = ({ index }) => {
         const { classes, onRowClick } = this.props;
-
         return clsx(
             classes.tableRow,
             classes.flexContainer,
@@ -164,15 +163,15 @@ class MuiVirtualizedTable extends React.PureComponent {
                 component="div"
                 className={clsx(classes.tableCell, classes.flexContainer, {
                     [classes.noClick]:
-                        displayedValue === undefined ||
-                        onCellClick == null ||
-                        columns[columnIndex].clickable === undefined ||
-                        !columns[columnIndex].clickable,
+                    displayedValue === undefined ||
+                    onCellClick == null ||
+                    columns[columnIndex].clickable === undefined ||
+                    !columns[columnIndex].clickable,
                     [classes.tableCellColor]:
-                        displayedValue === undefined ||
-                        (onCellClick !== null &&
-                            columns[columnIndex].clickable !== undefined &&
-                            columns[columnIndex].clickable),
+                    displayedValue === undefined ||
+                    (onCellClick !== null &&
+                        columns[columnIndex].clickable !== undefined &&
+                        columns[columnIndex].clickable),
                 })}
                 variant="body"
                 style={{ height: rowHeight }}
@@ -242,20 +241,6 @@ class MuiVirtualizedTable extends React.PureComponent {
         );
     };
 
-    reorderedIndex = this.reorderIndex(
-        this.state.key,
-        this.state.direction,
-        this.props.filter,
-        this.props.rows
-    );
-
-    getIndexFor = (index) => {
-        return index < this.reorderedIndex.length
-            ? this.reorderedIndex[index]
-            : 0;
-    };
-
-    rowGetter = ({ index }) => this.props.rows[this.getIndexFor(index)];
     render() {
         const {
             classes,
@@ -268,7 +253,24 @@ class MuiVirtualizedTable extends React.PureComponent {
             ...tableProps
         } = this.props;
 
-        const sizes = this.sizes(this.props.columns, this.props.rows);
+        const reorderedIndex = this.reorderIndex(
+            this.state.key,
+            this.state.direction,
+            this.props.filter,
+            this.props.rows
+        );
+
+        const getIndexFor = (index) => {
+            return index < reorderedIndex.length ? reorderedIndex[index] : 0;
+        };
+
+        const rowGetter = (index) => this.props.rows[getIndexFor(index)];
+
+        const sizes = this.sizes(
+            this.props.columns,
+            this.props.rows,
+            rowGetter
+        );
         return (
             <AutoSizer>
                 {({ height, width }) => (
@@ -282,9 +284,11 @@ class MuiVirtualizedTable extends React.PureComponent {
                         headerHeight={headerHeight}
                         className={classes.table}
                         {...tableProps}
-                        rowCount={rows.length}
+                        rowCount={reorderedIndex.length}
                         rowClassName={this.getRowClassName}
-                        rowGetter={this.rowGetter}
+                        rowGetter={({ index }) =>
+                            this.props.rows[getIndexFor(index)]
+                        }
                     >
                         {columns.map(({ dataKey, ...other }, index) => {
                             return (
