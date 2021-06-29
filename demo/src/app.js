@@ -43,6 +43,8 @@ import {
 } from '../../src/components/TopBar/TopBar';
 import MuiVirtualizedTable from '../../src/components/MuiVirtualizedTable';
 import { DEFAULT_CELL_PADDING } from '../../src/components/MuiVirtualizedTable/MuiVirtualizedTable';
+import ReportViewer from '../../src/components/ReportViewer/report-viewer';
+import { LOGS_JSON } from './constants';
 
 const messages = {
     en: { ...login_en, ...top_bar_en },
@@ -162,6 +164,8 @@ const AppContent = () => {
     const [language, setLanguage] = useState(LANG_ENGLISH);
 
     const [computedLanguage, setComputedLanguage] = useState(LANG_ENGLISH);
+
+    const [openReportViewer, setOpenReportViewer] = React.useState(false);
 
     // Can't use lazy initializer because useRouteMatch is a hook
     const [initialMatchSilentRenewCallbackUrl] = useState(
@@ -317,6 +321,19 @@ const AppContent = () => {
                     {buttons.map((button) => (
                         <MyButton {...button} key={button.id} />
                     ))}
+                    <Button
+                        variant="contained"
+                        style={{ float: 'left', margin: '5px' }}
+                        onClick={() => setOpenReportViewer(true)}
+                    >
+                        Logs
+                    </Button>
+                    <ReportViewer
+                        title={'Logs test'}
+                        open={openReportViewer}
+                        onClose={() => setOpenReportViewer(false)}
+                        jsonReport={LOGS_JSON}
+                    />
                 </SnackbarProvider>
             </ThemeProvider>
         </IntlProvider>

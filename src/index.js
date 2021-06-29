@@ -2,6 +2,7 @@ export TopBar from './components/TopBar';
 export SnackbarProvider from './components/SnackbarProvider';
 export AuthenticationRouter from './components/AuthenticationRouter';
 export MuiVirtualizedTable from './components/MuiVirtualizedTable';
+export ReportViewer from './components/ReportViewer';
 
 export {
     initializeAuthenticationDev,
