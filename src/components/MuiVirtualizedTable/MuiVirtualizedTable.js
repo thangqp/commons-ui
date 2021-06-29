@@ -286,9 +286,7 @@ class MuiVirtualizedTable extends React.PureComponent {
                         {...tableProps}
                         rowCount={reorderedIndex.length}
                         rowClassName={this.getRowClassName}
-                        rowGetter={({ index }) =>
-                            this.props.rows[getIndexFor(index)]
-                        }
+                        rowGetter={({ index }) => rowGetter(index)}
                     >
                         {columns.map(({ dataKey, ...other }, index) => {
                             return (
