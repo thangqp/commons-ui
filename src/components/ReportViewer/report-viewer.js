@@ -99,7 +99,7 @@ export default function ReportViewer(props) {
                     <Grid
                         item
                         xs={12}
-                        sm={2}
+                        sm={3}
                         style={{
                             height: '100%',
                             borderRight: '1px solid rgba(81, 81, 81, 1)',
@@ -111,13 +111,14 @@ export default function ReportViewer(props) {
                             defaultExpandIcon={<ArrowRightIcon />}
                             defaultEndIcon={<div style={{ width: 24 }} />}
                             onNodeSelect={onNodeSelection}
+                            defaultExpanded={[
+                                rootReport.current.getId().toString(),
+                            ]}
                         >
-                            {rootReport.current
-                                .getSubReports()
-                                .map((value) => createReporterItem(value))}
+                            {createReporterItem(rootReport.current)}
                         </TreeView>
                     </Grid>
-                    <Grid item xs={12} sm={10} style={{ height: '100%' }}>
+                    <Grid item xs={12} sm={9} style={{ height: '100%' }}>
                         <LogTable logs={logs} />
                     </Grid>
                 </Grid>

@@ -36,7 +36,7 @@ const useReportItemStyles = makeStyles((theme) => ({
         },
     },
     group: {
-        marginLeft: 0,
+        marginLeft: 10,
         '& $content': {
             paddingLeft: theme.spacing(2),
         },
@@ -63,13 +63,7 @@ const useReportItemStyles = makeStyles((theme) => ({
 
 export default function ReportItem(props) {
     const classes = useReportItemStyles();
-    const {
-        labelText,
-        labelIcon: LabelIcon,
-        labelInfo,
-        labelIconColor,
-        ...other
-    } = props;
+    const { labelText, labelIcon: LabelIcon, labelIconColor, ...other } = props;
 
     return (
         <TreeItem
@@ -89,9 +83,6 @@ export default function ReportItem(props) {
                     />
                     <Typography variant="body2" className={classes.labelText}>
                         {labelText}
-                    </Typography>
-                    <Typography variant="caption" color="inherit" align="left">
-                        {labelInfo}
                     </Typography>
                 </div>
             }

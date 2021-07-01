@@ -7,8 +7,8 @@
  */
 
 export const LOGS_JSON = {
-    taskKey: '059c9481-fa04-4da8-8ab4-0601f6ec987d',
-    defaultName: '059c9481-fa04-4da8-8ab4-0601f6ec987d',
+    taskKey: 'Test',
+    defaultName: 'Test',
     taskValues: {},
     subReporters: [
         {

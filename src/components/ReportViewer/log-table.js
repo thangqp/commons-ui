@@ -58,7 +58,6 @@ export const LogTable = ({ logs }) => {
             label: intl.formatMessage({ id: 'severity' }).toUpperCase(),
             id: 'severity',
             dataKey: 'severity',
-            width: SEVERITY_COLUMN_FIXED_WIDTH,
             maxWidth: SEVERITY_COLUMN_FIXED_WIDTH,
             cellRenderer: severityCellRender,
         },
