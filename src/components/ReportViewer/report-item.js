@@ -5,11 +5,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import TreeItem from '@material-ui/lab/TreeItem';
 import Typography from '@material-ui/core/Typography';
+import Label from '@material-ui/icons/Label';
 
 const useReportItemStyles = makeStyles((theme) => ({
     root: {
@@ -61,9 +62,9 @@ const useReportItemStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function ReportItem(props) {
+const ReportItem = (props) => {
     const classes = useReportItemStyles();
-    const { labelText, labelIcon: LabelIcon, labelIconColor, ...other } = props;
+    const { labelText, labelIconColor, ...other } = props;
 
     return (
         <TreeItem
@@ -77,7 +78,7 @@ export default function ReportItem(props) {
             }}
             label={
                 <div className={classes.labelRoot}>
-                    <LabelIcon
+                    <Label
                         htmlColor={labelIconColor}
                         className={classes.labelIcon}
                     />
@@ -89,12 +90,13 @@ export default function ReportItem(props) {
             {...other}
         />
     );
-}
+};
 
 ReportItem.propTypes = {
     bgColor: PropTypes.string,
     color: PropTypes.string,
-    labelIcon: PropTypes.elementType.isRequired,
     labelInfo: PropTypes.string,
     labelText: PropTypes.string.isRequired,
 };
+
+export default memo(ReportItem);

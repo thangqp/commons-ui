@@ -17,10 +17,7 @@ import {
     withStyles,
 } from '@material-ui/core/styles';
 import AuthenticationRouter from '../../src/components/AuthenticationRouter';
-import {
-    initializeAuthenticationDev,
-    logout,
-} from '../../src/utils/AuthService';
+import { initializeAuthenticationDev, logout } from '../../src';
 import { useRouteMatch } from 'react-router';
 import { IntlProvider } from 'react-intl';
 
@@ -35,20 +32,18 @@ import Button from '@material-ui/core/Button';
 
 import PowsyblLogo from '-!@svgr/webpack!../images/powsybl_logo.svg';
 
-import {
-    LIGHT_THEME,
-    LANG_SYSTEM,
-    LANG_ENGLISH,
-    LANG_FRENCH,
-} from '../../src/components/TopBar/TopBar';
+import { LIGHT_THEME, LANG_SYSTEM, LANG_ENGLISH, LANG_FRENCH } from '../../src';
 import MuiVirtualizedTable from '../../src/components/MuiVirtualizedTable';
-import { DEFAULT_CELL_PADDING } from '../../src/components/MuiVirtualizedTable/MuiVirtualizedTable';
+import { DEFAULT_CELL_PADDING } from '../../src';
 import ReportViewer from '../../src/components/ReportViewer/report-viewer';
 import { LOGS_JSON } from './constants';
 
+import messages_en from '../translations/en.json';
+import messages_fr from '../translations/fr.json';
+
 const messages = {
-    en: { ...login_en, ...top_bar_en },
-    fr: { ...login_fr, ...top_bar_fr },
+    en: { ...messages_en, ...login_en, ...top_bar_en },
+    fr: { ...messages_fr, ...login_fr, ...top_bar_fr },
 };
 
 const lightTheme = createMuiTheme({
@@ -251,7 +246,7 @@ const AppContent = () => {
                     <TopBar
                         appName="Demo"
                         appColor="#808080"
-                        appLogo=<PowsyblLogo />
+                        appLogo={<PowsyblLogo />}
                         onParametersClick={() => console.log('settings')}
                         onLogoutClick={() =>
                             logout(dispatch, userManager.instance)
@@ -272,7 +267,7 @@ const AppContent = () => {
                         <div style={{ paddingLeft: 10, paddingRight: 10 }}>
                             foobar-bazfoobar
                         </div>
-                        <div style={{ flexGrow: 1 }}></div>
+                        <div style={{ flexGrow: 1 }} />
                         <div>baz</div>
                     </TopBar>
                     {user !== null ? (
