@@ -17,7 +17,11 @@ import {
     withStyles,
 } from '@material-ui/core/styles';
 import AuthenticationRouter from '../../src/components/AuthenticationRouter';
-import { initializeAuthenticationDev, logout } from '../../src';
+import {
+    DEFAULT_CELL_PADDING,
+    initializeAuthenticationDev,
+    logout,
+} from '../../src';
 import { useRouteMatch } from 'react-router';
 import { IntlProvider } from 'react-intl';
 
@@ -34,12 +38,12 @@ import PowsyblLogo from '-!@svgr/webpack!../images/powsybl_logo.svg';
 
 import { LIGHT_THEME, LANG_SYSTEM, LANG_ENGLISH, LANG_FRENCH } from '../../src';
 import MuiVirtualizedTable from '../../src/components/MuiVirtualizedTable';
-import { DEFAULT_CELL_PADDING } from '../../src';
-import ReportViewer from '../../src/components/ReportViewer/report-viewer';
 import { LOGS_JSON } from './constants';
 
 import messages_en from '../translations/en.json';
 import messages_fr from '../translations/fr.json';
+
+import ReportViewerDialog from '../../src/components/ReportViewerDialog';
 
 const messages = {
     en: { ...messages_en, ...login_en, ...top_bar_en },
@@ -323,7 +327,7 @@ const AppContent = () => {
                     >
                         Logs
                     </Button>
-                    <ReportViewer
+                    <ReportViewerDialog
                         title={'Logs test'}
                         open={openReportViewer}
                         onClose={() => setOpenReportViewer(false)}

@@ -3,6 +3,7 @@ export SnackbarProvider from './components/SnackbarProvider';
 export AuthenticationRouter from './components/AuthenticationRouter';
 export MuiVirtualizedTable from './components/MuiVirtualizedTable';
 export ReportViewer from './components/ReportViewer';
+export ReportViewerDialog from './components/ReportViewerDialog';
 
 export {
     initializeAuthenticationDev,

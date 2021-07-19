@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { memo } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import TreeItem from '@material-ui/lab/TreeItem';
@@ -99,4 +99,4 @@ ReportItem.propTypes = {
     labelText: PropTypes.string.isRequired,
 };
 
-export default memo(ReportItem);
+export default ReportItem;
