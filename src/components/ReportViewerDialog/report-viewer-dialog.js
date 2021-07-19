@@ -42,7 +42,7 @@ export default function ReportViewerDialog(props) {
     return (
         <Dialog
             open={open}
-            onClose={() => onClose()}
+            onClose={onClose}
             fullScreen={fullScreen}
             aria-labelledby="dialog-title-report"
             fullWidth={true}

@@ -27,7 +27,10 @@ const useStyles = makeStyles({
     },
 });
 
-export default function ReportViewer({ jsonReport }) {
+export default function ReportViewer({
+    jsonReport,
+    maxSubReports = MAX_SUB_REPORTS,
+}) {
     const classes = useStyles();
 
     const [selectedNode, setSelectedNode] = useState(null);
@@ -41,12 +44,12 @@ export default function ReportViewer({ jsonReport }) {
     const createReporterItem = useCallback(
         (logReport) => {
             allReports.current[logReport.getId()] = logReport;
-            if (logReport.getSubReports().length > MAX_SUB_REPORTS) {
+            if (logReport.getSubReports().length > maxSubReports) {
                 console.warn(
                     'The number (%s) being greater than %s only the first %s subreports will be displayed',
                     logReport.getSubReports().length,
-                    MAX_SUB_REPORTS,
-                    MAX_SUB_REPORTS
+                    maxSubReports,
+                    maxSubReports
                 );
             }
             return (
@@ -59,12 +62,12 @@ export default function ReportViewer({ jsonReport }) {
                 >
                     {logReport
                         .getSubReports()
-                        .slice(0, MAX_SUB_REPORTS)
+                        .slice(0, maxSubReports)
                         .map((value) => createReporterItem(value))}
                 </ReportItem>
             );
         },
-        [classes.treeItem]
+        [maxSubReports, classes.treeItem]
     );
 
     useEffect(() => {

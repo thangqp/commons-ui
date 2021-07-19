@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import React, { forwardRef, memo } from 'react';
+import React, { memo } from 'react';
 import { useIntl } from 'react-intl';
 import { withStyles } from '@material-ui/core/styles';
 import TableCell from '@material-ui/core/TableCell';
@@ -32,7 +32,7 @@ const styles = (theme) => ({
 
 const VirtualizedTable = withStyles(styles)(MuiVirtualizedTable);
 
-const LogTable = forwardRef(({ logs }) => {
+const LogTable = ({ logs }) => {
     const intl = useIntl();
 
     const severityCellRender = (cellData) => {
@@ -90,6 +90,6 @@ const LogTable = forwardRef(({ logs }) => {
             sortable={false}
         />
     );
-});
+};
 
 export default memo(LogTable);
