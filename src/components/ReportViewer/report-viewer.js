@@ -15,6 +15,8 @@ import LogReport from './log-report';
 import Grid from '@material-ui/core/Grid';
 import LogTable from './log-table';
 
+const MAX_SUB_REPORTS = 500;
+
 const useStyles = makeStyles({
     treeView: {
         height: '100%',
@@ -39,6 +41,14 @@ export default function ReportViewer({ jsonReport }) {
     const createReporterItem = useCallback(
         (logReport) => {
             allReports.current[logReport.getId()] = logReport;
+            if (logReport.getSubReports().length > MAX_SUB_REPORTS) {
+                console.warn(
+                    'The number (%s) being greater than %s only the first %s subreports will be displayed',
+                    logReport.getSubReports().length,
+                    MAX_SUB_REPORTS,
+                    MAX_SUB_REPORTS
+                );
+            }
             return (
                 <ReportItem
                     labelText={logReport.getTitle()}
@@ -49,6 +59,7 @@ export default function ReportViewer({ jsonReport }) {
                 >
                     {logReport
                         .getSubReports()
+                        .slice(0, MAX_SUB_REPORTS)
                         .map((value) => createReporterItem(value))}
                 </ReportItem>
             );
