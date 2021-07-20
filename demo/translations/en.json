@@ -1,8 +1,0 @@
-{
-    "close": "Close",
-
-    "showReport": "Show logs",
-    "severity": "Severity",
-    "message": "Message",
-    "loadingReport": "Loading logs in progress..."
-}

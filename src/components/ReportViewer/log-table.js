@@ -54,14 +54,18 @@ const LogTable = ({ logs }) => {
 
     const COLUMNS_DEFINITIONS = [
         {
-            label: intl.formatMessage({ id: 'severity' }).toUpperCase(),
+            label: intl
+                .formatMessage({ id: 'report_viewer/severity' })
+                .toUpperCase(),
             id: 'severity',
             dataKey: 'severity',
             maxWidth: SEVERITY_COLUMN_FIXED_WIDTH,
             cellRenderer: severityCellRender,
         },
         {
-            label: intl.formatMessage({ id: 'message' }).toUpperCase(),
+            label: intl
+                .formatMessage({ id: 'report_viewer/message' })
+                .toUpperCase(),
             id: 'message',
             dataKey: 'message',
         },

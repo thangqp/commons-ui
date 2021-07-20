@@ -68,7 +68,7 @@ export default function ReportViewerDialog(props) {
                     />
                 )}
                 <Button onClick={() => onClose()} variant="text">
-                    <FormattedMessage id="close" />
+                    <FormattedMessage id="report_viewer/close" />
                 </Button>
             </DialogActions>
         </Dialog>

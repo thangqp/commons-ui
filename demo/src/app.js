@@ -28,7 +28,14 @@ import { IntlProvider } from 'react-intl';
 import { BrowserRouter, useHistory, useLocation } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 
-import { top_bar_en, top_bar_fr, login_fr, login_en } from '../../src/index';
+import {
+    report_viewer_en,
+    report_viewer_fr,
+    top_bar_en,
+    top_bar_fr,
+    login_fr,
+    login_en,
+} from '../../src/index';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
@@ -40,14 +47,11 @@ import { LIGHT_THEME, LANG_SYSTEM, LANG_ENGLISH, LANG_FRENCH } from '../../src';
 import MuiVirtualizedTable from '../../src/components/MuiVirtualizedTable';
 import { LOGS_JSON } from './constants';
 
-import messages_en from '../translations/en.json';
-import messages_fr from '../translations/fr.json';
-
 import ReportViewerDialog from '../../src/components/ReportViewerDialog';
 
 const messages = {
-    en: { ...messages_en, ...login_en, ...top_bar_en },
-    fr: { ...messages_fr, ...login_fr, ...top_bar_fr },
+    en: { ...report_viewer_en, ...login_en, ...top_bar_en },
+    fr: { ...report_viewer_fr, ...login_fr, ...top_bar_fr },
 };
 
 const lightTheme = createMuiTheme({
