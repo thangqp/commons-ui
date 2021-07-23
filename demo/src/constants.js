@@ -135,7 +135,7 @@ export const LOGS_JSON = {
                                         'Iteration ${iteration}: slack bus active power (${initialMismatch} MW) distributed in ${nbIterations} iterations',
                                     values: {
                                         reportSeverity: {
-                                            value: 'OLF_INFO',
+                                            value: 'ERROR',
                                             type: 'INFO_LOGLEVEL',
                                         },
                                         nbIterations: {
@@ -158,7 +158,7 @@ export const LOGS_JSON = {
                                         'Iteration ${iteration}: already balanced',
                                     values: {
                                         reportSeverity: {
-                                            value: 'OLF_INFO',
+                                            value: 'FATAL',
                                             type: 'INFO_LOGLEVEL',
                                         },
                                         iteration: {
@@ -198,7 +198,7 @@ export const LOGS_JSON = {
                                         'Iteration ${iteration}: already balanced',
                                     values: {
                                         reportSeverity: {
-                                            value: 'OLF_INFO',
+                                            value: 'WARN',
                                             type: 'INFO_LOGLEVEL',
                                         },
                                         iteration: {

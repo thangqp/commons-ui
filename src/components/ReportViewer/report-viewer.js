@@ -55,7 +55,7 @@ export default function ReportViewer({
             return (
                 <ReportItem
                     labelText={logReport.getTitle()}
-                    labelIconColor={logReport.getHighestSeverity().color}
+                    labelIconColor={logReport.getHighestSeverity().colorName}
                     key={logReport.getId().toString()}
                     className={classes.treeItem}
                     nodeId={logReport.getId().toString()}
