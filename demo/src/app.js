@@ -35,6 +35,8 @@ import {
     top_bar_fr,
     login_fr,
     login_en,
+    table_en,
+    table_fr,
 } from '../../src/index';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
@@ -50,8 +52,8 @@ import { LOGS_JSON } from './constants';
 import ReportViewerDialog from '../../src/components/ReportViewerDialog';
 
 const messages = {
-    en: { ...report_viewer_en, ...login_en, ...top_bar_en },
-    fr: { ...report_viewer_fr, ...login_fr, ...top_bar_fr },
+    en: { ...report_viewer_en, ...login_en, ...top_bar_en, ...table_en },
+    fr: { ...report_viewer_fr, ...login_fr, ...top_bar_fr, ...table_fr },
 };
 
 const lightTheme = createMuiTheme({
@@ -292,6 +294,7 @@ const AppContent = () => {
                             <hr />
                             <Box style={{ minHeight: '200px' }}>
                                 <VirtualizedTable
+                                    name="Demo Virtualized Table"
                                     rows={rows}
                                     sortable={true}
                                     columns={[
@@ -308,6 +311,8 @@ const AppContent = () => {
                                             dataKey: 'key3',
                                         },
                                     ]}
+                                    enableExportCSV={true}
+                                    selectedDataKey={['key2', 'key3']}
                                 />
                             </Box>
                             <hr />

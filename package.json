@@ -19,14 +19,15 @@
         "test:watch": "nwb test-react --server"
     },
     "dependencies": {
-        "oidc-client": "^1.10.1",
-        "jwt-decode": "^2.2.0",
-        "react-request-fullscreen": "^1.1.2",
-        "prop-types": "15.7.2",
         "@svgr/webpack": "^5.4.0",
+        "clsx": "^1.0.4",
+        "jwt-decode": "^2.2.0",
         "memoize-one": "^5.1.1",
-        "react-virtualized": "^9.21.2",
-        "clsx": "^1.0.4"
+        "oidc-client": "^1.10.1",
+        "prop-types": "15.7.2",
+        "react-csv-downloader": "^2.7.0",
+        "react-request-fullscreen": "^1.1.2",
+        "react-virtualized": "^9.21.2"
     },
     "peerDependencies": {
         "notistack": "^1.0.1",

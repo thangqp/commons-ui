@@ -38,3 +38,5 @@ export login_en from './components/translations/login-en';
 export login_fr from './components/translations/login-fr';
 export top_bar_en from './components/translations/top-bar-en';
 export top_bar_fr from './components/translations/top-bar-fr';
+export table_en from './components/translations/table-en';
+export table_fr from './components/translations/table-fr';

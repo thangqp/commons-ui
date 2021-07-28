@@ -8,6 +8,10 @@ import TableCell from '@material-ui/core/TableCell';
 import { AutoSizer, Column, Table } from 'react-virtualized';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import memoize from 'memoize-one';
+import GetAppIcon from '@material-ui/icons/GetApp';
+import CsvDownloader from 'react-csv-downloader';
+import IconButton from '@material-ui/core/IconButton';
+import { FormattedMessage } from 'react-intl';
 
 function getTextWidth(text) {
     // re-use canvas object for better performance
@@ -29,6 +33,7 @@ class MuiVirtualizedTable extends React.PureComponent {
     static defaultProps = {
         headerHeight: DEFAULT_HEADER_HEIGHT,
         rowHeight: DEFAULT_ROW_HEIGHT,
+        enableExportCSV: false,
     };
 
     state = {
@@ -323,8 +328,66 @@ class MuiVirtualizedTable extends React.PureComponent {
         this.observer.disconnect();
     }
 
+    getCSVFilename = () => {
+        if (this.props.name && this.props.name.length > 0) {
+            return this.props.name.replace(/\s/g, '_');
+        } else {
+            let filename = '';
+            this.props.columns.forEach((col, idx) => {
+                filename += col.label;
+                if (idx !== this.props.columns.length - 1) filename += '_';
+            });
+            return filename;
+        }
+    };
+
+    getCSVData = () => {
+        let reorderedIndex = this.reorderIndex(
+            this.state.key,
+            this.state.direction,
+            this.props.filter,
+            this.props.rows
+        );
+
+        let csvData = [];
+        reorderedIndex.forEach((index) => {
+            var myobj = {};
+            let sortedRow = this.props.rows[index];
+            this.props.columns.forEach((col) => {
+                if (
+                    this.props.ExportCSVDataKeys !== undefined &&
+                    this.props.ExportCSVDataKeys.find(
+                        (el) => el === col.dataKey
+                    )
+                ) {
+                    myobj[col.dataKey] = sortedRow[col.dataKey];
+                }
+            });
+            csvData.push(myobj);
+        });
+
+        return Promise.resolve(csvData);
+    };
+
+    csvHeaders = memoize((columns, selectedDataKey) => {
+        let tempHeaders = [];
+        columns.forEach((col) => {
+            if (
+                selectedDataKey !== undefined &&
+                selectedDataKey.find((el) => el === col.dataKey)
+            ) {
+                tempHeaders.push({
+                    displayName: col.label,
+                    id: col.dataKey,
+                });
+            }
+        });
+        return tempHeaders;
+    });
+
     render() {
         const {
+            name,
             classes,
             rows,
             columns,
@@ -332,6 +395,7 @@ class MuiVirtualizedTable extends React.PureComponent {
             headerHeight,
             rowCount,
             sortable,
+            enableExportCSV,
             ...tableProps
         } = this.props;
 
@@ -353,15 +417,18 @@ class MuiVirtualizedTable extends React.PureComponent {
             this.props.rows,
             rowGetter
         );
+        const csvHeaders = this.csvHeaders(
+            this.props.columns,
+            this.props.ExportCSVDataKeys
+        );
         return (
-            <AutoSizer>
-                {({ height, width }) => (
-                    <Table
-                        height={height}
-                        width={width}
-                        rowHeight={rowHeight}
-                        gridStyle={{
-                            direction: 'inherit',
+            <>
+                {enableExportCSV && (
+                    <div
+                        style={{
+                            display: 'flex',
+                            justifyContent: 'flex-end',
+                            alignItems: 'center',
                         }}
                         headerHeight={this.state.headerHeight}
                         className={classes.table}
@@ -370,42 +437,72 @@ class MuiVirtualizedTable extends React.PureComponent {
                         rowClassName={this.getRowClassName}
                         rowGetter={({ index }) => rowGetter(index)}
                     >
-                        {columns.map(({ dataKey, ...other }, index) => {
-                            return (
-                                <Column
-                                    key={dataKey}
-                                    headerRenderer={(headerProps) => {
-                                        if (sortable) {
-                                            return this.sortableHeader({
-                                                ...headerProps,
-                                                width: sizes[dataKey],
-                                                columnIndex: index,
-                                                key: { dataKey },
-                                            });
-                                        } else {
-                                            return this.headerRenderer({
-                                                ...headerProps,
-                                                columnIndex: index,
-                                            });
-                                        }
-                                    }}
-                                    className={classes.flexContainer}
-                                    cellRenderer={this.cellRenderer}
-                                    dataKey={dataKey}
-                                    flexGrow={1}
-                                    width={sizes[dataKey]}
-                                    {...other}
-                                />
-                            );
-                        })}
-                    </Table>
+                        <FormattedMessage id="MuiVirtualizedTable/exportCSV" />
+                        <CsvDownloader
+                            datas={this.getCSVData}
+                            columns={csvHeaders}
+                            filename={this.getCSVFilename()}
+                        >
+                            <IconButton aria-label="exportCSVButton">
+                                <GetAppIcon />
+                            </IconButton>
+                        </CsvDownloader>
+                    </div>
                 )}
-            </AutoSizer>
+                <AutoSizer>
+                    {({ height, width }) => (
+                        <Table
+                            height={height}
+                            width={width}
+                            rowHeight={rowHeight}
+                            gridStyle={{
+                                direction: 'inherit',
+                            }}
+                            headerHeight={headerHeight}
+                            className={classes.table}
+                            {...tableProps}
+                            rowCount={reorderedIndex.length}
+                            rowClassName={this.getRowClassName}
+                            rowGetter={({ index }) => rowGetter(index)}
+                        >
+                            {columns.map(({ dataKey, ...other }, index) => {
+                                return (
+                                    <Column
+                                        key={dataKey}
+                                        headerRenderer={(headerProps) => {
+                                            if (sortable) {
+                                                return this.sortableHeader({
+                                                    ...headerProps,
+                                                    width: sizes[dataKey],
+                                                    columnIndex: index,
+                                                    key: { dataKey },
+                                                });
+                                            } else {
+                                                return this.headerRenderer({
+                                                    ...headerProps,
+                                                    columnIndex: index,
+                                                });
+                                            }
+                                        }}
+                                        className={classes.flexContainer}
+                                        cellRenderer={this.cellRenderer}
+                                        dataKey={dataKey}
+                                        flexGrow={1}
+                                        width={sizes[dataKey]}
+                                        {...other}
+                                    />
+                                );
+                            })}
+                        </Table>
+                    )}
+                </AutoSizer>
+            </>
         );
     }
 }
 
 MuiVirtualizedTable.propTypes = {
+    name: PropTypes.string,
     classes: PropTypes.object.isRequired,
     rows: PropTypes.array,
     columns: PropTypes.arrayOf(
@@ -420,6 +517,8 @@ MuiVirtualizedTable.propTypes = {
             fractionDigits: PropTypes.number,
         })
     ).isRequired,
+    enableExportCSV: PropTypes.bool,
+    ExportCSVDataKeys: PropTypes.array,
     sortable: PropTypes.bool,
     headerHeight: PropTypes.number,
     onRowClick: PropTypes.func,
