@@ -168,9 +168,6 @@ class MuiVirtualizedTable extends React.PureComponent {
                 <div
                     style={{
                         minHeight: this.props.headerHeight,
-                        display: 'flex',
-                        alignItems: 'center',
-                        textAlign: 'center',
                     }}
                     ref={(element) => {
                         this._registerHeader(label, element);
@@ -284,9 +281,6 @@ class MuiVirtualizedTable extends React.PureComponent {
                 <div
                     style={{
                         minHeight: this.props.headerHeight,
-                        display: 'flex',
-                        alignItems: 'center',
-                        height: '100%',
                     }}
                     ref={(element) => {
                         this._registerHeader(label, element);
