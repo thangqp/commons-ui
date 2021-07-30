@@ -7,11 +7,36 @@
 
 export default class LogReportItem {
     static SEVERITY = {
-        UNKNOWN: { name: 'UNKNOWN', level: 0, color: 'blue' },
-        INFO: { name: 'INFO', level: 1, color: 'green' },
-        WARN: { name: 'WARN', level: 2, color: 'orange' },
-        ERROR: { name: 'ERROR', level: 3, color: 'red' },
-        FATAL: { name: 'FATAL', level: 4, color: 'purple' },
+        UNKNOWN: {
+            name: 'UNKNOWN',
+            level: 0,
+            colorName: 'cornflowerblue',
+            colorHexCode: '#6495ED',
+        },
+        INFO: {
+            name: 'INFO',
+            level: 1,
+            colorName: 'mediumseagreen',
+            colorHexCode: '#3CB371',
+        },
+        WARN: {
+            name: 'WARN',
+            level: 2,
+            colorName: 'orange',
+            colorHexCode: '#FFA500',
+        },
+        ERROR: {
+            name: 'ERROR',
+            level: 3,
+            colorName: 'crimson',
+            colorHexCode: '#DC143C',
+        },
+        FATAL: {
+            name: 'FATAL',
+            level: 4,
+            colorName: 'mediumorchid',
+            colorHexCode: '#BA55D3',
+        },
     };
 
     static resolveTemplateMessage(templateMessage, templateValues) {
@@ -47,7 +72,11 @@ export default class LogReportItem {
     }
 
     getColorName() {
-        return this.severity.color;
+        return this.severity.colorName;
+    }
+
+    getColorHexCode() {
+        return this.severity.colorHexCode;
     }
 
     initSeverity(jsonSeverity) {
