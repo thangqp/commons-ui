@@ -22,7 +22,7 @@ you need to follow the steps below:
 -   Pull and checkout master on your last commit.
 -   [Tag your last commit](https://semver.org/) : `git tag <tag>` (example: `v0.6.0`)
 -   Push tag : `git push origin <tag>`
--   Checkout the tag in a fresh repo copy : `cd $(mktemp -d) && git clone commons-ui` then `cd commons-ui && git checkout <tag>`
+-   Checkout the tag in a fresh repo copy : `cd $(mktemp -d) && git clone https://github.com/gridsuite/commons-ui.git` then `cd commons-ui && git checkout <tag>`
 -   [Test your package](https://docs.npmjs.com/creating-and-publishing-scoped-public-packages#testing-your-package): `npm install`
 -   [Login on the command line to the npm registry](https://docs.npmjs.com/logging-in-to-an-npm-enterprise-registry-from-the-command-line): `npm login`
 -   [Publish the package](https://docs.npmjs.com/creating-and-publishing-scoped-public-packages#publishing-scoped-public-packages): `npm publish`
