@@ -312,7 +312,7 @@ const AppContent = () => {
                                         },
                                     ]}
                                     enableExportCSV={true}
-                                    selectedDataKey={['key2', 'key3']}
+                                    exportCSVDataKeys={['key2', 'key3']}
                                 />
                             </Box>
                             <hr />
