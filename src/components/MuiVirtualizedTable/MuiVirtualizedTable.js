@@ -171,9 +171,6 @@ class MuiVirtualizedTable extends React.PureComponent {
                 ref={(e) => this._registerObserver(e)}
             >
                 <div
-                    style={{
-                        minHeight: this.props.headerHeight,
-                    }}
                     ref={(element) => {
                         this._registerHeader(label, element);
                     }}
@@ -284,9 +281,6 @@ class MuiVirtualizedTable extends React.PureComponent {
                 ref={(e) => this._registerObserver(e)}
             >
                 <div
-                    style={{
-                        minHeight: this.props.headerHeight,
-                    }}
                     ref={(element) => {
                         this._registerHeader(label, element);
                     }}
@@ -458,7 +452,7 @@ class MuiVirtualizedTable extends React.PureComponent {
                             gridStyle={{
                                 direction: 'inherit',
                             }}
-                            headerHeight={headerHeight}
+                            headerHeight={this.state.headerHeight}
                             className={classes.table}
                             {...tableProps}
                             rowCount={reorderedIndex.length}
