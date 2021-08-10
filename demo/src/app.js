@@ -292,7 +292,7 @@ const AppContent = () => {
                                 </Typography>
                             </Box>
                             <hr />
-                            <Box style={{ minHeight: '200px' }}>
+                            <Box style={{ height: '200px' }}>
                                 <VirtualizedTable
                                     name="Demo Virtualized Table"
                                     rows={rows}
