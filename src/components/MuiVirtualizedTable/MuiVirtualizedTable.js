@@ -12,6 +12,7 @@ import GetAppIcon from '@material-ui/icons/GetApp';
 import CsvDownloader from 'react-csv-downloader';
 import IconButton from '@material-ui/core/IconButton';
 import { FormattedMessage } from 'react-intl';
+import { withStyles } from '@material-ui/core/styles';
 
 function getTextWidth(text) {
     // re-use canvas object for better performance
@@ -28,6 +29,34 @@ function getTextWidth(text) {
 export const DEFAULT_CELL_PADDING = 16;
 export const DEFAULT_HEADER_HEIGHT = 48;
 export const DEFAULT_ROW_HEIGHT = 48;
+
+const defaultStyles = {
+    flexContainer: {
+        display: 'flex',
+        alignItems: 'center',
+        boxSizing: 'border-box',
+    },
+    table: {
+        // temporary right-to-left patch, waiting for
+        // https://github.com/bvaughn/react-virtualized/issues/454
+        '& .ReactVirtualized__Table__headerRow': {
+            flip: false,
+        },
+    },
+    tableRow: {
+        cursor: 'pointer',
+    },
+    tableCell: {
+        flex: 1,
+        padding: DEFAULT_CELL_PADDING + 'px',
+    },
+    noClick: {
+        cursor: 'initial',
+    },
+    header: {
+        fontWeight: 'bold',
+    },
+};
 
 class MuiVirtualizedTable extends React.PureComponent {
     static defaultProps = {
@@ -416,7 +445,13 @@ class MuiVirtualizedTable extends React.PureComponent {
             this.props.ExportCSVDataKeys
         );
         return (
-            <>
+            <div
+                style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    height: '100%',
+                }}
+            >
                 {enableExportCSV && (
                     <div
                         style={{
@@ -443,54 +478,56 @@ class MuiVirtualizedTable extends React.PureComponent {
                         </CsvDownloader>
                     </div>
                 )}
-                <AutoSizer>
-                    {({ height, width }) => (
-                        <Table
-                            height={height}
-                            width={width}
-                            rowHeight={rowHeight}
-                            gridStyle={{
-                                direction: 'inherit',
-                            }}
-                            headerHeight={this.state.headerHeight}
-                            className={classes.table}
-                            {...tableProps}
-                            rowCount={reorderedIndex.length}
-                            rowClassName={this.getRowClassName}
-                            rowGetter={({ index }) => rowGetter(index)}
-                        >
-                            {columns.map(({ dataKey, ...other }, index) => {
-                                return (
-                                    <Column
-                                        key={dataKey}
-                                        headerRenderer={(headerProps) => {
-                                            if (sortable) {
-                                                return this.sortableHeader({
-                                                    ...headerProps,
-                                                    width: sizes[dataKey],
-                                                    columnIndex: index,
-                                                    key: { dataKey },
-                                                });
-                                            } else {
-                                                return this.headerRenderer({
-                                                    ...headerProps,
-                                                    columnIndex: index,
-                                                });
-                                            }
-                                        }}
-                                        className={classes.flexContainer}
-                                        cellRenderer={this.cellRenderer}
-                                        dataKey={dataKey}
-                                        flexGrow={1}
-                                        width={sizes[dataKey]}
-                                        {...other}
-                                    />
-                                );
-                            })}
-                        </Table>
-                    )}
-                </AutoSizer>
-            </>
+                <div style={{ flexGrow: 1 }}>
+                    <AutoSizer>
+                        {({ height, width }) => (
+                            <Table
+                                height={height}
+                                width={width}
+                                rowHeight={rowHeight}
+                                gridStyle={{
+                                    direction: 'inherit',
+                                }}
+                                headerHeight={this.state.headerHeight}
+                                className={classes.table}
+                                {...tableProps}
+                                rowCount={reorderedIndex.length}
+                                rowClassName={this.getRowClassName}
+                                rowGetter={({ index }) => rowGetter(index)}
+                            >
+                                {columns.map(({ dataKey, ...other }, index) => {
+                                    return (
+                                        <Column
+                                            key={dataKey}
+                                            headerRenderer={(headerProps) => {
+                                                if (sortable) {
+                                                    return this.sortableHeader({
+                                                        ...headerProps,
+                                                        width: sizes[dataKey],
+                                                        columnIndex: index,
+                                                        key: { dataKey },
+                                                    });
+                                                } else {
+                                                    return this.headerRenderer({
+                                                        ...headerProps,
+                                                        columnIndex: index,
+                                                    });
+                                                }
+                                            }}
+                                            className={classes.flexContainer}
+                                            cellRenderer={this.cellRenderer}
+                                            dataKey={dataKey}
+                                            flexGrow={1}
+                                            width={sizes[dataKey]}
+                                            {...other}
+                                        />
+                                    );
+                                })}
+                            </Table>
+                        )}
+                    </AutoSizer>
+                </div>
+            </div>
         );
     }
 }
@@ -522,4 +559,4 @@ MuiVirtualizedTable.propTypes = {
     sort: PropTypes.func,
 };
 
-export default MuiVirtualizedTable;
+export default withStyles(defaultStyles)(MuiVirtualizedTable);
