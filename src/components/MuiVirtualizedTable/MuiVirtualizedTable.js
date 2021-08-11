@@ -46,16 +46,20 @@ const defaultStyles = {
     tableRow: {
         cursor: 'pointer',
     },
+    tableRowHover: {},
     tableCell: {
         flex: 1,
         padding: DEFAULT_CELL_PADDING + 'px',
     },
+    tableCellColor: {},
     noClick: {
         cursor: 'initial',
     },
     header: {
         fontWeight: 'bold',
     },
+    rowBackgroundDark: {},
+    rowBackgroundLight: {},
 };
 
 class MuiVirtualizedTable extends React.PureComponent {
@@ -459,12 +463,6 @@ class MuiVirtualizedTable extends React.PureComponent {
                             justifyContent: 'flex-end',
                             alignItems: 'center',
                         }}
-                        headerHeight={this.state.headerHeight}
-                        className={classes.table}
-                        {...tableProps}
-                        rowCount={reorderedIndex.length}
-                        rowClassName={this.getRowClassName}
-                        rowGetter={({ index }) => rowGetter(index)}
                     >
                         <FormattedMessage id="MuiVirtualizedTable/exportCSV" />
                         <CsvDownloader
