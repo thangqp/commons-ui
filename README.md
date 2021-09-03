@@ -11,6 +11,20 @@ If you want to test your library integration with a consumer application my-app 
 to build commons-ui via `npm run build` then change the commons-ui dependency in my-app's package.json from `@gridsuite/commons-ui:'^x.x.x'`
 to `@gridsuite/commons-ui:'file:../path/to/the/commons-ui'` then type `npm install` `npm start`.
 
+NOTE: if you have the following error:
+```
+Module not found: Can't resolve '@svgr/webpack'
+```
+You can try to temporarily regenerate a package-lock.json in the consumer application (`cd my-app/;` `rm -rf node_modules;` `rm package-lock.json;` `npm install;`). Or temporarily add
+"@svgr/webpack" to your consummer application package.json dependencies
+```
+    "dependencies": {
+        "@svgr/webpack": "^4.3.0",
+    ...
+    }
+```
+and then rerun npm install.
+
 #### For integrators
 
 If you want to deploy a new version of commons-ui in the [NPM package registry](https://www.npmjs.com/package/@gridsuite/commons-ui),
