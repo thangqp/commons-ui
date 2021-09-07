@@ -37,6 +37,8 @@ import {
     login_en,
     table_en,
     table_fr,
+    element_chooser_en,
+    element_chooser_fr,
 } from '../../src/index';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
@@ -50,10 +52,31 @@ import MuiVirtualizedTable from '../../src/components/MuiVirtualizedTable';
 import { LOGS_JSON } from './constants';
 
 import ReportViewerDialog from '../../src/components/ReportViewerDialog';
+import TreeViewFinder from '../../src/components/TreeViewFinder';
+
+/* Icons for customization*/
+import FlashOnIcon from '@material-ui/icons/FlashOn';
+import WhatshotIcon from '@material-ui/icons/Whatshot';
+import WavesIcon from '@material-ui/icons/Waves';
+import EcoIcon from '@material-ui/icons/Eco';
+import AcUnitIcon from '@material-ui/icons/AcUnit';
+import FolderOpenIcon from '@material-ui/icons/FolderOpen';
 
 const messages = {
-    en: { ...report_viewer_en, ...login_en, ...top_bar_en, ...table_en },
-    fr: { ...report_viewer_fr, ...login_fr, ...top_bar_fr, ...table_fr },
+    en: {
+        ...report_viewer_en,
+        ...login_en,
+        ...top_bar_en,
+        ...table_en,
+        ...element_chooser_en,
+    },
+    fr: {
+        ...report_viewer_fr,
+        ...login_fr,
+        ...top_bar_fr,
+        ...table_fr,
+        ...element_chooser_fr,
+    },
 };
 
 const lightTheme = createMuiTheme({
@@ -133,7 +156,21 @@ const styles = (theme) => ({
     },
 });
 
+const TreeViewFinderCustomStyles = (theme) => ({
+    icon: {
+        width: '32px',
+        height: '32px',
+    },
+    labelIcon: {
+        backgroundColor: 'green',
+        marginRight: theme.spacing(1),
+    },
+});
+
 const VirtualizedTable = withStyles(styles)(MuiVirtualizedTable);
+const CustomTreeViewFinder = withStyles(TreeViewFinderCustomStyles)(
+    TreeViewFinder
+);
 
 const MyButton = (props) => {
     const classes = useStyles();
@@ -171,6 +208,26 @@ const AppContent = () => {
     const [computedLanguage, setComputedLanguage] = useState(LANG_ENGLISH);
 
     const [openReportViewer, setOpenReportViewer] = React.useState(false);
+    const [
+        openChooseElementDialog,
+        setOpenChooseElementDialog,
+    ] = React.useState(false);
+    const [
+        openChooseElementFlatListDialog,
+        setOpenChooseElementFlatListDialog,
+    ] = React.useState(false);
+    const [
+        openChooseElementNotOnlyLeavesDialog,
+        setOpenChooseElementNotOnlyLeavesDialog,
+    ] = React.useState(false);
+    const [
+        openChooseElementMultiselectDialog,
+        setOpenChooseElementMultiselectDialog,
+    ] = React.useState(false);
+    const [
+        openChooseElementMultiselectNotOnlyLeavesDialog,
+        setOpenChooseElementMultiselectNotOnlyLeavesDialog,
+    ] = React.useState(false);
 
     // Can't use lazy initializer because useRouteMatch is a hook
     const [initialMatchSilentRenewCallbackUrl] = useState(
@@ -179,6 +236,9 @@ const AppContent = () => {
             exact: true,
         })
     );
+
+    const [dictState, setDictState] = useState([]);
+    const [flatDictState, setFlatDictState] = useState([]);
 
     const dispatch = (e) => {
         if (e.type === 'USER') {
@@ -228,6 +288,179 @@ const AppContent = () => {
         { key1: 'row3_val1', key2: 'row3_val2', key3: 'row3_val3' },
         { key1: 'row4_val1', key2: 'row4_val2', key3: 'row4_val3' },
     ];
+
+    const PokemonDictionary = [
+        {
+            id: 'D1',
+            name: 'Team',
+            icon: <FolderOpenIcon />,
+            children: [
+                {
+                    id: '1',
+                    parentId: 'D1',
+                    name: 'Pikachu',
+                    type: 'Electric',
+                    power: '23',
+                    icon: <FlashOnIcon />,
+                },
+                {
+                    id: '2',
+                    parentId: 'D1',
+                    name: 'Spectrum',
+                    type: 'Spectre',
+                    power: '51',
+                },
+                {
+                    id: '3',
+                    parentId: 'D1',
+                    name: 'Roucoups',
+                    type: 'Vol',
+                    power: '42',
+                },
+                {
+                    id: '4',
+                    parentId: 'D1',
+                    name: 'Lamantin',
+                    type: 'Glace',
+                    power: '127',
+                    icon: <AcUnitIcon />,
+                },
+                {
+                    id: '5',
+                    parentId: 'D1',
+                    name: 'Mew',
+                    type: 'Psy',
+                    power: '134',
+                },
+                {
+                    id: '6',
+                    parentId: 'D1',
+                    name: 'Machoc',
+                    type: 'Combat',
+                    power: '64',
+                },
+            ],
+        },
+        {
+            id: 'D2',
+            name: 'Reserve',
+            icon: <FolderOpenIcon />,
+            children: [
+                {
+                    id: '7',
+                    parentId: 'D2',
+                    name: 'Dracofeu',
+                    type: 'Feu',
+                    power: '84',
+                    icon: <WhatshotIcon />,
+                },
+                {
+                    id: '8',
+                    parentId: 'D2',
+                    name: 'Florizard',
+                    type: 'Plante',
+                    power: '72',
+                    icon: <EcoIcon />,
+                },
+                {
+                    id: '9',
+                    parentId: 'D2',
+                    name: 'Tortank',
+                    type: 'Eau',
+                    power: '78',
+                    icon: <WavesIcon />,
+                },
+                {
+                    id: '10',
+                    parentId: 'D2',
+                    name: 'Artikodin',
+                    type: 'Glace',
+                    power: '133',
+                    icon: <AcUnitIcon />,
+                },
+            ],
+        },
+    ];
+
+    const PokemonDictionaryFlat = [
+        {
+            id: '1',
+            name: 'Pikachu',
+            type: 'Electric',
+            power: '23',
+            icon: <FlashOnIcon />,
+        },
+        { id: '2', name: 'Spectrum', type: 'Spectre', power: '51' },
+        { id: '3', name: 'Roucoups', type: 'Vol', power: '42' },
+        {
+            id: '4',
+            name: 'Lamantin',
+            type: 'Glace',
+            power: '127',
+            icon: <AcUnitIcon />,
+        },
+        { id: '5', name: 'Mew', type: 'Psy', power: '134' },
+        { id: '6', name: 'Machoc', type: 'Combat', power: '64' },
+    ];
+
+    function getPokemonDictionary(nodeId) {
+        let team = [];
+        if (!nodeId) team = PokemonDictionary;
+        else
+            team = [
+                ...PokemonDictionary,
+                {
+                    id: 'D3',
+                    name: 'NEW',
+                    icon: <FolderOpenIcon />,
+                    children: [
+                        {
+                            id: '11',
+                            parentId: 'D3',
+                            name: 'Raichu',
+                            type: 'Electric',
+                            power: '83',
+                            icon: <FlashOnIcon />,
+                        },
+                        {
+                            id: '12',
+                            parentId: 'D3',
+                            name: 'Papillusion',
+                            type: 'Insect',
+                            power: '79',
+                        },
+                    ],
+                },
+            ];
+
+        setDictState(team);
+    }
+
+    function getPokemonDictionaryFlat(nodeId) {
+        let team = [];
+        if (!nodeId) team = PokemonDictionaryFlat;
+        else
+            team = [
+                ...PokemonDictionaryFlat,
+                {
+                    id: '11',
+                    name: 'Raichu (NEW)',
+                    type: 'Electric',
+                    power: '83',
+                },
+                {
+                    id: '12',
+                    name: 'Papillusion (NEW)',
+                    type: 'Insect',
+                    power: '79',
+                },
+            ];
+
+        setFlatDictState(team);
+    }
+
+    const [elementsSelected, setElementsSelected] = useState([]);
+    const elementsExpanded = ['4', '11'];
 
     useEffect(() => {
         initializeAuthenticationDev(
@@ -342,6 +575,136 @@ const AppContent = () => {
                         onClose={() => setOpenReportViewer(false)}
                         jsonReport={LOGS_JSON}
                     />
+                    <div
+                        style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'flex-start',
+                        }}
+                    >
+                        <Button
+                            variant="contained"
+                            style={{ float: 'left', margin: '5px' }}
+                            onClick={() => setOpenChooseElementDialog(true)}
+                        >
+                            Choose one Element in tree ...
+                        </Button>
+                        <TreeViewFinder
+                            title={
+                                '(Default Style TreeViewFinder) - Tree data Example : '
+                            }
+                            open={openChooseElementDialog}
+                            onClose={(rows) => {
+                                setOpenChooseElementDialog(false);
+                                console.log('Elements chosen : ', rows);
+                                setElementsSelected(rows);
+                            }}
+                            data={dictState}
+                            selected_init={elementsSelected}
+                            // expanded_init={elementsExpanded}
+                            onDataUpdate={getPokemonDictionary}
+                            // onlyLeaves={false}
+                        />
+                        <Button
+                            variant="contained"
+                            style={{ float: 'left', margin: '5px' }}
+                            onClick={() =>
+                                setOpenChooseElementFlatListDialog(true)
+                            }
+                        >
+                            Choose ont Element in Flat List ...
+                        </Button>
+                        <CustomTreeViewFinder
+                            title={'Flat list Example : '}
+                            open={openChooseElementFlatListDialog}
+                            onClose={(rows) => {
+                                setOpenChooseElementFlatListDialog(false);
+                                console.log('Elements chosen : ', rows);
+                                setElementsSelected(rows);
+                            }}
+                            data={flatDictState}
+                            selected_init={elementsSelected}
+                            expanded_init={elementsExpanded}
+                            onDataUpdate={getPokemonDictionaryFlat}
+                        />
+                        <Button
+                            variant="contained"
+                            style={{ float: 'left', margin: '5px' }}
+                            onClick={() =>
+                                setOpenChooseElementNotOnlyLeavesDialog(true)
+                            }
+                        >
+                            Choose one Element (not only Leaves) ...
+                        </Button>
+                        <CustomTreeViewFinder
+                            title={'Not Only Leaves Example : '}
+                            open={openChooseElementNotOnlyLeavesDialog}
+                            onClose={(rows) => {
+                                setOpenChooseElementNotOnlyLeavesDialog(false);
+                                console.log('Elements chosen : ', rows);
+                                setElementsSelected(rows);
+                            }}
+                            data={dictState}
+                            selected_init={elementsSelected}
+                            expanded_init={elementsExpanded}
+                            onDataUpdate={getPokemonDictionary}
+                            onlyLeaves={false}
+                            validationButtonText={'Move To this location'}
+                        />
+                        <Button
+                            variant="contained"
+                            style={{ float: 'left', margin: '5px' }}
+                            onClick={() =>
+                                setOpenChooseElementMultiselectDialog(true)
+                            }
+                        >
+                            Choose Multiple Elements ...
+                        </Button>
+                        <CustomTreeViewFinder
+                            title={'Multiselect Example : '}
+                            open={openChooseElementMultiselectDialog}
+                            onClose={(rows) => {
+                                setOpenChooseElementMultiselectDialog(false);
+                                console.log('Elements chosen : ', rows);
+                                setElementsSelected(rows);
+                            }}
+                            data={dictState}
+                            selected_init={elementsSelected}
+                            expanded_init={elementsExpanded}
+                            onDataUpdate={getPokemonDictionary}
+                            multiSelect={true}
+                        />
+                        <Button
+                            variant="contained"
+                            style={{ float: 'left', margin: '5px' }}
+                            onClick={() =>
+                                setOpenChooseElementMultiselectNotOnlyLeavesDialog(
+                                    true
+                                )
+                            }
+                        >
+                            Choose Multiple Elements (not only Leaves)...
+                        </Button>
+                        <CustomTreeViewFinder
+                            title={'Multiselect Example : '}
+                            open={
+                                openChooseElementMultiselectNotOnlyLeavesDialog
+                            }
+                            onClose={(rows) => {
+                                setOpenChooseElementMultiselectNotOnlyLeavesDialog(
+                                    false
+                                );
+                                console.log('Elements chosen : ', rows);
+                                setElementsSelected(rows);
+                            }}
+                            data={dictState}
+                            selected_init={elementsSelected}
+                            expanded_init={elementsExpanded}
+                            onDataUpdate={getPokemonDictionary}
+                            multiSelect={true}
+                            onlyLeaves={false}
+                        />
+                    </div>
                 </SnackbarProvider>
             </ThemeProvider>
         </IntlProvider>
