@@ -62,7 +62,7 @@ const defaultStyles = {
  * - open*: dialog state boolean handler
  * - data*: data to feed the component.
  *         Must respect this format:
- *         [{id*: String, name*: String (, children: [], icon: JSX)}, ...]
+ *         [{id*: String, parentId*: String, name*: String (, children: [], icon: JSX)}, ...]
  *
  * - selected_init: selected items at initialization (default: [])
  * - expanded_init: ids of the expanded items at initialization, parents will be expanded too (default: [])
