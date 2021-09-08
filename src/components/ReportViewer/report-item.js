@@ -22,9 +22,10 @@ const useReportItemStyles = makeStyles((theme) => ({
             backgroundColor: `var(--tree-view-bg-color, ${theme.palette.grey[400]})`,
             color: 'var(--tree-view-color)',
         },
-        '&:focus > $content $label, &:hover > $content $label, &$selected > $content $label': {
-            backgroundColor: 'transparent',
-        },
+        '&:focus > $content $label, &:hover > $content $label, &$selected > $content $label':
+            {
+                backgroundColor: 'transparent',
+            },
     },
     content: {
         color: theme.palette.text.secondary,
