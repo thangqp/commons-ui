@@ -206,10 +206,8 @@ const AppContent = () => {
     const [computedLanguage, setComputedLanguage] = useState(LANG_ENGLISH);
 
     const [openReportViewer, setOpenReportViewer] = React.useState(false);
-    const [
-        openChooseElementDialog,
-        setOpenChooseElementDialog,
-    ] = React.useState(false);
+    const [openChooseElementDialog, setOpenChooseElementDialog] =
+        React.useState(false);
     const [
         openChooseElementFlatListDialog,
         setOpenChooseElementFlatListDialog,
