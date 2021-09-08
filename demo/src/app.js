@@ -53,14 +53,12 @@ import { LOGS_JSON } from './constants';
 
 import ReportViewerDialog from '../../src/components/ReportViewerDialog';
 import TreeViewFinder from '../../src/components/TreeViewFinder';
-
-/* Icons for customization*/
-import FlashOnIcon from '@material-ui/icons/FlashOn';
-import WhatshotIcon from '@material-ui/icons/Whatshot';
-import WavesIcon from '@material-ui/icons/Waves';
-import EcoIcon from '@material-ui/icons/Eco';
-import AcUnitIcon from '@material-ui/icons/AcUnit';
-import FolderOpenIcon from '@material-ui/icons/FolderOpen';
+import {
+    testDataDictionary,
+    testDataDictionaryFlat,
+    getTestDataDictionary,
+    getTestDataDictionaryFlat,
+} from './testData';
 
 const messages = {
     en: {
@@ -237,8 +235,15 @@ const AppContent = () => {
         })
     );
 
-    const [dictState, setDictState] = useState([]);
-    const [flatDictState, setFlatDictState] = useState([]);
+    const [dictState, setDictState] = useState(testDataDictionary);
+    const [flatDictState, setFlatDictState] = useState(testDataDictionaryFlat);
+
+    const testDataDictionaryCallback = (nodeId) => {
+        setDictState(getTestDataDictionary(nodeId));
+    };
+    const testDataDictionaryFlatCallback = (nodeId) => {
+        setFlatDictState(getTestDataDictionaryFlat(nodeId));
+    };
 
     const dispatch = (e) => {
         if (e.type === 'USER') {
@@ -288,176 +293,6 @@ const AppContent = () => {
         { key1: 'row3_val1', key2: 'row3_val2', key3: 'row3_val3' },
         { key1: 'row4_val1', key2: 'row4_val2', key3: 'row4_val3' },
     ];
-
-    const PokemonDictionary = [
-        {
-            id: 'D1',
-            name: 'Team',
-            icon: <FolderOpenIcon />,
-            children: [
-                {
-                    id: '1',
-                    parentId: 'D1',
-                    name: 'Pikachu',
-                    type: 'Electric',
-                    power: '23',
-                    icon: <FlashOnIcon />,
-                },
-                {
-                    id: '2',
-                    parentId: 'D1',
-                    name: 'Spectrum',
-                    type: 'Spectre',
-                    power: '51',
-                },
-                {
-                    id: '3',
-                    parentId: 'D1',
-                    name: 'Roucoups',
-                    type: 'Vol',
-                    power: '42',
-                },
-                {
-                    id: '4',
-                    parentId: 'D1',
-                    name: 'Lamantin',
-                    type: 'Glace',
-                    power: '127',
-                    icon: <AcUnitIcon />,
-                },
-                {
-                    id: '5',
-                    parentId: 'D1',
-                    name: 'Mew',
-                    type: 'Psy',
-                    power: '134',
-                },
-                {
-                    id: '6',
-                    parentId: 'D1',
-                    name: 'Machoc',
-                    type: 'Combat',
-                    power: '64',
-                },
-            ],
-        },
-        {
-            id: 'D2',
-            name: 'Reserve',
-            icon: <FolderOpenIcon />,
-            children: [
-                {
-                    id: '7',
-                    parentId: 'D2',
-                    name: 'Dracofeu',
-                    type: 'Feu',
-                    power: '84',
-                    icon: <WhatshotIcon />,
-                },
-                {
-                    id: '8',
-                    parentId: 'D2',
-                    name: 'Florizard',
-                    type: 'Plante',
-                    power: '72',
-                    icon: <EcoIcon />,
-                },
-                {
-                    id: '9',
-                    parentId: 'D2',
-                    name: 'Tortank',
-                    type: 'Eau',
-                    power: '78',
-                    icon: <WavesIcon />,
-                },
-                {
-                    id: '10',
-                    parentId: 'D2',
-                    name: 'Artikodin',
-                    type: 'Glace',
-                    power: '133',
-                    icon: <AcUnitIcon />,
-                },
-            ],
-        },
-    ];
-
-    const PokemonDictionaryFlat = [
-        {
-            id: '1',
-            name: 'Pikachu',
-            type: 'Electric',
-            power: '23',
-            icon: <FlashOnIcon />,
-        },
-        { id: '2', name: 'Spectrum', type: 'Spectre', power: '51' },
-        { id: '3', name: 'Roucoups', type: 'Vol', power: '42' },
-        {
-            id: '4',
-            name: 'Lamantin',
-            type: 'Glace',
-            power: '127',
-            icon: <AcUnitIcon />,
-        },
-        { id: '5', name: 'Mew', type: 'Psy', power: '134' },
-        { id: '6', name: 'Machoc', type: 'Combat', power: '64' },
-    ];
-
-    function getPokemonDictionary(nodeId) {
-        let team = [];
-        if (!nodeId) team = PokemonDictionary;
-        else
-            team = [
-                ...PokemonDictionary,
-                {
-                    id: 'D3',
-                    name: 'NEW',
-                    icon: <FolderOpenIcon />,
-                    children: [
-                        {
-                            id: '11',
-                            parentId: 'D3',
-                            name: 'Raichu',
-                            type: 'Electric',
-                            power: '83',
-                            icon: <FlashOnIcon />,
-                        },
-                        {
-                            id: '12',
-                            parentId: 'D3',
-                            name: 'Papillusion',
-                            type: 'Insect',
-                            power: '79',
-                        },
-                    ],
-                },
-            ];
-
-        setDictState(team);
-    }
-
-    function getPokemonDictionaryFlat(nodeId) {
-        let team = [];
-        if (!nodeId) team = PokemonDictionaryFlat;
-        else
-            team = [
-                ...PokemonDictionaryFlat,
-                {
-                    id: '11',
-                    name: 'Raichu (NEW)',
-                    type: 'Electric',
-                    power: '83',
-                },
-                {
-                    id: '12',
-                    name: 'Papillusion (NEW)',
-                    type: 'Insect',
-                    power: '79',
-                },
-            ];
-
-        setFlatDictState(team);
-    }
 
     const [elementsSelected, setElementsSelected] = useState([]);
     const elementsExpanded = ['4', '11'];
@@ -587,12 +422,9 @@ const AppContent = () => {
                             style={{ float: 'left', margin: '5px' }}
                             onClick={() => setOpenChooseElementDialog(true)}
                         >
-                            Choose one Element in tree ...
+                            Default TreeViewFinder - Choose one Element ...
                         </Button>
                         <TreeViewFinder
-                            title={
-                                '(Default Style TreeViewFinder) - Tree data Example : '
-                            }
                             open={openChooseElementDialog}
                             onClose={(rows) => {
                                 setOpenChooseElementDialog(false);
@@ -600,10 +432,7 @@ const AppContent = () => {
                                 setElementsSelected(rows);
                             }}
                             data={dictState}
-                            selected_init={elementsSelected}
-                            // expanded_init={elementsExpanded}
-                            onDataUpdate={getPokemonDictionary}
-                            // onlyLeaves={false}
+                            onDataUpdate={testDataDictionaryCallback}
                         />
                         <Button
                             variant="contained"
@@ -625,7 +454,7 @@ const AppContent = () => {
                             data={flatDictState}
                             selected_init={elementsSelected}
                             expanded_init={elementsExpanded}
-                            onDataUpdate={getPokemonDictionaryFlat}
+                            onDataUpdate={testDataDictionaryFlatCallback}
                         />
                         <Button
                             variant="contained"
@@ -647,7 +476,7 @@ const AppContent = () => {
                             data={dictState}
                             selected_init={elementsSelected}
                             expanded_init={elementsExpanded}
-                            onDataUpdate={getPokemonDictionary}
+                            onDataUpdate={testDataDictionaryCallback}
                             onlyLeaves={false}
                             validationButtonText={'Move To this location'}
                         />
@@ -671,7 +500,7 @@ const AppContent = () => {
                             data={dictState}
                             selected_init={elementsSelected}
                             expanded_init={elementsExpanded}
-                            onDataUpdate={getPokemonDictionary}
+                            onDataUpdate={testDataDictionaryCallback}
                             multiSelect={true}
                         />
                         <Button
@@ -700,7 +529,7 @@ const AppContent = () => {
                             data={dictState}
                             selected_init={elementsSelected}
                             expanded_init={elementsExpanded}
-                            onDataUpdate={getPokemonDictionary}
+                            onDataUpdate={testDataDictionaryCallback}
                             multiSelect={true}
                             onlyLeaves={false}
                         />
