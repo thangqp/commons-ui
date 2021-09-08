@@ -49,28 +49,36 @@ const defaultStyles = {
 };
 
 /**
+ * This callback type is called `onDataUpdateCallback` and is displayed as a global symbol.
+ *
+ * @callback onDataUpdateCallback
+ * @param {string} nodeId The id of the node clicked
+ */
+
+/**
  * TreeViewFinder documentation :
  * Component to choose elements in a flat list or a Tree data structure
  * It is flexible and allow controlled props to let Parent component manage
  * data.
  *
- * *= mandatory
+ * *= mandatory {String} {EventListener}
  *
- * props :
- * - classes: CSS classes, please use withStyles API from MaterialUI
- * - title: Title of the Dialog
- * - open*: dialog state boolean handler
- * - data*: data to feed the component.
- *         Must respect this format:
- *         [{id*: String, parentId*: String, name*: String (, children: [], icon: JSX)}, ...]
- *
- * - selected_init: selected items at initialization (default: [])
- * - expanded_init: ids of the expanded items at initialization, parents will be expanded too (default: [])
- * - onClose: onClose callback to call when closing dialog
- * - onDataUpdate: callback to update data prop when navigating into Tree
- * - validationButtonText: Customized Validation Button text (default: Add N Elements)
- * - onlyLeaves: Allow/Forbid selection only on leaves (default: true)
- * - multiSelect: Allow/Forbid multiselection on Tree (default: false)
+ * @param {Object}          classes - CSS classes, please use withStyles API from MaterialUI
+ * @param {String}          [title] - Title of the Dialog
+ * @param {Boolean}         open - dialog state boolean handler
+ * @param {Object[]}        data - data to feed the component.
+ * @param {String}          data[].id - Uuid of the object in Tree
+ * @param {String}          data[].parentId - Uuid of the parent node in Tree
+ * @param {String}          data[].name - name of the node to print in Tree
+ * @param {Object[]}        [data[].children] - array of children nodes
+ * @param {String}          [data[].icon] - JSX of an icon to display next a node
+ * @param {Array}           [selected_init=[]] - selected items at initialization
+ * @param {Array}           [expanded_init=[]] - ids of the expanded items at initialization, parents will be expanded too
+ * @param {EventListener}   onClose: onClose callback to call when closing dialog
+ * @callback                onDataUpdate - callback to update data prop when navigating into Tree
+ * @param {String}          validationButtonText - Customized Validation Button text (default: Add N Elements)
+ * @param {Boolean}         [onlyLeaves=true] - Allow/Forbid selection only on leaves
+ * @param {Boolean}         [multiSelect=false] - Allow/Forbid multiselection on Tree
  */
 const TreeViewFinder = (props) => {
     const intl = useIntl();
@@ -121,21 +129,19 @@ const TreeViewFinder = (props) => {
     }
 
     /* find a node in data struct by nodeId */
-    const recursiveFind = useCallback((node, nodeId) => {
+    const recursiveFind = useCallback((nodeOrNodes, nodeId) => {
         let res = null;
-        if (Array.isArray(node)) {
-            node.every((c) => {
+        if (Array.isArray(nodeOrNodes)) {
+            nodeOrNodes.every((c) => {
                 if (c.id === nodeId) res = c;
                 else res = recursiveFind(c, nodeId);
-                if (res) return false;
-                else return true;
+                return !res;
             });
-        } else if (node.children && node.children.length > 0) {
-            node.children.every((c) => {
+        } else if (nodeOrNodes.children && nodeOrNodes.children.length > 0) {
+            nodeOrNodes.children.every((c) => {
                 if (c.id === nodeId) res = c;
                 else res = recursiveFind(c, nodeId);
-                if (res) return false;
-                else return true;
+                return !res;
             });
         }
         return res;
@@ -172,7 +178,7 @@ const TreeViewFinder = (props) => {
     }, [expanded_init, expandParents]);
 
     /* Manage treeItem folding */
-    const removeElement = useCallback(
+    const removeFromExpanded = useCallback(
         (nodeId) => {
             let expandedCopy = [...expandedRef.current];
             for (let i = 0; i < expandedCopy.length; i++) {
@@ -185,7 +191,7 @@ const TreeViewFinder = (props) => {
         [expandedRef]
     );
 
-    const addElement = useCallback(
+    const addToExpanded = useCallback(
         (nodeId) => {
             setExpanded([...expandedRef.current, nodeId]);
         },
@@ -195,12 +201,12 @@ const TreeViewFinder = (props) => {
     const toggleDirectory = useCallback(
         (nodeId) => {
             if (expandedRef.current.includes(nodeId)) {
-                removeElement(nodeId);
+                removeFromExpanded(nodeId);
             } else {
-                addElement(nodeId);
+                addToExpanded(nodeId);
             }
         },
-        [addElement, removeElement, expandedRef]
+        [addToExpanded, removeFromExpanded, expandedRef]
     );
 
     /* User Interaction management */
@@ -251,7 +257,7 @@ const TreeViewFinder = (props) => {
         }
     };
 
-    /* Render */
+    /* Render utilities */
     const getValidationButtonText = () => {
         if (validationButtonText) return validationButtonText;
         else
@@ -323,10 +329,20 @@ const TreeViewFinder = (props) => {
                     paper: classes.dialogPaper,
                 }}
             >
-                <DialogTitle id="TreeViewFindertitle">{title}</DialogTitle>
+                <DialogTitle id="TreeViewFindertitle">
+                    {title
+                        ? title
+                        : intl.formatMessage(
+                              { id: 'element_chooser/finderTitle' },
+                              { multiselect: multiSelect }
+                          )}
+                </DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        <FormattedMessage id="element_chooser/contentText" />
+                        {intl.formatMessage(
+                            { id: 'element_chooser/contentText' },
+                            { multiselect: multiSelect }
+                        )}
                     </DialogContentText>
 
                     <TreeView
