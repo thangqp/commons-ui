@@ -7,7 +7,7 @@
 
 import LogReportItem from './log-report-item';
 
-const uuid4 = require('uuid/v4');
+import { v4 as uuid4 } from 'uuid';
 
 export default class LogReport {
     constructor(jsonReporter) {

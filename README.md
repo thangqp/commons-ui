@@ -12,17 +12,21 @@ to build commons-ui via `npm run build` then change the commons-ui dependency in
 to `@gridsuite/commons-ui:'file:../path/to/the/commons-ui'` then type `npm install` `npm start`.
 
 NOTE: if you have the following error:
+
 ```
 Module not found: Can't resolve '@svgr/webpack'
 ```
+
 You can try to temporarily regenerate a package-lock.json in the consumer application (`cd my-app/;` `rm -rf node_modules;` `rm package-lock.json;` `npm install;`). Or temporarily add
 "@svgr/webpack" to your consummer application package.json dependencies
+
 ```
     "dependencies": {
         "@svgr/webpack": "^4.3.0",
     ...
     }
 ```
+
 and then rerun npm install.
 
 #### For integrators
