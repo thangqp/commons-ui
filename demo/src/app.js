@@ -11,7 +11,7 @@ import TopBar from '../../src/components/TopBar';
 import SnackbarProvider from '../../src/components/SnackbarProvider';
 
 import {
-    createMuiTheme,
+    createTheme,
     makeStyles,
     ThemeProvider,
     withStyles,
@@ -77,13 +77,13 @@ const messages = {
     },
 };
 
-const lightTheme = createMuiTheme({
+const lightTheme = createTheme({
     palette: {
         type: 'light',
     },
 });
 
-const darkTheme = createMuiTheme({
+const darkTheme = createTheme({
     palette: {
         type: 'dark',
     },
