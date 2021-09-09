@@ -212,21 +212,21 @@ const TreeViewFinder = (props) => {
     );
 
     /* User Interaction management */
-    function handleLabelClick(node, toggle) {
+    const handleLabelClick = (node, toggle) => {
         onDataUpdate(node.id);
 
         if (toggle) {
             // update fold status of item
             toggleDirectory(node.id);
         }
-    }
+    };
 
-    function handleIconClick(nodeId) {
+    const handlExpandClick = (nodeId) => {
         if (!expandedRef.current.includes(nodeId)) {
             onDataUpdate(nodeId);
         }
         toggleDirectory(nodeId);
-    }
+    };
 
     const handleNodeSelect = (e, values) => {
         if (multiSelect) {
@@ -300,7 +300,8 @@ const TreeViewFinder = (props) => {
                     </div>
                 }
                 onIconClick={(event) => {
-                    handleIconClick(node.id);
+                    // event when expand icon (Chevron) is clicked not the Label icon
+                    handlExpandClick(node.id);
                     event.stopPropagation();
                 }}
                 onLabelClick={() => {
