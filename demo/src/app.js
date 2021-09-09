@@ -451,7 +451,6 @@ const AppContent = () => {
                             }}
                             data={flatDictState}
                             selected_init={elementsSelected}
-                            expanded_init={elementsExpanded}
                             onDataUpdate={testDataDictionaryFlatCallback}
                         />
                         <Button
