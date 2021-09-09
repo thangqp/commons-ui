@@ -61,8 +61,6 @@ const defaultStyles = {
  * It is flexible and allow controlled props to let Parent component manage
  * data.
  *
- * *= mandatory {String} {EventListener}
- *
  * @param {Object}          classes - CSS classes, please use withStyles API from MaterialUI
  * @param {String}          [title] - Title of the Dialog
  * @param {Boolean}         open - dialog state boolean handler
@@ -147,7 +145,7 @@ const TreeViewFinder = (props) => {
         return res;
     }, []);
 
-    /* insure parent nodes of a given node are all in expanded state */
+    /* Ensure parent nodes of a given node are all in expanded state */
     const expandParents = useCallback(
         (expanded_init) => {
             if (expanded_init) {
