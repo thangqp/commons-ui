@@ -122,9 +122,13 @@ const TreeViewFinder = (props) => {
     }, [selected_init]);
 
     /* Utilities */
-    function isLeaf(node) {
-        return onlyLeaves ? !node.children || node.children.length === 0 : true; // otherwise everything is selectable
-    }
+    const isSelectable = (node) => {
+        return onlyLeaves ? isLeaf(node) : true; // otherwise everything is selectable
+    };
+
+    const isLeaf = (node) => {
+        return node && (!node.children || node.children.length === 0);
+    };
 
     /* find a node in data struct by nodeId */
     const recursiveFind = useCallback((nodeOrNodes, nodeId) => {
@@ -231,13 +235,15 @@ const TreeViewFinder = (props) => {
                 if (selectedNodes[0].id === values[0]) setSelectedNodes([]);
                 else {
                     let newNode = recursiveFind(dataRef.current, values[0]);
-                    if (newNode && isLeaf(newNode)) setSelectedNodes([newNode]);
+                    if (newNode && isSelectable(newNode))
+                        setSelectedNodes([newNode]);
                 }
             } else {
                 let newSelectedNodes = [];
                 values.forEach((v) => {
                     let itemFound = recursiveFind(dataRef.current, v);
-                    if (isLeaf(itemFound)) newSelectedNodes.push(itemFound);
+                    if (isSelectable(itemFound))
+                        newSelectedNodes.push(itemFound);
                 });
 
                 if (newSelectedNodes.length > 0)
@@ -249,7 +255,7 @@ const TreeViewFinder = (props) => {
                 setSelectedNodes([]);
             else {
                 let foundNode = recursiveFind(dataRef.current, values);
-                if (foundNode && isLeaf(foundNode))
+                if (foundNode && isSelectable(foundNode))
                     setSelectedNodes([foundNode]);
             }
         }
@@ -262,8 +268,7 @@ const TreeViewFinder = (props) => {
             return intl.formatMessage(
                 { id: 'element_chooser/addElementsValidation' },
                 {
-                    nbElements: selectedNodes.filter((node) => isLeaf(node))
-                        .length,
+                    nbElements: selectedNodes.length,
                 }
             );
     };
@@ -271,7 +276,7 @@ const TreeViewFinder = (props) => {
     const getNodeIcon = (node) => {
         if (!node) return null;
 
-        if (isLeaf(node) && selectedNodes.find((sn) => sn.id === node.id))
+        if (isSelectable(node) && selectedNodes.find((sn) => sn.id === node.id))
             return <CheckIcon className={classes.labelIcon} />;
         else if (node.icon)
             return <div className={classes.labelIcon}>{node.icon}</div>;
@@ -375,15 +380,10 @@ const TreeViewFinder = (props) => {
                         variant="contained"
                         style={{ float: 'left', margin: '5px' }}
                         onClick={() => {
-                            onClose(
-                                selectedNodes.filter((node) => isLeaf(node))
-                            );
+                            onClose(selectedNodes);
                             setSelectedNodes([]);
                         }}
-                        disabled={
-                            selectedNodes.filter((node) => isLeaf(node))
-                                .length === 0
-                        }
+                        disabled={selectedNodes.length === 0}
                     >
                         {getValidationButtonText()}
                     </Button>
