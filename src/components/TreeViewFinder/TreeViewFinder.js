@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { useState, useRef, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 
@@ -27,7 +27,7 @@ import CheckIcon from '@material-ui/icons/Check';
 
 const defaultStyles = {
     dialogPaper: {
-        minWidth: '30%',
+        minWidth: '50%',
     },
     labelRoot: {
         display: 'flex',
@@ -49,9 +49,9 @@ const defaultStyles = {
 };
 
 /**
- * This callback type is called `onDataUpdateCallback` and is displayed as a global symbol.
+ * This callback type is called `onTreeBrowseCallback` and is displayed as a global symbol.
  *
- * @callback onDataUpdateCallback
+ * @callback onTreeBrowseCallback
  * @param {string} nodeId The id of the node clicked
  */
 
@@ -63,20 +63,20 @@ const defaultStyles = {
  *
  * @param {Object}          classes - CSS classes, please use withStyles API from MaterialUI
  * @param {String}          [title] - Title of the Dialog
- * @param {Boolean}         open - dialog state boolean handler
- * @param {Object[]}        data - data to feed the component.
+ * @param {Boolean}         open - dialog state boolean handler (Controlled)
+ * @param {EventListener}   onClose - onClose callback to call when closing dialog
+ * @param {Object[]}        data - data to feed the component (Controlled).
  * @param {String}          data[].id - Uuid of the object in Tree
  * @param {String}          data[].parentId - Uuid of the parent node in Tree
  * @param {String}          data[].name - name of the node to print in Tree
  * @param {Object[]}        [data[].children] - array of children nodes
  * @param {String}          [data[].icon] - JSX of an icon to display next a node
- * @param {Array}           [selected_init=[]] - selected items at initialization
- * @param {Array}           [expanded_init=[]] - ids of the expanded items at initialization, parents will be expanded too
- * @param {EventListener}   onClose: onClose callback to call when closing dialog
- * @callback                onDataUpdate - callback to update data prop when navigating into Tree
- * @param {String}          validationButtonText - Customized Validation Button text (default: Add N Elements)
+ * @callback                onTreeBrowse - callback to update data prop when walk into Tree
+ * @param {Array}           [defaultSelected=[]] - selected items at mount (Uncontrolled)
+ * @param {Array}           [defaultExpanded=[]] - ids of the expanded items at mount (Uncontrolled)
+ * @param {String}          [validationButtonText=default text] - Customized Validation Button text (default: Add N Elements)
  * @param {Boolean}         [onlyLeaves=true] - Allow/Forbid selection only on leaves
- * @param {Boolean}         [multiSelect=false] - Allow/Forbid multiselection on Tree
+ * @param {Boolean}         [multiselect=false] - Allow/Forbid multiselection on Tree
  */
 const TreeViewFinder = (props) => {
     const intl = useIntl();
@@ -85,41 +85,21 @@ const TreeViewFinder = (props) => {
         title,
         open,
         data,
-        selected_init,
-        expanded_init,
+        defaultExpanded,
+        defaultSelected,
         onClose,
-        onDataUpdate,
+        onTreeBrowse,
         validationButtonText,
         onlyLeaves,
-        multiSelect,
+        multiselect,
     } = props;
 
-    const [expanded, setExpanded] = useState(
-        expanded_init ? expanded_init : []
-    );
-    const expandedRef = useRef(null);
-    expandedRef.current = expanded;
+    const [mapPrintedNodes, setMapPrintedNodes] = useState({});
 
-    const [selectedNodes, setSelectedNodes] = useState(
-        selected_init ? selected_init : []
-    );
-
-    const dataRef = useRef(null);
-    dataRef.current = data;
-
-    /* run onDataUpdate at start */
-    useEffect(() => {
-        if (
-            dataRef.current &&
-            Array.isArray(dataRef.current) &&
-            dataRef.current.length === 0
-        )
-            onDataUpdate(null);
-    }, [onDataUpdate]);
-
-    useEffect(() => {
-        setSelectedNodes(selected_init ? selected_init : []);
-    }, [selected_init]);
+    // Controlled expanded for TreeView
+    const [expanded, setExpanded] = useState(defaultExpanded);
+    // Controlled selected for TreeView
+    const [selected, setSelected] = useState(defaultSelected);
 
     /* Utilities */
     const isSelectable = (node) => {
@@ -130,134 +110,68 @@ const TreeViewFinder = (props) => {
         return node && (!node.children || node.children.length === 0);
     };
 
-    /* find a node in data struct by nodeId */
-    const recursiveFind = useCallback((nodeOrNodes, nodeId) => {
-        let res = null;
-        if (Array.isArray(nodeOrNodes)) {
-            nodeOrNodes.every((c) => {
-                if (c.id === nodeId) res = c;
-                else res = recursiveFind(c, nodeId);
-                return !res;
-            });
-        } else if (nodeOrNodes.children && nodeOrNodes.children.length > 0) {
-            nodeOrNodes.children.every((c) => {
-                if (c.id === nodeId) res = c;
-                else res = recursiveFind(c, nodeId);
-                return !res;
-            });
-        }
-        return res;
+    const computeMapPrintedNodes = useCallback((nodes) => {
+        let newMapPrintedNodes = {};
+        nodes.forEach((node) => {
+            newMapPrintedNodes[node.id] = node;
+            if (!isLeaf(node))
+                Object.assign(
+                    newMapPrintedNodes,
+                    computeMapPrintedNodes(node.children)
+                );
+        });
+        return newMapPrintedNodes;
     }, []);
 
-    /* Ensure parent nodes of a given node are all in expanded state */
-    const expandParents = useCallback(
-        (expanded_init) => {
-            if (expanded_init) {
-                let resExpanded = [];
-                expanded_init.forEach((nodeId) => {
-                    let foundNode = recursiveFind(dataRef.current, nodeId);
-
-                    if (foundNode) resExpanded.unshift(foundNode.id);
-
-                    while (foundNode && foundNode.parentId != null) {
-                        foundNode = recursiveFind(
-                            dataRef.current,
-                            foundNode.parentId
-                        );
-                        if (foundNode) {
-                            resExpanded.unshift(foundNode.id);
-                        }
-                    }
-                });
-                setExpanded(resExpanded);
-            }
-        },
-        [dataRef, recursiveFind]
-    );
-
+    // Effects
     useEffect(() => {
-        expandParents(expanded_init);
-    }, [expanded_init, expandParents]);
+        // compute all mapPrintedNodes here from data prop
+        // if data changes in current expanded nodes
+        let newMapPrintedNodes = computeMapPrintedNodes(data);
+        console.debug(
+            'data updated, new mapPrintedNodes (nbNodes = ',
+            Object.keys(newMapPrintedNodes).length,
+            ') : ',
+            newMapPrintedNodes
+        );
+        setMapPrintedNodes(newMapPrintedNodes);
+    }, [data, computeMapPrintedNodes]);
 
-    /* Manage treeItem folding */
-    const removeFromExpanded = useCallback(
-        (nodeId) => {
-            let expandedCopy = [...expandedRef.current];
-            for (let i = 0; i < expandedCopy.length; i++) {
-                if (expandedCopy[i] === nodeId) {
-                    expandedCopy.splice(i, 1);
-                }
+    const computeSelectedNodes = () => {
+        return selected.map((nodeId) => {
+            return mapPrintedNodes[nodeId];
+        });
+    };
+
+    const handleNodeToggle = (e, nodeIds) => {
+        // onTreeBrowse proc only on last node clicked and only when expanded
+        nodeIds.every((nodeId) => {
+            if (!expanded.includes(nodeId)) {
+                // proc onTreeBrowse here
+                onTreeBrowse && onTreeBrowse(nodeId);
+                return false; // break loop to call onTreeBrowse only once
             }
-            setExpanded(expandedCopy);
-        },
-        [expandedRef]
-    );
+            return true;
+        });
 
-    const addToExpanded = useCallback(
-        (nodeId) => {
-            setExpanded([...expandedRef.current, nodeId]);
-        },
-        [expandedRef]
-    );
-
-    const toggleDirectory = useCallback(
-        (nodeId) => {
-            if (expandedRef.current.includes(nodeId)) {
-                removeFromExpanded(nodeId);
-            } else {
-                addToExpanded(nodeId);
-            }
-        },
-        [addToExpanded, removeFromExpanded, expandedRef]
-    );
+        setExpanded(nodeIds);
+        // will proc onNodeSelect then ...
+    };
 
     /* User Interaction management */
-    const handleLabelClick = (node, toggle) => {
-        onDataUpdate(node.id);
-
-        if (toggle) {
-            // update fold status of item
-            toggleDirectory(node.id);
-        }
-    };
-
-    const handlExpandClick = (nodeId) => {
-        if (!expandedRef.current.includes(nodeId)) {
-            onDataUpdate(nodeId);
-        }
-        toggleDirectory(nodeId);
-    };
-
     const handleNodeSelect = (e, values) => {
-        if (multiSelect) {
-            if (values.length === 1 && selectedNodes.length === 1) {
-                // we must toggle selection here
-                if (selectedNodes[0].id === values[0]) setSelectedNodes([]);
-                else {
-                    let newNode = recursiveFind(dataRef.current, values[0]);
-                    if (newNode && isSelectable(newNode))
-                        setSelectedNodes([newNode]);
-                }
-            } else {
-                let newSelectedNodes = [];
-                values.forEach((v) => {
-                    let itemFound = recursiveFind(dataRef.current, v);
-                    if (isSelectable(itemFound))
-                        newSelectedNodes.push(itemFound);
-                });
-
-                if (newSelectedNodes.length > 0)
-                    setSelectedNodes(newSelectedNodes);
-            }
+        // Default management
+        if (multiselect) {
+            setSelected(
+                values.filter((nodeId) => isSelectable(mapPrintedNodes[nodeId]))
+            );
         } else {
-            // we must toggle selection here
-            if (selectedNodes.length === 1 && selectedNodes[0].id === values)
-                setSelectedNodes([]);
-            else {
-                let foundNode = recursiveFind(dataRef.current, values);
-                if (foundNode && isSelectable(foundNode))
-                    setSelectedNodes([foundNode]);
-            }
+            // Toggle selection to allow unselection
+            if (selected.includes(values)) setSelected([]);
+            else
+                setSelected(
+                    isSelectable(mapPrintedNodes[values]) ? [values] : []
+                );
         }
     };
 
@@ -266,9 +180,9 @@ const TreeViewFinder = (props) => {
         if (validationButtonText) return validationButtonText;
         else
             return intl.formatMessage(
-                { id: 'element_chooser/addElementsValidation' },
+                { id: 'treeview_finder/addElementsValidation' },
                 {
-                    nbElements: selectedNodes.length,
+                    nbElements: selected.length,
                 }
             );
     };
@@ -276,7 +190,7 @@ const TreeViewFinder = (props) => {
     const getNodeIcon = (node) => {
         if (!node) return null;
 
-        if (isSelectable(node) && selectedNodes.find((sn) => sn.id === node.id))
+        if (isSelectable(node) && selected.find((nodeId) => nodeId === node.id))
             return <CheckIcon className={classes.labelIcon} />;
         else if (node.icon)
             return <div className={classes.labelIcon}>{node.icon}</div>;
@@ -299,17 +213,6 @@ const TreeViewFinder = (props) => {
                         </Typography>
                     </div>
                 }
-                onIconClick={(event) => {
-                    // event when expand icon (Chevron) is clicked not the Label icon
-                    handlExpandClick(node.id);
-                    event.stopPropagation();
-                }}
-                onLabelClick={() => {
-                    handleLabelClick(
-                        node,
-                        !expandedRef.current.includes(node.id)
-                    );
-                }}
             >
                 {Array.isArray(node.children)
                     ? node.children.map((child) => renderTree(child))
@@ -319,86 +222,88 @@ const TreeViewFinder = (props) => {
     };
 
     return (
-        <>
-            <Dialog
-                open={open}
-                onClose={(e, r) => {
-                    if (r === 'escapeKeyDown' || r === 'backdropClick')
-                        onClose([]);
-                    else onClose(selectedNodes);
-                    setSelectedNodes([]);
-                }}
-                aria-labelledby="TreeViewFindertitle"
-                classes={{
-                    paper: classes.dialogPaper,
-                }}
-            >
-                <DialogTitle id="TreeViewFindertitle">
-                    {title
-                        ? title
-                        : intl.formatMessage(
-                              { id: 'element_chooser/finderTitle' },
-                              { multiselect: multiSelect }
-                          )}
-                </DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                        {intl.formatMessage(
-                            { id: 'element_chooser/contentText' },
-                            { multiselect: multiSelect }
-                        )}
-                    </DialogContentText>
+        <Dialog
+            open={open}
+            onClose={(e, r) => {
+                if (r === 'escapeKeyDown' || r === 'backdropClick') {
+                    onClose([]);
+                    setSelected([]);
+                }
+            }}
+            aria-labelledby="TreeViewFindertitle"
+            classes={{
+                paper: classes.dialogPaper,
+            }}
+        >
+            <DialogTitle id="TreeViewFindertitle">
+                {title
+                    ? title
+                    : intl.formatMessage(
+                          { id: 'treeview_finder/finderTitle' },
+                          { multiselect: multiselect }
+                      )}
+            </DialogTitle>
+            <DialogContent>
+                <DialogContentText>
+                    {intl.formatMessage(
+                        { id: 'treeview_finder/contentText' },
+                        { multiselect: multiselect }
+                    )}
+                </DialogContentText>
 
-                    <TreeView
-                        defaultCollapseIcon={
-                            <ExpandMoreIcon className={classes.icon} />
-                        }
-                        defaultExpandIcon={
-                            <ChevronRightIcon className={classes.icon} />
-                        }
-                        expanded={expanded}
-                        selected={selectedNodes.map((node) => node.id)}
-                        onNodeSelect={handleNodeSelect}
-                        multiSelect={multiSelect}
-                    >
-                        {dataRef.current && Array.isArray(dataRef.current)
-                            ? dataRef.current.map((child) => renderTree(child))
-                            : null}
-                    </TreeView>
-                </DialogContent>
-                <DialogActions>
-                    <Button
-                        variant="contained"
-                        style={{ float: 'left', margin: '5px' }}
-                        onClick={() => {
-                            onClose([]);
-                            setSelectedNodes([]);
-                        }}
-                    >
-                        <FormattedMessage id="element_chooser/cancel" />
-                    </Button>
-                    <Button
-                        variant="contained"
-                        style={{ float: 'left', margin: '5px' }}
-                        onClick={() => {
-                            onClose(selectedNodes);
-                            setSelectedNodes([]);
-                        }}
-                        disabled={selectedNodes.length === 0}
-                    >
-                        {getValidationButtonText()}
-                    </Button>
-                </DialogActions>
-            </Dialog>
-        </>
+                <TreeView
+                    // Controlled props
+                    expanded={expanded}
+                    selected={selected}
+                    // events
+                    onNodeToggle={handleNodeToggle}
+                    onNodeSelect={handleNodeSelect}
+                    // Uncontrolled props
+                    defaultCollapseIcon={
+                        <ExpandMoreIcon className={classes.icon} />
+                    }
+                    defaultExpandIcon={
+                        <ChevronRightIcon className={classes.icon} />
+                    }
+                    multiSelect={multiselect}
+                >
+                    {data && Array.isArray(data)
+                        ? data.map((child) => renderTree(child))
+                        : null}
+                </TreeView>
+            </DialogContent>
+            <DialogActions>
+                <Button
+                    variant="contained"
+                    style={{ float: 'left', margin: '5px' }}
+                    onClick={() => {
+                        onClose([]);
+                        setSelected([]);
+                    }}
+                >
+                    <FormattedMessage id="treeview_finder/cancel" />
+                </Button>
+                <Button
+                    variant="contained"
+                    style={{ float: 'left', margin: '5px' }}
+                    onClick={() => {
+                        onClose(computeSelectedNodes());
+                        setSelected([]);
+                    }}
+                    disabled={selected.length === 0}
+                >
+                    {getValidationButtonText()}
+                </Button>
+            </DialogActions>
+        </Dialog>
     );
 };
 
 /* TreeViewFinder props list */
 TreeViewFinder.propTypes = {
-    classes: PropTypes.object.isRequired,
-    title: PropTypes.string,
+    // Controlled
     open: PropTypes.bool.isRequired,
+    onClose: PropTypes.func,
     data: PropTypes.arrayOf(
         PropTypes.shape({
             id: PropTypes.string.isRequired,
@@ -406,19 +311,23 @@ TreeViewFinder.propTypes = {
             children: PropTypes.array,
         })
     ).isRequired,
-    selected_init: PropTypes.arrayOf(PropTypes.string),
-    expanded_init: PropTypes.arrayOf(PropTypes.string),
-    onClose: PropTypes.func,
-    onDataUpdate: PropTypes.func,
+    onTreeBrowse: PropTypes.func,
+    //uncontrolled
+    classes: PropTypes.object.isRequired,
+    title: PropTypes.string,
     validationButtonText: PropTypes.string,
+    defaultSelected: PropTypes.arrayOf(PropTypes.string),
+    defaultExpanded: PropTypes.arrayOf(PropTypes.string),
     onlyLeaves: PropTypes.bool,
-    multiSelect: PropTypes.bool,
+    multiselect: PropTypes.bool,
 };
 
 /* TreeViewFinder props default values */
 TreeViewFinder.defaultProps = {
+    defaultSelected: [],
+    defaultExpanded: [],
     onlyLeaves: true,
-    multiSelect: false,
+    multiselect: false,
 };
 
 export default withStyles(defaultStyles)(TreeViewFinder);

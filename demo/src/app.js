@@ -37,8 +37,8 @@ import {
     login_en,
     table_en,
     table_fr,
-    element_chooser_en,
-    element_chooser_fr,
+    treeview_finder_en,
+    treeview_finder_fr,
 } from '../../src/index';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
@@ -53,11 +53,12 @@ import { LOGS_JSON } from './constants';
 
 import ReportViewerDialog from '../../src/components/ReportViewerDialog';
 import TreeViewFinder from '../../src/components/TreeViewFinder';
+import TreeFiewFinderConfig from './TreeFiewFinderConfig';
 import {
     testDataDictionary,
     testDataDictionaryFlat,
-    getTestDataDictionary,
-    getTestDataDictionaryFlat,
+    fetchInfiniteTestDataDictionary,
+    fetchInfiniteTestDataDictionaryFlat,
 } from './testData';
 
 const messages = {
@@ -66,14 +67,14 @@ const messages = {
         ...login_en,
         ...top_bar_en,
         ...table_en,
-        ...element_chooser_en,
+        ...treeview_finder_en,
     },
     fr: {
         ...report_viewer_fr,
         ...login_fr,
         ...top_bar_fr,
         ...table_fr,
-        ...element_chooser_fr,
+        ...treeview_finder_fr,
     },
 };
 
@@ -206,23 +207,11 @@ const AppContent = () => {
     const [computedLanguage, setComputedLanguage] = useState(LANG_ENGLISH);
 
     const [openReportViewer, setOpenReportViewer] = React.useState(false);
-    const [openChooseElementDialog, setOpenChooseElementDialog] =
+    const [openTreeViewFinderDialog, setOpenTreeViewFinderDialog] =
         React.useState(false);
     const [
-        openChooseElementFlatListDialog,
-        setOpenChooseElementFlatListDialog,
-    ] = React.useState(false);
-    const [
-        openChooseElementNotOnlyLeavesDialog,
-        setOpenChooseElementNotOnlyLeavesDialog,
-    ] = React.useState(false);
-    const [
-        openChooseElementMultiselectDialog,
-        setOpenChooseElementMultiselectDialog,
-    ] = React.useState(false);
-    const [
-        openChooseElementMultiselectNotOnlyLeavesDialog,
-        setOpenChooseElementMultiselectNotOnlyLeavesDialog,
+        openTreeViewFinderDialogCustomDialog,
+        setOpenTreeViewFinderDialogCustomDialog,
     ] = React.useState(false);
 
     // Can't use lazy initializer because useRouteMatch is a hook
@@ -233,14 +222,23 @@ const AppContent = () => {
         })
     );
 
-    const [dictState, setDictState] = useState(testDataDictionary);
-    const [flatDictState, setFlatDictState] = useState(testDataDictionaryFlat);
+    // TreeViewFinder data
+    const [dictionnary, setDictionnary] = useState(testDataDictionary);
+    const [flatDictionnary, setFlatDictionnary] = useState(
+        testDataDictionaryFlat
+    );
+    // TreeViewFinder Controlled parameters
+    const [dynamicData, setDynamicData] = useState(false);
+    const [dataFormat, setDataFormat] = useState('Tree');
+    const [multiselect, setMultiselect] = useState(false);
+    const [onlyLeaves, setOnlyLeaves] = useState(true);
 
-    const testDataDictionaryCallback = (nodeId) => {
-        setDictState(getTestDataDictionary(nodeId));
+    // TreeViewFinder data update callbacks
+    const updateInfiniteTestDataDictionaryCallback = (nodeId) => {
+        setDictionnary(fetchInfiniteTestDataDictionary(nodeId));
     };
-    const testDataDictionaryFlatCallback = (nodeId) => {
-        setFlatDictState(getTestDataDictionaryFlat(nodeId));
+    const updateInfiniteTestDataDictionaryFlatCallback = (nodeId) => {
+        setFlatDictionnary(fetchInfiniteTestDataDictionaryFlat(nodeId));
     };
 
     const dispatch = (e) => {
@@ -291,9 +289,6 @@ const AppContent = () => {
         { key1: 'row3_val1', key2: 'row3_val2', key3: 'row3_val3' },
         { key1: 'row4_val1', key2: 'row4_val2', key3: 'row4_val3' },
     ];
-
-    const [elementsSelected, setElementsSelected] = useState([]);
-    const elementsExpanded = ['4', '11'];
 
     useEffect(() => {
         initializeAuthenticationDev(
@@ -415,120 +410,87 @@ const AppContent = () => {
                             alignItems: 'flex-start',
                         }}
                     >
-                        <Button
-                            variant="contained"
-                            style={{ float: 'left', margin: '5px' }}
-                            onClick={() => setOpenChooseElementDialog(true)}
-                        >
-                            Default TreeViewFinder - Choose one Element ...
-                        </Button>
-                        <TreeViewFinder
-                            open={openChooseElementDialog}
-                            onClose={(rows) => {
-                                setOpenChooseElementDialog(false);
-                                console.log('Elements chosen : ', rows);
-                                setElementsSelected(rows);
-                            }}
-                            data={dictState}
-                            onDataUpdate={testDataDictionaryCallback}
-                        />
-                        <Button
-                            variant="contained"
-                            style={{ float: 'left', margin: '5px' }}
-                            onClick={() =>
-                                setOpenChooseElementFlatListDialog(true)
+                        <TreeFiewFinderConfig
+                            dynamicData={dynamicData}
+                            dataFormat={dataFormat}
+                            multiselect={multiselect}
+                            onlyLeaves={onlyLeaves}
+                            onDynamicDataChange={(event) =>
+                                setDynamicData(event.target.value === 'dynamic')
                             }
-                        >
-                            Choose ont Element in Flat List ...
-                        </Button>
-                        <CustomTreeViewFinder
-                            title={'Flat list Example : '}
-                            open={openChooseElementFlatListDialog}
-                            onClose={(rows) => {
-                                setOpenChooseElementFlatListDialog(false);
-                                console.log('Elements chosen : ', rows);
-                                setElementsSelected(rows);
-                            }}
-                            data={flatDictState}
-                            selected_init={elementsSelected}
-                            onDataUpdate={testDataDictionaryFlatCallback}
-                        />
-                        <Button
-                            variant="contained"
-                            style={{ float: 'left', margin: '5px' }}
-                            onClick={() =>
-                                setOpenChooseElementNotOnlyLeavesDialog(true)
+                            onDataFormatChange={(event) =>
+                                setDataFormat(event.target.value)
                             }
-                        >
-                            Choose one Element (not only Leaves) ...
-                        </Button>
-                        <CustomTreeViewFinder
-                            title={'Not Only Leaves Example : '}
-                            open={openChooseElementNotOnlyLeavesDialog}
-                            onClose={(rows) => {
-                                setOpenChooseElementNotOnlyLeavesDialog(false);
-                                console.log('Elements chosen : ', rows);
-                                setElementsSelected(rows);
-                            }}
-                            data={dictState}
-                            selected_init={elementsSelected}
-                            expanded_init={elementsExpanded}
-                            onDataUpdate={testDataDictionaryCallback}
-                            onlyLeaves={false}
-                            validationButtonText={'Move To this location'}
-                        />
-                        <Button
-                            variant="contained"
-                            style={{ float: 'left', margin: '5px' }}
-                            onClick={() =>
-                                setOpenChooseElementMultiselectDialog(true)
-                            }
-                        >
-                            Choose Multiple Elements ...
-                        </Button>
-                        <CustomTreeViewFinder
-                            title={'Multiselect Example : '}
-                            open={openChooseElementMultiselectDialog}
-                            onClose={(rows) => {
-                                setOpenChooseElementMultiselectDialog(false);
-                                console.log('Elements chosen : ', rows);
-                                setElementsSelected(rows);
-                            }}
-                            data={dictState}
-                            selected_init={elementsSelected}
-                            expanded_init={elementsExpanded}
-                            onDataUpdate={testDataDictionaryCallback}
-                            multiSelect={true}
-                        />
-                        <Button
-                            variant="contained"
-                            style={{ float: 'left', margin: '5px' }}
-                            onClick={() =>
-                                setOpenChooseElementMultiselectNotOnlyLeavesDialog(
-                                    true
+                            onSelectionTypeChange={(event) =>
+                                setMultiselect(
+                                    event.target.value === 'multiselect'
                                 )
                             }
+                            onOnlyLeavesChange={(event) =>
+                                setOnlyLeaves(event.target.checked)
+                            }
+                        />
+                        <Button
+                            variant="contained"
+                            style={{ float: 'left', margin: '5px' }}
+                            onClick={() => setOpenTreeViewFinderDialog(true)}
                         >
-                            Choose Multiple Elements (not only Leaves)...
+                            Open TreeViewFinder ...
+                        </Button>
+                        <TreeViewFinder
+                            open={openTreeViewFinderDialog}
+                            onClose={(nodes) => {
+                                setOpenTreeViewFinderDialog(false);
+                                console.log('Elements chosen : ', nodes);
+                            }}
+                            data={
+                                dataFormat === 'Tree'
+                                    ? dictionnary
+                                    : flatDictionnary
+                            }
+                            multiselect={multiselect}
+                            onTreeBrowse={
+                                dynamicData
+                                    ? dataFormat === 'Tree'
+                                        ? updateInfiniteTestDataDictionaryCallback
+                                        : updateInfiniteTestDataDictionaryFlatCallback
+                                    : undefined
+                            }
+                            onlyLeaves={onlyLeaves}
+                        />
+                        <Button
+                            variant="contained"
+                            style={{ float: 'left', margin: '5px' }}
+                            color="primary"
+                            onClick={() =>
+                                setOpenTreeViewFinderDialogCustomDialog(true)
+                            }
+                        >
+                            Open Custom TreeViewFinder ...
                         </Button>
                         <CustomTreeViewFinder
-                            title={'Multiselect Example : '}
-                            open={
-                                openChooseElementMultiselectNotOnlyLeavesDialog
-                            }
-                            onClose={(rows) => {
-                                setOpenChooseElementMultiselectNotOnlyLeavesDialog(
-                                    false
-                                );
-                                console.log('Elements chosen : ', rows);
-                                setElementsSelected(rows);
+                            open={openTreeViewFinderDialogCustomDialog}
+                            onClose={(nodes) => {
+                                setOpenTreeViewFinderDialogCustomDialog(false);
+                                console.log('Elements chosen : ', nodes);
                             }}
-                            data={dictState}
-                            selected_init={elementsSelected}
-                            expanded_init={elementsExpanded}
-                            onDataUpdate={testDataDictionaryCallback}
-                            multiSelect={true}
-                            onlyLeaves={false}
+                            data={
+                                dataFormat === 'Tree'
+                                    ? dictionnary
+                                    : flatDictionnary
+                            }
+                            multiselect={multiselect}
+                            onTreeBrowse={
+                                dynamicData
+                                    ? dataFormat === 'Tree'
+                                        ? updateInfiniteTestDataDictionaryCallback
+                                        : updateInfiniteTestDataDictionaryFlatCallback
+                                    : undefined
+                            }
+                            onlyLeaves={onlyLeaves}
+                            // Customisation props
+                            title={'Custom Title TreeViewFinder : '}
+                            validationButtonText={'Move To this location'}
                         />
                     </div>
                 </SnackbarProvider>

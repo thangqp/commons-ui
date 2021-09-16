@@ -41,5 +41,5 @@ export top_bar_en from './components/translations/top-bar-en';
 export top_bar_fr from './components/translations/top-bar-fr';
 export table_en from './components/translations/table-en';
 export table_fr from './components/translations/table-fr';
-export element_chooser_en from './components/translations/element-chooser-en';
-export element_chooser_fr from './components/translations/element-chooser-fr';
+export treeview_finder_en from './components/translations/treeview-finder-en';
+export treeview_finder_fr from './components/translations/treeview-finder-fr';

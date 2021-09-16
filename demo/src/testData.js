@@ -13,8 +13,9 @@ import WavesIcon from '@material-ui/icons/Waves';
 import EcoIcon from '@material-ui/icons/Eco';
 import AcUnitIcon from '@material-ui/icons/AcUnit';
 import FolderOpenIcon from '@material-ui/icons/FolderOpen';
+import FiberNewIcon from '@material-ui/icons/FiberNew';
 
-const PokemonDictionary = [
+var PokemonDictionary = [
     {
         id: 'D1',
         name: 'Team',
@@ -107,7 +108,7 @@ const PokemonDictionary = [
     },
 ];
 
-const PokemonDictionaryFlat = [
+var PokemonDictionaryFlat = [
     {
         id: '1',
         name: 'Pikachu',
@@ -128,63 +129,48 @@ const PokemonDictionaryFlat = [
     { id: '6', name: 'Machoc', type: 'Combat', power: '64' },
 ];
 
-function getPokemonDictionary(nodeId) {
-    let team = [];
-    if (!nodeId) team = PokemonDictionary;
-    else
-        team = [
-            ...PokemonDictionary,
-            {
-                id: 'D3',
-                name: 'NEW',
-                icon: <FolderOpenIcon />,
-                children: [
-                    {
-                        id: '11',
-                        parentId: 'D3',
-                        name: 'Raichu',
-                        type: 'Electric',
-                        power: '83',
-                        icon: <FlashOnIcon />,
-                    },
-                    {
-                        id: '12',
-                        parentId: 'D3',
-                        name: 'Papillusion',
-                        type: 'Insect',
-                        power: '79',
-                    },
-                ],
-            },
-        ];
-    return team;
+var IDCounter = 100; // Start at 100 to avoid conflicts for demo
+function fetchInfinitePokemonDictionaryFlat() {
+    IDCounter++;
+    console.log('comme onnn');
+    PokemonDictionaryFlat = [
+        ...PokemonDictionaryFlat,
+        {
+            id: IDCounter.toString(),
+            name: 'Métamorph',
+            type: 'Normal',
+            power: '1',
+            icon: <FiberNewIcon />,
+        },
+    ];
+    return PokemonDictionaryFlat;
 }
 
-function getPokemonDictionaryFlat(nodeId) {
-    let team = [];
-    if (!nodeId) team = PokemonDictionaryFlat;
-    else
-        team = [
-            ...PokemonDictionaryFlat,
-            {
-                id: '11',
-                name: 'Raichu (NEW)',
-                type: 'Electric',
-                power: '83',
-            },
-            {
-                id: '12',
-                name: 'Papillusion (NEW)',
-                type: 'Insect',
-                power: '79',
-            },
-        ];
-    return team;
+function fetchInfinitePokemonDictionary(nodeId) {
+    IDCounter++;
+
+    let PokemonDictionaryCopy = [...PokemonDictionary];
+    const dirFound = PokemonDictionaryCopy.find(
+        (element) => element.id === nodeId
+    );
+
+    if (dirFound) {
+        dirFound.children.push({
+            id: IDCounter.toString(),
+            name: 'Métamorph',
+            type: 'Normal',
+            power: '1',
+            icon: <FiberNewIcon />,
+        });
+    }
+
+    PokemonDictionary = PokemonDictionaryCopy;
+    return PokemonDictionary;
 }
 
 export {
     PokemonDictionary as testDataDictionary,
     PokemonDictionaryFlat as testDataDictionaryFlat,
-    getPokemonDictionary as getTestDataDictionary,
-    getPokemonDictionaryFlat as getTestDataDictionaryFlat,
+    fetchInfinitePokemonDictionary as fetchInfiniteTestDataDictionary,
+    fetchInfinitePokemonDictionaryFlat as fetchInfiniteTestDataDictionaryFlat,
 };
