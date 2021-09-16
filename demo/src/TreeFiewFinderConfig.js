@@ -28,7 +28,7 @@ import Checkbox from '@material-ui/core/Checkbox';
  * @param {EventListener}   onSelectionTypeChange - onChange type EventListener on the multiselect value change.
  * @param {EventListener}   onOnlyLeavesChange - onChange type EventListener on the onlyLeaves value change.
  */
-const TreeFiewFinderConfig = (props) => {
+const TreeViewFinderConfig = (props) => {
     const {
         dynamicData,
         dataFormat,
@@ -148,4 +148,4 @@ const TreeFiewFinderConfig = (props) => {
     );
 };
 
-export default TreeFiewFinderConfig;
+export default TreeViewFinderConfig;

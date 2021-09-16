@@ -53,7 +53,7 @@ import { LOGS_JSON } from './constants';
 
 import ReportViewerDialog from '../../src/components/ReportViewerDialog';
 import TreeViewFinder from '../../src/components/TreeViewFinder';
-import TreeFiewFinderConfig from './TreeFiewFinderConfig';
+import TreeViewFinderConfig from './TreeViewFinderConfig';
 import {
     testDataDictionary,
     testDataDictionaryFlat,
@@ -410,7 +410,7 @@ const AppContent = () => {
                             alignItems: 'flex-start',
                         }}
                     >
-                        <TreeFiewFinderConfig
+                        <TreeViewFinderConfig
                             dynamicData={dynamicData}
                             dataFormat={dataFormat}
                             multiselect={multiselect}
