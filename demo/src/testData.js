@@ -15,7 +15,7 @@ import AcUnitIcon from '@material-ui/icons/AcUnit';
 import FolderOpenIcon from '@material-ui/icons/FolderOpen';
 import FiberNewIcon from '@material-ui/icons/FiberNew';
 
-var PokemonDictionary = [
+var PokemonTree = [
     {
         id: 'D1',
         name: 'Team',
@@ -108,7 +108,7 @@ var PokemonDictionary = [
     },
 ];
 
-var PokemonDictionaryFlat = [
+var PokemonList = [
     {
         id: '1',
         name: 'Pikachu',
@@ -130,47 +130,44 @@ var PokemonDictionaryFlat = [
 ];
 
 var IDCounter = 100; // Start at 100 to avoid conflicts for demo
-function fetchInfinitePokemonDictionaryFlat() {
+function fetchInfinitePokemonList() {
     IDCounter++;
-    console.log('comme onnn');
-    PokemonDictionaryFlat = [
-        ...PokemonDictionaryFlat,
+    PokemonList = [
+        ...PokemonList,
         {
             id: IDCounter.toString(),
-            name: 'Métamorph',
+            name: 'Métamorph_' + new Date().getTime(),
             type: 'Normal',
             power: '1',
             icon: <FiberNewIcon />,
         },
     ];
-    return PokemonDictionaryFlat;
+    return PokemonList;
 }
 
-function fetchInfinitePokemonDictionary(nodeId) {
+function fetchInfinitePokemonTree(nodeId) {
     IDCounter++;
 
-    let PokemonDictionaryCopy = [...PokemonDictionary];
-    const dirFound = PokemonDictionaryCopy.find(
-        (element) => element.id === nodeId
-    );
+    let PokemonTreeCopy = [...PokemonTree];
+    const dirFound = PokemonTreeCopy.find((element) => element.id === nodeId);
 
     if (dirFound) {
         dirFound.children.push({
             id: IDCounter.toString(),
-            name: 'Métamorph',
+            name: 'Métamorph_' + new Date().getTime(),
             type: 'Normal',
             power: '1',
             icon: <FiberNewIcon />,
         });
     }
 
-    PokemonDictionary = PokemonDictionaryCopy;
-    return PokemonDictionary;
+    PokemonTree = PokemonTreeCopy;
+    return PokemonTree;
 }
 
 export {
-    PokemonDictionary as testDataDictionary,
-    PokemonDictionaryFlat as testDataDictionaryFlat,
-    fetchInfinitePokemonDictionary as fetchInfiniteTestDataDictionary,
-    fetchInfinitePokemonDictionaryFlat as fetchInfiniteTestDataDictionaryFlat,
+    PokemonTree as testDataTree,
+    PokemonList as testDataList,
+    fetchInfinitePokemonTree as fetchInfiniteTestDataTree,
+    fetchInfinitePokemonList as fetchInfiniteTestDataList,
 };

@@ -20,7 +20,7 @@ import Checkbox from '@material-ui/core/Checkbox';
  *
 
  * @param {Boolean}         dynamicData - Does data needs dynamic update (Controlled). (see onDynamicDataChange)
- * @param {String}          dataFormat - Data format. Could be ('Tree' or 'FlatList') (Controlled). (see onDataFormatChange)
+ * @param {String}          dataFormat - Data format. Could be ('Tree' or 'List') (Controlled). (see onDataFormatChange)
  * @param {Boolean}         multiselect - TreeViewFinder selection type parameter (Controlled). (see onSelectionTypeChange)
  * @param {Boolean}         onlyLeaves - TreeViewFinder selection only on leaves items (Controlled). (see onOnlyLeavesChange)
  * @param {EventListener}   onDynamicDataChange - onChange type EventListener on the dynamicData value change.
@@ -77,9 +77,9 @@ const TreeViewFinderConfig = (props) => {
                                 label="Tree"
                             />
                             <FormControlLabel
-                                value="FlatList"
+                                value="List"
                                 control={<Radio />}
-                                label="FlatList"
+                                label="List"
                             />
                         </RadioGroup>
                     </div>

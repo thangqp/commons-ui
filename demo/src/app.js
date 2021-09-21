@@ -55,10 +55,10 @@ import ReportViewerDialog from '../../src/components/ReportViewerDialog';
 import TreeViewFinder from '../../src/components/TreeViewFinder';
 import TreeViewFinderConfig from './TreeViewFinderConfig';
 import {
-    testDataDictionary,
-    testDataDictionaryFlat,
-    fetchInfiniteTestDataDictionary,
-    fetchInfiniteTestDataDictionaryFlat,
+    testDataTree,
+    testDataList,
+    fetchInfiniteTestDataTree,
+    fetchInfiniteTestDataList,
 } from './testData';
 
 const messages = {
@@ -223,10 +223,21 @@ const AppContent = () => {
     );
 
     // TreeViewFinder data
-    const [dictionnary, setDictionnary] = useState(testDataDictionary);
-    const [flatDictionnary, setFlatDictionnary] = useState(
-        testDataDictionaryFlat
-    );
+    const [nodesTree, setNodesTree] = useState(testDataTree);
+    const [nodesList, setNodesList] = useState(testDataList);
+
+    const countNodes = (nodesList) => {
+        return nodesList
+            .map((node) => {
+                if (node.children && node.children.length > 0)
+                    return countNodes(node.children);
+                else return 1;
+            })
+            .reduce((a, b) => {
+                return a + b;
+            }, 0);
+    };
+
     // TreeViewFinder Controlled parameters
     const [dynamicData, setDynamicData] = useState(false);
     const [dataFormat, setDataFormat] = useState('Tree');
@@ -234,11 +245,11 @@ const AppContent = () => {
     const [onlyLeaves, setOnlyLeaves] = useState(true);
 
     // TreeViewFinder data update callbacks
-    const updateInfiniteTestDataDictionaryCallback = (nodeId) => {
-        setDictionnary(fetchInfiniteTestDataDictionary(nodeId));
+    const updateInfiniteTestDataTreeCallback = (nodeId) => {
+        setNodesTree(fetchInfiniteTestDataTree(nodeId));
     };
-    const updateInfiniteTestDataDictionaryFlatCallback = (nodeId) => {
-        setFlatDictionnary(fetchInfiniteTestDataDictionaryFlat(nodeId));
+    const updateInfiniteTestDataListCallback = (nodeId) => {
+        setNodesList(fetchInfiniteTestDataList(nodeId));
     };
 
     const dispatch = (e) => {
@@ -443,20 +454,25 @@ const AppContent = () => {
                                 setOpenTreeViewFinderDialog(false);
                                 console.log('Elements chosen : ', nodes);
                             }}
-                            data={
-                                dataFormat === 'Tree'
-                                    ? dictionnary
-                                    : flatDictionnary
-                            }
+                            data={dataFormat === 'Tree' ? nodesTree : nodesList}
                             multiselect={multiselect}
                             onTreeBrowse={
                                 dynamicData
                                     ? dataFormat === 'Tree'
-                                        ? updateInfiniteTestDataDictionaryCallback
-                                        : updateInfiniteTestDataDictionaryFlatCallback
+                                        ? updateInfiniteTestDataTreeCallback
+                                        : updateInfiniteTestDataListCallback
                                     : undefined
                             }
                             onlyLeaves={onlyLeaves}
+                            // Customisation props to pass the counter in the title
+                            title={
+                                'Number of nodes : ' +
+                                countNodes(
+                                    dataFormat === 'Tree'
+                                        ? nodesTree
+                                        : nodesList
+                                )
+                            }
                         />
                         <Button
                             variant="contained"
@@ -474,22 +490,25 @@ const AppContent = () => {
                                 setOpenTreeViewFinderDialogCustomDialog(false);
                                 console.log('Elements chosen : ', nodes);
                             }}
-                            data={
-                                dataFormat === 'Tree'
-                                    ? dictionnary
-                                    : flatDictionnary
-                            }
+                            data={dataFormat === 'Tree' ? nodesTree : nodesList}
                             multiselect={multiselect}
                             onTreeBrowse={
                                 dynamicData
                                     ? dataFormat === 'Tree'
-                                        ? updateInfiniteTestDataDictionaryCallback
-                                        : updateInfiniteTestDataDictionaryFlatCallback
+                                        ? updateInfiniteTestDataTreeCallback
+                                        : updateInfiniteTestDataListCallback
                                     : undefined
                             }
                             onlyLeaves={onlyLeaves}
                             // Customisation props
-                            title={'Custom Title TreeViewFinder : '}
+                            title={
+                                'Custom Title TreeViewFinder, Number of nodes : ' +
+                                countNodes(
+                                    dataFormat === 'Tree'
+                                        ? nodesTree
+                                        : nodesList
+                                )
+                            }
                             validationButtonText={'Move To this location'}
                         />
                     </div>
