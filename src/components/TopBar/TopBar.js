@@ -420,6 +420,7 @@ const TopBar = ({
                                                 opacity: '1',
                                                 paddingTop: '10px',
                                                 paddingBottom: '10px',
+                                                backgroundColor: 'transparent',
                                             }}
                                         >
                                             <ListItemText>
@@ -476,6 +477,8 @@ const TopBar = ({
                                                     // padding: '0',
                                                     paddingTop: '10px',
                                                     paddingBottom: '10px',
+                                                    backgroundColor:
+                                                        'transparent',
                                                 }}
                                             >
                                                 <ListItemText>
@@ -538,6 +541,7 @@ const TopBar = ({
                                                 opacity: '1',
                                                 paddingTop: '10px',
                                                 paddingBottom: '10px',
+                                                backgroundColor: 'transparent',
                                             }}
                                         >
                                             <ListItemText>
