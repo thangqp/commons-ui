@@ -230,7 +230,7 @@ const AppContent = () => {
         return nodesList
             .map((node) => {
                 if (node.children && node.children.length > 0)
-                    return countNodes(node.children);
+                    return 1 + countNodes(node.children);
                 else return 1;
             })
             .reduce((a, b) => {
