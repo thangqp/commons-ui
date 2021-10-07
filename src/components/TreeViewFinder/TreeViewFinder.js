@@ -69,7 +69,7 @@ const defaultStyles = {
  * @param {String}          data[].id - Uuid of the object in Tree
  * @param {String}          data[].parentId - Uuid of the parent node in Tree
  * @param {String}          data[].name - name of the node to print in Tree
- * @param {Object[]}        [data[].children] - array of children nodes
+ * @param {Object[]}        [data[].children] - array of children nodes, if undefined, the node is a leaf.
  * @param {String}          [data[].icon] - JSX of an icon to display next a node
  * @callback                onTreeBrowse - callback to update data prop when walk into Tree
  * @param {Array}           [defaultSelected=[]] - selected items at mount (Uncontrolled)
@@ -107,7 +107,7 @@ const TreeViewFinder = (props) => {
     };
 
     const isLeaf = (node) => {
-        return node && (!node.children || node.children.length === 0);
+        return node && node.children === undefined;
     };
 
     const computeMapPrintedNodes = useCallback((nodes) => {
@@ -142,6 +142,22 @@ const TreeViewFinder = (props) => {
             return mapPrintedNodes[nodeId];
         });
     };
+
+    // only to manage empty node (no children) icon or label click because handleNodeToggle is not called otherwise
+    function handleEmptyNodeClick(nodeId) {
+        if (
+            mapPrintedNodes[nodeId].children &&
+            mapPrintedNodes[nodeId].children.length === 0
+        ) {
+            handleNodeToggle(
+                null,
+                !expanded.includes(nodeId)
+                    ? [...expanded, nodeId]
+                    : expanded.filter((eNodeId) => eNodeId !== nodeId)
+            );
+        }
+        // Do not stop event propagation to handle non empty node clicks
+    }
 
     const handleNodeToggle = (e, nodeIds) => {
         // onTreeBrowse proc only on last node clicked and only when expanded
@@ -212,6 +228,24 @@ const TreeViewFinder = (props) => {
                             {node.name}
                         </Typography>
                     </div>
+                }
+                // only usefull on empty node, see onNodeToggle otherwise
+                onIconClick={() => {
+                    handleEmptyNodeClick(node.id);
+                }}
+                // only usefull on empty node, see onNodeSelect otherwise
+                onLabelClick={(e) => {
+                    handleEmptyNodeClick(node.id);
+                }}
+                // Add endIcon only for empty node but not leaf, otherwise it disappears
+                endIcon={
+                    !isLeaf(node) ? (
+                        expanded.includes(node.id) ? (
+                            <ExpandMoreIcon className={classes.icon} />
+                        ) : (
+                            <ChevronRightIcon className={classes.icon} />
+                        )
+                    ) : null
                 }
             >
                 {Array.isArray(node.children)
