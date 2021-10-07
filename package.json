@@ -27,8 +27,7 @@
         "prop-types": "15.7.2",
         "react-csv-downloader": "^2.7.0",
         "react-request-fullscreen": "^1.1.2",
-        "react-virtualized": "^9.21.2",
-        "@material-ui/icons": "^4.5.1"
+        "react-virtualized": "^9.21.2"
     },
     "peerDependencies": {
         "notistack": "^1.0.1",
