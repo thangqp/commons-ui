@@ -110,6 +110,14 @@ const TreeViewFinder = (props) => {
         return node && node.children === undefined;
     };
 
+    const emptyNode = (nodeId) => {
+        return (
+            mapPrintedNodes[nodeId] &&
+            mapPrintedNodes[nodeId].children &&
+            mapPrintedNodes[nodeId].children.length === 0
+        );
+    };
+
     const computeMapPrintedNodes = useCallback((nodes) => {
         let newMapPrintedNodes = {};
         nodes.forEach((node) => {
@@ -145,10 +153,7 @@ const TreeViewFinder = (props) => {
 
     // only to manage empty node (no children) icon or label click because handleNodeToggle is not called otherwise
     function handleEmptyNodeClick(nodeId) {
-        if (
-            mapPrintedNodes[nodeId].children &&
-            mapPrintedNodes[nodeId].children.length === 0
-        ) {
+        if (emptyNode(nodeId)) {
             handleNodeToggle(
                 null,
                 !expanded.includes(nodeId)
@@ -156,7 +161,6 @@ const TreeViewFinder = (props) => {
                     : expanded.filter((eNodeId) => eNodeId !== nodeId)
             );
         }
-        // Do not stop event propagation to handle non empty node clicks
     }
 
     const handleNodeToggle = (e, nodeIds) => {
@@ -213,22 +217,23 @@ const TreeViewFinder = (props) => {
         else return null;
     };
 
-    const renderTree = (node) => {
-        if (!node) {
-            return;
-        }
+    const renderTreeItemLabel = (node) => {
+        return (
+            <div className={classes.labelRoot}>
+                {getNodeIcon(node)}
+                <Typography className={classes.labelText}>
+                    {node.name}
+                </Typography>
+            </div>
+        );
+    };
+
+    const renderTreeItemEmptyNode = (node) => {
         return (
             <TreeItem
                 key={node.id}
                 nodeId={node.id}
-                label={
-                    <div className={classes.labelRoot}>
-                        {getNodeIcon(node)}
-                        <Typography className={classes.labelText}>
-                            {node.name}
-                        </Typography>
-                    </div>
-                }
+                label={renderTreeItemLabel(node)}
                 // only usefull on empty node, see onNodeToggle otherwise
                 onIconClick={() => {
                     handleEmptyNodeClick(node.id);
@@ -247,6 +252,22 @@ const TreeViewFinder = (props) => {
                         )
                     ) : null
                 }
+            >
+                {Array.isArray(node.children)
+                    ? node.children.map((child) => renderTree(child))
+                    : null}
+            </TreeItem>
+        );
+    };
+
+    const renderTree = (node) => {
+        if (!node) return;
+        if (emptyNode(node.id)) return renderTreeItemEmptyNode(node);
+        return (
+            <TreeItem
+                key={node.id}
+                nodeId={node.id}
+                label={renderTreeItemLabel(node)}
             >
                 {Array.isArray(node.children)
                     ? node.children.map((child) => renderTree(child))
