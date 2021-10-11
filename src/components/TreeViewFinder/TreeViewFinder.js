@@ -110,14 +110,6 @@ const TreeViewFinder = (props) => {
         return node && node.children === undefined;
     };
 
-    const emptyNode = (nodeId) => {
-        return (
-            mapPrintedNodes[nodeId] &&
-            mapPrintedNodes[nodeId].children &&
-            mapPrintedNodes[nodeId].children.length === 0
-        );
-    };
-
     const computeMapPrintedNodes = useCallback((nodes) => {
         let newMapPrintedNodes = {};
         nodes.forEach((node) => {
@@ -150,18 +142,6 @@ const TreeViewFinder = (props) => {
             return mapPrintedNodes[nodeId];
         });
     };
-
-    // only to manage empty node (no children) icon or label click because handleNodeToggle is not called otherwise
-    function handleEmptyNodeClick(nodeId) {
-        if (emptyNode(nodeId)) {
-            handleNodeToggle(
-                null,
-                !expanded.includes(nodeId)
-                    ? [...expanded, nodeId]
-                    : expanded.filter((eNodeId) => eNodeId !== nodeId)
-            );
-        }
-    }
 
     const handleNodeToggle = (e, nodeIds) => {
         // onTreeBrowse proc only on last node clicked and only when expanded
@@ -228,41 +208,8 @@ const TreeViewFinder = (props) => {
         );
     };
 
-    const renderTreeItemEmptyNode = (node) => {
-        return (
-            <TreeItem
-                key={node.id}
-                nodeId={node.id}
-                label={renderTreeItemLabel(node)}
-                // only usefull on empty node, see onNodeToggle otherwise
-                onIconClick={() => {
-                    handleEmptyNodeClick(node.id);
-                }}
-                // only usefull on empty node, see onNodeSelect otherwise
-                onLabelClick={(e) => {
-                    handleEmptyNodeClick(node.id);
-                }}
-                // Add endIcon only for empty node but not leaf, otherwise it disappears
-                endIcon={
-                    !isLeaf(node) ? (
-                        expanded.includes(node.id) ? (
-                            <ExpandMoreIcon className={classes.icon} />
-                        ) : (
-                            <ChevronRightIcon className={classes.icon} />
-                        )
-                    ) : null
-                }
-            >
-                {Array.isArray(node.children)
-                    ? node.children.map((child) => renderTree(child))
-                    : null}
-            </TreeItem>
-        );
-    };
-
     const renderTree = (node) => {
         if (!node) return;
-        if (emptyNode(node.id)) return renderTreeItemEmptyNode(node);
         return (
             <TreeItem
                 key={node.id}
@@ -270,7 +217,9 @@ const TreeViewFinder = (props) => {
                 label={renderTreeItemLabel(node)}
             >
                 {Array.isArray(node.children)
-                    ? node.children.map((child) => renderTree(child))
+                    ? node.children.length
+                        ? node.children.map((child) => renderTree(child))
+                        : [false] // Pass non empty Array here to simulate a child then this node isn't considered as a leaf.
                     : null}
             </TreeItem>
         );
