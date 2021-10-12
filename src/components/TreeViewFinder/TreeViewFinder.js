@@ -69,7 +69,7 @@ const defaultStyles = {
  * @param {String}          data[].id - Uuid of the object in Tree
  * @param {String}          data[].parentId - Uuid of the parent node in Tree
  * @param {String}          data[].name - name of the node to print in Tree
- * @param {Object[]}        [data[].children] - array of children nodes
+ * @param {Object[]}        [data[].children] - array of children nodes, if undefined, the node is a leaf.
  * @param {String}          [data[].icon] - JSX of an icon to display next a node
  * @callback                onTreeBrowse - callback to update data prop when walk into Tree
  * @param {Array}           [defaultSelected=[]] - selected items at mount (Uncontrolled)
@@ -107,7 +107,7 @@ const TreeViewFinder = (props) => {
     };
 
     const isLeaf = (node) => {
-        return node && (!node.children || node.children.length === 0);
+        return node && node.children === undefined;
     };
 
     const computeMapPrintedNodes = useCallback((nodes) => {
@@ -197,25 +197,29 @@ const TreeViewFinder = (props) => {
         else return null;
     };
 
+    const renderTreeItemLabel = (node) => {
+        return (
+            <div className={classes.labelRoot}>
+                {getNodeIcon(node)}
+                <Typography className={classes.labelText}>
+                    {node.name}
+                </Typography>
+            </div>
+        );
+    };
+
     const renderTree = (node) => {
-        if (!node) {
-            return;
-        }
+        if (!node) return;
         return (
             <TreeItem
                 key={node.id}
                 nodeId={node.id}
-                label={
-                    <div className={classes.labelRoot}>
-                        {getNodeIcon(node)}
-                        <Typography className={classes.labelText}>
-                            {node.name}
-                        </Typography>
-                    </div>
-                }
+                label={renderTreeItemLabel(node)}
             >
                 {Array.isArray(node.children)
-                    ? node.children.map((child) => renderTree(child))
+                    ? node.children.length
+                        ? node.children.map((child) => renderTree(child))
+                        : [false] // Pass non empty Array here to simulate a child then this node isn't considered as a leaf.
                     : null}
             </TreeItem>
         );
