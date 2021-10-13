@@ -20,7 +20,7 @@ export const elementType = {
     FILTERS_CONTINGENCY_LIST: 'FILTERS_CONTINGENCY_LIST',
 };
 
-export function getIconFor(type, theme) {
+export function getFileIcon(type, theme) {
     switch (type) {
         case elementType.STUDY:
             return <LibraryBooksOutlinedIcon className={theme} />;
