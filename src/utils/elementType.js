@@ -33,6 +33,7 @@ export function getIconFor(type, theme) {
         case elementType.SCRIPT:
             return <FilterIcon className={theme} />;
         case elementType.DIRECTORY:
+            // to easily use in TreeView we do not give icons for directories
             return;
         default:
             console.warn('unknown type [' + type + ']');
