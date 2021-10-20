@@ -26,8 +26,8 @@ afterEach(() => {
 });
 
 const apps = [
-    { name: 'App1', url: '/app1', appColor: 'blue' },
-    { name: 'App2', url: '/app2' },
+    { name: 'App1', url: '/app1', appColor: 'blue', isInAppsMenu: true },
+    { name: 'App2', url: '/app2', isInAppsMenu: true },
 ];
 
 it('renders', () => {
