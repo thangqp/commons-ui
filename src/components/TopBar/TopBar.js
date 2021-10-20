@@ -57,7 +57,6 @@ const useStyles = makeStyles((theme) => ({
         width: 48,
         height: 48,
         marginBottom: 8,
-        cursor: 'default',
     },
     menuIcon: {
         width: 24,
@@ -65,7 +64,6 @@ const useStyles = makeStyles((theme) => ({
     },
     title: {
         marginLeft: 18,
-        cursor: 'default',
     },
     clickable: {
         cursor: 'pointer',
