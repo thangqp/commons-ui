@@ -310,7 +310,7 @@ const TopBar = ({
                         >
                             {appsAndUrls &&
                                 appsAndUrls
-                                    .filter((item) => item.isInAppsMenu)
+                                    .filter((item) => !item.hiddenInAppsMenu)
                                     .map((item) => (
                                         <a
                                             key={item.name}

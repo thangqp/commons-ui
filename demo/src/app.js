@@ -281,9 +281,14 @@ const AppContent = () => {
     };
 
     const apps = [
-        { name: 'App1', url: '/app1', appColor: 'red', isInAppsMenu: true },
-        { name: 'App2', url: '/app2', isInAppsMenu: true },
-        { name: 'App3', url: '/app3', isInAppsMenu: false },
+        {
+            name: 'App1',
+            url: '/app1',
+            appColor: 'red',
+            hiddenInAppsMenu: false,
+        },
+        { name: 'App2', url: '/app2' },
+        { name: 'App3', url: '/app3', hiddenInAppsMenu: true },
     ];
 
     const buttons = [
