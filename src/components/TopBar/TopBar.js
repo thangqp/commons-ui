@@ -747,7 +747,7 @@ TopBar.propTypes = {
     appColor: PropTypes.string,
     appLogo: PropTypes.object,
     user: PropTypes.object,
-    children: PropTypes.array,
+    children: PropTypes.node,
     appsAndUrls: PropTypes.array,
     onThemeClick: PropTypes.func,
     theme: PropTypes.string,
