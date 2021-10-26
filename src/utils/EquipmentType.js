@@ -128,7 +128,34 @@ export const EQUIPMENT_TYPE = {
     },
 };
 
-export const sortEquipments = (a, b) => {
+export const getEquipmentsInfosForSearchBar = (
+    equipmentsInfos,
+    equipmentLabelling
+) => {
+    return equipmentsInfos
+        .flatMap((e) => {
+            let label = equipmentLabelling ? e.name : e.id;
+            return e.type === 'SUBSTATION'
+                ? [
+                      {
+                          label: label,
+                          id: e.id,
+                          type: e.type,
+                      },
+                  ]
+                : e.voltageLevelsIds.map((vli) => {
+                      return {
+                          label: label,
+                          id: e.id,
+                          type: e.type,
+                          voltageLevelId: vli,
+                      };
+                  });
+        })
+        .sort(sortEquipments);
+};
+
+const sortEquipments = (a, b) => {
     return EQUIPMENT_TYPE[a.type].sortOrder < EQUIPMENT_TYPE[b.type].sortOrder
         ? -1
         : EQUIPMENT_TYPE[a.type].sortOrder > EQUIPMENT_TYPE[b.type].sortOrder

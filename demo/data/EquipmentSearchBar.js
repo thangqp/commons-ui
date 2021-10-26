@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { sortEquipments } from '../../src';
+import { getEquipmentsInfosForSearchBar } from '../../src';
 
 const NETWORK_UUID = '00000000-1111-2222-3333-444444444444';
 const EQUIPMENTS = [
@@ -90,35 +90,16 @@ const EQUIPMENTS = [
 
 export const searchEquipments = (searchTerm, equipmentLabelling) => {
     if (searchTerm) {
-        return (
+        return getEquipmentsInfosForSearchBar(
             equipmentLabelling
                 ? EQUIPMENTS.filter((equipment) =>
                       equipment.name.includes(searchTerm)
                   )
                 : EQUIPMENTS.filter((equipment) =>
                       equipment.id.includes(searchTerm)
-                  )
-        )
-            .flatMap((e) => {
-                let label = equipmentLabelling ? e.name : e.id;
-                return e.type === 'SUBSTATION'
-                    ? [
-                          {
-                              label: label,
-                              id: e.id,
-                              type: e.type,
-                          },
-                      ]
-                    : e.voltageLevelsIds.map((vli) => {
-                          return {
-                              label: label,
-                              id: e.id,
-                              type: e.type,
-                              voltageLevelId: vli,
-                          };
-                      });
-            })
-            .sort(sortEquipments);
+                  ),
+            equipmentLabelling
+        );
     } else {
         return [];
     }
