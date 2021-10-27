@@ -73,6 +73,8 @@ import { LOGS_JSON } from '../data/ReportViewer';
 
 import { searchEquipments } from '../data/EquipmentSearchBar';
 import { renderEquipmentForSearchBar } from '../../src/utils/EquipmentType';
+import { elementType, getFileIcon } from '../../lib/utils/ElementType';
+import { Grid } from '@material-ui/core';
 
 const messages = {
     en: {
@@ -341,6 +343,19 @@ const AppContent = ({ language, onLanguageClick }) => {
         // Note: initialMatchSilentRenewCallbackUrl doesn't change
     }, [initialMatchSilentRenewCallbackUrl]);
 
+    function testIcons() {
+        return (
+            <Grid container direction={'column'}>
+                {Object.keys(elementType).map((type) => (
+                    <Grid container item>
+                        <Grid item>{getFileIcon(type)}</Grid>
+                        <Grid item>{type}</Grid>
+                    </Grid>
+                ))}
+            </Grid>
+        );
+    }
+
     return (
         <ThemeProvider theme={getMuiTheme(theme)}>
             <SnackbarProvider hideIconVariant={false}>
@@ -414,6 +429,8 @@ const AppContent = ({ language, onLanguageClick }) => {
                                 exportCSVDataKeys={['key2', 'key3']}
                             />
                         </Box>
+                        <hr />
+                        {testIcons()}
                         <hr />
                     </div>
                 ) : (
