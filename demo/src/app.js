@@ -73,7 +73,7 @@ import { LOGS_JSON } from '../data/ReportViewer';
 
 import { searchEquipments } from '../data/EquipmentSearchBar';
 import { renderEquipmentForSearchBar } from '../../src/utils/EquipmentType';
-import { elementType, getFileIcon } from '../../lib/utils/ElementType';
+import { elementType, getFileIcon } from '../../src/utils/ElementType';
 import { Grid } from '@material-ui/core';
 
 const messages = {
