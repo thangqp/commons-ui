@@ -21,10 +21,7 @@ export {
     getPreLoginPath,
 } from './utils/AuthService';
 
-export {
-    elementType,
-    getFileIcon,
-} from './utils/ElementType';
+export { elementType, getFileIcon } from './utils/ElementType';
 
 export {
     DEFAULT_CELL_PADDING,
