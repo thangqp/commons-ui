@@ -347,7 +347,7 @@ const AppContent = ({ language, onLanguageClick }) => {
         return (
             <Grid container direction={'column'}>
                 {Object.keys(elementType).map((type) => (
-                    <Grid container item>
+                    <Grid container item key={type}>
                         <Grid item>{getFileIcon(type)}</Grid>
                         <Grid item>{type}</Grid>
                     </Grid>
