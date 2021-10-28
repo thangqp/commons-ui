@@ -22,6 +22,11 @@ export {
 } from './utils/AuthService';
 
 export {
+    elementType,
+    getFileIcon
+} from './utils/ElementType';
+
+export {
     DEFAULT_CELL_PADDING,
     DEFAULT_HEADER_HEIGHT,
     DEFAULT_ROW_HEIGHT,
