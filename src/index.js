@@ -23,7 +23,7 @@ export {
 
 export {
     elementType,
-    getFileIcon
+    getFileIcon,
 } from './utils/ElementType';
 
 export {
