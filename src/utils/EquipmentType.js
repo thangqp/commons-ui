@@ -8,9 +8,9 @@ import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
 import clsx from 'clsx';
 import React from 'react';
+import { LIGHT_THEME } from '../components/TopBar/TopBar';
 
-export const TYPE_TAG_MAX_SIZE = '120px';
-export const VL_TAG_MAX_SIZE = '65px';
+export const TYPE_TAG_MAX_SIZE = '90px';
 
 export const equipmentStyles = (theme) => ({
     equipmentOption: {
@@ -27,13 +27,14 @@ export const equipmentStyles = (theme) => ({
         padding: '4px',
         fontSize: 'x-small',
         textAlign: 'center',
+        color: theme === LIGHT_THEME ? 'inherit' : theme.palette.common.black,
     },
     equipmentTypeTag: {
-        width: TYPE_TAG_MAX_SIZE,
+        minWidth: TYPE_TAG_MAX_SIZE,
+        maxWidth: TYPE_TAG_MAX_SIZE,
         background: 'lightblue',
     },
     equipmentVlTag: {
-        width: VL_TAG_MAX_SIZE,
         background: 'lightgray',
         fontStyle: 'italic',
     },
@@ -54,7 +55,7 @@ export const EQUIPMENT_TYPE = {
     LINE: {
         name: 'LINE',
         sortOrder: 2,
-        tagLabel: 'equipment_search/voltageLevelTag',
+        tagLabel: 'equipment_search/lineTag',
     },
     TWO_WINDINGS_TRANSFORMER: {
         name: 'TWO_WINDINGS_TRANSFORMER',

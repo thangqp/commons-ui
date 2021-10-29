@@ -1,5 +1,5 @@
 const equipment_search_en = {
-    'equipment_search/label': 'Search an equipment',
+    'equipment_search/label': 'Search for an equipment',
     'equipment_search/switchTag': 'SWITCH',
     'equipment_search/busbarSectionTag': 'BBS',
     'equipment_search/lineTag': 'LINE',

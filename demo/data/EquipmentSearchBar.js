@@ -31,6 +31,24 @@ const EQUIPMENTS = [
         networkUuid: NETWORK_UUID,
     },
     {
+        id: 'ident14',
+        name: 'name14',
+        type: 'LOAD',
+        voltageLevelsIds: [
+            '_1ef0715a-d5a9-477b-b6e7-b635529ac140_1ef0715a-d5a9-477b-vlid4',
+        ],
+        networkUuid: NETWORK_UUID,
+    },
+    {
+        id: 'ident15veryveryveryveryveryveryveryveryveryveryveryveryveryverylongid',
+        name: '_1ef0715a-d5a9-477b-b6e7-b635529ac140_1ef0715a-d5a9-477b-b6eax',
+        type: 'LOAD',
+        voltageLevelsIds: [
+            '_1ef0715a-d5a9-477b-b6e7-b635529ac140_1ef0715a-d5a9-477b-b6eax',
+        ],
+        networkUuid: NETWORK_UUID,
+    },
+    {
         id: 'ident2',
         name: 'name2',
         type: 'GENERATOR',

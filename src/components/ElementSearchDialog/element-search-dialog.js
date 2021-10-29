@@ -11,6 +11,7 @@ import {
     Dialog,
     DialogContent,
     DialogTitle,
+    Popper,
     TextField,
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
@@ -20,7 +21,7 @@ import { useIntl } from 'react-intl';
 
 const TERM_MIN_SIZE_BEFORE_SEARCH = 3;
 
-const useStyles = makeStyles({
+const styles = (theme) => ({
     title: {
         padding: '0px',
     },
@@ -30,7 +31,16 @@ const useStyles = makeStyles({
         padding: '20px',
         paddingRight: '0px',
     },
+    popper: {
+        maxWidth: 'fit-content',
+    },
 });
+
+const useStyles = makeStyles(styles);
+
+const PopperWithFitToContent = (props) => {
+    return <Popper {...props} style={styles.popper} placement="bottom-start" />;
+};
 
 const ElementSearchDialog = (props) => {
     const classes = useStyles();
@@ -80,6 +90,7 @@ const ElementSearchDialog = (props) => {
                 <Autocomplete
                     id="element-search"
                     forcePopupIcon={false}
+                    PopperComponent={PopperWithFitToContent}
                     open={expanded}
                     onOpen={() => {
                         setElements([]);
@@ -110,7 +121,7 @@ const ElementSearchDialog = (props) => {
                             label={
                                 searchingLabel ||
                                 intl.formatMessage({
-                                    id: 'element_search/noResult',
+                                    id: 'element_search/label',
                                 })
                             }
                             InputProps={{
