@@ -40,7 +40,7 @@ export const equipmentStyles = (theme) => ({
     },
 });
 
-// Must be equivalent as the back enum (Powsybl)
+// Must be equivalent as the back enum
 export const EQUIPMENT_TYPE = {
     SUBSTATION: {
         name: 'SUBSTATION',
@@ -127,6 +127,11 @@ export const EQUIPMENT_TYPE = {
         sortOrder: 16,
         tagLabel: 'equipment_search/switchTag',
     },
+    CONFIGURED_BUS: {
+        name: 'CONFIGURED_BUS',
+        sortOrder: 17,
+        tagLabel: 'equipment_search/busTag',
+    },
 };
 
 export const getEquipmentsInfosForSearchBar = (
@@ -166,7 +171,10 @@ const sortEquipments = (a, b) => {
 
 export const renderEquipmentForSearchBar = (classes, intl) => {
     return (element, { inputValue }) => {
-        let matches = match(element.label, inputValue);
+        let matches = match(element.label, inputValue, {
+            insideWords: true,
+            findAllOccurrences: true,
+        });
         let parts = parse(element.label, matches);
         return (
             <div className={classes.equipmentOption}>

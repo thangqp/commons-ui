@@ -14,6 +14,7 @@ const equipment_search_en = {
     'equipment_search/hvdcStationTag': 'HVDC STATION',
     'equipment_search/voltageLevelTag': 'VOLTAGE LEVEL',
     'equipment_search/substationTag': 'SUBSTATION',
+    'equipment_search/busTag': 'BUS',
 };
 
 export default equipment_search_en;

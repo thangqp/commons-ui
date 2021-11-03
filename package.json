@@ -20,7 +20,7 @@
     },
     "dependencies": {
         "@svgr/webpack": "^5.4.0",
-        "autosuggest-highlight": "^3.1.1",
+        "autosuggest-highlight": "^3.2.0",
         "clsx": "^1.0.4",
         "jwt-decode": "^3.0.0",
         "memoize-one": "^5.1.1",

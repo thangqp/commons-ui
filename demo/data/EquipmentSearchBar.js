@@ -104,6 +104,13 @@ const EQUIPMENTS = [
         voltageLevelsIds: ['vl91', 'vl92'],
         networkUuid: NETWORK_UUID,
     },
+    {
+        id: 'ident10',
+        name: 'name10',
+        type: 'CONFIGURED_BUS',
+        voltageLevelsIds: ['vl10'],
+        networkUuid: NETWORK_UUID,
+    },
 ];
 
 export const searchEquipments = (searchTerm, equipmentLabelling) => {

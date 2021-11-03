@@ -14,6 +14,7 @@ const equipment_search_fr = {
     'equipment_search/hvdcStationTag': 'STATION HVDC',
     'equipment_search/voltageLevelTag': 'POSTE',
     'equipment_search/substationTag': 'SITE',
+    'equipment_search/busTag': 'NOEUD',
 };
 
 export default equipment_search_fr;
