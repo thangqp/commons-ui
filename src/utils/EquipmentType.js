@@ -112,25 +112,25 @@ export const EQUIPMENT_TYPE = {
         sortOrder: 13,
         tagLabel: 'equipment_search/busbarSectionTag',
     },
+    CONFIGURED_BUS: {
+        name: 'CONFIGURED_BUS',
+        sortOrder: 14,
+        tagLabel: 'equipment_search/busTag',
+    },
     BREAKER: {
         name: 'BREAKER',
-        sortOrder: 14,
+        sortOrder: 15,
         tagLabel: 'equipment_search/switchTag',
     },
     DISCONNECTOR: {
         name: 'DISCONNECTOR',
-        sortOrder: 15,
+        sortOrder: 16,
         tagLabel: 'equipment_search/switchTag',
     },
     LOAD_BREAK_SWITCH: {
         name: 'LOAD_BREAK_SWITCH',
-        sortOrder: 16,
-        tagLabel: 'equipment_search/switchTag',
-    },
-    CONFIGURED_BUS: {
-        name: 'CONFIGURED_BUS',
         sortOrder: 17,
-        tagLabel: 'equipment_search/busTag',
+        tagLabel: 'equipment_search/switchTag',
     },
 };
 
