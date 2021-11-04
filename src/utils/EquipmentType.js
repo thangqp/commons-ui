@@ -166,7 +166,10 @@ const sortEquipments = (a, b) => {
 
 export const renderEquipmentForSearchBar = (classes, intl) => {
     return (element, { inputValue }) => {
-        let matches = match(element.label, inputValue);
+        let matches = match(element.label, inputValue, {
+            insideWords: true,
+            findAllOccurrences: true,
+        });
         let parts = parse(element.label, matches);
         return (
             <div className={classes.equipmentOption}>
