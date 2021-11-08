@@ -149,12 +149,12 @@ export const getEquipmentsInfosForSearchBar = (
                           type: e.type,
                       },
                   ]
-                : e.voltageLevelsIds.map((vli) => {
+                : e.voltageLevels.map((vli) => {
                       return {
                           label: label,
                           id: e.id,
                           type: e.type,
-                          voltageLevelId: vli,
+                          voltageLevel: equipmentLabelling ? vli.name : vli.id,
                       };
                   });
         })
@@ -211,7 +211,7 @@ export const renderEquipmentForSearchBar = (classes, intl) => {
                                     classes.equipmentVlTag
                                 )}
                             >
-                                {element.voltageLevelId}
+                                {element.voltageLevel}
                             </span>
                         )}
                 </div>
