@@ -155,6 +155,7 @@ export const getEquipmentsInfosForSearchBar = (
                           id: e.id,
                           type: e.type,
                           voltageLevel: equipmentLabelling ? vli.name : vli.id,
+                          voltageLevelId: vli.id,
                       };
                   });
         })
