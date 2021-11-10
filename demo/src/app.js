@@ -281,7 +281,7 @@ const AppContent = ({ language, onLanguageClick }) => {
             equipment.type === EQUIPMENT_TYPE.SUBSTATION.name
                 ? alert(`Equipment ${equipment.label} found !`)
                 : alert(
-                      `Equipment ${equipment.label} (${equipment.voltageLevel}) found !`
+                      `Equipment ${equipment.label} (${equipment.voltageLevelLabel}) found !`
                   );
         }
     };
