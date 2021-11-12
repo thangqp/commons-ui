@@ -7,31 +7,23 @@
 import React from 'react';
 import LibraryBooksOutlinedIcon from '@material-ui/icons/LibraryBooksOutlined';
 import DescriptionIcon from '@material-ui/icons/Description';
-import PanToolIcon from '@material-ui/icons/PanTool';
 import FilterListIcon from '@material-ui/icons/FilterList';
-import FilterIcon from '@material-ui/icons/Filter';
 
 export const elementType = {
     DIRECTORY: 'DIRECTORY',
     STUDY: 'STUDY',
     FILTER: 'FILTER',
-    SCRIPT: 'SCRIPT',
-    SCRIPT_CONTINGENCY_LIST: 'SCRIPT_CONTINGENCY_LIST',
-    FILTERS_CONTINGENCY_LIST: 'FILTERS_CONTINGENCY_LIST',
+    CONTINGENCY_LIST: 'CONTINGENCY_LIST',
 };
 
 export function getFileIcon(type, theme) {
     switch (type) {
         case elementType.STUDY:
             return <LibraryBooksOutlinedIcon className={theme} />;
-        case elementType.SCRIPT_CONTINGENCY_LIST:
+        case elementType.CONTINGENCY_LIST:
             return <DescriptionIcon className={theme} />;
-        case elementType.FILTERS_CONTINGENCY_LIST:
-            return <PanToolIcon className={theme} />;
         case elementType.FILTER:
             return <FilterListIcon className={theme} />;
-        case elementType.SCRIPT:
-            return <FilterIcon className={theme} />;
         case elementType.DIRECTORY:
             // to easily use in TreeView we do not give icons for directories
             return;
