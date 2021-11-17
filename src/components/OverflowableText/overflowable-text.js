@@ -8,7 +8,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Tooltip } from '@material-ui/core';
 import PropTypes from 'prop-types';
 
-export const OverflowableText = ({ text, children, className }) => {
+export const OverflowableText = ({ text, children, ...props }) => {
     const element = useRef();
     const [overflowed, setOverflowed] = useState(false);
 
@@ -25,9 +25,7 @@ export const OverflowableText = ({ text, children, className }) => {
 
     return (
         <Tooltip title={text || ''} disableHoverListener={!overflowed}>
-            <div ref={element} className={className}>
-                {children || text}
-            </div>
+            <div {...props} ref={element} children={children || text} />
         </Tooltip>
     );
 };
