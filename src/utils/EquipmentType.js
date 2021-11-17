@@ -9,6 +9,7 @@ import parse from 'autosuggest-highlight/parse';
 import clsx from 'clsx';
 import React from 'react';
 import { LIGHT_THEME } from '../components/TopBar/TopBar';
+import OverflowableText from '../components/OverflowableText';
 
 export const TYPE_TAG_MAX_SIZE = '90px';
 
@@ -35,8 +36,12 @@ export const equipmentStyles = (theme) => ({
         background: 'lightblue',
     },
     equipmentVlTag: {
+        width: TYPE_TAG_MAX_SIZE,
         background: 'lightgray',
         fontStyle: 'italic',
+        textOverflow: 'ellipsis',
+        overflow: 'hidden',
+        whiteSpace: 'nowrap',
     },
 });
 
@@ -173,6 +178,23 @@ const sortEquipments = (a, b) => {
 };
 
 export const renderEquipmentForSearchBar = (classes, intl) => {
+    function renderTag(voltageLevelLabel) {
+        const ref = React.createRef();
+        return (
+            <OverflowableText text={voltageLevelLabel} childRef={ref}>
+                <div
+                    ref={ref}
+                    className={clsx(
+                        classes.equipmentTag,
+                        classes.equipmentVlTag
+                    )}
+                >
+                    {voltageLevelLabel}
+                </div>
+            </OverflowableText>
+        );
+    }
+
     return (element, { inputValue }) => {
         let matches = match(element.label, inputValue, {
             insideWords: true,
@@ -207,16 +229,8 @@ export const renderEquipmentForSearchBar = (classes, intl) => {
                         ))}
                     </span>
                     {element.type !== EQUIPMENT_TYPE.SUBSTATION.name &&
-                        element.type !== EQUIPMENT_TYPE.VOLTAGE_LEVEL.name && (
-                            <span
-                                className={clsx(
-                                    classes.equipmentTag,
-                                    classes.equipmentVlTag
-                                )}
-                            >
-                                {element.voltageLevelLabel}
-                            </span>
-                        )}
+                        element.type !== EQUIPMENT_TYPE.VOLTAGE_LEVEL.name &&
+                        renderTag(element.voltageLevelLabel)}
                 </div>
             </div>
         );
