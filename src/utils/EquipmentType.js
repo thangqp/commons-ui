@@ -178,23 +178,6 @@ const sortEquipments = (a, b) => {
 };
 
 export const renderEquipmentForSearchBar = (classes, intl) => {
-    function renderTag(voltageLevelLabel) {
-        const ref = React.createRef();
-        return (
-            <OverflowableText text={voltageLevelLabel} childRef={ref}>
-                <div
-                    ref={ref}
-                    className={clsx(
-                        classes.equipmentTag,
-                        classes.equipmentVlTag
-                    )}
-                >
-                    {voltageLevelLabel}
-                </div>
-            </OverflowableText>
-        );
-    }
-
     return (element, { inputValue }) => {
         let matches = match(element.label, inputValue, {
             insideWords: true,
@@ -229,8 +212,15 @@ export const renderEquipmentForSearchBar = (classes, intl) => {
                         ))}
                     </span>
                     {element.type !== EQUIPMENT_TYPE.SUBSTATION.name &&
-                        element.type !== EQUIPMENT_TYPE.VOLTAGE_LEVEL.name &&
-                        renderTag(element.voltageLevelLabel)}
+                        element.type !== EQUIPMENT_TYPE.VOLTAGE_LEVEL.name && (
+                            <OverflowableText
+                                text={element.voltageLevelLabel}
+                                className={clsx(
+                                    classes.equipmentTag,
+                                    classes.equipmentVlTag
+                                )}
+                            />
+                        )}
                 </div>
             </div>
         );
