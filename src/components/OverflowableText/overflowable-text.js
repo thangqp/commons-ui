@@ -7,9 +7,29 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Tooltip } from '@material-ui/core';
 import PropTypes from 'prop-types';
+import { makeStyles } from '@material-ui/core/styles';
+import clsx from 'clsx';
 
-export const OverflowableText = ({ text, children, ...props }) => {
+const overflowStyle = (theme) => ({
+    overflow: {
+        display: 'inline-block',
+        whiteSpace: 'nowrap',
+        textOverflow: 'ellipsis',
+        overflow: 'hidden',
+    },
+    tooltip: {
+        whiteSpace: 'nowrap',
+        width: 'fit-content',
+        maxWidth: 'fit-content',
+    },
+});
+
+const useStyles = makeStyles(overflowStyle);
+
+export const OverflowableText = ({ text, className, children, ...props }) => {
     const element = useRef();
+    const classes = useStyles();
+
     const [overflowed, setOverflowed] = useState(false);
 
     const checkOverflow = useCallback(() => {
@@ -24,8 +44,17 @@ export const OverflowableText = ({ text, children, ...props }) => {
     }, [checkOverflow]);
 
     return (
-        <Tooltip title={text || ''} disableHoverListener={!overflowed}>
-            <div {...props} ref={element} children={children || text} />
+        <Tooltip
+            title={text || ''}
+            disableHoverListener={!overflowed}
+            classes={{ tooltip: classes.tooltip }}
+        >
+            <div
+                {...props}
+                ref={element}
+                children={children || text}
+                className={clsx(className, classes.overflow)}
+            />
         </Tooltip>
     );
 };

@@ -11,7 +11,6 @@ import {
     Dialog,
     DialogContent,
     DialogTitle,
-    Popper,
     TextField,
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
@@ -31,16 +30,9 @@ const styles = (theme) => ({
         padding: '20px',
         paddingRight: '0px',
     },
-    popper: {
-        maxWidth: 'fit-content',
-    },
 });
 
 const useStyles = makeStyles(styles);
-
-const PopperWithFitToContent = (props) => {
-    return <Popper {...props} style={styles.popper} placement="bottom-start" />;
-};
 
 const ElementSearchDialog = (props) => {
     const classes = useStyles();
@@ -90,7 +82,6 @@ const ElementSearchDialog = (props) => {
                 <Autocomplete
                     id="element-search"
                     forcePopupIcon={false}
-                    PopperComponent={PopperWithFitToContent}
                     open={expanded}
                     onOpen={() => {
                         setElements([]);

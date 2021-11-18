@@ -12,6 +12,7 @@ import { LIGHT_THEME } from '../components/TopBar/TopBar';
 import OverflowableText from '../components/OverflowableText';
 
 export const TYPE_TAG_MAX_SIZE = '90px';
+export const VL_TAG_MAX_SIZE = '100px';
 
 export const equipmentStyles = (theme) => ({
     equipmentOption: {
@@ -36,12 +37,13 @@ export const equipmentStyles = (theme) => ({
         background: 'lightblue',
     },
     equipmentVlTag: {
-        width: TYPE_TAG_MAX_SIZE,
+        width: VL_TAG_MAX_SIZE,
+        minWidth: VL_TAG_MAX_SIZE,
         background: 'lightgray',
         fontStyle: 'italic',
-        textOverflow: 'ellipsis',
-        overflow: 'hidden',
-        whiteSpace: 'nowrap',
+    },
+    result: {
+        width: '100%',
     },
 });
 
@@ -196,8 +198,16 @@ export const renderEquipmentForSearchBar = (classes, intl) => {
                         id: EQUIPMENT_TYPE[element.type].tagLabel,
                     })}
                 </span>
-                <div className={classes.equipmentOption}>
-                    <span>
+                <div
+                    className={classes.equipmentOption}
+                    style={{
+                        overflow: 'hidden',
+                    }}
+                >
+                    <OverflowableText
+                        text={parts.map((e) => e.text).join()}
+                        className={classes.result}
+                    >
                         {parts.map((part, index) => (
                             <span
                                 key={index}
@@ -210,18 +220,18 @@ export const renderEquipmentForSearchBar = (classes, intl) => {
                                 {part.text}
                             </span>
                         ))}
-                    </span>
-                    {element.type !== EQUIPMENT_TYPE.SUBSTATION.name &&
-                        element.type !== EQUIPMENT_TYPE.VOLTAGE_LEVEL.name && (
-                            <OverflowableText
-                                text={element.voltageLevelLabel}
-                                className={clsx(
-                                    classes.equipmentTag,
-                                    classes.equipmentVlTag
-                                )}
-                            />
-                        )}
+                    </OverflowableText>
                 </div>
+                {element.type !== EQUIPMENT_TYPE.SUBSTATION.name &&
+                    element.type !== EQUIPMENT_TYPE.VOLTAGE_LEVEL.name && (
+                        <OverflowableText
+                            text={element.voltageLevelLabel}
+                            className={clsx(
+                                classes.equipmentTag,
+                                classes.equipmentVlTag
+                            )}
+                        />
+                    )}
             </div>
         );
     };
