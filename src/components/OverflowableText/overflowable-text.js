@@ -60,8 +60,9 @@ export const OverflowableText = ({ text, className, children, ...props }) => {
 };
 
 OverflowableText.propTypes = {
-    children: PropTypes.object,
+    children: PropTypes.array,
     text: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    className: PropTypes.string,
 };
 
 export default OverflowableText;

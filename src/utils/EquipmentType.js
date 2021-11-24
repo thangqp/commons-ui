@@ -198,30 +198,21 @@ export const renderEquipmentForSearchBar = (classes, intl) => {
                         id: EQUIPMENT_TYPE[element.type].tagLabel,
                     })}
                 </span>
-                <div
-                    className={classes.equipmentOption}
-                    style={{
-                        overflow: 'hidden',
-                    }}
+                <OverflowableText
+                    text={parts.map((e) => e.text).join()}
+                    className={classes.result}
                 >
-                    <OverflowableText
-                        text={parts.map((e) => e.text).join()}
-                        className={classes.result}
-                    >
-                        {parts.map((part, index) => (
-                            <span
-                                key={index}
-                                style={{
-                                    fontWeight: part.highlight
-                                        ? 'bold'
-                                        : 'inherit',
-                                }}
-                            >
-                                {part.text}
-                            </span>
-                        ))}
-                    </OverflowableText>
-                </div>
+                    {parts.map((part, index) => (
+                        <span
+                            key={index}
+                            style={{
+                                fontWeight: part.highlight ? 'bold' : 'inherit',
+                            }}
+                        >
+                            {part.text}
+                        </span>
+                    ))}
+                </OverflowableText>
                 {element.type !== EQUIPMENT_TYPE.SUBSTATION.name &&
                     element.type !== EQUIPMENT_TYPE.VOLTAGE_LEVEL.name && (
                         <OverflowableText
