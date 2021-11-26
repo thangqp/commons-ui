@@ -39,6 +39,7 @@ export const equipmentStyles = (theme) => ({
     equipmentVlTag: {
         width: VL_TAG_MAX_SIZE,
         minWidth: VL_TAG_MAX_SIZE,
+        maxWidth: VL_TAG_MAX_SIZE,
         background: 'lightgray',
         fontStyle: 'italic',
     },
