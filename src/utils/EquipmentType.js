@@ -75,8 +75,8 @@ export const EQUIPMENT_TYPE = {
         sortOrder: 4,
         tagLabel: 'equipment_search/3wtTag',
     },
-    HVDC: {
-        name: 'HVDC',
+    HVDC_LINE: {
+        name: 'HVDC_LINE',
         sortOrder: 5,
         tagLabel: 'equipment_search/hvdcLinkTag',
     },
@@ -120,24 +120,14 @@ export const EQUIPMENT_TYPE = {
         sortOrder: 13,
         tagLabel: 'equipment_search/busbarSectionTag',
     },
-    CONFIGURED_BUS: {
-        name: 'CONFIGURED_BUS',
+    BUS: {
+        name: 'BUS',
         sortOrder: 14,
         tagLabel: 'equipment_search/busTag',
     },
-    BREAKER: {
-        name: 'BREAKER',
+    SWITCH: {
+        name: 'SWITCH',
         sortOrder: 15,
-        tagLabel: 'equipment_search/switchTag',
-    },
-    DISCONNECTOR: {
-        name: 'DISCONNECTOR',
-        sortOrder: 16,
-        tagLabel: 'equipment_search/switchTag',
-    },
-    LOAD_BREAK_SWITCH: {
-        name: 'LOAD_BREAK_SWITCH',
-        sortOrder: 17,
         tagLabel: 'equipment_search/switchTag',
     },
 };
