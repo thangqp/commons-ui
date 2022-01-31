@@ -10,7 +10,7 @@ const equipment_search_fr = {
     'equipment_search/loadTag': 'CONSO',
     'equipment_search/shuntTag': 'MCS',
     'equipment_search/svcTag': 'CSPR',
-    'equipment_search/hvdcLinkTag': 'LIAISON HVDC',
+    'equipment_search/hvdcLineTag': 'LIGNE HVDC',
     'equipment_search/hvdcStationTag': 'STATION HVDC',
     'equipment_search/voltageLevelTag': 'POSTE',
     'equipment_search/substationTag': 'SITE',

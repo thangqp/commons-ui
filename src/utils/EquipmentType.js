@@ -78,7 +78,7 @@ export const EQUIPMENT_TYPE = {
     HVDC_LINE: {
         name: 'HVDC_LINE',
         sortOrder: 5,
-        tagLabel: 'equipment_search/hvdcLinkTag',
+        tagLabel: 'equipment_search/hvdcLineTag',
     },
     GENERATOR: {
         name: 'GENERATOR',

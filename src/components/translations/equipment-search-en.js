@@ -10,7 +10,7 @@ const equipment_search_en = {
     'equipment_search/loadTag': 'LOAD',
     'equipment_search/shuntTag': 'SHUNT',
     'equipment_search/svcTag': 'SVC',
-    'equipment_search/hvdcLinkTag': 'HVDC LINK',
+    'equipment_search/hvdcLineTag': 'HVDC LINE',
     'equipment_search/hvdcStationTag': 'HVDC STATION',
     'equipment_search/voltageLevelTag': 'VOLTAGE LEVEL',
     'equipment_search/substationTag': 'SUBSTATION',
