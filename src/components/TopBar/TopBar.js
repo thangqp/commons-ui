@@ -97,6 +97,7 @@ const useStyles = makeStyles((theme) => ({
     },
     settingsMenu: {
         maxWidth: '385px',
+        zIndex: 53,
     },
     sizeLabel: {
         fontSize: '16px',
