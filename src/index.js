@@ -6,6 +6,7 @@ export MuiVirtualizedTable from './components/MuiVirtualizedTable';
 export ReportViewer from './components/ReportViewer';
 export ReportViewerDialog from './components/ReportViewerDialog';
 export OverflowableText from './components/OverflowableText';
+export ElementSearchDialog from './components/ElementSearchDialog'
 
 export {
     EQUIPMENT_TYPE,
