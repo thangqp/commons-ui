@@ -74,6 +74,7 @@ const ElementSearchDialog = (props) => {
         <Dialog
             open={open}
             onClose={onClose}
+            disableRestoreFocus={true}
             aria-labelledby="dialog-title-search"
             fullWidth={true}
         >
