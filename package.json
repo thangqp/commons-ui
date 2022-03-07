@@ -19,6 +19,12 @@
         "test:watch": "nwb test-react --server"
     },
     "dependencies": {
+        "@emotion/react": "^11.8.1",
+        "@emotion/styled": "^11.8.1",
+        "@mui/icons-material": "^5.5.0",
+        "@mui/lab": "^5.0.0-alpha.72",
+        "@mui/material": "^5.5.0",
+        "@mui/styles": "^5.5.0",
         "@svgr/webpack": "^5.4.0",
         "autosuggest-highlight": "^3.2.0",
         "clsx": "^1.0.4",
