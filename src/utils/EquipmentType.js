@@ -29,7 +29,7 @@ export const equipmentStyles = (theme) => ({
         padding: '4px',
         fontSize: 'x-small',
         textAlign: 'center',
-        color: theme === LIGHT_THEME ? 'inherit' : theme.palette.common.black,
+        color: theme === LIGHT_THEME ? 'inherit' : 'black',
     },
     equipmentTypeTag: {
         minWidth: TYPE_TAG_MAX_SIZE,
@@ -171,50 +171,54 @@ const sortEquipments = (a, b) => {
 };
 
 export const renderEquipmentForSearchBar = (classes, intl) => {
-    return (element, { inputValue }) => {
+    return (props, element, { inputValue }) => {
         let matches = match(element.label, inputValue, {
             insideWords: true,
             findAllOccurrences: true,
         });
         let parts = parse(element.label, matches);
         return (
-            <div className={classes.equipmentOption}>
-                <span
-                    className={clsx(
-                        classes.equipmentTag,
-                        classes.equipmentTypeTag
-                    )}
-                >
-                    {intl.formatMessage({
-                        id: EQUIPMENT_TYPE[element.type].tagLabel,
-                    })}
-                </span>
-                <OverflowableText
-                    text={parts.map((e) => e.text).join()}
-                    className={classes.result}
-                >
-                    {parts.map((part, index) => (
-                        <span
-                            key={index}
-                            style={{
-                                fontWeight: part.highlight ? 'bold' : 'inherit',
-                            }}
-                        >
-                            {part.text}
-                        </span>
-                    ))}
-                </OverflowableText>
-                {element.type !== EQUIPMENT_TYPE.SUBSTATION.name &&
-                    element.type !== EQUIPMENT_TYPE.VOLTAGE_LEVEL.name && (
-                        <OverflowableText
-                            text={element.voltageLevelLabel}
-                            className={clsx(
-                                classes.equipmentTag,
-                                classes.equipmentVlTag
-                            )}
-                        />
-                    )}
-            </div>
+            <li {...props}>
+                <div className={classes.equipmentOption}>
+                    <span
+                        className={clsx(
+                            classes.equipmentTag,
+                            classes.equipmentTypeTag
+                        )}
+                    >
+                        {intl.formatMessage({
+                            id: EQUIPMENT_TYPE[element.type].tagLabel,
+                        })}
+                    </span>
+                    <OverflowableText
+                        text={parts.map((e) => e.text).join()}
+                        className={classes.result}
+                    >
+                        {parts.map((part, index) => (
+                            <span
+                                key={index}
+                                style={{
+                                    fontWeight: part.highlight
+                                        ? 'bold'
+                                        : 'inherit',
+                                }}
+                            >
+                                {part.text}
+                            </span>
+                        ))}
+                    </OverflowableText>
+                    {element.type !== EQUIPMENT_TYPE.SUBSTATION.name &&
+                        element.type !== EQUIPMENT_TYPE.VOLTAGE_LEVEL.name && (
+                            <OverflowableText
+                                text={element.voltageLevelLabel}
+                                className={clsx(
+                                    classes.equipmentTag,
+                                    classes.equipmentVlTag
+                                )}
+                            />
+                        )}
+                </div>
+            </li>
         );
     };
 };
