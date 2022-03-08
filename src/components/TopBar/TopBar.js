@@ -202,7 +202,6 @@ const TopBar = ({
     const [anchorElAppsMenu, setAnchorElAppsMenu] = React.useState(null);
     const fullScreenRef = useRef(null);
     const [isFullScreen, setIsFullScreen] = useState(false);
-    const [isMenuOpen, setMenuOpen] = useState(false);
     const [isDialogSearchOpen, setDialogSearchOpen] = useState(false);
 
     const handleClickElementSearch = () => {
@@ -233,7 +232,7 @@ const TopBar = ({
         }
     };
 
-    function onFullScreenChange(isFullScreen) {
+    function onFullScreenChange(isFullScreenValue) {
         setAnchorElSettingsMenu(null);
         setIsFullScreen(isFullScreen);
     }
