@@ -6,13 +6,13 @@
  */
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import TreeView from '@material-ui/lab/TreeView';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import ArrowRightIcon from '@material-ui/icons/ArrowRight';
+import makeStyles from '@mui/styles/makeStyles';
+import TreeView from '@mui/lab/TreeView';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import ReportItem from './report-item';
 import LogReport from './log-report';
-import Grid from '@material-ui/core/Grid';
+import Grid from '@mui/material/Grid';
 import LogTable from './log-table';
 
 const MAX_SUB_REPORTS = 500;
