@@ -54,7 +54,7 @@ const TreeViewFinderConfig = (props) => {
             >
                 TreeViewFinder Configuration for Demo (no translation)
             </h3>
-            <FormControl component="fieldset">
+            <FormControl variant="standard" component="fieldset">
                 <div
                     style={{
                         display: 'flex',
