@@ -73,12 +73,12 @@ const TreeViewFinderConfig = (props) => {
                         >
                             <FormControlLabel
                                 value="Tree"
-                                control={<Radio />}
+                                control={<Radio color="secondary" />}
                                 label="Tree"
                             />
                             <FormControlLabel
                                 value="List"
-                                control={<Radio />}
+                                control={<Radio color="secondary" />}
                                 label="List"
                             />
                         </RadioGroup>
@@ -95,12 +95,12 @@ const TreeViewFinderConfig = (props) => {
                         >
                             <FormControlLabel
                                 value="static"
-                                control={<Radio />}
+                                control={<Radio color="secondary" />}
                                 label="static"
                             />
                             <FormControlLabel
                                 value="dynamic"
-                                control={<Radio />}
+                                control={<Radio color="secondary" />}
                                 label="dynamic"
                             />
                         </RadioGroup>
@@ -117,12 +117,12 @@ const TreeViewFinderConfig = (props) => {
                         >
                             <FormControlLabel
                                 value="singleselect"
-                                control={<Radio />}
+                                control={<Radio color="secondary" />}
                                 label="single selection"
                             />
                             <FormControlLabel
                                 value="multiselect"
-                                control={<Radio />}
+                                control={<Radio color="secondary" />}
                                 label="multiselect"
                             />
                         </RadioGroup>
