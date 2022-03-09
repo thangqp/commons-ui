@@ -514,7 +514,6 @@ const AppContent = ({ language, onLanguageClick }) => {
                         <Button
                             variant="contained"
                             style={{ float: 'left', margin: '5px' }}
-                            color="primary"
                             onClick={() =>
                                 setOpenTreeViewFinderDialogCustomDialog(true)
                             }

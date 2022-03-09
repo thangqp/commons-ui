@@ -71,7 +71,6 @@ const Login = ({ onLoginClick, disabled }) => {
                     disabled={disabled}
                     fullWidth
                     variant="contained"
-                    color="primary"
                     className={classes.submit}
                     onClick={onLoginClick}
                 >
