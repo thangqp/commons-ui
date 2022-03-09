@@ -34,7 +34,6 @@ import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import Brightness3Icon from '@mui/icons-material/Brightness3';
 import WbSunnyIcon from '@mui/icons-material/WbSunny';
 import ComputerIcon from '@mui/icons-material/Computer';
-import Fade from '@mui/material/Fade';
 
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
@@ -209,7 +208,6 @@ const TopBar = ({
     };
 
     const handleToggleSettingsMenu = (event) => {
-        console.debug('SBO :', event.currentTarget);
         setAnchorElSettingsMenu(event.currentTarget);
     };
 
