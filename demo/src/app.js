@@ -14,7 +14,6 @@ import {
     createTheme,
     ThemeProvider,
     StyledEngineProvider,
-    adaptV4Theme,
 } from '@mui/material/styles';
 import makeStyles from '@mui/styles/makeStyles';
 import withStyles from '@mui/styles/withStyles';
@@ -99,21 +98,17 @@ const messages = {
     },
 };
 
-const lightTheme = createTheme(
-    adaptV4Theme({
-        palette: {
-            mode: 'light',
-        },
-    })
-);
+const lightTheme = createTheme({
+    palette: {
+        mode: 'light',
+    },
+});
 
-const darkTheme = createTheme(
-    adaptV4Theme({
-        palette: {
-            mode: 'dark',
-        },
-    })
-);
+const darkTheme = createTheme({
+    palette: {
+        mode: 'dark',
+    },
+});
 
 const getMuiTheme = (theme) => {
     if (theme === LIGHT_THEME) {
