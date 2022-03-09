@@ -118,18 +118,6 @@ const getMuiTheme = (theme) => {
     }
 };
 
-const useStyles = makeStyles((theme) => ({
-    success: {
-        backgroundColor: '#43a047',
-    },
-    error: {
-        backgroundColor: '#d32f2f',
-    },
-    warning: {
-        backgroundColor: '#ffa000',
-    },
-}));
-
 const useEquipmentStyles = makeStyles(equipmentStyles);
 
 const styles = (theme) => ({
@@ -194,12 +182,11 @@ const CustomTreeViewFinder = withStyles(TreeViewFinderCustomStyles)(
 );
 
 const MyButton = (props) => {
-    const classes = useStyles();
     const { enqueueSnackbar } = useSnackbar();
     return (
         <Button
             variant="contained"
-            className={classes[props.variant]}
+            color={props.variant}
             style={{ float: 'left', color: '#fff', margin: '5px' }}
             onClick={() => {
                 enqueueSnackbar(props.message, { variant: props.variant });
