@@ -41,7 +41,7 @@ const AuthenticationRouter = ({
                     Error : SignIn Callback Error; {signInCallbackError.message}
                 </h1>
             )}
-            <Switch>
+            <Switch color="secondary">
                 <Route exact path="/sign-in-callback">
                     <SignInCallbackHandler
                         userManager={userManager.instance}
