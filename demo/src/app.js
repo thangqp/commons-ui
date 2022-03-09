@@ -425,6 +425,144 @@ const AppContent = ({ language, onLanguageClick }) => {
                             <hr />
                             {testIcons()}
                             <hr />
+
+                            {buttons.map((button) => (
+                                <MyButton {...button} key={button.id} />
+                            ))}
+                            <Button
+                                variant="contained"
+                                style={{ float: 'left', margin: '5px' }}
+                                onClick={() => setOpenReportViewer(true)}
+                            >
+                                Logs
+                            </Button>
+                            <ReportViewerDialog
+                                title={'Logs test'}
+                                open={openReportViewer}
+                                onClose={() => setOpenReportViewer(false)}
+                                jsonReport={LOGS_JSON}
+                            />
+                            <div
+                                style={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    alignItems: 'flex-start',
+                                }}
+                            >
+                                <TreeViewFinderConfig
+                                    dynamicData={dynamicData}
+                                    dataFormat={dataFormat}
+                                    multiselect={multiselect}
+                                    onlyLeaves={onlyLeaves}
+                                    onDynamicDataChange={(event) =>
+                                        setDynamicData(
+                                            event.target.value === 'dynamic'
+                                        )
+                                    }
+                                    onDataFormatChange={(event) =>
+                                        setDataFormat(event.target.value)
+                                    }
+                                    onSelectionTypeChange={(event) =>
+                                        setMultiselect(
+                                            event.target.value === 'multiselect'
+                                        )
+                                    }
+                                    onOnlyLeavesChange={(event) =>
+                                        setOnlyLeaves(event.target.checked)
+                                    }
+                                />
+                                <Button
+                                    variant="contained"
+                                    style={{ float: 'left', margin: '5px' }}
+                                    onClick={() =>
+                                        setOpenTreeViewFinderDialog(true)
+                                    }
+                                >
+                                    Open TreeViewFinder ...
+                                </Button>
+                                <TreeViewFinder
+                                    open={openTreeViewFinderDialog}
+                                    onClose={(nodes) => {
+                                        setOpenTreeViewFinderDialog(false);
+                                        console.log(
+                                            'Elements chosen : ',
+                                            nodes
+                                        );
+                                    }}
+                                    data={
+                                        dataFormat === 'Tree'
+                                            ? nodesTree
+                                            : nodesList
+                                    }
+                                    multiselect={multiselect}
+                                    onTreeBrowse={
+                                        dynamicData
+                                            ? dataFormat === 'Tree'
+                                                ? updateInfiniteTestDataTreeCallback
+                                                : updateInfiniteTestDataListCallback
+                                            : undefined
+                                    }
+                                    onlyLeaves={onlyLeaves}
+                                    // Customisation props to pass the counter in the title
+                                    title={
+                                        'Number of nodes : ' +
+                                        countNodes(
+                                            dataFormat === 'Tree'
+                                                ? nodesTree
+                                                : nodesList
+                                        )
+                                    }
+                                />
+                                <Button
+                                    variant="contained"
+                                    style={{ float: 'left', margin: '5px' }}
+                                    onClick={() =>
+                                        setOpenTreeViewFinderDialogCustomDialog(
+                                            true
+                                        )
+                                    }
+                                >
+                                    Open Custom TreeViewFinder ...
+                                </Button>
+                                <CustomTreeViewFinder
+                                    open={openTreeViewFinderDialogCustomDialog}
+                                    onClose={(nodes) => {
+                                        setOpenTreeViewFinderDialogCustomDialog(
+                                            false
+                                        );
+                                        console.log(
+                                            'Elements chosen : ',
+                                            nodes
+                                        );
+                                    }}
+                                    data={
+                                        dataFormat === 'Tree'
+                                            ? nodesTree
+                                            : nodesList
+                                    }
+                                    multiselect={multiselect}
+                                    onTreeBrowse={
+                                        dynamicData
+                                            ? dataFormat === 'Tree'
+                                                ? updateInfiniteTestDataTreeCallback
+                                                : updateInfiniteTestDataListCallback
+                                            : undefined
+                                    }
+                                    onlyLeaves={onlyLeaves}
+                                    // Customisation props
+                                    title={
+                                        'Custom Title TreeViewFinder, Number of nodes : ' +
+                                        countNodes(
+                                            dataFormat === 'Tree'
+                                                ? nodesTree
+                                                : nodesList
+                                        )
+                                    }
+                                    validationButtonText={
+                                        'Move To this location'
+                                    }
+                                />
+                            </div>
                         </div>
                     ) : (
                         <AuthenticationRouter
@@ -435,119 +573,6 @@ const AppContent = ({ language, onLanguageClick }) => {
                             location={location}
                         />
                     )}
-                    {buttons.map((button) => (
-                        <MyButton {...button} key={button.id} />
-                    ))}
-                    <Button
-                        variant="contained"
-                        style={{ float: 'left', margin: '5px' }}
-                        onClick={() => setOpenReportViewer(true)}
-                    >
-                        Logs
-                    </Button>
-                    <ReportViewerDialog
-                        title={'Logs test'}
-                        open={openReportViewer}
-                        onClose={() => setOpenReportViewer(false)}
-                        jsonReport={LOGS_JSON}
-                    />
-                    <div
-                        style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'flex-start',
-                        }}
-                    >
-                        <TreeViewFinderConfig
-                            dynamicData={dynamicData}
-                            dataFormat={dataFormat}
-                            multiselect={multiselect}
-                            onlyLeaves={onlyLeaves}
-                            onDynamicDataChange={(event) =>
-                                setDynamicData(event.target.value === 'dynamic')
-                            }
-                            onDataFormatChange={(event) =>
-                                setDataFormat(event.target.value)
-                            }
-                            onSelectionTypeChange={(event) =>
-                                setMultiselect(
-                                    event.target.value === 'multiselect'
-                                )
-                            }
-                            onOnlyLeavesChange={(event) =>
-                                setOnlyLeaves(event.target.checked)
-                            }
-                        />
-                        <Button
-                            variant="contained"
-                            style={{ float: 'left', margin: '5px' }}
-                            onClick={() => setOpenTreeViewFinderDialog(true)}
-                        >
-                            Open TreeViewFinder ...
-                        </Button>
-                        <TreeViewFinder
-                            open={openTreeViewFinderDialog}
-                            onClose={(nodes) => {
-                                setOpenTreeViewFinderDialog(false);
-                                console.log('Elements chosen : ', nodes);
-                            }}
-                            data={dataFormat === 'Tree' ? nodesTree : nodesList}
-                            multiselect={multiselect}
-                            onTreeBrowse={
-                                dynamicData
-                                    ? dataFormat === 'Tree'
-                                        ? updateInfiniteTestDataTreeCallback
-                                        : updateInfiniteTestDataListCallback
-                                    : undefined
-                            }
-                            onlyLeaves={onlyLeaves}
-                            // Customisation props to pass the counter in the title
-                            title={
-                                'Number of nodes : ' +
-                                countNodes(
-                                    dataFormat === 'Tree'
-                                        ? nodesTree
-                                        : nodesList
-                                )
-                            }
-                        />
-                        <Button
-                            variant="contained"
-                            style={{ float: 'left', margin: '5px' }}
-                            onClick={() =>
-                                setOpenTreeViewFinderDialogCustomDialog(true)
-                            }
-                        >
-                            Open Custom TreeViewFinder ...
-                        </Button>
-                        <CustomTreeViewFinder
-                            open={openTreeViewFinderDialogCustomDialog}
-                            onClose={(nodes) => {
-                                setOpenTreeViewFinderDialogCustomDialog(false);
-                                console.log('Elements chosen : ', nodes);
-                            }}
-                            data={dataFormat === 'Tree' ? nodesTree : nodesList}
-                            multiselect={multiselect}
-                            onTreeBrowse={
-                                dynamicData
-                                    ? dataFormat === 'Tree'
-                                        ? updateInfiniteTestDataTreeCallback
-                                        : updateInfiniteTestDataListCallback
-                                    : undefined
-                            }
-                            onlyLeaves={onlyLeaves}
-                            // Customisation props
-                            title={
-                                'Custom Title TreeViewFinder, Number of nodes : ' +
-                                countNodes(
-                                    dataFormat === 'Tree'
-                                        ? nodesTree
-                                        : nodesList
-                                )
-                            }
-                            validationButtonText={'Move To this location'}
-                        />
-                    </div>
                 </SnackbarProvider>
             </ThemeProvider>
         </StyledEngineProvider>
