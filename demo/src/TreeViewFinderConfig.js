@@ -136,6 +136,7 @@ const TreeViewFinderConfig = (props) => {
                                         checked={onlyLeaves}
                                         onChange={onOnlyLeavesChange}
                                         name="only-leaves"
+                                        color="secondary"
                                     />
                                 }
                                 label="Only leaves selection"
