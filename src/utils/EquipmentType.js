@@ -144,6 +144,7 @@ export const getEquipmentsInfosForSearchBar = (
                       {
                           label: label,
                           id: e.id,
+                          key: e.id,
                           type: e.type,
                       },
                   ]
@@ -151,6 +152,7 @@ export const getEquipmentsInfosForSearchBar = (
                       return {
                           label: label,
                           id: e.id,
+                          key: e.id + '_' + vli.id,
                           type: e.type,
                           voltageLevelLabel: equipmentLabelling
                               ? vli.name
@@ -177,8 +179,9 @@ export const renderEquipmentForSearchBar = (classes, intl) => {
             findAllOccurrences: true,
         });
         let parts = parse(element.label, matches);
+        /* override li.key otherwise it will use label which could be duplicated */
         return (
-            <li {...props}>
+            <li {...props} key={element.key}>
                 <div className={classes.equipmentOption}>
                     <span
                         className={clsx(
