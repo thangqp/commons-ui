@@ -108,7 +108,6 @@ const ElementSearchDialog = (props) => {
                     renderOption={renderElement}
                     renderInput={(params) => (
                         <TextField
-                            variant="standard"
                             autoFocus={true}
                             {...params}
                             label={

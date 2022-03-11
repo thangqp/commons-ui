@@ -54,7 +54,7 @@ const TreeViewFinderConfig = (props) => {
             >
                 TreeViewFinder Configuration for Demo (no translation)
             </h3>
-            <FormControl variant="standard" component="fieldset">
+            <FormControl component="fieldset">
                 <div
                     style={{
                         display: 'flex',
@@ -73,12 +73,12 @@ const TreeViewFinderConfig = (props) => {
                         >
                             <FormControlLabel
                                 value="Tree"
-                                control={<Radio color="secondary" />}
+                                control={<Radio />}
                                 label="Tree"
                             />
                             <FormControlLabel
                                 value="List"
-                                control={<Radio color="secondary" />}
+                                control={<Radio />}
                                 label="List"
                             />
                         </RadioGroup>
@@ -95,12 +95,12 @@ const TreeViewFinderConfig = (props) => {
                         >
                             <FormControlLabel
                                 value="static"
-                                control={<Radio color="secondary" />}
+                                control={<Radio />}
                                 label="static"
                             />
                             <FormControlLabel
                                 value="dynamic"
-                                control={<Radio color="secondary" />}
+                                control={<Radio />}
                                 label="dynamic"
                             />
                         </RadioGroup>
@@ -117,12 +117,12 @@ const TreeViewFinderConfig = (props) => {
                         >
                             <FormControlLabel
                                 value="singleselect"
-                                control={<Radio color="secondary" />}
+                                control={<Radio />}
                                 label="single selection"
                             />
                             <FormControlLabel
                                 value="multiselect"
-                                control={<Radio color="secondary" />}
+                                control={<Radio />}
                                 label="multiselect"
                             />
                         </RadioGroup>
@@ -136,7 +136,6 @@ const TreeViewFinderConfig = (props) => {
                                         checked={onlyLeaves}
                                         onChange={onOnlyLeavesChange}
                                         name="only-leaves"
-                                        color="secondary"
                                     />
                                 }
                                 label="Only leaves selection"
