@@ -11,6 +11,9 @@ import { top_bar_en } from '../../';
 
 import PowsyblLogo from '../images/powsybl_logo.svg';
 
+import { red } from '@mui/material/colors';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+
 let container = null;
 beforeEach(() => {
     // setup a DOM element as a render target
@@ -30,23 +33,33 @@ const apps = [
     { name: 'App2', url: '/app2' },
 ];
 
+const theme = createTheme({
+    palette: {
+        primary: {
+            main: red[500],
+        },
+    },
+});
+
 it('renders', () => {
     act(() => {
         render(
-            <IntlProvider locale="en" messages={top_bar_en}>
-                <TopBar
-                    appName="Demo"
-                    appColor="#808080"
-                    appLogo={PowsyblLogo}
-                    onParametersClick={() => {}}
-                    onLogoutClick={() => {}}
-                    onLogoClick={() => {}}
-                    user={{ profile: { name: 'John Doe' } }}
-                    appsAndUrls={apps}
-                >
-                    <p>testchild</p>
-                </TopBar>
-            </IntlProvider>,
+            <ThemeProvider theme={theme}>
+                <IntlProvider locale="en" messages={top_bar_en}>
+                    <TopBar
+                        appName="Demo"
+                        appColor="#808080"
+                        appLogo={PowsyblLogo}
+                        onParametersClick={() => {}}
+                        onLogoutClick={() => {}}
+                        onLogoClick={() => {}}
+                        user={{ profile: { name: 'John Doe' } }}
+                        appsAndUrls={apps}
+                    >
+                        <p>testchild</p>
+                    </TopBar>
+                </IntlProvider>
+            </ThemeProvider>,
             container
         );
     });
