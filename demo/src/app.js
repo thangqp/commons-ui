@@ -73,7 +73,7 @@ import {
 import { LOGS_JSON } from '../data/ReportViewer';
 
 import { searchEquipments } from '../data/EquipmentSearchBar';
-import { renderEquipmentForSearchBar } from '../../src/utils/EquipmentType';
+import { RenderEquipmentForSearchBar } from '../../src/utils/EquipmentType';
 import { elementType, getFileIcon } from '../../src/utils/ElementType';
 import { Grid } from '@mui/material';
 
@@ -372,9 +372,11 @@ const AppContent = ({ language, onLanguageClick }) => {
                         onSearchTermChange={searchMatchingEquipments}
                         onSelectionChange={displayEquipment}
                         elementsFound={equipmentsFound}
-                        renderElement={renderEquipmentForSearchBar(
-                            equipmentClasses,
-                            intl
+                        renderElement={(props) => (
+                            <RenderEquipmentForSearchBar
+                                classes={equipmentClasses}
+                                {...props}
+                            />
                         )}
                         onLanguageClick={onLanguageClick}
                         language={language}

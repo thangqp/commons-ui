@@ -11,7 +11,8 @@ export ElementSearchDialog from './components/ElementSearchDialog';
 export {
     EQUIPMENT_TYPE,
     getEquipmentsInfosForSearchBar,
-    renderEquipmentForSearchBar,
+    RenderEquipmentForSearchBar,
+    TagRenderer,
     equipmentStyles,
 } from './utils/EquipmentType';
 

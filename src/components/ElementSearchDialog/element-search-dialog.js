@@ -105,7 +105,14 @@ const ElementSearchDialog = (props) => {
                     noOptionsText={intl.formatMessage({
                         id: 'element_search/noResult',
                     })}
-                    renderOption={renderElement}
+                    renderOption={(prop, element, { inputValue }) =>
+                        renderElement({
+                            props,
+                            element,
+                            inputValue,
+                            close: onClose,
+                        })
+                    }
                     renderInput={(params) => (
                         <TextField
                             autoFocus={true}

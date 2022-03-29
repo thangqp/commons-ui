@@ -10,6 +10,7 @@ import clsx from 'clsx';
 import React from 'react';
 import { LIGHT_THEME } from '../components/TopBar/TopBar';
 import OverflowableText from '../components/OverflowableText';
+import { FormattedMessage } from 'react-intl';
 
 export const TYPE_TAG_MAX_SIZE = '90px';
 export const VL_TAG_MAX_SIZE = '100px';
@@ -172,56 +173,65 @@ const sortEquipments = (a, b) => {
         : a.label.localeCompare(b.label);
 };
 
-export const renderEquipmentForSearchBar = (classes, intl) => {
-    return (props, element, { inputValue }) => {
-        let matches = match(element.label, inputValue, {
-            insideWords: true,
-            findAllOccurrences: true,
-        });
-        let parts = parse(element.label, matches);
-        /* override li.key otherwise it will use label which could be duplicated */
+export const TagRenderer = ({ props, element }) => {
+    if (
+        element.type !== EQUIPMENT_TYPE.SUBSTATION.name &&
+        element.type !== EQUIPMENT_TYPE.VOLTAGE_LEVEL.name
+    )
         return (
-            <li {...props} key={element.key}>
-                <div className={classes.equipmentOption}>
-                    <span
-                        className={clsx(
-                            classes.equipmentTag,
-                            classes.equipmentTypeTag
-                        )}
-                    >
-                        {intl.formatMessage({
-                            id: EQUIPMENT_TYPE[element.type].tagLabel,
-                        })}
-                    </span>
-                    <OverflowableText
-                        text={parts.map((e) => e.text).join()}
-                        className={classes.result}
-                    >
-                        {parts.map((part, index) => (
-                            <span
-                                key={index}
-                                style={{
-                                    fontWeight: part.highlight
-                                        ? 'bold'
-                                        : 'inherit',
-                                }}
-                            >
-                                {part.text}
-                            </span>
-                        ))}
-                    </OverflowableText>
-                    {element.type !== EQUIPMENT_TYPE.SUBSTATION.name &&
-                        element.type !== EQUIPMENT_TYPE.VOLTAGE_LEVEL.name && (
-                            <OverflowableText
-                                text={element.voltageLevelLabel}
-                                className={clsx(
-                                    classes.equipmentTag,
-                                    classes.equipmentVlTag
-                                )}
-                            />
-                        )}
-                </div>
-            </li>
+            <OverflowableText
+                text={element.voltageLevelLabel}
+                className={clsx(
+                    props.classes.equipmentTag,
+                    props.classes.equipmentVlTag
+                )}
+            />
         );
-    };
+    return <></>;
+};
+
+export const RenderEquipmentForSearchBar = ({
+    inputValue,
+    tagRenderer = TagRenderer,
+    element,
+    ...props
+}) => {
+    let matches = match(element.label, inputValue, {
+        insideWords: true,
+        findAllOccurrences: true,
+    });
+    let parts = parse(element.label, matches);
+    /* override li.key otherwise it will use label which could be duplicated */
+    return (
+        <li key={element.key} {...props}>
+            <div className={props.classes.equipmentOption}>
+                <span
+                    className={clsx(
+                        props.classes.equipmentTag,
+                        props.classes.equipmentTypeTag
+                    )}
+                >
+                    <FormattedMessage
+                        id={EQUIPMENT_TYPE[element.type].tagLabel}
+                    />
+                </span>
+                <OverflowableText
+                    text={parts.map((e) => e.text).join()}
+                    className={props.classes.result}
+                >
+                    {parts.map((part, index) => (
+                        <span
+                            key={index}
+                            style={{
+                                fontWeight: part.highlight ? 'bold' : 'inherit',
+                            }}
+                        >
+                            {part.text}
+                        </span>
+                    ))}
+                </OverflowableText>
+                {tagRenderer({ props, element })}
+            </div>
+        </li>
+    );
 };
