@@ -7,13 +7,13 @@
 import React from 'react';
 
 /* Icons for customization*/
-import FlashOnIcon from '@material-ui/icons/FlashOn';
-import WhatshotIcon from '@material-ui/icons/Whatshot';
-import WavesIcon from '@material-ui/icons/Waves';
-import EcoIcon from '@material-ui/icons/Eco';
-import AcUnitIcon from '@material-ui/icons/AcUnit';
-import FolderOpenIcon from '@material-ui/icons/FolderOpen';
-import FiberNewIcon from '@material-ui/icons/FiberNew';
+import FlashOnIcon from '@mui/icons-material/FlashOn';
+import WhatshotIcon from '@mui/icons-material/Whatshot';
+import WavesIcon from '@mui/icons-material/Waves';
+import CoronavirusIcon from '@mui/icons-material/Coronavirus';
+import AcUnitIcon from '@mui/icons-material/AcUnit';
+import FolderOpenIcon from '@mui/icons-material/FolderOpen';
+import FiberNewIcon from '@mui/icons-material/FiberNew';
 
 var PokemonTree = [
     {
@@ -86,7 +86,7 @@ var PokemonTree = [
                 name: 'Florizard',
                 type: 'Plante',
                 power: '72',
-                icon: <EcoIcon />,
+                icon: <CoronavirusIcon />,
             },
             {
                 id: '9',

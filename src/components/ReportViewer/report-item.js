@@ -7,10 +7,10 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
-import TreeItem from '@material-ui/lab/TreeItem';
-import Typography from '@material-ui/core/Typography';
-import Label from '@material-ui/icons/Label';
+import makeStyles from '@mui/styles/makeStyles';
+import TreeItem from '@mui/lab/TreeItem';
+import Typography from '@mui/material/Typography';
+import Label from '@mui/icons-material/Label';
 
 const useReportItemStyles = makeStyles((theme) => ({
     root: {

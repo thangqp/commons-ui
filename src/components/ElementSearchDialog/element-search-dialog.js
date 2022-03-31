@@ -6,16 +6,16 @@
  */
 
 import React, { useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import makeStyles from '@mui/styles/makeStyles';
 import {
     Dialog,
     DialogContent,
     DialogTitle,
     TextField,
-} from '@material-ui/core';
+    Autocomplete,
+} from '@mui/material';
 import PropTypes from 'prop-types';
-import { Autocomplete } from '@material-ui/lab';
-import SearchIcon from '@material-ui/icons/Search';
+import SearchIcon from '@mui/icons-material/Search';
 import { useIntl } from 'react-intl';
 
 const TERM_MIN_SIZE_BEFORE_SEARCH = 3;
@@ -96,7 +96,7 @@ const ElementSearchDialog = (props) => {
                     }
                     onChange={(event, newValue) => onSelectionChange(newValue)}
                     getOptionLabel={(option) => option.label}
-                    getOptionSelected={(option, value) =>
+                    isOptionEqualToValue={(option, value) =>
                         option.id === value.id
                     }
                     options={elements}

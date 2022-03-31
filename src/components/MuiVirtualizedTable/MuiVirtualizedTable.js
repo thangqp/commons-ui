@@ -4,15 +4,15 @@
 import React, { createRef } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import TableCell from '@material-ui/core/TableCell';
+import TableCell from '@mui/material/TableCell';
 import { AutoSizer, Column, Table } from 'react-virtualized';
-import TableSortLabel from '@material-ui/core/TableSortLabel';
+import TableSortLabel from '@mui/material/TableSortLabel';
 import memoize from 'memoize-one';
-import GetAppIcon from '@material-ui/icons/GetApp';
+import GetAppIcon from '@mui/icons-material/GetApp';
 import CsvDownloader from 'react-csv-downloader';
-import IconButton from '@material-ui/core/IconButton';
+import IconButton from '@mui/material/IconButton';
 import { FormattedMessage } from 'react-intl';
-import { withStyles } from '@material-ui/core/styles';
+import withStyles from '@mui/styles/withStyles';
 
 function getTextWidth(text) {
     // re-use canvas object for better performance
@@ -470,7 +470,10 @@ class MuiVirtualizedTable extends React.PureComponent {
                             columns={csvHeaders}
                             filename={this.getCSVFilename()}
                         >
-                            <IconButton aria-label="exportCSVButton">
+                            <IconButton
+                                aria-label="exportCSVButton"
+                                size="large"
+                            >
                                 <GetAppIcon />
                             </IconButton>
                         </CsvDownloader>

@@ -6,8 +6,8 @@
  */
 import React, { memo } from 'react';
 import { useIntl } from 'react-intl';
-import { withStyles } from '@material-ui/core/styles';
-import TableCell from '@material-ui/core/TableCell';
+import withStyles from '@mui/styles/withStyles';
+import TableCell from '@mui/material/TableCell';
 import MuiVirtualizedTable from '../MuiVirtualizedTable';
 
 const SEVERITY_COLUMN_FIXED_WIDTH = 100;

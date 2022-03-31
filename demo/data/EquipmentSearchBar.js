@@ -64,14 +64,14 @@ const EQUIPMENTS = [
     {
         id: 'ident3 with spaces',
         name: 'name3 with spaces',
-        type: 'BREAKER',
+        type: 'SWITCH',
         voltageLevels: [{ id: 'vl3', name: 'vl3' }],
         networkUuid: NETWORK_UUID,
     },
     {
         id: 'ident4',
         name: 'name4',
-        type: 'HVDC',
+        type: 'HVDC_LINE',
         voltageLevels: [
             { id: 'vl41', name: 'vl41' },
             { id: 'vl42', name: 'vl42' },
@@ -128,7 +128,7 @@ const EQUIPMENTS = [
     {
         id: 'ident10',
         name: 'name10',
-        type: 'CONFIGURED_BUS',
+        type: 'BUS',
         voltageLevels: [{ id: 'vl10', name: 'vl10' }],
         networkUuid: NETWORK_UUID,
     },
