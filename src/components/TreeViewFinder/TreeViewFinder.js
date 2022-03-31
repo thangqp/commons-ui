@@ -63,6 +63,7 @@ const defaultStyles = {
  *
  * @param {Object}          classes - CSS classes, please use withStyles API from MaterialUI
  * @param {String}          [title] - Title of the Dialog
+ * @param {String}          [contentText] - Content text of the Dialog
  * @param {Boolean}         open - dialog state boolean handler (Controlled)
  * @param {EventListener}   onClose - onClose callback to call when closing dialog
  * @param {Object[]}        data - data to feed the component (Controlled).
@@ -83,6 +84,7 @@ const TreeViewFinder = (props) => {
     const {
         classes,
         title,
+        contentText,
         open,
         data,
         defaultExpanded,
@@ -249,10 +251,12 @@ const TreeViewFinder = (props) => {
             </DialogTitle>
             <DialogContent>
                 <DialogContentText>
-                    {intl.formatMessage(
-                        { id: 'treeview_finder/contentText' },
-                        { multiselect: multiselect }
-                    )}
+                    {contentText
+                        ? contentText
+                        : intl.formatMessage(
+                              { id: 'treeview_finder/contentText' },
+                              { multiselect: multiselect }
+                          )}
                 </DialogContentText>
 
                 <TreeView
@@ -319,6 +323,7 @@ TreeViewFinder.propTypes = {
     //uncontrolled
     classes: PropTypes.object.isRequired,
     title: PropTypes.string,
+    contentText: PropTypes.string,
     validationButtonText: PropTypes.string,
     defaultSelected: PropTypes.arrayOf(PropTypes.string),
     defaultExpanded: PropTypes.arrayOf(PropTypes.string),
