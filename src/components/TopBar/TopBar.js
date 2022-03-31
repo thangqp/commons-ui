@@ -9,41 +9,43 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import { FormattedMessage } from 'react-intl';
 
-import AppBar from '@material-ui/core/AppBar';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import AppBar from '@mui/material/AppBar';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 
-import { darken, makeStyles, withStyles } from '@material-ui/core/styles';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import SettingsIcon from '@material-ui/icons/Settings';
-import Button from '@material-ui/core/Button';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
+import { darken } from '@mui/material/styles';
+import makeStyles from '@mui/styles/makeStyles';
+import withStyles from '@mui/styles/withStyles';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import SettingsIcon from '@mui/icons-material/Settings';
+import Button from '@mui/material/Button';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import AppsIcon from '@material-ui/icons/Apps';
-import SearchIcon from '@material-ui/icons/Search';
-import FullscreenExitIcon from '@material-ui/icons/FullscreenExit';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
-import PersonIcon from '@material-ui/icons/Person';
-import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
-import Brightness3Icon from '@material-ui/icons/Brightness3';
-import WbSunnyIcon from '@material-ui/icons/WbSunny';
-import ComputerIcon from '@material-ui/icons/Computer';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import AppsIcon from '@mui/icons-material/Apps';
+import SearchIcon from '@mui/icons-material/Search';
+import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+import PersonIcon from '@mui/icons-material/Person';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import Brightness3Icon from '@mui/icons-material/Brightness3';
+import WbSunnyIcon from '@mui/icons-material/WbSunny';
+import ComputerIcon from '@mui/icons-material/Computer';
 
-import ToggleButton from '@material-ui/lab/ToggleButton';
-import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
 import PropTypes from 'prop-types';
-import FullscreenIcon from '@material-ui/icons/Fullscreen';
+import FullscreenIcon from '@mui/icons-material/Fullscreen';
 import FullScreen, { fullScreenSupported } from 'react-request-fullscreen';
 
-import Popper from '@material-ui/core/Popper';
-import Paper from '@material-ui/core/Paper';
-import MenuList from '@material-ui/core/MenuList';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import Popper from '@mui/material/Popper';
+import Paper from '@mui/material/Paper';
+import MenuList from '@mui/material/MenuList';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
 import clsx from 'clsx';
 
 import ElementSearchDialog from '../ElementSearchDialog';
@@ -129,7 +131,6 @@ const StyledMenu = withStyles({
 })((props) => (
     <Menu
         elevation={0}
-        getContentAnchorEl={null}
         anchorOrigin={{
             vertical: 'bottom',
             horizontal: 'center',
@@ -194,28 +195,24 @@ const TopBar = ({
     language,
 }) => {
     const classes = useStyles();
-    const anchorRef = React.useRef(null);
 
     const [anchorElSettingsMenu, setAnchorElSettingsMenu] =
-        React.useState(false);
+        React.useState(null);
     const [anchorElAppsMenu, setAnchorElAppsMenu] = React.useState(null);
     const fullScreenRef = useRef(null);
     const [isFullScreen, setIsFullScreen] = useState(false);
-    const [isMenuOpen, setMenuOpen] = useState(false);
     const [isDialogSearchOpen, setDialogSearchOpen] = useState(false);
 
     const handleClickElementSearch = () => {
         setDialogSearchOpen(true);
     };
 
-    const handleToggleSettingsMenu = () => {
-        setAnchorElSettingsMenu(true);
-        setMenuOpen(true);
+    const handleToggleSettingsMenu = (event) => {
+        setAnchorElSettingsMenu(event.currentTarget);
     };
 
     const handleCloseSettingsMenu = () => {
-        setAnchorElSettingsMenu(false);
-        setMenuOpen(false);
+        setAnchorElSettingsMenu(null);
     };
 
     const handleClickAppsMenu = (event) => {
@@ -227,19 +224,19 @@ const TopBar = ({
     };
 
     const onParametersClicked = () => {
-        setAnchorElSettingsMenu(false);
+        setAnchorElSettingsMenu(null);
         if (onParametersClick) {
             onParametersClick();
         }
     };
 
-    function onFullScreenChange(isFullScreen) {
-        setAnchorElSettingsMenu(false);
+    function onFullScreenChange(isFullScreenValue) {
+        setAnchorElSettingsMenu(null);
         setIsFullScreen(isFullScreen);
     }
 
     function requestOrExitFullScreen() {
-        setAnchorElSettingsMenu(false);
+        setAnchorElSettingsMenu(null);
         fullScreenRef.current.fullScreen();
     }
 
@@ -332,7 +329,10 @@ const TopBar = ({
                             renderElement={renderElement}
                         />
                         <div>
-                            <Button onClick={handleClickElementSearch}>
+                            <Button
+                                color="inherit"
+                                onClick={handleClickElementSearch}
+                            >
                                 <SearchIcon />
                             </Button>
                         </div>
@@ -344,6 +344,7 @@ const TopBar = ({
                             aria-controls="apps-menu"
                             aria-haspopup="true"
                             onClick={handleClickAppsMenu}
+                            color="inherit"
                         >
                             <AppsIcon />
                         </Button>
@@ -400,13 +401,13 @@ const TopBar = ({
                     <div>
                         {/* Button width abbreviation and arrow icon */}
                         <Button
-                            ref={anchorRef}
                             aria-controls="settings-menu"
                             aria-haspopup="true"
                             className={classes.showHideMenu}
                             onClick={handleToggleSettingsMenu}
+                            color="inherit"
                             style={
-                                isMenuOpen
+                                Boolean(anchorElSettingsMenu)
                                     ? { cursor: 'initial' }
                                     : { cursor: 'pointer' }
                             }
@@ -432,9 +433,8 @@ const TopBar = ({
                         {/* Settings menu */}
                         <Popper
                             className={classes.settingsMenu}
-                            open={anchorElSettingsMenu}
-                            anchorEl={anchorRef.current}
-                            transition
+                            open={Boolean(anchorElSettingsMenu)}
+                            anchorEl={anchorElSettingsMenu}
                         >
                             <Paper>
                                 <ClickAwayListener
