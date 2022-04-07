@@ -30,11 +30,29 @@ const ElementSearchDialog = (props) => {
 
     const [loading, setLoading] = useState(false);
 
+    const [userStr, setUserStr] = useState('');
+
     useEffect(() => {
         setLoading(false);
     }, [elementsFound]);
 
+    const handleKeyDown = (e) => {
+        if (e.ctrlKey && e.code === 'Space') {
+            handleForcedSearch(userStr);
+        }
+    };
+
+    const handleForcedSearch = useCallback(
+        (term) => {
+            setLoading(true);
+            onSearchTermChange(term);
+            setExpanded(true);
+        },
+        [onSearchTermChange]
+    );
+
     const handleSearchTermChange = (term) => {
+        setUserStr(term);
         if (term.length >= TERM_MIN_SIZE_BEFORE_SEARCH) {
             setLoading(true);
             onSearchTermChange(term);
@@ -92,6 +110,7 @@ const ElementSearchDialog = (props) => {
                         <TextField
                             autoFocus={true}
                             {...params}
+                            onKeyDown={handleKeyDown}
                             label={
                                 searchingLabel ||
                                 intl.formatMessage({
