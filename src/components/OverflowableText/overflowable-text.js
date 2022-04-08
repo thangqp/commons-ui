@@ -65,7 +65,7 @@ OverflowableText.propTypes = {
         PropTypes.string,
         PropTypes.number,
         PropTypes.node,
-    ]).isRequired,
+    ]),
     className: PropTypes.string,
 };
 
