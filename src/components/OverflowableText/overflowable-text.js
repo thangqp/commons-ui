@@ -61,7 +61,11 @@ export const OverflowableText = ({ text, className, children, ...props }) => {
 
 OverflowableText.propTypes = {
     children: PropTypes.array,
-    text: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    text: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number,
+        PropTypes.node,
+    ]),
     className: PropTypes.string,
 };
 
