@@ -21,7 +21,6 @@ import AuthenticationRouter from '../../src/components/AuthenticationRouter';
 import {
     DEFAULT_CELL_PADDING,
     EQUIPMENT_TYPE,
-    EquipmentItem,
     equipmentStyles,
     initializeAuthenticationDev,
     LANG_ENGLISH,
@@ -76,6 +75,7 @@ import { LOGS_JSON } from '../data/ReportViewer';
 import { searchEquipments } from '../data/EquipmentSearchBar';
 import { elementType, getFileIcon } from '../../src';
 import { Grid } from '@mui/material';
+import { EquipmentItem } from '../../src/components/ElementSearchDialog/equipment-item';
 
 const messages = {
     en: {
@@ -376,6 +376,7 @@ const AppContent = ({ language, onLanguageClick }) => {
                             <EquipmentItem
                                 classes={equipmentClasses}
                                 {...props}
+                                key={props.element.key}
                             />
                         )}
                         onLanguageClick={onLanguageClick}

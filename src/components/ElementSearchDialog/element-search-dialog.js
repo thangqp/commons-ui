@@ -105,12 +105,12 @@ const ElementSearchDialog = (props) => {
                     noOptionsText={intl.formatMessage({
                         id: 'element_search/noResult',
                     })}
-                    renderOption={(prop, element, { inputValue }) =>
+                    renderOption={(props, element, { inputValue }) =>
                         renderElement({
-                            props,
+                            ...props,
                             element,
                             inputValue,
-                            close: onClose,
+                            onClose,
                         })
                     }
                     renderInput={(params) => (
