@@ -73,7 +73,7 @@ import {
 import { LOGS_JSON } from '../data/ReportViewer';
 
 import { searchEquipments } from '../data/EquipmentSearchBar';
-import { RenderEquipmentForSearchBar } from '../../src/utils/EquipmentType';
+import { EquipmentItem } from '../../src/utils/EquipmentType';
 import { elementType, getFileIcon } from '../../src/utils/ElementType';
 import { Grid } from '@mui/material';
 
@@ -373,7 +373,7 @@ const AppContent = ({ language, onLanguageClick }) => {
                         onSelectionChange={displayEquipment}
                         elementsFound={equipmentsFound}
                         renderElement={(props) => (
-                            <RenderEquipmentForSearchBar
+                            <EquipmentItem
                                 classes={equipmentClasses}
                                 {...props}
                             />

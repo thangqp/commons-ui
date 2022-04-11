@@ -11,6 +11,7 @@ import React from 'react';
 import { LIGHT_THEME } from '../components/TopBar/TopBar';
 import OverflowableText from '../components/OverflowableText';
 import { FormattedMessage } from 'react-intl';
+import { TagRenderer } from '../components/ElementSearchDialog';
 
 export const TYPE_TAG_MAX_SIZE = '90px';
 export const VL_TAG_MAX_SIZE = '100px';
@@ -173,26 +174,9 @@ const sortEquipments = (a, b) => {
         : a.label.localeCompare(b.label);
 };
 
-export const TagRenderer = ({ props, element }) => {
-    if (
-        element.type !== EQUIPMENT_TYPE.SUBSTATION.name &&
-        element.type !== EQUIPMENT_TYPE.VOLTAGE_LEVEL.name
-    )
-        return (
-            <OverflowableText
-                text={element.voltageLevelLabel}
-                className={clsx(
-                    props.classes.equipmentTag,
-                    props.classes.equipmentVlTag
-                )}
-            />
-        );
-    return <></>;
-};
-
-export const RenderEquipmentForSearchBar = ({
+export const EquipmentItem = ({
     inputValue,
-    tagRenderer = TagRenderer,
+    suffixRenderer = TagRenderer,
     element,
     ...props
 }) => {
@@ -230,7 +214,7 @@ export const RenderEquipmentForSearchBar = ({
                         </span>
                     ))}
                 </OverflowableText>
-                {tagRenderer({ props, element })}
+                {suffixRenderer({ props, element })}
             </div>
         </li>
     );
