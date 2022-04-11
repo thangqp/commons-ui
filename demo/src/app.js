@@ -20,15 +20,16 @@ import withStyles from '@mui/styles/withStyles';
 import AuthenticationRouter from '../../src/components/AuthenticationRouter';
 import {
     DEFAULT_CELL_PADDING,
-    EQUIPMENT_TYPE, EquipmentItem,
+    EQUIPMENT_TYPE,
+    EquipmentItem,
     equipmentStyles,
     initializeAuthenticationDev,
     LANG_ENGLISH,
     LANG_FRENCH,
     LANG_SYSTEM,
     LIGHT_THEME,
-    logout
-} from "../../src";
+    logout,
+} from '../../src';
 import { useRouteMatch } from 'react-router';
 import { IntlProvider, useIntl } from 'react-intl';
 
@@ -73,7 +74,7 @@ import {
 import { LOGS_JSON } from '../data/ReportViewer';
 
 import { searchEquipments } from '../data/EquipmentSearchBar';
-import { elementType, getFileIcon } from '../../src/utils/ElementType';
+import { elementType, getFileIcon } from '../../src';
 import { Grid } from '@mui/material';
 
 const messages = {
