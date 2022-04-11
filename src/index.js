@@ -58,4 +58,4 @@ export element_search_fr from './components/translations/element-search-fr';
 export equipment_search_en from './components/translations/equipment-search-en';
 export equipment_search_fr from './components/translations/equipment-search-fr';
 export { TagRenderer } from './components/ElementSearchDialog';
-export { EquipmentItem } from "./components/ElementSearchDialog/equipment-item";
+export { EquipmentItem } from './components/ElementSearchDialog/equipment-item';

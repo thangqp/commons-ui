@@ -4,8 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import React from "react";
-import { LIGHT_THEME } from "../components/TopBar/TopBar";
+import { LIGHT_THEME } from '../components/TopBar/TopBar';
 
 export const TYPE_TAG_MAX_SIZE = '90px';
 export const VL_TAG_MAX_SIZE = '100px';
@@ -167,4 +166,3 @@ const sortEquipments = (a, b) => {
         ? 1
         : a.label.localeCompare(b.label);
 };
-
