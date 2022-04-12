@@ -6,36 +6,14 @@
  */
 
 import React, { useEffect, useState } from 'react';
-import makeStyles from '@mui/styles/makeStyles';
-import {
-    Dialog,
-    DialogContent,
-    DialogTitle,
-    TextField,
-    Autocomplete,
-} from '@mui/material';
+import { Dialog, DialogContent, TextField, Autocomplete } from '@mui/material';
 import PropTypes from 'prop-types';
 import SearchIcon from '@mui/icons-material/Search';
 import { useIntl } from 'react-intl';
 
 const TERM_MIN_SIZE_BEFORE_SEARCH = 3;
 
-const styles = (theme) => ({
-    title: {
-        padding: '0px',
-    },
-    content: {
-        display: 'flex',
-        alignItems: 'end',
-        padding: '20px',
-        paddingRight: '0px',
-    },
-});
-
-const useStyles = makeStyles(styles);
-
 const ElementSearchDialog = (props) => {
-    const classes = useStyles();
     const intl = useIntl();
 
     const {
@@ -78,7 +56,6 @@ const ElementSearchDialog = (props) => {
             aria-labelledby="dialog-title-search"
             fullWidth={true}
         >
-            <DialogTitle className={classes.title} />
             <DialogContent>
                 <Autocomplete
                     id="element-search"
@@ -91,10 +68,10 @@ const ElementSearchDialog = (props) => {
                         setExpanded(false);
                     }}
                     fullWidth
-                    onInputChange={(event, value) =>
+                    onInputChange={(_event, value) =>
                         handleSearchTermChange(value)
                     }
-                    onChange={(event, newValue) => onSelectionChange(newValue)}
+                    onChange={(_event, newValue) => onSelectionChange(newValue)}
                     getOptionLabel={(option) => option.label}
                     isOptionEqualToValue={(option, value) =>
                         option.id === value.id
@@ -105,9 +82,9 @@ const ElementSearchDialog = (props) => {
                     noOptionsText={intl.formatMessage({
                         id: 'element_search/noResult',
                     })}
-                    renderOption={(props, element, { inputValue }) =>
+                    renderOption={(optionProps, element, { inputValue }) =>
                         renderElement({
-                            ...props,
+                            ...optionProps,
                             element,
                             inputValue,
                             onClose,
