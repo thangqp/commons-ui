@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Dialog, DialogContent, TextField, Autocomplete } from '@mui/material';
 import PropTypes from 'prop-types';
 import SearchIcon from '@mui/icons-material/Search';
@@ -48,6 +48,12 @@ const ElementSearchDialog = (props) => {
         }
     };
 
+    const handleClose = useCallback(() => {
+        setExpanded(false);
+        setElements([]);
+        onClose();
+    }, [onClose]);
+
     return (
         <Dialog
             open={open}
@@ -87,7 +93,8 @@ const ElementSearchDialog = (props) => {
                             ...optionProps,
                             element,
                             inputValue,
-                            onClose,
+                            setExpanded,
+                            onClose: handleClose,
                         })
                     }
                     renderInput={(params) => (
