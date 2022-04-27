@@ -40,6 +40,7 @@ export const equipmentStyles = (theme) => ({
     },
     result: {
         width: '100%',
+        padding: '2px',
     },
 });
 
