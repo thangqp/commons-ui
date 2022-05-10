@@ -93,7 +93,6 @@ const ElementSearchDialog = (props) => {
                             ...optionProps,
                             element,
                             inputValue,
-                            setExpanded,
                             onClose: handleClose,
                         })
                     }
