@@ -44,6 +44,12 @@ function initializeAuthenticationProd(dispatch, isSilentRenew, idpSettings) {
                         const decoded = jwtDecode(id_token);
                         authority = decoded.iss;
                         const storedState = JSON.parse(strState);
+                        console.debug(
+                            'Replacing authority in storedState. Before: ',
+                            storedState.authority,
+                            'after: ',
+                            authority
+                        );
                         storedState.authority = authority;
                         localStorage.setItem(
                             'oidc.' + state,
