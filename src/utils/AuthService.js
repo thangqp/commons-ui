@@ -4,10 +4,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { UserManager } from 'oidc-client';
+import { Log, UserManager } from 'oidc-client';
 import { UserManagerMock } from './UserManagerMock';
 import { setLoggedUser, setSignInCallbackError } from './actions';
 import jwtDecode from 'jwt-decode';
+
+// set as a global variable to allow log level configuration at runtime
+window.OIDCLog = Log;
 
 const hackauthoritykey = 'oidc.hack.authority';
 
