@@ -28,6 +28,7 @@ function initializeAuthenticationProd(dispatch, isSilentRenew, idpSettings) {
             /* hack to ignore the iss check. XXX TODO to remove */
             const regextoken = /id_token=[^&]*/;
             const regexstate = /state=[^&]*/;
+            const regexexpires = /expires_in=[^&]*/;
             let authority;
             if (window.location.hash) {
                 const matched_id_token = window.location.hash.match(regextoken);
@@ -37,7 +38,8 @@ function initializeAuthenticationProd(dispatch, isSilentRenew, idpSettings) {
                     const state = matched_state[0].split('=')[1];
                     const strState = localStorage.getItem('oidc.' + state);
                     if (strState != null) {
-                        authority = jwtDecode(id_token).iss;
+                        const decoded = jwtDecode(id_token);
+                        authority = decoded.iss;
                         const storedState = JSON.parse(strState);
                         storedState.authority = authority;
                         localStorage.setItem(
@@ -45,6 +47,28 @@ function initializeAuthenticationProd(dispatch, isSilentRenew, idpSettings) {
                             JSON.stringify(storedState)
                         );
                         sessionStorage.setItem(hackauthoritykey, authority);
+                        const matched_expires =
+                            window.location.hash.match(regexexpires);
+                        if (matched_expires != null) {
+                            const expires_in = parseInt(
+                                matched_expires[0].split('=')[1]
+                            );
+                            const now = parseInt(Date.now() / 1000);
+                            const exp = decoded.exp;
+                            if (exp < now + expires_in) {
+                                const newhash = window.location.hash.replace(
+                                    matched_expires[0],
+                                    'expires_in=' + (exp - now)
+                                );
+                                console.debug(
+                                    'Replacing expires_in in window.location.hash because idtoken.exp is earlier. Before: ',
+                                    window.location.hash,
+                                    'after: ',
+                                    newhash
+                                );
+                                window.location.hash = newhash;
+                            }
+                        }
                     }
                 }
             }
