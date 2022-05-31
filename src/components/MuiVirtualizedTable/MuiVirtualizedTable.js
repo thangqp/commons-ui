@@ -214,13 +214,14 @@ class MuiVirtualizedTable extends React.PureComponent {
         );
     };
 
-    getRowClassName = ({ index }) => {
+    getRowClassName = ({ index, rowGetter }) => {
         const { classes, onRowClick } = this.props;
         return clsx(
             classes.tableRow,
             classes.flexContainer,
             index % 2 === 0 && classes.rowBackgroundDark,
             index % 2 !== 0 && classes.rowBackgroundLight,
+            rowGetter(index)?.notClickable === true && classes.noClick, // Allow to define a row as not clickable
             {
                 [classes.tableRowHover]: index !== -1 && onRowClick != null,
             }
@@ -493,7 +494,7 @@ class MuiVirtualizedTable extends React.PureComponent {
                                 className={classes.table}
                                 {...tableProps}
                                 rowCount={reorderedIndex.length}
-                                rowClassName={this.getRowClassName}
+                                rowClassName={({ index }) => this.getRowClassName({index, rowGetter})}
                                 rowGetter={({ index }) => rowGetter(index)}
                             >
                                 {columns.map(({ dataKey, ...other }, index) => {
