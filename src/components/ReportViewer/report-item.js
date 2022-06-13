@@ -98,6 +98,7 @@ ReportItem.propTypes = {
     color: PropTypes.string,
     labelInfo: PropTypes.string,
     labelText: PropTypes.string.isRequired,
+    labelIconColor: PropTypes.string,
 };
 
 export default ReportItem;

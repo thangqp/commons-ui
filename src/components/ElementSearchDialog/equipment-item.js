@@ -4,13 +4,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+import React from 'react';
+import PropTypes from 'prop-types';
 import { TagRenderer } from './index';
 import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
 import clsx from 'clsx';
 import { FormattedMessage } from 'react-intl';
 import OverflowableText from '../OverflowableText';
-import React from 'react';
+
 import { EQUIPMENT_TYPE } from '../../utils/EquipmentType';
 
 export const EquipmentItem = ({
@@ -53,8 +55,15 @@ export const EquipmentItem = ({
                         </span>
                     ))}
                 </OverflowableText>
-                {suffixRenderer({ props, element })}
+                {suffixRenderer({ element, ...props })}
             </div>
         </li>
     );
+};
+
+EquipmentItem.propTypes = {
+    inputValue: PropTypes.string,
+    element: PropTypes.any,
+    suffixRenderer: PropTypes.node,
+    classes: PropTypes.object,
 };

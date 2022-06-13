@@ -806,6 +806,7 @@ TopBar.propTypes = {
     onSearchTermChange: PropTypes.func,
     onSelectionChange: PropTypes.func,
     elementsFound: PropTypes.array,
+    renderElement: PropTypes.func,
     onLanguageClick: PropTypes.func.isRequired,
     language: PropTypes.string.isRequired,
 };

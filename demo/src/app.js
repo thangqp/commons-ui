@@ -6,6 +6,7 @@
  */
 
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 
 import TopBar from '../../src/components/TopBar';
 import SnackbarProvider from '../../src/components/SnackbarProvider';
@@ -197,6 +198,11 @@ const MyButton = (props) => {
     );
 };
 
+MyButton.propTypes = {
+    variant: PropTypes.string.isRequired,
+    message: PropTypes.string.isRequired,
+};
+
 const AppContent = ({ language, onLanguageClick }) => {
     const history = useHistory();
     const location = useLocation();
@@ -372,11 +378,11 @@ const AppContent = ({ language, onLanguageClick }) => {
                         onSearchTermChange={searchMatchingEquipments}
                         onSelectionChange={displayEquipment}
                         elementsFound={equipmentsFound}
-                        renderElement={(props) => (
+                        renderElement={(args) => (
                             <EquipmentItem
                                 classes={equipmentClasses}
-                                {...props}
-                                key={props.element.key}
+                                {...args}
+                                key={args.element.key}
                             />
                         )}
                         onLanguageClick={onLanguageClick}
@@ -580,6 +586,11 @@ const AppContent = ({ language, onLanguageClick }) => {
             </ThemeProvider>
         </StyledEngineProvider>
     );
+};
+
+AppContent.propTypes = {
+    language: PropTypes.string.isRequired,
+    onLanguageClick: PropTypes.func.isRequired,
 };
 
 const App = () => {

@@ -52,9 +52,10 @@ export const OverflowableText = ({ text, className, children, ...props }) => {
             <div
                 {...props}
                 ref={element}
-                children={children || text}
                 className={clsx(className, classes.overflow)}
-            />
+            >
+                {children || text}
+            </div>
         </Tooltip>
     );
 };

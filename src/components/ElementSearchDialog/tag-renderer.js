@@ -4,13 +4,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+import React from 'react';
+import PropTypes from 'prop-types';
 import OverflowableText from '../OverflowableText';
 import clsx from 'clsx';
-import React from 'react';
 import { EQUIPMENT_TYPE } from '../../utils/EquipmentType';
-import PropTypes from 'prop-types';
 
-export const TagRenderer = ({ props, element }) => {
+export const TagRenderer = ({ element, ...props }) => {
     if (
         element.type !== EQUIPMENT_TYPE.SUBSTATION.name &&
         element.type !== EQUIPMENT_TYPE.VOLTAGE_LEVEL.name
@@ -29,5 +29,5 @@ export const TagRenderer = ({ props, element }) => {
 
 TagRenderer.propTypes = {
     element: PropTypes.object,
-    props: PropTypes.object,
+    classes: PropTypes.object.isRequired,
 };

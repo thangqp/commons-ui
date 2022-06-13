@@ -6,6 +6,7 @@
  */
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import PropTypes from 'prop-types';
 import makeStyles from '@mui/styles/makeStyles';
 import TreeView from '@mui/lab/TreeView';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
@@ -130,3 +131,8 @@ export default function ReportViewer({
         )
     );
 }
+
+ReportViewer.propTypes = {
+    jsonReport: PropTypes.object.isRequired,
+    maxSubReports: PropTypes.number,
+};

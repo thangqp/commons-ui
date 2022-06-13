@@ -6,6 +6,7 @@
  */
 
 import React, { useCallback } from 'react';
+import PropTypes from 'prop-types';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import SignInCallbackHandler from '../SignInCallbackHandler';
 import {
@@ -73,4 +74,13 @@ const AuthenticationRouter = ({
         </React.Fragment>
     );
 };
+
+AuthenticationRouter.propTypes = {
+    userManager: PropTypes.object,
+    signInCallbackError: PropTypes.func,
+    dispatch: PropTypes.func,
+    history: PropTypes.object,
+    location: PropTypes.object,
+};
+
 export default AuthenticationRouter;

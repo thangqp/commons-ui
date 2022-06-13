@@ -6,6 +6,7 @@
  */
 
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import makeStyles from '@mui/styles/makeStyles';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
@@ -74,3 +75,10 @@ export default function ReportViewerDialog(props) {
         </Dialog>
     );
 }
+
+ReportViewerDialog.propTypes = {
+    title: PropTypes.string,
+    open: PropTypes.bool.isRequired,
+    onClose: PropTypes.func.isRequired,
+    jsonReport: PropTypes.object.isRequired,
+};

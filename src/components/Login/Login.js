@@ -6,6 +6,7 @@
  */
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
@@ -85,6 +86,11 @@ const Login = ({ onLoginClick, disabled }) => {
             </Box>
         </Container>
     );
+};
+
+Login.propTypes = {
+    onLoginClick: PropTypes.func,
+    disabled: PropTypes.bool,
 };
 
 export default Login;

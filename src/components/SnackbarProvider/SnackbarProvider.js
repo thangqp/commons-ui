@@ -35,4 +35,6 @@ const SnackbarProvider = React.forwardRef((props, ref) => {
     );
 });
 
+SnackbarProvider.displayName = 'SnackbarProvider';
+
 export default SnackbarProvider;

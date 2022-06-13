@@ -80,11 +80,13 @@
     "eslintConfig": {
         "extends": [
             "react-app",
-            "plugin:prettier/recommended"
+            "plugin:prettier/recommended",
+            "plugin:react/recommended"
         ],
         "rules": {
             "prettier/prettier": "warn",
-            "import/no-webpack-loader-syntax": "off"
+            "import/no-webpack-loader-syntax": "off",
+            "react/prop-types": 1
         }
     },
     "author": "gridsuite team",

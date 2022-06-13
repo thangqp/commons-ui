@@ -6,6 +6,7 @@
  */
 
 import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
 
 const SilentRenewCallbackHandler = ({
     userManager,
@@ -18,6 +19,11 @@ const SilentRenewCallbackHandler = ({
     }, [userManager, handleSilentRenewCallback]);
 
     return <h1>Technical token renew window, you should not see this</h1>;
+};
+
+SilentRenewCallbackHandler.propTypes = {
+    userManager: PropTypes.object,
+    handleSilentRenewCallback: PropTypes.func,
 };
 
 export default SilentRenewCallbackHandler;

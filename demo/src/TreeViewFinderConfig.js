@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import React from 'react';
-
+import PropTypes from 'prop-types';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -146,6 +146,17 @@ const TreeViewFinderConfig = (props) => {
             </FormControl>
         </div>
     );
+};
+
+TreeViewFinderConfig.propTypes = {
+    dynamicData: PropTypes.bool,
+    dataFormat: PropTypes.string,
+    multiselect: PropTypes.bool,
+    onlyLeaves: PropTypes.bool,
+    onDynamicDataChange: PropTypes.func,
+    onDataFormatChange: PropTypes.func,
+    onSelectionTypeChange: PropTypes.func,
+    onOnlyLeavesChange: PropTypes.func,
 };
 
 export default TreeViewFinderConfig;

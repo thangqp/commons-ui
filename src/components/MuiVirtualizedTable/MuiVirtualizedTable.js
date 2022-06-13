@@ -547,6 +547,7 @@ MuiVirtualizedTable.propTypes = {
             maxWidth: PropTypes.number,
             unit: PropTypes.string,
             fractionDigits: PropTypes.number,
+            clickable: PropTypes.bool,
         })
     ).isRequired,
     enableExportCSV: PropTypes.bool,
@@ -558,6 +559,7 @@ MuiVirtualizedTable.propTypes = {
     rowHeight: PropTypes.number,
     filter: PropTypes.func,
     sort: PropTypes.func,
+    rowCount: PropTypes.number,
 };
 
 export default withStyles(defaultStyles)(MuiVirtualizedTable);

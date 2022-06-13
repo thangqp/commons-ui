@@ -6,6 +6,7 @@
  */
 
 import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
 
 const SignInCallbackHandler = ({ userManager, handleSignInCallback }) => {
     useEffect(() => {
@@ -16,4 +17,10 @@ const SignInCallbackHandler = ({ userManager, handleSignInCallback }) => {
 
     return <h1> </h1>;
 };
+
+SignInCallbackHandler.propTypes = {
+    userManager: PropTypes.object,
+    handleSignInCallback: PropTypes.func,
+};
+
 export default SignInCallbackHandler;

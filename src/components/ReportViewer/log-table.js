@@ -5,6 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import React, { memo } from 'react';
+import PropTypes from 'prop-types';
 import { useIntl } from 'react-intl';
 import withStyles from '@mui/styles/withStyles';
 import TableCell from '@mui/material/TableCell';
@@ -94,6 +95,10 @@ const LogTable = ({ logs }) => {
             sortable={false}
         />
     );
+};
+
+LogTable.propTypes = {
+    logs: PropTypes.array.isRequired,
 };
 
 export default memo(LogTable);
