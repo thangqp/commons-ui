@@ -4,7 +4,13 @@ on: [push]
 jobs:
     build:
         runs-on: ubuntu-latest
+        strategy:
+          matrix:
+            version: [16, 15, 0]
         steps:
+            - uses: actions/setup-node@v3
+              with:
+                node-version: ${{ matrix.version }}
             - name: Checkout sources
               uses: actions/checkout@v2
               with:
