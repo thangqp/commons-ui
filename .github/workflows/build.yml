@@ -22,7 +22,7 @@ jobs:
                   npm install
                   npm run test
                   npx eslint --max-warnings=0 "**/*.js"
-                  npm run buildCI
+                  npm run build
 
             - name: Broadcast update event
               if: github.ref == 'refs/heads/main'
