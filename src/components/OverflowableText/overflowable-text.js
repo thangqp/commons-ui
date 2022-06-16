@@ -41,7 +41,7 @@ export const OverflowableText = ({ text, className, children, ...props }) => {
 
     useEffect(() => {
         checkOverflow();
-    }, [checkOverflow]);
+    }, [checkOverflow, text]);
 
     return (
         <Tooltip
