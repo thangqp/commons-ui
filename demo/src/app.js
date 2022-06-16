@@ -55,6 +55,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
 
 import PowsyblLogo from '-!@svgr/webpack!../images/powsybl_logo.svg';
 import MuiVirtualizedTable from '../../src/components/MuiVirtualizedTable';
@@ -76,6 +77,7 @@ import { searchEquipments } from '../data/EquipmentSearchBar';
 import { elementType, getFileIcon } from '../../src';
 import { Grid } from '@mui/material';
 import { EquipmentItem } from '../../src/components/ElementSearchDialog/equipment-item';
+import OverflowableText from '../../src/components/OverflowableText';
 
 const messages = {
     en: {
@@ -259,6 +261,12 @@ const AppContent = ({ language, onLanguageClick }) => {
         setNodesList(fetchInfiniteTestDataList(nodeId));
     };
 
+    // OverFlowableText
+    const [overflowableText, setOverflowableText] = useState('no overflow');
+
+    const onChangeOverflowableText = (event) => {
+        setOverflowableText(event.target.value);
+    };
     // Equipments search bar
     const [equipmentsFound, setEquipmentsFound] = useState([]);
     const searchMatchingEquipments = (searchTerm) => {
@@ -564,6 +572,29 @@ const AppContent = ({ language, onLanguageClick }) => {
                                     validationButtonText={
                                         'Move To this location'
                                     }
+                                />
+                            </div>
+                            <div
+                                style={{
+                                    margin: '10px 0px 0px 0px',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                }}
+                            >
+                                <TextField
+                                    style={{ marginRight: '10px' }}
+                                    label="text"
+                                    id="overflowableText-textField"
+                                    size={'small'}
+                                    defaultValue={'Set large text here to test'}
+                                    onChange={onChangeOverflowableText}
+                                />
+                                <OverflowableText
+                                    text={overflowableText}
+                                    style={{
+                                        width: '200px',
+                                        border: '1px solid black',
+                                    }}
                                 />
                             </div>
                         </div>
