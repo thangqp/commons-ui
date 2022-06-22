@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import TopBar from '../../src/components/TopBar';
 import SnackbarProvider from '../../src/components/SnackbarProvider';
@@ -204,7 +204,7 @@ const AppContent = ({ language, onLanguageClick }) => {
     const location = useLocation();
     const intl = useIntl();
     const equipmentClasses = useEquipmentStyles();
-
+    const [searchDisabled, setSearchDisabled] = useState(false);
     const [userManager, setUserManager] = useState({
         instance: null,
         error: null,
@@ -352,6 +352,10 @@ const AppContent = ({ language, onLanguageClick }) => {
         );
     }
 
+    const handleToggleDisableSearch = useCallback(
+        () => setSearchDisabled((oldState) => !oldState),
+        []
+    );
     return (
         <StyledEngineProvider injectFirst>
             <ThemeProvider theme={getMuiTheme(theme)}>
@@ -379,6 +383,7 @@ const AppContent = ({ language, onLanguageClick }) => {
                         })}
                         onSearchTermChange={searchMatchingEquipments}
                         onSelectionChange={displayEquipment}
+                        searchDisabled={searchDisabled}
                         elementsFound={equipmentsFound}
                         renderElement={(props) => (
                             <EquipmentItem
@@ -490,6 +495,13 @@ const AppContent = ({ language, onLanguageClick }) => {
                                     }
                                 >
                                     Open TreeViewFinder ...
+                                </Button>
+                                <Button
+                                    variant="contained"
+                                    style={{ float: 'left', margin: '5px' }}
+                                    onClick={handleToggleDisableSearch}
+                                >
+                                    Toggle search ...
                                 </Button>
                                 <TreeViewFinder
                                     open={openTreeViewFinderDialog}

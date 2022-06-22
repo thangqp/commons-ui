@@ -186,6 +186,7 @@ const TopBar = ({
     onEquipmentLabellingClick,
     equipmentLabelling,
     withElementsSearch,
+    searchDisabled,
     searchingLabel,
     onSearchTermChange,
     onSelectionChange,
@@ -275,15 +276,17 @@ const TopBar = ({
     };
 
     useEffect(() => {
-        if (user && withElementsSearch) {
-            document.addEventListener('keydown', (e) => {
+        if (user && withElementsSearch && !searchDisabled) {
+            const openSearch = (e) => {
                 if (e.ctrlKey && e.key === 'f') {
                     e.preventDefault();
                     setDialogSearchOpen(true);
                 }
-            });
+            };
+            document.addEventListener('keydown', openSearch);
+            return () => document.removeEventListener('keydown', openSearch);
         }
-    }, [user, withElementsSearch]);
+    }, [user, withElementsSearch, searchDisabled]);
 
     return (
         <AppBar position="static" color="default" className={classes.appBar}>
@@ -332,6 +335,7 @@ const TopBar = ({
                             <Button
                                 color="inherit"
                                 onClick={handleClickElementSearch}
+                                disabled={searchDisabled}
                             >
                                 <SearchIcon />
                             </Button>
@@ -802,6 +806,7 @@ TopBar.propTypes = {
     onEquipmentLabellingClick: PropTypes.func,
     equipmentLabelling: PropTypes.bool,
     withElementsSearch: PropTypes.bool,
+    searchDisabled: PropTypes.bool,
     searchingLabel: PropTypes.string,
     onSearchTermChange: PropTypes.func,
     onSelectionChange: PropTypes.func,
