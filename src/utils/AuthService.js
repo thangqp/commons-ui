@@ -64,16 +64,50 @@ function initializeAuthenticationProd(dispatch, isSilentRenew, idpSettings) {
                             );
                             const now = parseInt(Date.now() / 1000);
                             const exp = decoded.exp;
-                            if (exp < now + expires_in) {
+                            const idTokenExpiresIn = exp - now;
+                            let minAccesstokenOrIdtokenOrIdpSettingsExpiresIn =
+                                expires_in;
+                            let newExpireReplaceReason;
+                            if (
+                                idTokenExpiresIn <
+                                minAccesstokenOrIdtokenOrIdpSettingsExpiresIn
+                            ) {
+                                minAccesstokenOrIdtokenOrIdpSettingsExpiresIn =
+                                    idTokenExpiresIn;
+                                newExpireReplaceReason =
+                                    'idtoken.exp is earlier';
+                            }
+                            if (
+                                idpSettings.maxExpiresIn &&
+                                idpSettings.maxExpiresIn <
+                                    minAccesstokenOrIdtokenOrIdpSettingsExpiresIn
+                            ) {
+                                minAccesstokenOrIdtokenOrIdpSettingsExpiresIn =
+                                    idpSettings.maxExpiresIn;
+                                newExpireReplaceReason =
+                                    'idpSettings.maxExpiresIn is smaller';
+                            }
+                            if (newExpireReplaceReason) {
                                 const newhash = window.location.hash.replace(
                                     matched_expires[0],
-                                    'expires_in=' + (exp - now)
+                                    'expires_in=' +
+                                        minAccesstokenOrIdtokenOrIdpSettingsExpiresIn
                                 );
                                 console.debug(
-                                    'Replacing expires_in in window.location.hash because idtoken.exp is earlier. Before: ',
-                                    window.location.hash,
-                                    'after: ',
-                                    newhash
+                                    'Replacing expires_in in window.location.hash to ' +
+                                        minAccesstokenOrIdtokenOrIdpSettingsExpiresIn +
+                                        ' because ' +
+                                        newExpireReplaceReason +
+                                        '. ',
+                                    'debug:',
+                                    'original expires_in: ' + expires_in + ', ',
+                                    'idTokenExpiresIn: ' +
+                                        idTokenExpiresIn +
+                                        '(idtoken exp: ' +
+                                        exp +
+                                        '), ',
+                                    'idpSettings maxExpiresIn: ' +
+                                        idpSettings.maxExpiresIn
                                 );
                                 window.location.hash = newhash;
                             }
