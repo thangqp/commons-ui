@@ -150,7 +150,12 @@ function logout(dispatch, userManagerInstance) {
     dispatch(setLoggedUser(null));
     sessionStorage.removeItem(hackauthoritykey); //To remove when hack is removed
     return userManagerInstance
-        .signoutRedirect()
+        .signoutRedirect({
+            extraQueryParams: {
+                TargetResource:
+                    userManagerInstance.settings.post_logout_redirect_uri,
+            },
+        })
         .then(() => console.debug('logged out'));
 }
 
