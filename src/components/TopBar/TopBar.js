@@ -54,6 +54,7 @@ const useStyles = makeStyles((theme) => ({
     grow: {
         flexGrow: 1,
         display: 'flex',
+        overflow: 'hidden',
     },
     logo: {
         flexShrink: 0,
