@@ -24,6 +24,8 @@ function initializeAuthenticationDev(dispatch, isSilentRenew) {
     return Promise.resolve(userManager);
 }
 
+const accessTokenExpiringNotificationTime = 60; // seconds
+
 function initializeAuthenticationProd(dispatch, isSilentRenew, idpSettings) {
     return idpSettings
         .then((r) => r.json())
@@ -129,9 +131,11 @@ function initializeAuthenticationProd(dispatch, isSilentRenew, idpSettings) {
                 response_type: 'id_token token',
                 scope: idpSettings.scope,
                 automaticSilentRenew: !isSilentRenew,
-                accessTokenExpiringNotificationTime: 60,
+                accessTokenExpiringNotificationTime:
+                    accessTokenExpiringNotificationTime,
             };
             let userManager = new UserManager(settings);
+            userManager.idpSettings = idpSettings; //store our settings in there as well to use it later
             if (!isSilentRenew) {
                 handleUser(dispatch, userManager);
             }
@@ -200,7 +204,63 @@ function handleUser(dispatch, userManager) {
 
     userManager.events.addSilentRenewError((error) => {
         console.debug(error);
-        logout(dispatch, userManager);
+        // wait for accessTokenExpiringNotificationTime so that the user is expired
+        // otherwise the library tries to signin immediately when we do getUser()
+        window.setTimeout(() => {
+            userManager.getUser().then((user) => {
+                const now = parseInt(Date.now() / 1000);
+                const exp = jwtDecode(user.id_token).exp;
+                const idTokenExpiresIn = exp - now;
+                if (idTokenExpiresIn < 0) {
+                    console.log(
+                        'Error in silent renew, idtoken expired: ' +
+                            idTokenExpiresIn +
+                            ' => Logging out.',
+                        error
+                    );
+                    // TODO here allow to continue to use the app but in some kind of frozen state because we can't make API calls anymore
+                    return logout(dispatch, userManager);
+                } else if (userManager.idpSettings.maxExpiresIn) {
+                    if (
+                        idTokenExpiresIn < userManager.idpSettings.maxExpiresIn
+                    ) {
+                        // TODO here attempt last chance login ? snackbar to notify the user ? Popup ?
+                        // for now we do the same thing as in the else block
+                        console.log(
+                            'Error in silent renew, but idtoken ALMOST expiring (expiring in' +
+                                idTokenExpiresIn +
+                                ') => last chance' +
+                                userManager.idpSettings.maxExpiresIn,
+                            error
+                        );
+                        user.expires_in = userManager.idpSettings.maxExpiresIn;
+                        userManager.storeUser(user).then(() => {
+                            userManager.getUser();
+                        });
+                    } else {
+                        console.log(
+                            'Error in silent renew, but idtoken NOT expiring (expiring in' +
+                                idTokenExpiresIn +
+                                ') => postponing expiration to' +
+                                userManager.idpSettings.maxExpiresIn,
+                            error
+                        );
+                        user.expires_in = userManager.idpSettings.maxExpiresIn;
+                        userManager.storeUser(user).then(() => {
+                            userManager.getUser();
+                        });
+                    }
+                } else {
+                    console.log(
+                        'Error in silent renew, unsupported configuration: token still valid for ' +
+                            idTokenExpiresIn +
+                            ' but maxExpiresIn is not configured:' +
+                            userManager.idpSettings.maxExpiresIn,
+                        error
+                    );
+                }
+            });
+        }, accessTokenExpiringNotificationTime * 1000);
     });
 
     console.debug('dispatch user');
