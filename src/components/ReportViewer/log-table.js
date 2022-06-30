@@ -51,21 +51,6 @@ const LogTable = ({ logs }) => {
             </TableCell>
         );
     };
-    const messageCellRender = (cellData) => {
-        return (
-            <TableCell
-                component="div"
-                variant="body"
-                style={{
-                    display: 'flex',
-                    flex: '1',
-                    whiteSpace: 'pre-line'
-                }}
-            >
-                {cellData.rowData.message}
-            </TableCell>
-        );
-    };
 
     const COLUMNS_DEFINITIONS = [
         {
@@ -83,7 +68,6 @@ const LogTable = ({ logs }) => {
                 .toUpperCase(),
             id: 'message',
             dataKey: 'message',
-            cellRenderer: messageCellRender,
         },
     ];
 
