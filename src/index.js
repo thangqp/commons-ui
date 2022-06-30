@@ -57,5 +57,8 @@ export element_search_en from './components/translations/element-search-en';
 export element_search_fr from './components/translations/element-search-fr';
 export equipment_search_en from './components/translations/equipment-search-en';
 export equipment_search_fr from './components/translations/equipment-search-fr';
+export card_error_boundary_en from './components/translations/card-error-boundary-en';
+export card_error_boundary_fr from './components/translations/card-error-boundary-fr';
 export { TagRenderer } from './components/ElementSearchDialog';
 export { EquipmentItem } from './components/ElementSearchDialog/equipment-item';
+export CardErrorBoundary from './components/CardErrorBoundary';
