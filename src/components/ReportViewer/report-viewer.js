@@ -108,7 +108,6 @@ export default function ReportViewer({
                     style={{
                         height: '95%',
                         borderRight: '1px solid rgba(81, 81, 81, 1)',
-                        display: 'flex',
                     }}
                 >
                     <TreeView
