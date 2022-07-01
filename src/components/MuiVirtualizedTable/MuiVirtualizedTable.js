@@ -252,7 +252,7 @@ class MuiVirtualizedTable extends React.PureComponent {
                             columns[columnIndex].clickable),
                 })}
                 variant="body"
-                style={{ height: rowHeight }}
+                style={{ height: rowHeight, whiteSpace: 'pre-line' }}
                 align={
                     (columnIndex != null && columns[columnIndex].numeric) ||
                     false
