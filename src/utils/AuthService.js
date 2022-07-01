@@ -219,7 +219,8 @@ function handleUser(dispatch, userManager) {
                         error
                     );
                     // TODO here allow to continue to use the app but in some kind of frozen state because we can't make API calls anymore
-                    return logout(dispatch, userManager);
+                    // remove the user from our app, but don't sso logout on all other apps
+                    return dispatch(setLoggedUser(null));
                 } else if (userManager.idpSettings.maxExpiresIn) {
                     if (
                         idTokenExpiresIn < userManager.idpSettings.maxExpiresIn
