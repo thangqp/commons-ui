@@ -44,7 +44,6 @@ const LogTable = ({ logs }) => {
                     display: 'flex',
                     flex: '1',
                     backgroundColor: cellData.rowData.backgroundColor,
-                    minWidth: '100px',
                 }}
                 align="center"
             >
@@ -61,7 +60,7 @@ const LogTable = ({ logs }) => {
             id: 'severity',
             dataKey: 'severity',
             maxWidth: SEVERITY_COLUMN_FIXED_WIDTH,
-            minWidth: 100,
+            minWidth: SEVERITY_COLUMN_FIXED_WIDTH,
             cellRenderer: severityCellRender,
         },
         {
