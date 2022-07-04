@@ -94,6 +94,7 @@ const TreeViewFinder = (props) => {
         validationButtonText,
         onlyLeaves,
         multiselect,
+        sortMethod,
     } = props;
 
     const [mapPrintedNodes, setMapPrintedNodes] = useState({});
@@ -220,7 +221,7 @@ const TreeViewFinder = (props) => {
             >
                 {Array.isArray(node.children)
                     ? node.children.length
-                        ? node.children.map((child) => renderTree(child))
+                        ? node.children.sort(sortMethod).map((child) => renderTree(child))
                         : [false] // Pass non empty Array here to simulate a child then this node isn't considered as a leaf.
                     : null}
             </TreeItem>
