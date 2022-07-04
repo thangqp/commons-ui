@@ -35,6 +35,7 @@ const defaultStyles = {
         display: 'flex',
         alignItems: 'center',
         boxSizing: 'border-box',
+        minwidth: '100px',
     },
     table: {
         // temporary right-to-left patch, waiting for
@@ -50,6 +51,7 @@ const defaultStyles = {
     tableCell: {
         flex: 1,
         padding: DEFAULT_CELL_PADDING + 'px',
+        minwidth: '100px',
     },
     tableCellColor: {},
     noClick: {
@@ -151,7 +153,7 @@ class MuiVirtualizedTable extends React.PureComponent {
             } else {
                 /* calculate the header (and min size if exists) */
                 let size = Math.max(
-                    col.minWidth || 0,
+                    col.minWidth || 100,
                     this.computeDataWidth(col.label)
                 );
                 /* calculate for each row the width, and keep the max  */
@@ -185,6 +187,7 @@ class MuiVirtualizedTable extends React.PureComponent {
                         ? 'flex-end'
                         : 'baseline',
                     height: this.state.headerHeight,
+                    minwidth: '100px',
                 }}
                 direction={this.state.direction}
                 onClick={() => {
@@ -252,7 +255,7 @@ class MuiVirtualizedTable extends React.PureComponent {
                             columns[columnIndex].clickable),
                 })}
                 variant="body"
-                style={{ height: rowHeight, whiteSpace: 'pre-line' }}
+                style={{ height: rowHeight, whiteSpace: 'normal', minWidth: '100px' }}
                 align={
                     (columnIndex != null && columns[columnIndex].numeric) ||
                     false
@@ -310,7 +313,7 @@ class MuiVirtualizedTable extends React.PureComponent {
                     classes.header
                 )}
                 variant="head"
-                style={{ height: this.state.headerHeight }}
+                style={{ height: this.state.headerHeight, minWidth: '100px' }}
                 align={columns[columnIndex].numeric || false ? 'right' : 'left'}
                 ref={(e) => this._registerObserver(e)}
             >
@@ -505,6 +508,7 @@ class MuiVirtualizedTable extends React.PureComponent {
                                             key={dataKey}
                                             headerRenderer={(headerProps) => {
                                                 if (sortable) {
+                                                    console.log('sizes[dataKey]:', sizes[dataKey])
                                                     return this.sortableHeader({
                                                         ...headerProps,
                                                         width: sizes[dataKey],
