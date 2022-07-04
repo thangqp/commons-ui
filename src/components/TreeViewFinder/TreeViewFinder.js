@@ -221,7 +221,9 @@ const TreeViewFinder = (props) => {
             >
                 {Array.isArray(node.children)
                     ? node.children.length
-                        ? node.children.sort(sortMethod).map((child) => renderTree(child))
+                        ? node.children
+                        .sort(sortMethod)
+                        .map((child) => renderTree(child))
                         : [false] // Pass non empty Array here to simulate a child then this node isn't considered as a leaf.
                     : null}
             </TreeItem>
@@ -330,6 +332,7 @@ TreeViewFinder.propTypes = {
     defaultExpanded: PropTypes.arrayOf(PropTypes.string),
     onlyLeaves: PropTypes.bool,
     multiselect: PropTypes.bool,
+    sortMethod: PropTypes.func,
 };
 
 /* TreeViewFinder props default values */
@@ -338,6 +341,7 @@ TreeViewFinder.defaultProps = {
     defaultExpanded: [],
     onlyLeaves: true,
     multiselect: false,
+    sortMethod: undefined,
 };
 
 export default withStyles(defaultStyles)(TreeViewFinder);
