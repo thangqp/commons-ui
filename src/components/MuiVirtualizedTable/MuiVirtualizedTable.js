@@ -508,7 +508,6 @@ class MuiVirtualizedTable extends React.PureComponent {
                                             key={dataKey}
                                             headerRenderer={(headerProps) => {
                                                 if (sortable) {
-                                                    console.log('sizes[dataKey]:', sizes[dataKey])
                                                     return this.sortableHeader({
                                                         ...headerProps,
                                                         width: sizes[dataKey],
