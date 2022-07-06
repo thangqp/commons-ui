@@ -12,7 +12,7 @@ import clsx from 'clsx';
 
 const overflowStyle = (theme) => ({
     overflow: {
-        flexGrow: 1, 
+        flexGrow: 1,
         display: 'inline-block',
         whiteSpace: 'nowrap',
         textOverflow: 'ellipsis',

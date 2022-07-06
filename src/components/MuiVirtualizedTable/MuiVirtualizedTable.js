@@ -231,7 +231,7 @@ class MuiVirtualizedTable extends React.PureComponent {
 
     cellRenderer = ({ cellData, columnIndex, rowIndex }) => {
         const { columns, classes, rowHeight, onCellClick, rows } = this.props;
-        
+
         let displayedValue = this.getDisplayValue(
             columns[columnIndex],
             cellData
