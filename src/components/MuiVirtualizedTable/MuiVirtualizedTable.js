@@ -31,8 +31,6 @@ export const DEFAULT_CELL_PADDING = 16;
 export const DEFAULT_HEADER_HEIGHT = 48;
 export const DEFAULT_ROW_HEIGHT = 48;
 
-
-
 const defaultStyles = {
     flexContainer: {
         display: 'flex',
@@ -233,6 +231,7 @@ class MuiVirtualizedTable extends React.PureComponent {
 
     cellRenderer = ({ cellData, columnIndex, rowIndex }) => {
         const { columns, classes, rowHeight, onCellClick, rows } = this.props;
+        
         let displayedValue = this.getDisplayValue(
             columns[columnIndex],
             cellData
