@@ -257,8 +257,7 @@ class MuiVirtualizedTable extends React.PureComponent {
                     style={{ height: rowHeight }}
                     align={
                         (columnIndex != null && columns[columnIndex].numeric) ||
-                            false ? 'right'
-                            : 'left'
+                            false ? 'right' : 'left'
                     }
                     onClick={() => {
                         if (onCellClick) {
