@@ -30,7 +30,6 @@ const useStyles = makeStyles(overflowStyle);
 export const OverflowableCellText = ({ text, className, ...props }) => {
     const element = useRef();
     const classes = useStyles();
-
     const [overflowed, setOverflowed] = useState(false);
 
     const checkOverflow = useCallback(() => {
