@@ -1,18 +1,18 @@
 /**
  * This class has been taken from 'Virtualized Table' example at https://material-ui.com/components/tables/
  */
-import React, { createRef } from 'react';
-import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import TableCell from '@mui/material/TableCell';
-import { AutoSizer, Column, Table } from 'react-virtualized';
-import TableSortLabel from '@mui/material/TableSortLabel';
-import memoize from 'memoize-one';
 import GetAppIcon from '@mui/icons-material/GetApp';
-import CsvDownloader from 'react-csv-downloader';
 import IconButton from '@mui/material/IconButton';
-import { FormattedMessage } from 'react-intl';
+import TableCell from '@mui/material/TableCell';
+import TableSortLabel from '@mui/material/TableSortLabel';
 import withStyles from '@mui/styles/withStyles';
+import clsx from 'clsx';
+import memoize from 'memoize-one';
+import PropTypes from 'prop-types';
+import React, { createRef } from 'react';
+import CsvDownloader from 'react-csv-downloader';
+import { FormattedMessage } from 'react-intl';
+import { AutoSizer, Column, Table } from 'react-virtualized';
 import OverflowableCellText from '../ReportViewer/overflowable-cell-text';
 
 function getTextWidth(text) {
@@ -257,7 +257,9 @@ class MuiVirtualizedTable extends React.PureComponent {
                     style={{ height: rowHeight }}
                     align={
                         (columnIndex != null && columns[columnIndex].numeric) ||
-                            false ? 'right' : 'left'
+                        false
+                            ? 'right'
+                            : 'left'
                     }
                     onClick={() => {
                         if (onCellClick) {
