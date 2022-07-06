@@ -279,7 +279,9 @@ const TreeViewFinder = (props) => {
                     multiSelect={multiselect}
                 >
                     {data && Array.isArray(data)
-                        ? data.map((child) => renderTree(child))
+                        ? data
+                              .sort(sortMethod)
+                              .map((child) => renderTree(child))
                         : null}
                 </TreeView>
             </DialogContent>
