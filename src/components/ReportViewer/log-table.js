@@ -60,6 +60,7 @@ const LogTable = ({ logs }) => {
             id: 'severity',
             dataKey: 'severity',
             maxWidth: SEVERITY_COLUMN_FIXED_WIDTH,
+            minWidth: SEVERITY_COLUMN_FIXED_WIDTH,
             cellRenderer: severityCellRender,
         },
         {

@@ -13,6 +13,7 @@ import CsvDownloader from 'react-csv-downloader';
 import IconButton from '@mui/material/IconButton';
 import { FormattedMessage } from 'react-intl';
 import withStyles from '@mui/styles/withStyles';
+import OverflowableCellText from '../ReportViewer/overflowable-cell-text';
 
 function getTextWidth(text) {
     // re-use canvas object for better performance
@@ -29,6 +30,8 @@ function getTextWidth(text) {
 export const DEFAULT_CELL_PADDING = 16;
 export const DEFAULT_HEADER_HEIGHT = 48;
 export const DEFAULT_ROW_HEIGHT = 48;
+
+
 
 const defaultStyles = {
     flexContainer: {
@@ -230,43 +233,44 @@ class MuiVirtualizedTable extends React.PureComponent {
 
     cellRenderer = ({ cellData, columnIndex, rowIndex }) => {
         const { columns, classes, rowHeight, onCellClick, rows } = this.props;
-
         let displayedValue = this.getDisplayValue(
             columns[columnIndex],
             cellData
         );
 
         return (
-            <TableCell
-                component="div"
-                className={clsx(classes.tableCell, classes.flexContainer, {
-                    [classes.noClick]:
-                        displayedValue === undefined ||
-                        onCellClick == null ||
-                        columns[columnIndex].clickable === undefined ||
-                        !columns[columnIndex].clickable,
-                    [classes.tableCellColor]:
-                        displayedValue === undefined ||
-                        (onCellClick !== null &&
-                            columns[columnIndex].clickable !== undefined &&
-                            columns[columnIndex].clickable),
-                })}
-                variant="body"
-                style={{ height: rowHeight, whiteSpace: 'pre-line' }}
-                align={
-                    (columnIndex != null && columns[columnIndex].numeric) ||
-                    false
-                        ? 'right'
-                        : 'left'
-                }
-                onClick={() => {
-                    if (onCellClick) {
-                        onCellClick(rows[rowIndex], columns[columnIndex]);
+            <OverflowableCellText text={displayedValue}>
+                <TableCell
+                    component="div"
+                    className={clsx(classes.tableCell, classes.flexContainer, {
+                        [classes.noClick]:
+                            displayedValue === undefined ||
+                            onCellClick == null ||
+                            columns[columnIndex].clickable === undefined ||
+                            !columns[columnIndex].clickable,
+                        [classes.tableCellColor]:
+                            displayedValue === undefined ||
+                            (onCellClick !== null &&
+                                columns[columnIndex].clickable !== undefined &&
+                                columns[columnIndex].clickable),
+                    })}
+                    variant="body"
+                    style={{ height: rowHeight }}
+                    align={
+                        (columnIndex != null && columns[columnIndex].numeric) ||
+                            false
+                            ? 'right'
+                            : 'left'
                     }
-                }}
-            >
-                {displayedValue}
-            </TableCell>
+                    onClick={() => {
+                        if (onCellClick) {
+                            onCellClick(rows[rowIndex], columns[columnIndex]);
+                        }
+                    }}
+                >
+                    {displayedValue}
+                </TableCell>
+            </OverflowableCellText>
         );
     };
 
