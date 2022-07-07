@@ -265,6 +265,7 @@ const AppContent = ({ language, onLanguageClick }) => {
     const [dataFormat, setDataFormat] = useState('Tree');
     const [multiselect, setMultiselect] = useState(false);
     const [onlyLeaves, setOnlyLeaves] = useState(true);
+    const [sortedAlphabetically, setSortedAlphabetically] = useState(false);
 
     // TreeViewFinder data update callbacks
     const updateInfiniteTestDataTreeCallback = (nodeId) => {
@@ -363,6 +364,10 @@ const AppContent = ({ language, onLanguageClick }) => {
                 ))}
             </Grid>
         );
+    }
+
+    function sortAlphabetically(a, b) {
+        return a.name.localeCompare(b.name);
     }
 
     const handleToggleDisableSearch = useCallback(
@@ -496,6 +501,9 @@ const AppContent = ({ language, onLanguageClick }) => {
                                             dataFormat={dataFormat}
                                             multiselect={multiselect}
                                             onlyLeaves={onlyLeaves}
+                                            sortedAlphabetically={
+                                                sortedAlphabetically
+                                            }
                                             onDynamicDataChange={(event) =>
                                                 setDynamicData(
                                                     event.target.value ===
@@ -515,6 +523,13 @@ const AppContent = ({ language, onLanguageClick }) => {
                                             }
                                             onOnlyLeavesChange={(event) =>
                                                 setOnlyLeaves(
+                                                    event.target.checked
+                                                )
+                                            }
+                                            onSortedAlphabeticallyChange={(
+                                                event
+                                            ) =>
+                                                setSortedAlphabetically(
                                                     event.target.checked
                                                 )
                                             }
@@ -568,6 +583,11 @@ const AppContent = ({ language, onLanguageClick }) => {
                                                     : undefined
                                             }
                                             onlyLeaves={onlyLeaves}
+                                            sortMethod={
+                                                sortedAlphabetically
+                                                    ? sortAlphabetically
+                                                    : undefined
+                                            }
                                             // Customisation props to pass the counter in the title
                                             title={
                                                 'Number of nodes : ' +
