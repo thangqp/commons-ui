@@ -34,10 +34,12 @@ const TreeViewFinderConfig = (props) => {
         dataFormat,
         multiselect,
         onlyLeaves,
+        sortedAlphabetically,
         onDynamicDataChange,
         onDataFormatChange,
         onSelectionTypeChange,
         onOnlyLeavesChange,
+        onSortedAlphabeticallyChange,
     } = props;
 
     return (
@@ -139,6 +141,16 @@ const TreeViewFinderConfig = (props) => {
                                     />
                                 }
                                 label="Only leaves selection"
+                            />
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
+                                        checked={sortedAlphabetically}
+                                        onChange={onSortedAlphabeticallyChange}
+                                        name="sort-alphabetically"
+                                    />
+                                }
+                                label="Sorted alphabetically"
                             />
                         </FormGroup>
                     </div>
