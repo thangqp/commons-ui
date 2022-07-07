@@ -26,7 +26,13 @@ const overflowStyle = (theme) => ({
 
 const useStyles = makeStyles(overflowStyle);
 
-export const OverflowableText = ({ text, className, children, ...props }) => {
+export const OverflowableText = ({
+    text,
+    tooltipStyle,
+    className,
+    children,
+    ...props
+}) => {
     const element = useRef();
     const classes = useStyles();
 
@@ -47,7 +53,7 @@ export const OverflowableText = ({ text, className, children, ...props }) => {
         <Tooltip
             title={text || ''}
             disableHoverListener={!overflowed}
-            classes={{ tooltip: classes.tooltip }}
+            classes={{ tooltip: tooltipStyle ? tooltipStyle : classes.tooltip }}
         >
             <div
                 {...props}
@@ -66,6 +72,7 @@ OverflowableText.propTypes = {
         PropTypes.number,
         PropTypes.node,
     ]),
+    tooltipStyle: PropTypes.string,
     className: PropTypes.string,
 };
 
