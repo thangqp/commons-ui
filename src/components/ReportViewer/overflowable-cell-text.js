@@ -20,7 +20,7 @@ const overflowStyle = (theme) => ({
     },
     tooltip: {
         maxWidth: '1100px',
-        fontSize: '1rem',
+        fontSize: '0.900rem',
         fontWeight: 'inherit',
     },
 });
@@ -52,7 +52,6 @@ export const OverflowableCellText = ({ text, className, ...props }) => {
             <div
                 {...props}
                 ref={element}
-                children={text}
                 className={clsx(className, classes.overflow)}
             />
         </Tooltip>
