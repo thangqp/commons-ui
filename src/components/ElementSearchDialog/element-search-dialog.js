@@ -26,15 +26,12 @@ const ElementSearchDialog = (props) => {
         renderElement,
     } = props;
 
-    const [elements, setElements] = useState([]);
-
     const [expanded, setExpanded] = useState(false);
 
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         setLoading(false);
-        setElements(elementsFound);
     }, [elementsFound]);
 
     const handleSearchTermChange = (term) => {
@@ -43,14 +40,12 @@ const ElementSearchDialog = (props) => {
             onSearchTermChange(term);
             setExpanded(true);
         } else {
-            setElements([]);
             setExpanded(false);
         }
     };
 
     const handleClose = useCallback(() => {
         setExpanded(false);
-        setElements([]);
         onClose();
     }, [onClose]);
 
@@ -67,9 +62,6 @@ const ElementSearchDialog = (props) => {
                     id="element-search"
                     forcePopupIcon={false}
                     open={expanded}
-                    onOpen={() => {
-                        setElements([]);
-                    }}
                     onClose={() => {
                         setExpanded(false);
                     }}
@@ -82,7 +74,7 @@ const ElementSearchDialog = (props) => {
                     isOptionEqualToValue={(option, value) =>
                         option.id === value.id
                     }
-                    options={elements}
+                    options={loading ? [] : elementsFound}
                     loading={loading}
                     autoHighlight={true}
                     noOptionsText={intl.formatMessage({
