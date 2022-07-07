@@ -94,6 +94,7 @@ const TreeViewFinder = (props) => {
         validationButtonText,
         onlyLeaves,
         multiselect,
+        sortMethod,
     } = props;
 
     const [mapPrintedNodes, setMapPrintedNodes] = useState({});
@@ -220,7 +221,9 @@ const TreeViewFinder = (props) => {
             >
                 {Array.isArray(node.children)
                     ? node.children.length
-                        ? node.children.map((child) => renderTree(child))
+                        ? node.children
+                              .sort(sortMethod)
+                              .map((child) => renderTree(child))
                         : [false] // Pass non empty Array here to simulate a child then this node isn't considered as a leaf.
                     : null}
             </TreeItem>
@@ -276,7 +279,9 @@ const TreeViewFinder = (props) => {
                     multiSelect={multiselect}
                 >
                     {data && Array.isArray(data)
-                        ? data.map((child) => renderTree(child))
+                        ? data
+                              .sort(sortMethod)
+                              .map((child) => renderTree(child))
                         : null}
                 </TreeView>
             </DialogContent>
@@ -329,6 +334,7 @@ TreeViewFinder.propTypes = {
     defaultExpanded: PropTypes.arrayOf(PropTypes.string),
     onlyLeaves: PropTypes.bool,
     multiselect: PropTypes.bool,
+    sortMethod: PropTypes.func,
 };
 
 /* TreeViewFinder props default values */
@@ -337,6 +343,7 @@ TreeViewFinder.defaultProps = {
     defaultExpanded: [],
     onlyLeaves: true,
     multiselect: false,
+    sortMethod: undefined,
 };
 
 export default withStyles(defaultStyles)(TreeViewFinder);
