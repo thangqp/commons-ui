@@ -80,7 +80,7 @@ const ElementSearchDialog = (props) => {
                     noOptionsText={intl.formatMessage({
                         id: 'element_search/noResult',
                     })}
-                    renderOption={(optionProps, element, { inputValue }) => 
+                    renderOption={(optionProps, element, { inputValue }) =>
                         renderElement({
                             ...optionProps,
                             element,
