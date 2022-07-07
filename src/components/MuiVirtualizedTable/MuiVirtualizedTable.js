@@ -64,7 +64,6 @@ const defaultStyles = {
     cellTooltip: {
         maxWidth: '1260px',
         fontSize: '0.9rem',
-        fontWeight: 'inherit',
     },
 };
 
@@ -274,7 +273,7 @@ class MuiVirtualizedTable extends React.PureComponent {
                 <OverflowableText
                     text={displayedValue}
                     tooltipStyle={classes.cellTooltip}
-                ></OverflowableText>
+                />
             </TableCell>
         );
     };
