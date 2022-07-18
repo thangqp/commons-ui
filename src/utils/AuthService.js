@@ -166,6 +166,13 @@ function logout(dispatch, userManagerInstance) {
 function dispatchUser(dispatch, userManagerInstance) {
     return userManagerInstance.getUser().then((user) => {
         if (user) {
+            const now = parseInt(Date.now() / 1000);
+            const exp = jwtDecode(user.id_token).exp;
+            const idTokenExpiresIn = exp - now;
+            if (idTokenExpiresIn < 0) {
+                console.debug('User token is expired and will not be dispatched');
+                return ;
+            }
             console.debug('User has been successfully loaded from store.');
             return dispatch(setLoggedUser(user));
         } else {
