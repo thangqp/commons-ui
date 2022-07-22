@@ -17,6 +17,7 @@ export const EquipmentItem = ({
     inputValue,
     suffixRenderer = TagRenderer,
     element,
+    showsJustText = false,
     ...props
 }) => {
     let matches = match(element.label, inputValue, {
@@ -28,16 +29,18 @@ export const EquipmentItem = ({
     return (
         <li key={element.key} {...props}>
             <div className={props.classes.equipmentOption}>
-                <span
-                    className={clsx(
-                        props.classes.equipmentTag,
-                        props.classes.equipmentTypeTag
-                    )}
-                >
-                    <FormattedMessage
-                        id={EQUIPMENT_TYPE[element.type].tagLabel}
-                    />
-                </span>
+                {!showsJustText && (
+                    <span
+                        className={clsx(
+                            props.classes.equipmentTag,
+                            props.classes.equipmentTypeTag
+                        )}
+                    >
+                        <FormattedMessage
+                            id={EQUIPMENT_TYPE[element.type].tagLabel}
+                        />
+                    </span>
+                )}
                 <OverflowableText
                     text={parts.map((e) => e.text).join()}
                     className={props.classes.result}
@@ -53,7 +56,7 @@ export const EquipmentItem = ({
                         </span>
                     ))}
                 </OverflowableText>
-                {suffixRenderer({ props, element })}
+                {!showsJustText && suffixRenderer({ props, element })}
             </div>
         </li>
     );
