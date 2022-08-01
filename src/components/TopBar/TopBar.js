@@ -195,6 +195,8 @@ const TopBar = ({
     renderElement,
     onLanguageClick,
     language,
+    searchTermDisabled,
+    initialSearchTerm,
 }) => {
     const classes = useStyles();
 
@@ -331,6 +333,8 @@ const TopBar = ({
                             }}
                             elementsFound={elementsFound}
                             renderElement={renderElement}
+                            searchTermDisabled={searchTermDisabled}
+                            initialSearchTerm={initialSearchTerm}
                         />
                         <div>
                             <Button
@@ -814,6 +818,8 @@ TopBar.propTypes = {
     elementsFound: PropTypes.array,
     onLanguageClick: PropTypes.func.isRequired,
     language: PropTypes.string.isRequired,
+    searchTermDisabled: PropTypes.bool,
+    initialSearchTerm: PropTypes.string,
 };
 
 export default TopBar;
