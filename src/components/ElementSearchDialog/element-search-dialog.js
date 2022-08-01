@@ -73,11 +73,7 @@ const ElementSearchDialog = (props) => {
                             handleSearchTermChange(value);
                         }
                     }}
-                    onChange={(_event, newValue) => {
-                        if (!searchTermDisabled && newValue) {
-                            onSelectionChange(newValue);
-                        }
-                    }}
+                    onChange={(_event, newValue) => onSelectionChange(newValue)}
                     getOptionLabel={(option) => option.label}
                     isOptionEqualToValue={(option, value) =>
                         option.id === value.id
@@ -117,7 +113,9 @@ const ElementSearchDialog = (props) => {
                             }}
                         />
                     )}
-                    defaultValue={{ label: initialSearchTerm }}
+                    defaultValue={
+                        searchTermDisabled ? { label: initialSearchTerm } : null
+                    }
                     disabled={searchTermDisabled}
                 />
             </DialogContent>
