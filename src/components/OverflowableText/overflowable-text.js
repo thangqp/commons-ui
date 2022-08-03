@@ -13,12 +13,12 @@ import clsx from 'clsx';
 const overflowStyle = (theme) => ({
     overflow: {
         display: 'inline-block',
-        whiteSpace: 'nowrap',
+        whiteSpace: 'pre',
         textOverflow: 'ellipsis',
         overflow: 'hidden',
     },
     tooltip: {
-        whiteSpace: 'nowrap',
+        whiteSpace: 'pre',
         width: 'fit-content',
         maxWidth: 'fit-content',
     },
