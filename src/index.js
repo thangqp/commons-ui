@@ -69,3 +69,4 @@ export card_error_boundary_fr from './components/translations/card-error-boundar
 export { TagRenderer } from './components/ElementSearchDialog';
 export { EquipmentItem } from './components/ElementSearchDialog/equipment-item';
 export CardErrorBoundary from './components/CardErrorBoundary';
+export { useMeta } from './hooks/useMeta';
