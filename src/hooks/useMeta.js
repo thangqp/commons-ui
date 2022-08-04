@@ -12,7 +12,7 @@
 
 // Hook taking an array of parameters with this format
 // [{"name":"nameOfParam","type":"typeOfParam","description":"descriptionOfParam","defaultValue":"defaultValue","possibleValues":[arrayOfPossibleValue]}]
-// Returns : 
+// Returns :
 // - a render of a form allowing to modify those values
 // - an object containing those modified values to be able to send them to a backend
 // - a function allowing to reset the fields
