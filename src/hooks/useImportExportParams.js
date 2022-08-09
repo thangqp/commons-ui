@@ -5,11 +5,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-// adapted from
-//    https://reactjs.org/docs/error-boundaries.html
-//    https://mui.com/material-ui/react-card/#complex-interaction
-//
-
 // Hook taking an array of parameters with this format
 // [{"name":"nameOfParam","type":"typeOfParam","description":"descriptionOfParam","defaultValue":"defaultValue","possibleValues":[arrayOfPossibleValue]}]
 // Returns :
@@ -51,22 +46,22 @@ function longestCommonPrefix(strs) {
     return prefix;
 }
 
-export const useMeta = (metasAsArray) => {
+export const useImportExportParams = (paramsAsArray) => {
     const classes = useStyles();
-    const longestPrefix = longestCommonPrefix(metasAsArray.map((m) => m.name));
+    const longestPrefix = longestCommonPrefix(paramsAsArray.map((m) => m.name));
     const lastDotIndex = longestPrefix.lastIndexOf('.');
     const prefix = longestPrefix.slice(0, lastDotIndex + 1);
 
     const defaultInst = useMemo(() => {
         return Object.fromEntries(
-            metasAsArray.map((m) => {
+            paramsAsArray.map((m) => {
                 if (m.type === 'BOOLEAN') return [m.name, m.defaultValue];
                 if (m.type === 'STRING_LIST')
                     return [m.name, m.defaultValue ?? []];
                 return [m.name, m.defaultValue ?? null];
             })
         );
-    }, [metasAsArray]);
+    }, [paramsAsArray]);
     const [inst, setInst] = useState(defaultInst);
 
     const onBoolChange = (value, paramName) => {
@@ -135,13 +130,13 @@ export const useMeta = (metasAsArray) => {
         }
     };
 
-    const resetValueToDefault = () => {
+    const resetValuesToDefault = () => {
         setInst({});
     };
 
-    const comp = (
+    const paramsComponent = (
         <List>
-            {metasAsArray.map((meta) => (
+            {paramsAsArray.map((meta) => (
                 <Tooltip
                     title={meta.description}
                     enterDelay={1200}
@@ -158,5 +153,5 @@ export const useMeta = (metasAsArray) => {
         </List>
     );
 
-    return [inst, comp, resetValueToDefault];
+    return [inst, paramsComponent, resetValuesToDefault];
 };
