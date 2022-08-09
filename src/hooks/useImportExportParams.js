@@ -77,7 +77,10 @@ export const useImportExportParams = (paramsAsArray) => {
             case 'BOOLEAN':
                 return (
                     <Switch
-                        checked={currentValues?.[param.name] ?? defaultValues[param.name]}
+                        checked={
+                            currentValues?.[param.name] ??
+                            defaultValues[param.name]
+                        }
                         onChange={(e) =>
                             onFieldChange(e.target.checked, param.name)
                         }
@@ -90,8 +93,13 @@ export const useImportExportParams = (paramsAsArray) => {
                         multiple
                         options={param.possibleValues ?? []}
                         freeSolo={!param.possibleValues}
-                        onChange={(e, value) => onFieldChange(value, param.name)}
-                        value={currentValues?.[param.name] ?? defaultValues[param.name]}
+                        onChange={(e, value) =>
+                            onFieldChange(value, param.name)
+                        }
+                        value={
+                            currentValues?.[param.name] ??
+                            defaultValues[param.name]
+                        }
                         renderTags={(value, getTagProps) =>
                             value.map((option, index) => (
                                 <Chip
@@ -111,7 +119,8 @@ export const useImportExportParams = (paramsAsArray) => {
                     <TextField
                         fullWidth
                         defaultValue={
-                            currentValues?.[param.name] ?? defaultValues[param.name]
+                            currentValues?.[param.name] ??
+                            defaultValues[param.name]
                         }
                         onChange={(e) =>
                             onFieldChange(e.target.value, param.name)
@@ -134,7 +143,10 @@ export const useImportExportParams = (paramsAsArray) => {
                     enterDelay={1200}
                     key={param.name}
                 >
-                    <ListItem key={param.name} className={classes.paramListItem}>
+                    <ListItem
+                        key={param.name}
+                        className={classes.paramListItem}
+                    >
                         <Typography style={{ minWidth: '30%' }}>
                             {param.name.slice(prefix.length)}
                         </Typography>
