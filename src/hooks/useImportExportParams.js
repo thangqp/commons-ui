@@ -8,8 +8,8 @@
 // Hook taking an array of parameters with this format
 // [{"name":"nameOfParam","type":"typeOfParam","description":"descriptionOfParam","defaultValue":"defaultValue","possibleValues":[arrayOfPossibleValue]}]
 // Returns :
-// - a render of a form allowing to modify those values
 // - an object containing those modified values to be able to send them to a backend
+// - a render of a form allowing to modify those values
 // - a function allowing to reset the fields
 
 import React, { useMemo, useState } from 'react';
@@ -52,7 +52,7 @@ export const useImportExportParams = (paramsAsArray) => {
     const lastDotIndex = longestPrefix.lastIndexOf('.');
     const prefix = longestPrefix.slice(0, lastDotIndex + 1);
 
-    const defaultInst = useMemo(() => {
+    const defaultValues = useMemo(() => {
         return Object.fromEntries(
             paramsAsArray.map((m) => {
                 if (m.type === 'BOOLEAN') return [m.name, m.defaultValue];
@@ -62,32 +62,24 @@ export const useImportExportParams = (paramsAsArray) => {
             })
         );
     }, [paramsAsArray]);
-    const [inst, setInst] = useState(defaultInst);
-
-    const onBoolChange = (value, paramName) => {
-        setInst((prevInst) => {
-            const nextInst = { ...prevInst };
-            nextInst[paramName] = value;
-            return nextInst;
-        });
-    };
+    const [currentValues, setCurrentValues] = useState(defaultValues);
 
     const onFieldChange = (value, paramName) => {
-        setInst((prevInst) => {
-            const nextInst = { ...prevInst };
-            nextInst[paramName] = value;
-            return nextInst;
+        setCurrentValues((prevCurrentValues) => {
+            const nextCurrentValues = { ...prevCurrentValues };
+            nextCurrentValues[paramName] = value;
+            return nextCurrentValues;
         });
     };
 
-    const renderField = (meta) => {
-        switch (meta.type) {
+    const renderField = (param) => {
+        switch (param.type) {
             case 'BOOLEAN':
                 return (
                     <Switch
-                        checked={inst?.[meta.name] ?? defaultInst[meta.name]}
+                        checked={currentValues?.[param.name] ?? defaultValues[param.name]}
                         onChange={(e) =>
-                            onBoolChange(e.target.checked, meta.name)
+                            onFieldChange(e.target.checked, param.name)
                         }
                     />
                 );
@@ -96,10 +88,10 @@ export const useImportExportParams = (paramsAsArray) => {
                     <Autocomplete
                         fullWidth
                         multiple
-                        options={meta.possibleValues ?? []}
-                        freeSolo={!meta.possibleValues}
-                        onChange={(e, value) => onFieldChange(value, meta.name)}
-                        value={inst?.[meta.name] ?? defaultInst[meta.name]}
+                        options={param.possibleValues ?? []}
+                        freeSolo={!param.possibleValues}
+                        onChange={(e, value) => onFieldChange(value, param.name)}
+                        value={currentValues?.[param.name] ?? defaultValues[param.name]}
                         renderTags={(value, getTagProps) =>
                             value.map((option, index) => (
                                 <Chip
@@ -109,8 +101,8 @@ export const useImportExportParams = (paramsAsArray) => {
                                 />
                             ))
                         }
-                        renderInput={(params) => (
-                            <TextField {...params} variant="standard" />
+                        renderInput={(options) => (
+                            <TextField {...options} variant="standard" />
                         )}
                     />
                 );
@@ -119,10 +111,10 @@ export const useImportExportParams = (paramsAsArray) => {
                     <TextField
                         fullWidth
                         defaultValue={
-                            inst?.[meta.name] ?? defaultInst[meta.name]
+                            currentValues?.[param.name] ?? defaultValues[param.name]
                         }
                         onChange={(e) =>
-                            onFieldChange(e.target.value, meta.name)
+                            onFieldChange(e.target.value, param.name)
                         }
                         variant={'standard'}
                     />
@@ -131,27 +123,27 @@ export const useImportExportParams = (paramsAsArray) => {
     };
 
     const resetValuesToDefault = () => {
-        setInst({});
+        setCurrentValues({});
     };
 
     const paramsComponent = (
         <List>
-            {paramsAsArray.map((meta) => (
+            {paramsAsArray.map((param) => (
                 <Tooltip
-                    title={meta.description}
+                    title={param.description}
                     enterDelay={1200}
-                    key={meta.name}
+                    key={param.name}
                 >
-                    <ListItem key={meta.name} className={classes.paramListItem}>
+                    <ListItem key={param.name} className={classes.paramListItem}>
                         <Typography style={{ minWidth: '30%' }}>
-                            {meta.name.slice(prefix.length)}
+                            {param.name.slice(prefix.length)}
                         </Typography>
-                        {renderField(meta)}
+                        {renderField(param)}
                     </ListItem>
                 </Tooltip>
             ))}
         </List>
     );
 
-    return [inst, paramsComponent, resetValuesToDefault];
+    return [currentValues, paramsComponent, resetValuesToDefault];
 };
