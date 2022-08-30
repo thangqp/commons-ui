@@ -116,29 +116,26 @@ export const getEquipmentsInfosForSearchBar = (
     equipmentsInfos,
     equipmentLabelling
 ) => {
-    return equipmentsInfos
-        .flatMap((e) => {
-            let label = equipmentLabelling ? e.name : e.id;
-            return e.type === 'SUBSTATION'
-                ? [
-                      {
-                          label: label,
-                          id: e.id,
-                          key: e.id,
-                          type: e.type,
-                      },
-                  ]
-                : e.voltageLevels.map((vli) => {
-                      return {
-                          label: label,
-                          id: e.id,
-                          key: e.id + '_' + vli.id,
-                          type: e.type,
-                          voltageLevelLabel: equipmentLabelling
-                              ? vli.name
-                              : vli.id,
-                          voltageLevelId: vli.id,
-                      };
-                });
-        });
+    return equipmentsInfos.flatMap((e) => {
+        let label = equipmentLabelling ? e.name : e.id;
+        return e.type === 'SUBSTATION'
+            ? [
+                  {
+                      label: label,
+                      id: e.id,
+                      key: e.id,
+                      type: e.type,
+                  },
+              ]
+            : e.voltageLevels.map((vli) => {
+                  return {
+                      label: label,
+                      id: e.id,
+                      key: e.id + '_' + vli.id,
+                      type: e.type,
+                      voltageLevelLabel: equipmentLabelling ? vli.name : vli.id,
+                      voltageLevelId: vli.id,
+                  };
+              });
+    });
 };
