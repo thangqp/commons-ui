@@ -134,9 +134,11 @@ export const getEquipmentsInfosForSearchBar = (
                           id: e.id,
                           key: e.id + '_' + vli.id,
                           type: e.type,
-                          voltageLevelLabel: equipmentLabelling ? vli.name : vli.id,
+                          voltageLevelLabel: equipmentLabelling ?
+                              vli.name
+                              : vli.id,
                           voltageLevelId: vli.id,
                       };
-              });
+                });
     });
 };
