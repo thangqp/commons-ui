@@ -140,5 +140,5 @@ export const getEquipmentsInfosForSearchBar = (
                           voltageLevelId: vli.id,
                       };
                 });
-    });
+        });
 };
