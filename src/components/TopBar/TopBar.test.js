@@ -7,7 +7,7 @@
 
 import expect from 'expect';
 import React from 'react';
-import { render, unmountComponentAtNode } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { act } from 'react-dom/test-utils';
 import { IntlProvider } from 'react-intl';
 
@@ -28,7 +28,6 @@ beforeEach(() => {
 
 afterEach(() => {
     // cleanup on exiting
-    unmountComponentAtNode(container);
     container.remove();
     container = null;
 });
@@ -47,8 +46,9 @@ const theme = createTheme({
 });
 
 it('renders', () => {
+    const root = createRoot(container);
     act(() => {
-        render(
+        root.render(
             <ThemeProvider theme={theme}>
                 <IntlProvider locale="en" messages={top_bar_en}>
                     <TopBar
@@ -64,9 +64,11 @@ it('renders', () => {
                         <p>testchild</p>
                     </TopBar>
                 </IntlProvider>
-            </ThemeProvider>,
-            container
+            </ThemeProvider>
         );
     });
     expect(container.textContent).toContain('GridDemotestchildJD');
+    act(() => {
+        root.unmount();
+    });
 });

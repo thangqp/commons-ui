@@ -1,22 +1,20 @@
 process.env.CHROME_BIN = require('puppeteer').executablePath();
 
+const ESLintPlugin = require('eslint-webpack-plugin');
+const myEslintOptions = {
+    extensions: [`js`],
+    exclude: [`node_modules`],
+};
+
 var extraWebpackConfig = {
-    module: {
-        rules: [
-            {
-                test: /\.js$/,
-                enforce: 'pre',
-                loader: 'eslint-loader',
-                exclude: /node_modules/,
-            },
-        ],
-    },
+    plugins: [new ESLintPlugin(myEslintOptions)],
 };
 
 module.exports = {
     type: 'react-component',
     karma: {
         browsers: ['ChromeHeadless'],
+        testContext: 'tests.webpack.js',
     },
     npm: {
         esModules: false,

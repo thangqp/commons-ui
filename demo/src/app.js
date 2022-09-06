@@ -30,10 +30,10 @@ import {
     LIGHT_THEME,
     logout,
 } from '../../src';
-import { useRouteMatch } from 'react-router';
+import { useMatch } from 'react-router';
 import { IntlProvider, useIntl } from 'react-intl';
 
-import { BrowserRouter, useHistory, useLocation } from 'react-router-dom';
+import { BrowserRouter, useNavigate, useLocation } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 
 import {
@@ -213,7 +213,7 @@ const MyButton = (props) => {
 };
 
 const AppContent = ({ language, onLanguageClick }) => {
-    const history = useHistory();
+    const navigate = useNavigate();
     const location = useLocation();
     const intl = useIntl();
     const equipmentClasses = useEquipmentStyles();
@@ -236,12 +236,9 @@ const AppContent = ({ language, onLanguageClick }) => {
         setOpenTreeViewFinderDialogCustomDialog,
     ] = React.useState(false);
 
-    // Can't use lazy initializer because useRouteMatch is a hook
+    // Can't use lazy initializer because useMatch is a hook
     const [initialMatchSilentRenewCallbackUrl] = useState(
-        useRouteMatch({
-            path: '/silent-renew-callback',
-            exact: true,
-        })
+        useMatch('/silent-renew-callback')
     );
 
     // TreeViewFinder data
@@ -686,7 +683,7 @@ const AppContent = ({ language, onLanguageClick }) => {
                                     userManager={userManager}
                                     signInCallbackError={null}
                                     dispatch={dispatch}
-                                    history={history}
+                                    navigate={navigate}
                                     location={location}
                                 />
                             )}
