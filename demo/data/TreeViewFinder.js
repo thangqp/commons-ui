@@ -20,6 +20,7 @@ var PokemonTree = [
         id: 'D1',
         name: 'Team',
         icon: <FolderOpenIcon />,
+        childrenCount: 6,
         children: [
             {
                 id: '1',
@@ -110,6 +111,7 @@ var PokemonTree = [
         id: 'D3',
         name: 'Empty Collect',
         icon: <FolderOpenIcon />,
+        childrenCount: 0,
         children: [],
     },
 ];
@@ -165,6 +167,7 @@ function fetchInfinitePokemonTree(nodeId) {
             power: '1',
             icon: <FiberNewIcon />,
         });
+        dirFound.childrenCount++;
     }
 
     PokemonTree = PokemonTreeCopy;
