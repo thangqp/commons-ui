@@ -114,6 +114,24 @@ export const useImportExportParams = (paramsAsArray) => {
                         )}
                     />
                 );
+            case 'STRING':
+                return (
+                    <Autocomplete
+                        fullWidth
+                        disableClearable
+                        options={param.possibleValues ?? []}
+                        onChange={(e, value) =>
+                            onFieldChange(value, param.name)
+                        }
+                        value={
+                            currentValues?.[param.name] ??
+                            defaultValues[param.name]
+                        }
+                        renderInput={(options) => (
+                            <TextField {...options} variant="standard" />
+                        )}
+                    />
+                );
             default:
                 return (
                     <TextField
