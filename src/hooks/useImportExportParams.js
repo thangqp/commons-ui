@@ -115,23 +115,39 @@ export const useImportExportParams = (paramsAsArray) => {
                     />
                 );
             case 'STRING':
-                return (
-                    <Autocomplete
-                        fullWidth
-                        disableClearable
-                        options={param.possibleValues ?? []}
-                        onChange={(e, value) =>
-                            onFieldChange(value, param.name)
-                        }
-                        value={
-                            currentValues?.[param.name] ??
-                            defaultValues[param.name]
-                        }
-                        renderInput={(options) => (
-                            <TextField {...options} variant="standard" />
-                        )}
-                    />
-                );
+                if (param.possibleValues) {
+                    return (
+                        <Autocomplete
+                            fullWidth
+                            disableClearable
+                            options={param.possibleValues}
+                            onChange={(e, value) =>
+                                onFieldChange(value, param.name)
+                            }
+                            value={
+                                currentValues?.[param.name] ??
+                                defaultValues[param.name]
+                            }
+                            renderInput={(options) => (
+                                <TextField {...options} variant="standard" />
+                            )}
+                        />
+                    );
+                } else {
+                    return (
+                        <TextField
+                            fullWidth
+                            defaultValue={
+                                currentValues?.[param.name] ??
+                                defaultValues[param.name]
+                            }
+                            onChange={(e) =>
+                                onFieldChange(e.target.value, param.name)
+                            }
+                            variant={'standard'}
+                        />
+                    );
+                }
             default:
                 return (
                     <TextField
