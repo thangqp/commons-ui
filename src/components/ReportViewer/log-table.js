@@ -32,7 +32,7 @@ const styles = (theme) => ({
 
 const VirtualizedTable = withStyles(styles)(MuiVirtualizedTable);
 
-const LogTable = ({ logs }) => {
+const LogTable = ({ logs, onRowClick }) => {
     const intl = useIntl();
 
     const severityCellRender = (cellData) => {
@@ -84,6 +84,7 @@ const LogTable = ({ logs }) => {
                 severity: log.getSeverityName(),
                 message: log.getLog(),
                 backgroundColor: log.getColorName(),
+                reportId: log.getReportId(),
             };
         });
     };
@@ -93,6 +94,7 @@ const LogTable = ({ logs }) => {
             columns={generateTableColumns()}
             rows={generateTableRows()}
             sortable={false}
+            onRowClick={onRowClick}
         />
     );
 };

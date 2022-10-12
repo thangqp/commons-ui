@@ -98,6 +98,23 @@ export default function ReportViewer({
         }
     };
 
+    const onRowClick = (data) => {
+        let selectedReportId = data.rowData.reportId;
+        let selectedReports = [selectedReportId];
+        let nodesToExpand = [];
+        while (allReports.current[selectedReportId].parentReportId) {
+            let parentReportId =
+                allReports.current[selectedReportId].parentReportId;
+            selectedReports.push(parentReportId);
+            nodesToExpand.push(parentReportId);
+            selectedReportId = parentReportId;
+        }
+        setExpandedNodes((previouslyExpandedNodes) =>
+            nodesToExpand.concat(previouslyExpandedNodes)
+        );
+        setSelectedNode(selectedReports);
+    };
+
     return (
         rootReport.current && (
             <Grid container style={{ height: '100%' }}>
@@ -124,7 +141,7 @@ export default function ReportViewer({
                     </TreeView>
                 </Grid>
                 <Grid item xs={12} sm={9} style={{ height: '95%' }}>
-                    <LogTable logs={logs} />
+                    <LogTable logs={logs} onRowClick={onRowClick} />
                 </Grid>
             </Grid>
         )
