@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import React, { memo, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 import withStyles from '@mui/styles/withStyles';
 import TableCell from '@mui/material/TableCell';
@@ -104,6 +104,10 @@ const LogTable = ({ logs, onRowClick }) => {
             };
         }
     };
+
+    useEffect(() => {
+        setSelectedRowIndex(-1);
+    }, [logs]);
 
     return (
         <VirtualizedTable
