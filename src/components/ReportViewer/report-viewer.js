@@ -99,20 +99,17 @@ export default function ReportViewer({
     };
 
     const onRowClick = (data) => {
-        let selectedReportId = data.rowData.reportId;
-        let selectedReports = [selectedReportId];
         let nodesToExpand = [];
-        while (allReports.current[selectedReportId].parentReportId) {
-            let parentReportId =
-                allReports.current[selectedReportId].parentReportId;
-            selectedReports.push(parentReportId);
+        let reportId = data.rowData.reportId;
+        while (allReports.current[reportId].parentReportId) {
+            let parentReportId = allReports.current[reportId].parentReportId;
             nodesToExpand.push(parentReportId);
-            selectedReportId = parentReportId;
+            reportId = parentReportId;
         }
         setExpandedNodes((previouslyExpandedNodes) =>
             nodesToExpand.concat(previouslyExpandedNodes)
         );
-        setSelectedNode(selectedReports);
+        setSelectedNode(data.rowData.reportId);
     };
 
     return (

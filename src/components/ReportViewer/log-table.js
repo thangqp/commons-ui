@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 import { useIntl } from 'react-intl';
 import withStyles from '@mui/styles/withStyles';
 import TableCell from '@mui/material/TableCell';
@@ -34,6 +34,8 @@ const VirtualizedTable = withStyles(styles)(MuiVirtualizedTable);
 
 const LogTable = ({ logs, onRowClick }) => {
     const intl = useIntl();
+
+    const [selectedRowIndex, setSelectedRowIndex] = useState(-1);
 
     const severityCellRender = (cellData) => {
         return (
@@ -89,12 +91,27 @@ const LogTable = ({ logs, onRowClick }) => {
         });
     };
 
+    const handleRowClick = (data) => {
+        setSelectedRowIndex(data.index);
+        onRowClick(data);
+    };
+
+    const rowStyleFormat = (row) => {
+        if (row.index < 0) return;
+        if (selectedRowIndex === row.index) {
+            return {
+                backgroundColor: 'lightgrey',
+            };
+        }
+    };
+
     return (
         <VirtualizedTable
             columns={generateTableColumns()}
             rows={generateTableRows()}
             sortable={false}
-            onRowClick={onRowClick}
+            onRowClick={handleRowClick}
+            rowStyle={rowStyleFormat}
         />
     );
 };
