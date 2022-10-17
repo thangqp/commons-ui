@@ -82,6 +82,8 @@ import { Grid } from '@mui/material';
 import { EquipmentItem } from '../../src/components/ElementSearchDialog/equipment-item';
 import OverflowableText from '../../src/components/OverflowableText';
 
+import { Exception } from '../../src/utils/Exception';
+
 const messages = {
     en: {
         ...report_viewer_en,
@@ -212,6 +214,10 @@ const MyButton = (props) => {
     );
 };
 
+const validateUser = () => {
+    return false;
+};
+
 const AppContent = ({ language, onLanguageClick }) => {
     const navigate = useNavigate();
     const location = useLocation();
@@ -221,6 +227,7 @@ const AppContent = ({ language, onLanguageClick }) => {
     const [userManager, setUserManager] = useState({
         instance: null,
         error: null,
+        warning: null,
     });
     const [user, setUser] = useState(null);
 
@@ -337,15 +344,31 @@ const AppContent = ({ language, onLanguageClick }) => {
     useEffect(() => {
         initializeAuthenticationDev(
             dispatch,
+            validateUser,
             initialMatchSilentRenewCallbackUrl != null
         )
             .then((userManager) => {
-                setUserManager({ instance: userManager, error: null });
+                setUserManager({
+                    instance: userManager,
+                    error: null,
+                    warning: null,
+                });
                 userManager.signinSilent();
             })
-            .catch(function (error) {
-                setUserManager({ instance: null, error: error.message });
-                console.debug('error when creating userManager');
+            .catch(function (exception) {
+                if (exception instanceof Exception) {
+                    setUserManager({
+                        instance: null,
+                        error: null,
+                        warning: exception.message,
+                    });
+                } else {
+                    setUserManager({
+                        instance: null,
+                        error: exception.message,
+                        warning: null,
+                    });
+                }
             });
         // Note: initialMatchSilentRenewCallbackUrl doesn't change
     }, [initialMatchSilentRenewCallbackUrl]);

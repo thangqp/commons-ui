@@ -16,6 +16,11 @@ import {
 import SilentRenewCallbackHandler from '../SilentRenewCallbackHandler';
 import Login from '../Login';
 
+import { Grid } from '@mui/material';
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
+import { FormattedMessage } from 'react-intl';
+
 const AuthenticationRouter = ({
     userManager,
     signInCallbackError,
@@ -33,50 +38,69 @@ const AuthenticationRouter = ({
     );
     return (
         <React.Fragment>
-            {userManager.error !== null && (
-                <h1>Error : Getting userManager; {userManager.error}</h1>
-            )}
-            {signInCallbackError !== null && (
-                <h1>
-                    Error : SignIn Callback Error; {signInCallbackError.message}
-                </h1>
-            )}
-            <Routes>
-                <Route
-                    path="sign-in-callback"
-                    element={
-                        <SignInCallbackHandler
-                            userManager={userManager.instance}
-                            handleSignInCallback={handleSigninCallbackClosure}
-                        />
-                    }
-                />
-                <Route
-                    path="silent-renew-callback"
-                    element={
-                        <SilentRenewCallbackHandler
-                            userManager={userManager.instance}
-                            handleSilentRenewCallback={
-                                handleSilentRenewCallbackClosure
-                            }
-                        />
-                    }
-                />
-                <Route path="logout-callback" element={<Navigate to="/" />} />
-                <Route
-                    path="*"
-                    element={
-                        userManager.error === null && (
-                            <Login
-                                disabled={userManager.instance === null}
-                                onLoginClick={() =>
-                                    login(location, userManager.instance)
+            <Grid container alignContent={'center'} direction={'column'}>
+                {userManager.error !== null && (
+                    <h1>Error : Getting userManager; {userManager.error}</h1>
+                )}
+                {signInCallbackError !== null && (
+                    <h1>
+                        Error : SignIn Callback Error;{' '}
+                        {signInCallbackError.message}
+                    </h1>
+                )}
+                <Routes>
+                    <Route
+                        path="sign-in-callback"
+                        element={
+                            <SignInCallbackHandler
+                                userManager={userManager.instance}
+                                handleSignInCallback={
+                                    handleSigninCallbackClosure
                                 }
                             />
-                        )
-                    }
-                />
-            </Routes>
+                        }
+                    />
+                    <Route
+                        path="silent-renew-callback"
+                        element={
+                            <SilentRenewCallbackHandler
+                                userManager={userManager.instance}
+                                handleSilentRenewCallback={
+                                    handleSilentRenewCallbackClosure
+                                }
+                            />
+                        }
+                    />
+                    <Route
+                        path="logout-callback"
+                        element={<Navigate to="/" />}
+                    />
+                    <Route
+                        path="*"
+                        element={
+                            userManager.error === null && (
+                                <Login
+                                    disabled={userManager.instance === null}
+                                    onLoginClick={() =>
+                                        login(location, userManager.instance)
+                                    }
+                                />
+                            )
+                        }
+                    />
+                </Routes>
+
+                {userManager.warning !== null && (
+                    <Grid item>
+                        <Alert severity="info">
+                            <AlertTitle>
+                                <FormattedMessage id="login/unauthorizedAccess" />
+                            </AlertTitle>
+                            {userManager.warning}
+                        </Alert>
+                    </Grid>
+                )}
+            </Grid>
         </React.Fragment>
     );
 };

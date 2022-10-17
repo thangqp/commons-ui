@@ -8,6 +8,7 @@
 const login_en = {
     'login/login': 'Login',
     'login/connection': 'Connection',
+    'login/unauthorizedAccess': 'Unauthorized access',
 };
 
 export default login_en;

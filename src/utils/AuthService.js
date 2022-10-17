@@ -8,6 +8,7 @@ import { Log, UserManager } from 'oidc-client';
 import { UserManagerMock } from './UserManagerMock';
 import { setLoggedUser, setSignInCallbackError } from './actions';
 import jwtDecode from 'jwt-decode';
+import { Exception } from './Exception';
 
 // set as a global variable to allow log level configuration at runtime
 window.OIDCLog = Log;
@@ -16,17 +17,26 @@ const hackauthoritykey = 'oidc.hack.authority';
 
 const pathKey = 'powsybl-gridsuite-current-path';
 
-function initializeAuthenticationDev(dispatch, isSilentRenew) {
+function initializeAuthenticationDev(dispatch, validateUser, isSilentRenew) {
     let userManager = new UserManagerMock({});
     if (!isSilentRenew) {
-        handleUser(dispatch, userManager);
+        try {
+            handleUser(dispatch, validateUser, userManager);
+        } catch (e) {
+            return Promise.reject(e);
+        }
     }
     return Promise.resolve(userManager);
 }
 
 const accessTokenExpiringNotificationTime = 60; // seconds
 
-function initializeAuthenticationProd(dispatch, isSilentRenew, idpSettings) {
+function initializeAuthenticationProd(
+    dispatch,
+    validateUser,
+    isSilentRenew,
+    idpSettings
+) {
     return idpSettings
         .then((r) => r.json())
         .then((idpSettings) => {
@@ -137,7 +147,7 @@ function initializeAuthenticationProd(dispatch, isSilentRenew, idpSettings) {
             let userManager = new UserManager(settings);
             userManager.idpSettings = idpSettings; //store our settings in there as well to use it later
             if (!isSilentRenew) {
-                handleUser(dispatch, userManager);
+                handleUser(dispatch, validateUser, userManager);
             }
             return userManager;
         });
@@ -205,9 +215,12 @@ function handleSilentRenewCallback(userManagerInstance) {
     userManagerInstance.signinSilentCallback();
 }
 
-function handleUser(dispatch, userManager) {
+function handleUser(dispatch, validateUser, userManager) {
     userManager.events.addUserLoaded((user) => {
-        console.debug('user loaded');
+        // console.debug('user loaded');
+        if (!validateUser()) {
+            throw new Exception('the user ' + "isn't granted yet!");
+        }
         dispatchUser(dispatch, userManager);
     });
 
@@ -272,6 +285,10 @@ function handleUser(dispatch, userManager) {
             });
         }, accessTokenExpiringNotificationTime * 1000);
     });
+
+    if (!validateUser()) {
+        throw new Exception('the user ' + "isn't granted yet!");
+    }
 
     console.debug('dispatch user');
     dispatchUser(dispatch, userManager);

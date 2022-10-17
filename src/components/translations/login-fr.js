@@ -8,6 +8,7 @@
 const login_fr = {
     'login/login': 'Se connecter',
     'login/connection': 'Connexion',
+    'login/unauthorizedAccess': 'Accès non autorisé',
 };
 
 export default login_fr;
