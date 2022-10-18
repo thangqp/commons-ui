@@ -9,6 +9,8 @@ const login_fr = {
     'login/login': 'Se connecter',
     'login/connection': 'Connexion',
     'login/unauthorizedAccess': 'Accès non autorisé',
+    'login/unauthorizedAccessMessage':
+        "L'utilisateur {userName} n'a pas encore accès à GridSuite",
 };
 
 export default login_fr;

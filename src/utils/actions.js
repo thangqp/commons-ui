@@ -19,3 +19,12 @@ export function setSignInCallbackError(signInCallbackError) {
         signInCallbackError: signInCallbackError,
     };
 }
+
+export const UNAUTHORIZED_USER_ERROR = 'UNAUTHORIZED_USER_ERROR';
+
+export function setUnauthorizedUserError(unauthorizedUserError) {
+    return {
+        type: UNAUTHORIZED_USER_ERROR,
+        unauthorizedUserError: unauthorizedUserError,
+    };
+}

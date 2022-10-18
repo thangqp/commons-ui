@@ -29,6 +29,8 @@ export {
     getPreLoginPath,
 } from './utils/AuthService';
 
+export { UnauthorizedUserException } from './utils/UnauthorizedUserException';
+
 export { elementType, getFileIcon } from './utils/ElementType';
 
 export {

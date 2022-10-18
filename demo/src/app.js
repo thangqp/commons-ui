@@ -82,8 +82,6 @@ import { Grid } from '@mui/material';
 import { EquipmentItem } from '../../src/components/ElementSearchDialog/equipment-item';
 import OverflowableText from '../../src/components/OverflowableText';
 
-import { Exception } from '../../src/utils/Exception';
-
 const messages = {
     en: {
         ...report_viewer_en,
@@ -214,8 +212,8 @@ const MyButton = (props) => {
     );
 };
 
-const validateUser = () => {
-    return false;
+const validateUser = (user) => {
+    return Promise.resolve(false);
 };
 
 const AppContent = ({ language, onLanguageClick }) => {
@@ -227,9 +225,9 @@ const AppContent = ({ language, onLanguageClick }) => {
     const [userManager, setUserManager] = useState({
         instance: null,
         error: null,
-        warning: null,
     });
     const [user, setUser] = useState(null);
+    const [unauthorizedUserError, setUnauthorizedUserError] = useState(null);
 
     const [theme, setTheme] = useState(LIGHT_THEME);
 
@@ -303,6 +301,8 @@ const AppContent = ({ language, onLanguageClick }) => {
     const dispatch = (e) => {
         if (e.type === 'USER') {
             setUser(e.user);
+        } else if (e.type === 'UNAUTHORIZED_USER_ERROR') {
+            setUnauthorizedUserError(e.unauthorizedUserError);
         }
     };
 
@@ -351,24 +351,14 @@ const AppContent = ({ language, onLanguageClick }) => {
                 setUserManager({
                     instance: userManager,
                     error: null,
-                    warning: null,
                 });
                 userManager.signinSilent();
             })
             .catch(function (exception) {
-                if (exception instanceof Exception) {
-                    setUserManager({
-                        instance: null,
-                        error: null,
-                        warning: exception.message,
-                    });
-                } else {
-                    setUserManager({
-                        instance: null,
-                        error: exception.message,
-                        warning: null,
-                    });
-                }
+                setUserManager({
+                    instance: null,
+                    error: exception.message,
+                });
             });
         // Note: initialMatchSilentRenewCallbackUrl doesn't change
     }, [initialMatchSilentRenewCallbackUrl]);
@@ -705,6 +695,9 @@ const AppContent = ({ language, onLanguageClick }) => {
                                 <AuthenticationRouter
                                     userManager={userManager}
                                     signInCallbackError={null}
+                                    unauthorizedUserError={
+                                        unauthorizedUserError
+                                    }
                                     dispatch={dispatch}
                                     navigate={navigate}
                                     location={location}

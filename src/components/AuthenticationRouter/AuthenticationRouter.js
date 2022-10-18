@@ -19,15 +19,17 @@ import Login from '../Login';
 import { Grid } from '@mui/material';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 const AuthenticationRouter = ({
     userManager,
     signInCallbackError,
+    unauthorizedUserError,
     dispatch,
     navigate,
     location,
 }) => {
+    const intl = useIntl();
     const handleSigninCallbackClosure = useCallback(
         () => handleSigninCallback(dispatch, navigate, userManager.instance),
         [dispatch, navigate, userManager.instance]
@@ -44,7 +46,7 @@ const AuthenticationRouter = ({
                 )}
                 {signInCallbackError !== null && (
                     <h1>
-                        Error : SignIn Callback Error;{' '}
+                        Error : SignIn Callback Error;
                         {signInCallbackError.message}
                     </h1>
                 )}
@@ -90,13 +92,16 @@ const AuthenticationRouter = ({
                     />
                 </Routes>
 
-                {userManager.warning !== null && (
+                {unauthorizedUserError !== null && (
                     <Grid item>
                         <Alert severity="info">
                             <AlertTitle>
                                 <FormattedMessage id="login/unauthorizedAccess" />
                             </AlertTitle>
-                            {userManager.warning}
+                            {intl.formatMessage(
+                                { id: 'login/unauthorizedAccessMessage' },
+                                { userName: unauthorizedUserError?.userName }
+                            )}
                         </Alert>
                     </Grid>
                 )}

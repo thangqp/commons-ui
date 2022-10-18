@@ -6,9 +6,13 @@
  */
 import { Log, UserManager } from 'oidc-client';
 import { UserManagerMock } from './UserManagerMock';
-import { setLoggedUser, setSignInCallbackError } from './actions';
+import {
+    setLoggedUser,
+    setSignInCallbackError,
+    setUnauthorizedUserError,
+} from './actions';
 import jwtDecode from 'jwt-decode';
-import { Exception } from './Exception';
+import { UnauthorizedUserException } from './UnauthorizedUserException';
 
 // set as a global variable to allow log level configuration at runtime
 window.OIDCLog = Log;
@@ -20,11 +24,7 @@ const pathKey = 'powsybl-gridsuite-current-path';
 function initializeAuthenticationDev(dispatch, validateUser, isSilentRenew) {
     let userManager = new UserManagerMock({});
     if (!isSilentRenew) {
-        try {
-            handleUser(dispatch, validateUser, userManager);
-        } catch (e) {
-            return Promise.reject(e);
-        }
+        handleUser(dispatch, validateUser, userManager);
     }
     return Promise.resolve(userManager);
 }
@@ -173,20 +173,38 @@ function logout(dispatch, userManagerInstance) {
         .then(() => console.debug('logged out'));
 }
 
-function dispatchUser(dispatch, userManagerInstance) {
+function dispatchUser(dispatch, validateUser, userManagerInstance) {
     return userManagerInstance.getUser().then((user) => {
         if (user) {
-            const now = parseInt(Date.now() / 1000);
-            const exp = jwtDecode(user.id_token).exp;
-            const idTokenExpiresIn = exp - now;
-            if (idTokenExpiresIn < 0) {
-                console.debug(
-                    'User token is expired and will not be dispatched'
-                );
-                return;
-            }
-            console.debug('User has been successfully loaded from store.');
-            return dispatch(setLoggedUser(user));
+            validateUser(user).then((valid) => {
+                if (!valid) {
+                    console.debug(
+                        "User isn't authorized to log in and will not be dispatched"
+                    );
+                    return dispatch(
+                        setUnauthorizedUserError(
+                            new UnauthorizedUserException(
+                                'exception',
+                                user?.profile?.name
+                            )
+                        )
+                    );
+                } else {
+                    const now = parseInt(Date.now() / 1000);
+                    const exp = jwtDecode(user.id_token).exp;
+                    const idTokenExpiresIn = exp - now;
+                    if (idTokenExpiresIn < 0) {
+                        console.debug(
+                            'User token is expired and will not be dispatched'
+                        );
+                        return;
+                    }
+                    console.debug(
+                        'User has been successfully loaded from store.'
+                    );
+                    return dispatch(setLoggedUser(user));
+                }
+            });
         } else {
             console.debug('You are not logged in.');
         }
@@ -217,11 +235,10 @@ function handleSilentRenewCallback(userManagerInstance) {
 
 function handleUser(dispatch, validateUser, userManager) {
     userManager.events.addUserLoaded((user) => {
-        // console.debug('user loaded');
-        if (!validateUser()) {
-            throw new Exception('the user ' + "isn't granted yet!");
-        }
-        dispatchUser(dispatch, userManager);
+        console.debug('user loaded', user);
+        dispatchUser(dispatch, validateUser, userManager).catch((e) => {
+            console.log('error in user loaded validation :  ignored');
+        });
     });
 
     userManager.events.addSilentRenewError((error) => {
@@ -286,12 +303,8 @@ function handleUser(dispatch, validateUser, userManager) {
         }, accessTokenExpiringNotificationTime * 1000);
     });
 
-    if (!validateUser()) {
-        throw new Exception('the user ' + "isn't granted yet!");
-    }
-
     console.debug('dispatch user');
-    dispatchUser(dispatch, userManager);
+    dispatchUser(dispatch, validateUser, userManager);
 }
 
 export {
