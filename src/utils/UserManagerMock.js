@@ -53,9 +53,15 @@ export class UserManagerMock {
     }
 
     getUser() {
-        return Promise.resolve(
-            JSON.parse(sessionStorage.getItem('powsybl-gridsuite-mock-user'))
-        );
+        try {
+            let res = JSON.parse(
+                sessionStorage.getItem('powsybl-gridsuite-mock-user')
+            );
+            return Promise.resolve(res);
+        } catch (e) {
+            console.log('error parsing sessionStorage mock user ', e);
+            return Promise.resolve(undefined);
+        }
     }
 
     signinSilent() {
@@ -64,7 +70,7 @@ export class UserManagerMock {
             'powsybl-gridsuite-mock-user'
         );
         sessionStorage.setItem('powsybl-gridsuite-mock-user', localStorageUser);
-        this.events.userLoadedCallbacks.forEach((c) => c(this.user));
+        this.events.userLoadedCallbacks.forEach((c) => c(localStorageUser));
         return Promise.resolve(JSON.parse(localStorageUser));
     }
 
