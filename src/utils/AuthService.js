@@ -9,10 +9,9 @@ import { UserManagerMock } from './UserManagerMock';
 import {
     setLoggedUser,
     setSignInCallbackError,
-    setUnauthorizedUserError,
+    setUnauthorizedUserInfo,
 } from './actions';
 import jwtDecode from 'jwt-decode';
-import { UnauthorizedUserException } from './UnauthorizedUserException';
 
 // set as a global variable to allow log level configuration at runtime
 window.OIDCLog = Log;
@@ -176,34 +175,28 @@ function logout(dispatch, userManagerInstance) {
 function dispatchUser(dispatch, validateUser, userManagerInstance) {
     return userManagerInstance.getUser().then((user) => {
         if (user) {
-            validateUser(user).then((valid) => {
+            return validateUser(user).then((valid) => {
                 if (!valid) {
                     console.debug(
                         "User isn't authorized to log in and will not be dispatched"
                     );
                     return dispatch(
-                        setUnauthorizedUserError(
-                            new UnauthorizedUserException(
-                                'exception',
-                                user?.profile?.name
-                            )
-                        )
+                        setUnauthorizedUserInfo({
+                            userName: user?.profile?.name,
+                        })
                     );
-                } else {
-                    const now = parseInt(Date.now() / 1000);
-                    const exp = jwtDecode(user.id_token).exp;
-                    const idTokenExpiresIn = exp - now;
-                    if (idTokenExpiresIn < 0) {
-                        console.debug(
-                            'User token is expired and will not be dispatched'
-                        );
-                        return;
-                    }
-                    console.debug(
-                        'User has been successfully loaded from store.'
-                    );
-                    return dispatch(setLoggedUser(user));
                 }
+                const now = parseInt(Date.now() / 1000);
+                const exp = jwtDecode(user.id_token).exp;
+                const idTokenExpiresIn = exp - now;
+                if (idTokenExpiresIn < 0) {
+                    console.debug(
+                        'User token is expired and will not be dispatched'
+                    );
+                    return;
+                }
+                console.debug('User has been successfully loaded from store.');
+                return dispatch(setLoggedUser(user));
             });
         } else {
             console.debug('You are not logged in.');
@@ -236,9 +229,7 @@ function handleSilentRenewCallback(userManagerInstance) {
 function handleUser(dispatch, validateUser, userManager) {
     userManager.events.addUserLoaded((user) => {
         console.debug('user loaded', user);
-        dispatchUser(dispatch, validateUser, userManager).catch((e) => {
-            console.log('error in user loaded validation :  ignored');
-        });
+        dispatchUser(dispatch, validateUser, userManager);
     });
 
     userManager.events.addSilentRenewError((error) => {

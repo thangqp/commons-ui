@@ -20,11 +20,11 @@ export function setSignInCallbackError(signInCallbackError) {
     };
 }
 
-export const UNAUTHORIZED_USER_ERROR = 'UNAUTHORIZED_USER_ERROR';
+export const UNAUTHORIZED_USER_INFO = 'UNAUTHORIZED_USER_INFO';
 
-export function setUnauthorizedUserError(unauthorizedUserError) {
+export function setUnauthorizedUserInfo(unauthorizedUserInfo) {
     return {
-        type: UNAUTHORIZED_USER_ERROR,
-        unauthorizedUserError: unauthorizedUserError,
+        type: UNAUTHORIZED_USER_INFO,
+        unauthorizedUserInfo: unauthorizedUserInfo,
     };
 }

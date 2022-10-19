@@ -213,7 +213,8 @@ const MyButton = (props) => {
 };
 
 const validateUser = (user) => {
-    return Promise.resolve(false);
+    // change to false to simulate user unauthorized access
+    return Promise.resolve(true);
 };
 
 const AppContent = ({ language, onLanguageClick }) => {
@@ -227,7 +228,7 @@ const AppContent = ({ language, onLanguageClick }) => {
         error: null,
     });
     const [user, setUser] = useState(null);
-    const [unauthorizedUserError, setUnauthorizedUserError] = useState(null);
+    const [unauthorizedUserInfo, setUnauthorizedUserInfo] = useState(null);
 
     const [theme, setTheme] = useState(LIGHT_THEME);
 
@@ -301,8 +302,8 @@ const AppContent = ({ language, onLanguageClick }) => {
     const dispatch = (e) => {
         if (e.type === 'USER') {
             setUser(e.user);
-        } else if (e.type === 'UNAUTHORIZED_USER_ERROR') {
-            setUnauthorizedUserError(e.unauthorizedUserError);
+        } else if (e.type === 'UNAUTHORIZED_USER_INFO') {
+            setUnauthorizedUserInfo(e.unauthorizedUserInfo);
         }
     };
 
@@ -695,9 +696,7 @@ const AppContent = ({ language, onLanguageClick }) => {
                                 <AuthenticationRouter
                                     userManager={userManager}
                                     signInCallbackError={null}
-                                    unauthorizedUserError={
-                                        unauthorizedUserError
-                                    }
+                                    unauthorizedUserInfo={unauthorizedUserInfo}
                                     dispatch={dispatch}
                                     navigate={navigate}
                                     location={location}

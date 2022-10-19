@@ -29,8 +29,6 @@ export {
     getPreLoginPath,
 } from './utils/AuthService';
 
-export { UnauthorizedUserException } from './utils/UnauthorizedUserException';
-
 export { elementType, getFileIcon } from './utils/ElementType';
 
 export {
@@ -51,6 +49,7 @@ export {
     setLoggedUser,
     SIGNIN_CALLBACK_ERROR,
     setSignInCallbackError,
+    UNAUTHORIZED_USER_INFO,
 } from './utils/actions';
 export report_viewer_en from './components/translations/report-viewer-en';
 export report_viewer_fr from './components/translations/report-viewer-fr';
