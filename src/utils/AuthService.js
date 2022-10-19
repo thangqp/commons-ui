@@ -172,9 +172,13 @@ function logout(dispatch, userManagerInstance) {
         .then(() => console.debug('logged out'));
 }
 
-function dispatchUser(dispatch, validateUser, userManagerInstance) {
+function dispatchUser(dispatch, validateUserFunc, userManagerInstance) {
     return userManagerInstance.getUser().then((user) => {
         if (user) {
+            let validateUser =
+                validateUserFunc !== undefined
+                    ? validateUserFunc
+                    : () => Promise.resolve(true);
             return validateUser(user).then((valid) => {
                 if (!valid) {
                     console.debug(
