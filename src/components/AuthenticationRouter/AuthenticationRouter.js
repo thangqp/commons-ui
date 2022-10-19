@@ -12,6 +12,7 @@ import {
     handleSigninCallback,
     handleSilentRenewCallback,
     login,
+    logout,
 } from '../../utils/AuthService';
 import SilentRenewCallbackHandler from '../SilentRenewCallbackHandler';
 import Login from '../Login';
@@ -20,11 +21,13 @@ import { Grid } from '@mui/material';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import { FormattedMessage } from 'react-intl';
+import Button from '@mui/material/Button';
 
 const AuthenticationRouter = ({
     userManager,
     signInCallbackError,
     unauthorizedUserInfo,
+    showAuthenticationRouterLogin,
     dispatch,
     navigate,
     location,
@@ -39,7 +42,12 @@ const AuthenticationRouter = ({
     );
     return (
         <React.Fragment>
-            <Grid container alignContent={'center'} direction={'column'}>
+            <Grid
+                container
+                alignContent={'center'}
+                alignItems={'center'}
+                direction={'column'}
+            >
                 {userManager.error !== null && (
                     <h1>Error : Getting userManager; {userManager.error}</h1>
                 )}
@@ -79,7 +87,7 @@ const AuthenticationRouter = ({
                     <Route
                         path="*"
                         element={
-                            userManager.error === null && (
+                            showAuthenticationRouterLogin && (
                                 <Login
                                     disabled={userManager.instance === null}
                                     onLoginClick={() =>
@@ -92,19 +100,32 @@ const AuthenticationRouter = ({
                 </Routes>
 
                 {unauthorizedUserInfo !== null && (
-                    <Grid item>
-                        <Alert severity="info">
-                            <AlertTitle>
-                                <FormattedMessage id="login/unauthorizedAccess" />
-                            </AlertTitle>
-                            <FormattedMessage
-                                id="login/unauthorizedAccessMessage"
-                                values={{
-                                    userName: unauthorizedUserInfo?.userName,
+                    <>
+                        <Grid item>
+                            <Button
+                                variant="contained"
+                                onClick={() => {
+                                    logout(dispatch, userManager.instance);
                                 }}
-                            />
-                        </Alert>
-                    </Grid>
+                            >
+                                <FormattedMessage id="login/logout" />
+                            </Button>
+                        </Grid>
+                        <Grid item>
+                            <Alert severity="info">
+                                <AlertTitle>
+                                    <FormattedMessage id="login/unauthorizedAccess" />
+                                </AlertTitle>
+                                <FormattedMessage
+                                    id="login/unauthorizedAccessMessage"
+                                    values={{
+                                        userName:
+                                            unauthorizedUserInfo?.userName,
+                                    }}
+                                />
+                            </Alert>
+                        </Grid>
+                    </>
                 )}
             </Grid>
         </React.Fragment>

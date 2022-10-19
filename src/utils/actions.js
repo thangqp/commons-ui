@@ -28,3 +28,14 @@ export function setUnauthorizedUserInfo(unauthorizedUserInfo) {
         unauthorizedUserInfo: unauthorizedUserInfo,
     };
 }
+
+export const SHOW_AUTH_INFO_LOGIN = 'SHOW_AUTH_INFO_LOGIN';
+
+export function setShowAuthenticationRouterLogin(
+    showAuthenticationRouterLogin
+) {
+    return {
+        type: SHOW_AUTH_INFO_LOGIN,
+        showAuthenticationRouterLogin: showAuthenticationRouterLogin,
+    };
+}

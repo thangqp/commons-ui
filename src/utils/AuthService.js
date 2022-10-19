@@ -20,10 +20,10 @@ const hackauthoritykey = 'oidc.hack.authority';
 
 const pathKey = 'powsybl-gridsuite-current-path';
 
-function initializeAuthenticationDev(dispatch, validateUser, isSilentRenew) {
+function initializeAuthenticationDev(dispatch, isSilentRenew, validateUser) {
     let userManager = new UserManagerMock({});
     if (!isSilentRenew) {
-        handleUser(dispatch, validateUser, userManager);
+        handleUser(dispatch, userManager, validateUser);
     }
     return Promise.resolve(userManager);
 }
@@ -32,9 +32,9 @@ const accessTokenExpiringNotificationTime = 60; // seconds
 
 function initializeAuthenticationProd(
     dispatch,
-    validateUser,
     isSilentRenew,
-    idpSettings
+    idpSettings,
+    validateUser
 ) {
     return idpSettings
         .then((r) => r.json())
@@ -146,7 +146,7 @@ function initializeAuthenticationProd(
             let userManager = new UserManager(settings);
             userManager.idpSettings = idpSettings; //store our settings in there as well to use it later
             if (!isSilentRenew) {
-                handleUser(dispatch, validateUser, userManager);
+                handleUser(dispatch, userManager, validateUser);
             }
             return userManager;
         });
@@ -172,14 +172,13 @@ function logout(dispatch, userManagerInstance) {
         .then(() => console.debug('logged out'));
 }
 
-function dispatchUser(dispatch, validateUserFunc, userManagerInstance) {
+function dispatchUser(dispatch, userManagerInstance, validateUser) {
     return userManagerInstance.getUser().then((user) => {
         if (user) {
-            let validateUser =
-                validateUserFunc !== undefined
-                    ? validateUserFunc
-                    : () => Promise.resolve(true);
-            return validateUser(user).then((valid) => {
+            // without validateUser defined, valid user by default
+            let validateUserPromise =
+                (validateUser && validateUser(user)) || Promise.resolve(true);
+            return validateUserPromise.then((valid) => {
                 if (!valid) {
                     console.debug(
                         "User isn't authorized to log in and will not be dispatched"
@@ -230,10 +229,10 @@ function handleSilentRenewCallback(userManagerInstance) {
     userManagerInstance.signinSilentCallback();
 }
 
-function handleUser(dispatch, validateUser, userManager) {
+function handleUser(dispatch, userManager, validateUser) {
     userManager.events.addUserLoaded((user) => {
         console.debug('user loaded', user);
-        dispatchUser(dispatch, validateUser, userManager);
+        dispatchUser(dispatch, userManager, validateUser);
     });
 
     userManager.events.addSilentRenewError((error) => {
@@ -299,7 +298,7 @@ function handleUser(dispatch, validateUser, userManager) {
     });
 
     console.debug('dispatch user');
-    dispatchUser(dispatch, validateUser, userManager);
+    dispatchUser(dispatch, userManager, validateUser);
 }
 
 export {
