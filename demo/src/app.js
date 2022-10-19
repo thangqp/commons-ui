@@ -360,6 +360,7 @@ const AppContent = ({ language, onLanguageClick }) => {
                     instance: null,
                     error: exception.message,
                 });
+                console.debug('error when creating userManager');
             });
         // Note: initialMatchSilentRenewCallbackUrl doesn't change
     }, [initialMatchSilentRenewCallbackUrl]);
