@@ -211,6 +211,10 @@ const TreeViewFinder = (props) => {
             </div>
         );
     };
+    const showChevron = (node) => {
+        // by defaut show Chevron if childrenCount is null or undefined otherwise only if > 0
+        return !!(node.childrenCount == null || (node.childrenCount && node.childrenCount > 0));
+    }
 
     const renderTree = (node) => {
         if (!node) return;
@@ -220,12 +224,12 @@ const TreeViewFinder = (props) => {
                 nodeId={node.id}
                 label={renderTreeItemLabel(node)}
                 expandIcon={
-                    node.childrenCount > 0 ? (
+                    showChevron(node) ? (
                         <ChevronRightIcon className={classes.icon} />
                     ) : null
                 }
                 collapseIcon={
-                    node.childrenCount > 0 ? (
+                    showChevron(node) ? (
                         <ExpandMoreIcon className={classes.icon} />
                     ) : null
                 }
