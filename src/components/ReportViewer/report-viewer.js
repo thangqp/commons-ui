@@ -14,6 +14,7 @@ import ReportItem from './report-item';
 import LogReport from './log-report';
 import Grid from '@mui/material/Grid';
 import LogTable from './log-table';
+import ReportTreeViewContext from './report-tree-view-context';
 
 const MAX_SUB_REPORTS = 500;
 
@@ -24,6 +25,10 @@ const useStyles = makeStyles({
     },
     treeItem: {
         whiteSpace: 'nowrap',
+    },
+    highlightedTreeItem: {
+        whiteSpace: 'nowrap',
+        backgroundColor: 'lightblue',
     },
 });
 
@@ -36,6 +41,8 @@ export default function ReportViewer({
     const [selectedNode, setSelectedNode] = useState(null);
     const [expandedNodes, setExpandedNodes] = useState([]);
     const [logs, setLogs] = useState(null);
+
+    const [highlightedReportId, setHighlightedReportId] = useState();
 
     const rootReport = useRef(null);
     const allReports = useRef({});
@@ -95,8 +102,14 @@ export default function ReportViewer({
         if (selectedNode !== nodeId) {
             setSelectedNode(nodeId);
             setLogs(allReports.current[nodeId].getAllLogs());
+            setHighlightedReportId(null);
         }
     };
+
+    const isHighlighted = useCallback(
+        (reportId) => highlightedReportId === reportId,
+        [highlightedReportId]
+    );
 
     const onRowClick = (data) => {
         let nodesToExpand = [];
@@ -109,7 +122,7 @@ export default function ReportViewer({
         setExpandedNodes((previouslyExpandedNodes) =>
             nodesToExpand.concat(previouslyExpandedNodes)
         );
-        setSelectedNode(data.rowData.reportId);
+        setHighlightedReportId(data.rowData.reportId);
     };
 
     return (
@@ -124,18 +137,24 @@ export default function ReportViewer({
                         borderRight: '1px solid rgba(81, 81, 81, 1)',
                     }}
                 >
-                    <TreeView
-                        className={classes.treeView}
-                        defaultCollapseIcon={<ArrowDropDownIcon />}
-                        defaultExpandIcon={<ArrowRightIcon />}
-                        defaultEndIcon={<div style={{ width: 24 }} />}
-                        onNodeToggle={handleToggleNode}
-                        onNodeSelect={handleSelectNode}
-                        selected={selectedNode}
-                        expanded={expandedNodes}
+                    <ReportTreeViewContext.Provider
+                        value={{
+                            isHighlighted,
+                        }}
                     >
-                        {treeView.current}
-                    </TreeView>
+                        <TreeView
+                            className={classes.treeView}
+                            defaultCollapseIcon={<ArrowDropDownIcon />}
+                            defaultExpandIcon={<ArrowRightIcon />}
+                            defaultEndIcon={<div style={{ width: 24 }} />}
+                            onNodeToggle={handleToggleNode}
+                            onNodeSelect={handleSelectNode}
+                            selected={selectedNode}
+                            expanded={expandedNodes}
+                        >
+                            {treeView.current}
+                        </TreeView>
+                    </ReportTreeViewContext.Provider>
                 </Grid>
                 <Grid item xs={12} sm={9} style={{ height: '95%' }}>
                     <LogTable logs={logs} onRowClick={onRowClick} />
