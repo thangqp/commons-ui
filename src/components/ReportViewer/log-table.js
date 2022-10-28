@@ -100,7 +100,7 @@ const LogTable = ({ logs, onRowClick }) => {
         if (row.index < 0) return;
         if (selectedRowIndex === row.index) {
             return {
-                backgroundColor: 'lightgrey',
+                backgroundColor: 'lightblue',
             };
         }
     };
