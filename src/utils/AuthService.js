@@ -10,6 +10,7 @@ import {
     setLoggedUser,
     setSignInCallbackError,
     setUnauthorizedUserInfo,
+    setShowAuthenticationRouterLogin,
 } from './actions';
 import jwtDecode from 'jwt-decode';
 
@@ -253,6 +254,7 @@ function handleUser(dispatch, userManager, validateUser) {
                     );
                     // TODO here allow to continue to use the app but in some kind of frozen state because we can't make API calls anymore
                     // remove the user from our app, but don't sso logout on all other apps
+                    dispatch(setShowAuthenticationRouterLogin(true));
                     return dispatch(setLoggedUser(null));
                 } else if (userManager.idpSettings.maxExpiresIn) {
                     if (
