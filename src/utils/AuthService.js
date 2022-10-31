@@ -232,7 +232,13 @@ function handleSilentRenewCallback(userManagerInstance) {
 function handleUser(dispatch, userManager, validateUser) {
     userManager.events.addUserLoaded((user) => {
         console.debug('user loaded', user);
-        dispatchUser(dispatch, userManager, validateUser);
+        
+        dispatchUser(dispatch, userManager, validateUser)
+        // The oidc-client-lib doesn't manage errors from this Promise
+        // For now we log it to avoid uncaught Promise for good practice.
+        .catch((e) => {
+            console.log('Error in dispatchUser in addUserLoaded event', e);
+        });
     });
 
     userManager.events.addSilentRenewError((error) => {
