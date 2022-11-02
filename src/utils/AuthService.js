@@ -240,7 +240,7 @@ function handleUser(dispatch, userManager, validateUser) {
 
         dispatchUser(dispatch, userManager, validateUser)
             // The oidc-client-lib doesn't manage errors from this Promise
-            // For now we log it to avoid uncaught Promise for good practice.
+            // we handle it ourselves and show the error on the rejected user page instead of the user rejection message
             .catch((e) => {
                 console.log('Error in dispatchUser in addUserLoaded event', e);
                 dispatch(
