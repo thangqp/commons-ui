@@ -170,7 +170,10 @@ function logout(dispatch, userManagerInstance) {
                     userManagerInstance.settings.post_logout_redirect_uri,
             },
         })
-        .then(() => console.debug('logged out'));
+        .then(() => {
+            dispatch(setUnauthorizedUserInfo(null));
+            console.debug('logged out');
+        });
 }
 
 function dispatchUser(dispatch, userManagerInstance, validateUser) {
@@ -187,6 +190,9 @@ function dispatchUser(dispatch, userManagerInstance, validateUser) {
                     return dispatch(
                         setUnauthorizedUserInfo({
                             userName: user?.profile?.name,
+                            errorTitleId: 'login/unauthorizedAccess',
+                            errorMessageId: 'login/unauthorizedAccessMessage',
+                            severity: 'info',
                         })
                     );
                 }
@@ -239,6 +245,14 @@ function handleUser(dispatch, userManager, validateUser) {
             // For now we log it to avoid uncaught Promise for good practice.
             .catch((e) => {
                 console.log('Error in dispatchUser in addUserLoaded event', e);
+                dispatch(
+                    setUnauthorizedUserInfo({
+                        userName: user?.profile?.name,
+                        errorTitleId: 'login/errorInUserValidation',
+                        errorMessageId: 'login/errorInUserValidationMessage',
+                        severity: 'error',
+                    })
+                );
             });
     });
 

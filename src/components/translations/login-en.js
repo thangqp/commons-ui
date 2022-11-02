@@ -10,6 +10,9 @@ const login_en = {
     'login/connection': 'Connection',
     'login/unauthorizedAccess': 'Unauthorized access',
     'login/unauthorizedAccessMessage': "The user {userName} isn't granted yet",
+    'login/errorInUserValidation': "Error during user validation",
+    'login/errorInUserValidationMessage':
+        'An unexpected error occured during user validation for {userName}.',
     'login/logout': 'Logout',
 };
 

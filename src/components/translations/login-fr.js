@@ -11,6 +11,9 @@ const login_fr = {
     'login/unauthorizedAccess': 'Accès non autorisé',
     'login/unauthorizedAccessMessage':
         "L'utilisateur {userName} n'a pas encore accès à GridSuite",
+    'login/errorInUserValidation': "Erreur lors de la validation de l'utilisateur",
+    'login/errorInUserValidationMessage':
+        "Une erreur s'est produite pendant la validation de l'utilisateur {userName}.",
     'login/logout': 'Se déconnecter',
 };
 

@@ -22,6 +22,14 @@ import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import { FormattedMessage } from 'react-intl';
 import Button from '@mui/material/Button';
+import makeStyles from '@mui/styles/makeStyles';
+
+const useStyles = makeStyles((theme) => ({
+    button: {
+        margin: theme.spacing(3, 0, 2),
+        borderRadius: '30px',
+    },
+}));
 
 const AuthenticationRouter = ({
     userManager,
@@ -32,6 +40,8 @@ const AuthenticationRouter = ({
     navigate,
     location,
 }) => {
+    const classes = useStyles();
+
     const handleSigninCallbackClosure = useCallback(
         () => handleSigninCallback(dispatch, navigate, userManager.instance),
         [dispatch, navigate, userManager.instance]
@@ -87,7 +97,7 @@ const AuthenticationRouter = ({
                     <Route
                         path="*"
                         element={
-                            showAuthenticationRouterLogin && (
+                            showAuthenticationRouterLogin && unauthorizedUserInfo == null && (
                                 <Login
                                     disabled={userManager.instance === null}
                                     onLoginClick={() =>
@@ -104,6 +114,7 @@ const AuthenticationRouter = ({
                         <Grid item>
                             <Button
                                 variant="contained"
+                                className={classes.button}
                                 onClick={() => {
                                     logout(dispatch, userManager.instance);
                                 }}
@@ -112,15 +123,14 @@ const AuthenticationRouter = ({
                             </Button>
                         </Grid>
                         <Grid item>
-                            <Alert severity="info">
+                            <Alert severity={unauthorizedUserInfo.severity}>
                                 <AlertTitle>
-                                    <FormattedMessage id="login/unauthorizedAccess" />
+                                    <FormattedMessage id={unauthorizedUserInfo.errorTitleId} />
                                 </AlertTitle>
                                 <FormattedMessage
-                                    id="login/unauthorizedAccessMessage"
+                                    id={unauthorizedUserInfo.errorMessageId}
                                     values={{
-                                        userName:
-                                            unauthorizedUserInfo?.userName,
+                                        userName: unauthorizedUserInfo.userName,
                                     }}
                                 />
                             </Alert>
