@@ -123,17 +123,32 @@ const AuthenticationRouter = ({
                             </Button>
                         </Grid>
                         <Grid item>
-                            <Alert severity={unauthorizedUserInfo.severity}>
-                                <AlertTitle>
-                                    <FormattedMessage id={unauthorizedUserInfo.errorTitleId} />
-                                </AlertTitle>
-                                <FormattedMessage
-                                    id={unauthorizedUserInfo.errorMessageId}
-                                    values={{
-                                        userName: unauthorizedUserInfo.userName,
-                                    }}
-                                />
-                            </Alert>
+                            {unauthorizedUserInfo.severity === 'error' && (
+                                <Alert severity='error'>
+                                    <AlertTitle>
+                                        <FormattedMessage id='login/unauthorizedAccess' />
+                                    </AlertTitle>
+                                    <FormattedMessage
+                                        id='login/errorInUserValidationMessage'
+                                        values={{
+                                            userName: unauthorizedUserInfo.userName,
+                                        }}
+                                    />
+                                </Alert>
+                            )}
+                            {unauthorizedUserInfo.severity === 'info' && (
+                                <Alert severity='info'>
+                                    <AlertTitle>
+                                        <FormattedMessage id='login/unauthorizedAccess' />
+                                    </AlertTitle>
+                                    <FormattedMessage
+                                        id='login/unauthorizedAccessMessage'
+                                        values={{
+                                            userName: unauthorizedUserInfo.userName,
+                                        }}
+                                    />
+                                </Alert>
+                            )}
                         </Grid>
                     </>
                 )}

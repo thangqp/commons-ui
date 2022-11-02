@@ -162,6 +162,7 @@ function login(location, userManagerInstance) {
 
 function logout(dispatch, userManagerInstance) {
     dispatch(setLoggedUser(null));
+    dispatch(setUnauthorizedUserInfo(null));
     sessionStorage.removeItem(hackauthoritykey); //To remove when hack is removed
     return userManagerInstance
         .signoutRedirect({
@@ -171,7 +172,6 @@ function logout(dispatch, userManagerInstance) {
             },
         })
         .then(() => {
-            dispatch(setUnauthorizedUserInfo(null));
             console.debug('logged out');
         });
 }
@@ -190,8 +190,6 @@ function dispatchUser(dispatch, userManagerInstance, validateUser) {
                     return dispatch(
                         setUnauthorizedUserInfo({
                             userName: user?.profile?.name,
-                            errorTitleId: 'login/unauthorizedAccess',
-                            errorMessageId: 'login/unauthorizedAccessMessage',
                             severity: 'info',
                         })
                     );
@@ -248,8 +246,6 @@ function handleUser(dispatch, userManager, validateUser) {
                 dispatch(
                     setUnauthorizedUserInfo({
                         userName: user?.profile?.name,
-                        errorTitleId: 'login/errorInUserValidation',
-                        errorMessageId: 'login/errorInUserValidationMessage',
                         severity: 'error',
                     })
                 );
