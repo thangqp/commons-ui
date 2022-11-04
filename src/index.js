@@ -50,6 +50,8 @@ export {
     SIGNIN_CALLBACK_ERROR,
     setSignInCallbackError,
     UNAUTHORIZED_USER_INFO,
+    LOGOUT_ERROR,
+    USER_VALIDATION_ERROR,
     setShowAuthenticationRouterLogin,
     SHOW_AUTH_INFO_LOGIN,
 } from './utils/actions';

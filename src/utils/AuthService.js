@@ -10,6 +10,8 @@ import {
     setLoggedUser,
     setSignInCallbackError,
     setUnauthorizedUserInfo,
+    setLogoutError,
+    setUserValidationError,
     setShowAuthenticationRouterLogin,
 } from './actions';
 import jwtDecode from 'jwt-decode';
@@ -160,9 +162,7 @@ function login(location, userManagerInstance) {
         .then(() => console.debug('login'));
 }
 
-function logout(dispatch, userManagerInstance) {
-    dispatch(setLoggedUser(null));
-    dispatch(setUnauthorizedUserInfo(null));
+function logout(dispatch, user, userManagerInstance) {
     sessionStorage.removeItem(hackauthoritykey); //To remove when hack is removed
     return userManagerInstance
         .signoutRedirect({
@@ -172,7 +172,13 @@ function logout(dispatch, userManagerInstance) {
             },
         })
         .then(() => {
-            console.debug('logged out');
+            console.debug('logged out, window is closing...');
+        })
+        .catch((e) => {
+            console.log('Error during logout :', e);
+            // An error occured, window may not be closed, reset the user state
+            dispatch(setLoggedUser(null));
+            dispatch(setLogoutError(user?.profile?.name, { error: e }));
         });
 }
 
@@ -188,10 +194,7 @@ function dispatchUser(dispatch, userManagerInstance, validateUser) {
                         "User isn't authorized to log in and will not be dispatched"
                     );
                     return dispatch(
-                        setUnauthorizedUserInfo({
-                            userName: user?.profile?.name,
-                            severity: 'info',
-                        })
+                        setUnauthorizedUserInfo(user?.profile?.name, {})
                     );
                 }
                 const now = parseInt(Date.now() / 1000);
@@ -244,9 +247,8 @@ function handleUser(dispatch, userManager, validateUser) {
             .catch((e) => {
                 console.log('Error in dispatchUser in addUserLoaded event', e);
                 dispatch(
-                    setUnauthorizedUserInfo({
-                        userName: user?.profile?.name,
-                        severity: 'error',
+                    setUserValidationError(user?.profile?.name, {
+                        error: e,
                     })
                 );
             });

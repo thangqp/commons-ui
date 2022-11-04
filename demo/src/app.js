@@ -232,7 +232,8 @@ const AppContent = ({ language, onLanguageClick }) => {
         error: null,
     });
     const [user, setUser] = useState(null);
-    const [unauthorizedUserInfo, setUnauthorizedUserInfo] = useState(null);
+    const [authenticationRouterError, setAuthenticationRouterError] =
+        useState(null);
     const [
         showAuthenticationRouterLoginState,
         setShowAuthenticationRouterLoginState,
@@ -310,8 +311,12 @@ const AppContent = ({ language, onLanguageClick }) => {
     const dispatch = (e) => {
         if (e.type === 'USER') {
             setUser(e.user);
-        } else if (e.type === 'UNAUTHORIZED_USER_INFO') {
-            setUnauthorizedUserInfo(e.unauthorizedUserInfo);
+        } else if (
+            e.type === 'UNAUTHORIZED_USER_INFO' ||
+            e.type === 'USER_VALIDATION_ERROR' ||
+            e.type === 'LOGOUT_ERROR'
+        ) {
+            setAuthenticationRouterError({ ...e.authenticationRouterError });
         } else if (e.type === 'SHOW_AUTH_INFO_LOGIN') {
             setShowAuthenticationRouterLoginState(
                 e.showAuthenticationRouterLogin
@@ -414,7 +419,7 @@ const AppContent = ({ language, onLanguageClick }) => {
                             appLogo={<PowsyblLogo />}
                             onParametersClick={() => console.log('settings')}
                             onLogoutClick={() =>
-                                logout(dispatch, userManager.instance)
+                                logout(dispatch, user, userManager.instance)
                             }
                             onLogoClick={() => console.log('logo')}
                             onThemeClick={handleThemeClick}
@@ -712,8 +717,11 @@ const AppContent = ({ language, onLanguageClick }) => {
                             ) : (
                                 <AuthenticationRouter
                                     userManager={userManager}
+                                    user={user}
                                     signInCallbackError={null}
-                                    unauthorizedUserInfo={unauthorizedUserInfo}
+                                    authenticationRouterError={
+                                        authenticationRouterError
+                                    }
                                     showAuthenticationRouterLogin={
                                         showAuthenticationRouterLoginState
                                     }

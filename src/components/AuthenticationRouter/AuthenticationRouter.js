@@ -16,32 +16,23 @@ import {
 } from '../../utils/AuthService';
 import SilentRenewCallbackHandler from '../SilentRenewCallbackHandler';
 import Login from '../Login';
+import Logout from '../Login/Logout';
 
 import { Grid } from '@mui/material';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import { FormattedMessage } from 'react-intl';
-import Button from '@mui/material/Button';
-import makeStyles from '@mui/styles/makeStyles';
-
-const useStyles = makeStyles((theme) => ({
-    button: {
-        margin: theme.spacing(3, 0, 2),
-        borderRadius: '30px',
-    },
-}));
 
 const AuthenticationRouter = ({
     userManager,
+    user,
     signInCallbackError,
-    unauthorizedUserInfo,
+    authenticationRouterError,
     showAuthenticationRouterLogin,
     dispatch,
     navigate,
     location,
 }) => {
-    const classes = useStyles();
-
     const handleSigninCallbackClosure = useCallback(
         () => handleSigninCallback(dispatch, navigate, userManager.instance),
         [dispatch, navigate, userManager.instance]
@@ -50,6 +41,7 @@ const AuthenticationRouter = ({
         () => handleSilentRenewCallback(userManager.instance),
         [userManager.instance]
     );
+
     return (
         <React.Fragment>
             <Grid
@@ -97,7 +89,8 @@ const AuthenticationRouter = ({
                     <Route
                         path="*"
                         element={
-                            showAuthenticationRouterLogin && unauthorizedUserInfo == null && (
+                            showAuthenticationRouterLogin &&
+                            authenticationRouterError == null && (
                                 <Login
                                     disabled={userManager.instance === null}
                                     onLoginClick={() =>
@@ -109,42 +102,67 @@ const AuthenticationRouter = ({
                     />
                 </Routes>
 
-                {unauthorizedUserInfo !== null && (
+                {authenticationRouterError !== null && (
                     <>
-                        <Grid item>
-                            <Button
-                                variant="contained"
-                                className={classes.button}
-                                onClick={() => {
-                                    logout(dispatch, userManager.instance);
-                                }}
-                            >
-                                <FormattedMessage id="login/logout" />
-                            </Button>
+                        <Grid item >
+                            <Logout
+                                disabled={userManager.instance === null}
+                                onLogoutClick={() =>
+                                    logout(location, user, userManager.instance)
+                                }
+                            />
                         </Grid>
-                        <Grid item>
-                            {unauthorizedUserInfo.severity === 'error' && (
-                                <Alert severity='error'>
+                        <Grid item xs={4}>
+                            {authenticationRouterError.logoutError != null && (
+                                <Alert severity="error">
                                     <AlertTitle>
-                                        <FormattedMessage id='login/unauthorizedAccess' />
+                                        <FormattedMessage id="login/errorInLogout" />
                                     </AlertTitle>
                                     <FormattedMessage
-                                        id='login/errorInUserValidationMessage'
+                                        id="login/errorInLogoutMessage"
                                         values={{
-                                            userName: unauthorizedUserInfo.userName,
+                                            userName:
+                                                authenticationRouterError.userName,
                                         }}
                                     />
+                                    <p>{
+                                        authenticationRouterError.logoutError
+                                            .error.message
+                                    }
+                                    </p>
                                 </Alert>
                             )}
-                            {unauthorizedUserInfo.severity === 'info' && (
-                                <Alert severity='info'>
+                            {authenticationRouterError?.userValidationError !=
+                                null && (
+                                <Alert severity="error">
                                     <AlertTitle>
-                                        <FormattedMessage id='login/unauthorizedAccess' />
+                                        <FormattedMessage id="login/errorInUserValidation" />
                                     </AlertTitle>
                                     <FormattedMessage
-                                        id='login/unauthorizedAccessMessage'
+                                        id="login/errorInUserValidationMessage"
                                         values={{
-                                            userName: unauthorizedUserInfo.userName,
+                                            userName:
+                                                authenticationRouterError.userName,
+                                        }}
+                                    />
+                                    <p>{
+                                        authenticationRouterError
+                                            .userValidationError.error.message
+                                    }
+                                    </p>
+                                </Alert>
+                            )}
+                            {authenticationRouterError?.unauthorizedUserInfo !=
+                                null && (
+                                <Alert severity="info">
+                                    <AlertTitle>
+                                        <FormattedMessage id="login/unauthorizedAccess" />
+                                    </AlertTitle>
+                                    <FormattedMessage
+                                        id="login/unauthorizedAccessMessage"
+                                        values={{
+                                            userName:
+                                                authenticationRouterError.userName,
                                         }}
                                     />
                                 </Alert>
