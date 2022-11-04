@@ -25,7 +25,6 @@ import { FormattedMessage } from 'react-intl';
 
 const AuthenticationRouter = ({
     userManager,
-    user,
     signInCallbackError,
     authenticationRouterError,
     showAuthenticationRouterLogin,
@@ -108,7 +107,7 @@ const AuthenticationRouter = ({
                             <Logout
                                 disabled={userManager.instance === null}
                                 onLogoutClick={() =>
-                                    logout(location, user, userManager.instance)
+                                    logout(location, userManager.instance)
                                 }
                             />
                         </Grid>

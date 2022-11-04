@@ -419,7 +419,7 @@ const AppContent = ({ language, onLanguageClick }) => {
                             appLogo={<PowsyblLogo />}
                             onParametersClick={() => console.log('settings')}
                             onLogoutClick={() =>
-                                logout(dispatch, user, userManager.instance)
+                                logout(dispatch, userManager.instance)
                             }
                             onLogoClick={() => console.log('logo')}
                             onThemeClick={handleThemeClick}
@@ -717,7 +717,6 @@ const AppContent = ({ language, onLanguageClick }) => {
                             ) : (
                                 <AuthenticationRouter
                                     userManager={userManager}
-                                    user={user}
                                     signInCallbackError={null}
                                     authenticationRouterError={
                                         authenticationRouterError
