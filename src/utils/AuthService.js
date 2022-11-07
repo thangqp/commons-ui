@@ -166,22 +166,23 @@ function logout(dispatch, userManagerInstance) {
     sessionStorage.removeItem(hackauthoritykey); //To remove when hack is removed
     return userManagerInstance.getUser().then((user) => {
         if (user) {
-        return userManagerInstance
-            .signoutRedirect({
-                extraQueryParams: {
-                    TargetResource:
-                        userManagerInstance.settings.post_logout_redirect_uri,
-                },
-            })
-            .then(() => {
-                console.debug('logged out, window is closing...');
-            })
-            .catch((e) => {
-                console.log('Error during logout :', e);
-                // An error occured, window may not be closed, reset the user state
-                dispatch(setLoggedUser(null));
-                dispatch(setLogoutError(user?.profile?.name, { error: e }));
-            });
+            return userManagerInstance
+                .signoutRedirect({
+                    extraQueryParams: {
+                        TargetResource:
+                            userManagerInstance.settings
+                                .post_logout_redirect_uri,
+                    },
+                })
+                .then(() => {
+                    console.debug('logged out, window is closing...');
+                })
+                .catch((e) => {
+                    console.log('Error during logout :', e);
+                    // An error occured, window may not be closed, reset the user state
+                    dispatch(setLoggedUser(null));
+                    dispatch(setLogoutError(user?.profile?.name, { error: e }));
+                });
         } else {
             console.log('Error nobody to logout ');
         }

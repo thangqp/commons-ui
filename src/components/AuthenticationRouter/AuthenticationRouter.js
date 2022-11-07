@@ -103,7 +103,7 @@ const AuthenticationRouter = ({
 
                 {authenticationRouterError !== null && (
                     <>
-                        <Grid item >
+                        <Grid item>
                             <Logout
                                 disabled={userManager.instance === null}
                                 onLogoutClick={() =>
@@ -124,10 +124,11 @@ const AuthenticationRouter = ({
                                                 authenticationRouterError.userName,
                                         }}
                                     />
-                                    <p>{
-                                        authenticationRouterError.logoutError
-                                            .error.message
-                                    }
+                                    <p>
+                                        {
+                                            authenticationRouterError
+                                                .logoutError.error.message
+                                        }
                                     </p>
                                 </Alert>
                             )}
@@ -144,10 +145,12 @@ const AuthenticationRouter = ({
                                                 authenticationRouterError.userName,
                                         }}
                                     />
-                                    <p>{
-                                        authenticationRouterError
-                                            .userValidationError.error.message
-                                    }
+                                    <p>
+                                        {
+                                            authenticationRouterError
+                                                .userValidationError.error
+                                                .message
+                                        }
                                     </p>
                                 </Alert>
                             )}
