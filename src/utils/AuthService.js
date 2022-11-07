@@ -215,6 +215,14 @@ function dispatchUser(dispatch, userManagerInstance, validateUser) {
                 }
                 console.debug('User has been successfully loaded from store.');
                 return dispatch(setLoggedUser(user));
+            })
+            .catch((e) => {
+                console.log('Error in dispatchUser', e);
+                return dispatch(
+                    setUserValidationError(user?.profile?.name, {
+                        error: e,
+                    })
+                );
             });
         } else {
             console.debug('You are not logged in.');
@@ -248,17 +256,7 @@ function handleUser(dispatch, userManager, validateUser) {
     userManager.events.addUserLoaded((user) => {
         console.debug('user loaded', user);
 
-        dispatchUser(dispatch, userManager, validateUser)
-            // The oidc-client-lib doesn't manage errors from this Promise
-            // we handle it ourselves and show the error on the rejected user page instead of the user rejection message
-            .catch((e) => {
-                console.log('Error in dispatchUser in addUserLoaded event', e);
-                dispatch(
-                    setUserValidationError(user?.profile?.name, {
-                        error: e,
-                    })
-                );
-            });
+        dispatchUser(dispatch, userManager, validateUser);
     });
 
     userManager.events.addSilentRenewError((error) => {
