@@ -195,35 +195,38 @@ function dispatchUser(dispatch, userManagerInstance, validateUser) {
             // without validateUser defined, valid user by default
             let validateUserPromise =
                 (validateUser && validateUser(user)) || Promise.resolve(true);
-            return validateUserPromise.then((valid) => {
-                if (!valid) {
+            return validateUserPromise
+                .then((valid) => {
+                    if (!valid) {
+                        console.debug(
+                            "User isn't authorized to log in and will not be dispatched"
+                        );
+                        return dispatch(
+                            setUnauthorizedUserInfo(user?.profile?.name, {})
+                        );
+                    }
+                    const now = parseInt(Date.now() / 1000);
+                    const exp = jwtDecode(user.id_token).exp;
+                    const idTokenExpiresIn = exp - now;
+                    if (idTokenExpiresIn < 0) {
+                        console.debug(
+                            'User token is expired and will not be dispatched'
+                        );
+                        return;
+                    }
                     console.debug(
-                        "User isn't authorized to log in and will not be dispatched"
+                        'User has been successfully loaded from store.'
                     );
+                    return dispatch(setLoggedUser(user));
+                })
+                .catch((e) => {
+                    console.log('Error in dispatchUser', e);
                     return dispatch(
-                        setUnauthorizedUserInfo(user?.profile?.name, {})
+                        setUserValidationError(user?.profile?.name, {
+                            error: e,
+                        })
                     );
-                }
-                const now = parseInt(Date.now() / 1000);
-                const exp = jwtDecode(user.id_token).exp;
-                const idTokenExpiresIn = exp - now;
-                if (idTokenExpiresIn < 0) {
-                    console.debug(
-                        'User token is expired and will not be dispatched'
-                    );
-                    return;
-                }
-                console.debug('User has been successfully loaded from store.');
-                return dispatch(setLoggedUser(user));
-            })
-            .catch((e) => {
-                console.log('Error in dispatchUser', e);
-                return dispatch(
-                    setUserValidationError(user?.profile?.name, {
-                        error: e,
-                    })
-                );
-            });
+                });
         } else {
             console.debug('You are not logged in.');
         }
