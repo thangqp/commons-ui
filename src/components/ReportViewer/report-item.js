@@ -55,18 +55,18 @@ const useReportItemStyles = makeStyles((theme) => ({
         alignItems: 'center',
         padding: theme.spacing(0.5, 0),
     },
+    labelRootHighlighted: {
+        display: 'flex',
+        alignItems: 'center',
+        padding: theme.spacing(0.5, 0),
+        backgroundColor: 'lightblue',
+    },
     labelIcon: {
         marginRight: theme.spacing(1),
     },
     labelText: {
         fontWeight: 'inherit',
         marginRight: theme.spacing(2),
-    },
-    labelTextHighlighted: {
-        display: 'flex',
-        alignItems: 'center',
-        padding: theme.spacing(0.5, 0),
-        backgroundColor: 'lightblue',
     },
 }));
 
@@ -92,7 +92,7 @@ const ReportItem = (props) => {
                 <div
                     className={
                         highlighted
-                            ? classes.labelTextHighlighted
+                            ? classes.labelRootHighlighted
                             : classes.labelRoot
                     }
                 >

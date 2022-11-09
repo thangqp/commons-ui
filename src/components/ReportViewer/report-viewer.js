@@ -26,10 +26,6 @@ const useStyles = makeStyles({
     treeItem: {
         whiteSpace: 'nowrap',
     },
-    highlightedTreeItem: {
-        whiteSpace: 'nowrap',
-        backgroundColor: 'lightblue',
-    },
 });
 
 export default function ReportViewer({
@@ -114,7 +110,7 @@ export default function ReportViewer({
     const onRowClick = (data) => {
         let nodesToExpand = [];
         let reportId = data.rowData.reportId;
-        while (allReports.current[reportId].parentReportId) {
+        while (allReports.current[reportId]?.parentReportId) {
             let parentReportId = allReports.current[reportId].parentReportId;
             nodesToExpand.push(parentReportId);
             reportId = parentReportId;
