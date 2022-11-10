@@ -111,17 +111,11 @@ const lightTheme = createTheme({
     palette: {
         mode: 'light',
     },
-    selectedRow: {
-        background: '#8E9C9B',
-    },
 });
 
 const darkTheme = createTheme({
     palette: {
         mode: 'dark',
-    },
-    selectedRow: {
-        background: '#545C5B',
     },
 });
 

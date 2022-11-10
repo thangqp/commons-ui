@@ -103,7 +103,7 @@ const LogTable = ({ logs, onRowClick }) => {
         if (row.index < 0) return;
         if (selectedRowIndex === row.index) {
             return {
-                backgroundColor: theme.selectedRow.background,
+                backgroundColor: theme.palette.action.selected,
             };
         }
     };
