@@ -9,6 +9,7 @@ import { useIntl } from 'react-intl';
 import withStyles from '@mui/styles/withStyles';
 import TableCell from '@mui/material/TableCell';
 import MuiVirtualizedTable from '../MuiVirtualizedTable';
+import { useTheme } from '@mui/material/styles';
 
 const SEVERITY_COLUMN_FIXED_WIDTH = 100;
 
@@ -34,6 +35,8 @@ const VirtualizedTable = withStyles(styles)(MuiVirtualizedTable);
 
 const LogTable = ({ logs, onRowClick }) => {
     const intl = useIntl();
+
+    const theme = useTheme();
 
     const [selectedRowIndex, setSelectedRowIndex] = useState(-1);
 
@@ -100,7 +103,7 @@ const LogTable = ({ logs, onRowClick }) => {
         if (row.index < 0) return;
         if (selectedRowIndex === row.index) {
             return {
-                backgroundColor: 'lightblue',
+                backgroundColor: theme.selectedRow.background,
             };
         }
     };

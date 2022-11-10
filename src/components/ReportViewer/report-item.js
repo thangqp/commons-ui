@@ -59,7 +59,7 @@ const useReportItemStyles = makeStyles((theme) => ({
         display: 'flex',
         alignItems: 'center',
         padding: theme.spacing(0.5, 0),
-        backgroundColor: 'lightblue',
+        backgroundColor: theme.selectedRow.background,
     },
     labelIcon: {
         marginRight: theme.spacing(1),
