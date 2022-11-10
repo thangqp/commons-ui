@@ -149,7 +149,7 @@ const styles = (theme) => ({
     },
     tableRowHover: {
         '&:hover': {
-            backgroundColor: theme.palette.grey[200],
+            backgroundColor: theme.palette.primary.light,
         },
     },
     tableCell: {
@@ -160,17 +160,18 @@ const styles = (theme) => ({
         cursor: 'initial',
     },
     tableCellColor: {
-        color: 'blue',
+        color: theme.palette.primary.contrastText,
     },
     header: {
-        backgroundColor: 'lightblue',
+        backgroundColor: theme.palette.primary.light,
+        color: theme.palette.primary.contrastText,
         fontWeight: 'bold',
     },
     rowBackgroundDark: {
-        backgroundColor: '#81BEF7',
+        backgroundColor: theme.palette.primary.dark,
     },
     rowBackgroundLight: {
-        backgroundColor: '#EFEFFB',
+        backgroundColor: theme.palette.primary.main,
     },
 });
 
@@ -360,7 +361,12 @@ const AppContent = ({ language, onLanguageClick }) => {
             key3: 'row2_val3',
             notClickable: true,
         },
-        { key1: 'row3_val1', key2: 'row3_val2', key3: 'row3_val3' },
+        {
+            key1: 'row3_val1',
+            key2: 'row3_val2',
+            key3: 'row3_val3',
+            notClickable: true,
+        },
         { key1: 'row4_val1', key2: 'row4_val2', key3: 'row4_val3' },
     ];
 
