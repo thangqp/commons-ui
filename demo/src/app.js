@@ -35,6 +35,7 @@ import { IntlProvider, useIntl } from 'react-intl';
 
 import { BrowserRouter, useNavigate, useLocation } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
+import { useSnackMessage } from '../../src/hooks/useSnackMessage';
 
 import {
     element_search_en,
@@ -211,6 +212,63 @@ const MyButton = (props) => {
         </Button>
     );
 };
+
+function SnackErrorButton() {
+    const { snackError } = useSnackMessage();
+    return (
+        <Button
+            variant="contained"
+            color="error"
+            style={{ float: 'left', margin: '5px' }}
+            onClick={() => {
+                snackError({
+                    messageTxt: 'Snack error message',
+                    headerTxt: 'Header',
+                });
+            }}
+        >
+            error snack hook
+        </Button>
+    );
+}
+
+function SnackWarningButton() {
+    const { snackWarning } = useSnackMessage();
+    return (
+        <Button
+            variant="contained"
+            color="warning"
+            style={{ float: 'left', margin: '5px' }}
+            onClick={() => {
+                snackWarning({
+                    messageTxt: 'Snack warning message',
+                    headerTxt: 'Header',
+                });
+            }}
+        >
+            warning snack hook
+        </Button>
+    );
+}
+
+function SnackInfoButton() {
+    const { snackInfo } = useSnackMessage();
+    return (
+        <Button
+            variant="contained"
+            color="info"
+            style={{ float: 'left', margin: '5px' }}
+            onClick={() => {
+                snackInfo({
+                    messageTxt: 'Snack info message',
+                    headerTxt: 'Header',
+                });
+            }}
+        >
+            info snack hook
+        </Button>
+    );
+}
 
 const AppContent = ({ language, onLanguageClick }) => {
     const navigate = useNavigate();
@@ -469,6 +527,9 @@ const AppContent = ({ language, onLanguageClick }) => {
                                     {buttons.map((button) => (
                                         <MyButton {...button} key={button.id} />
                                     ))}
+                                    <SnackErrorButton />
+                                    <SnackWarningButton />
+                                    <SnackInfoButton />
                                     <Button
                                         variant="contained"
                                         style={{ float: 'left', margin: '5px' }}
