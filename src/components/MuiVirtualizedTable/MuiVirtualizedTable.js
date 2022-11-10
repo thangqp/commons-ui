@@ -235,9 +235,18 @@ class MuiVirtualizedTable extends React.PureComponent {
             index % 2 !== 0 && classes.rowBackgroundLight,
             rowGetter(index)?.notClickable === true && classes.noClick, // Allow to define a row as not clickable
             {
-                [classes.tableRowHover]: index !== -1 && onRowClick != null,
+                [classes.tableRowHover]:
+                    index !== -1 &&
+                    onRowClick != null &&
+                    !(rowGetter(index)?.notClickable === true),
             }
         );
+    };
+
+    onClickableRowClick = ({ e, index, rowData }) => {
+        if (!(rowData?.notClickable === true)) {
+            this.props.onRowClick();
+        }
     };
 
     cellRenderer = ({ cellData, columnIndex, rowIndex }) => {
@@ -254,12 +263,14 @@ class MuiVirtualizedTable extends React.PureComponent {
                 className={clsx(classes.tableCell, classes.flexContainer, {
                     [classes.noClick]:
                         displayedValue === undefined ||
+                        rows[rowIndex]?.notClickable === true ||
                         onCellClick == null ||
                         columns[columnIndex].clickable === undefined ||
                         !columns[columnIndex].clickable,
                     [classes.tableCellColor]:
                         displayedValue === undefined ||
                         (onCellClick !== null &&
+                            !rows[rowIndex]?.notClickable === true &&
                             columns[columnIndex].clickable !== undefined &&
                             columns[columnIndex].clickable),
                 })}
@@ -272,7 +283,12 @@ class MuiVirtualizedTable extends React.PureComponent {
                         : 'left'
                 }
                 onClick={() => {
-                    if (onCellClick) {
+                    if (
+                        onCellClick &&
+                        columns[columnIndex].clickable !== undefined &&
+                        !rows[rowIndex]?.notClickable === true &&
+                        columns[columnIndex].clickable
+                    ) {
                         onCellClick(rows[rowIndex], columns[columnIndex]);
                     }
                 }}
@@ -508,6 +524,10 @@ class MuiVirtualizedTable extends React.PureComponent {
                                 headerHeight={this.state.headerHeight}
                                 className={classes.table}
                                 {...tableProps}
+                                onRowClick={
+                                    /* onRowClick overrides from ...tableProps above */
+                                    this.onClickableRowClick
+                                }
                                 rowCount={reorderedIndex.length}
                                 rowClassName={({ index }) =>
                                     this.getRowClassName({ index, rowGetter })

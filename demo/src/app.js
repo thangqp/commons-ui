@@ -354,7 +354,12 @@ const AppContent = ({ language, onLanguageClick }) => {
 
     const rows = [
         { key1: 'row1_val1', key2: 'row1_val2', key3: 'row1_val3' },
-        { key1: 'row2_val1', key2: 'row2_val2', key3: 'row2_val3' },
+        {
+            key1: 'row2_val1',
+            key2: 'row2_val2',
+            key3: 'row2_val3',
+            notClickable: true,
+        },
         { key1: 'row3_val1', key2: 'row3_val2', key3: 'row3_val3' },
         { key1: 'row4_val1', key2: 'row4_val2', key3: 'row4_val3' },
     ];
@@ -480,6 +485,18 @@ const AppContent = ({ language, onLanguageClick }) => {
                                             name="Demo Virtualized Table"
                                             rows={rows}
                                             sortable={true}
+                                            onRowClick={(...args) => {
+                                                console.log(
+                                                    'table onRowclick',
+                                                    args
+                                                );
+                                            }}
+                                            onCellClick={(...args) => {
+                                                console.log(
+                                                    'table onCellclick',
+                                                    args
+                                                );
+                                            }}
                                             columns={[
                                                 {
                                                     label: 'header1',
@@ -488,6 +505,7 @@ const AppContent = ({ language, onLanguageClick }) => {
                                                 {
                                                     label: 'header2',
                                                     dataKey: 'key2',
+                                                    clickable: true,
                                                 },
                                                 {
                                                     label: 'header3 and some text',
