@@ -60,12 +60,19 @@ export class UserManagerMock {
 
     signinSilent() {
         console.info('signinSilent..............');
-        const localStorageUser = localStorage.getItem(
-            'powsybl-gridsuite-mock-user'
+        const localStorageUser = JSON.parse(
+            localStorage.getItem('powsybl-gridsuite-mock-user')
         );
-        sessionStorage.setItem('powsybl-gridsuite-mock-user', localStorageUser);
-        this.events.userLoadedCallbacks.forEach((c) => c(this.user));
-        return Promise.resolve(JSON.parse(localStorageUser));
+        if (localStorageUser === null)
+            return Promise.reject(
+                new Error('End-User authentication required')
+            );
+        sessionStorage.setItem(
+            'powsybl-gridsuite-mock-user',
+            JSON.stringify(localStorageUser)
+        );
+        this.events.userLoadedCallbacks.forEach((c) => c(localStorageUser));
+        return Promise.resolve(localStorageUser);
     }
 
     signinSilentCallback() {
@@ -76,22 +83,22 @@ export class UserManagerMock {
     }
 
     signinRedirect() {
+        localStorage.setItem(
+            'powsybl-gridsuite-mock-user',
+            JSON.stringify(this.user)
+        );
         window.location = './sign-in-callback';
         return Promise.resolve(null);
     }
 
     signoutRedirect() {
-        sessionStorage.setItem('powsybl-gridsuite-mock-user', null);
-        localStorage.setItem('powsybl-gridsuite-mock-user', null);
+        sessionStorage.removeItem('powsybl-gridsuite-mock-user');
+        localStorage.removeItem('powsybl-gridsuite-mock-user');
         window.location = '.';
         return Promise.resolve(null);
     }
     signinRedirectCallback() {
         sessionStorage.setItem(
-            'powsybl-gridsuite-mock-user',
-            JSON.stringify(this.user)
-        );
-        localStorage.setItem(
             'powsybl-gridsuite-mock-user',
             JSON.stringify(this.user)
         );

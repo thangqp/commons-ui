@@ -19,3 +19,50 @@ export function setSignInCallbackError(signInCallbackError) {
         signInCallbackError: signInCallbackError,
     };
 }
+
+export const UNAUTHORIZED_USER_INFO = 'UNAUTHORIZED_USER_INFO';
+
+export function setUnauthorizedUserInfo(userName, unauthorizedUserInfo) {
+    return {
+        type: UNAUTHORIZED_USER_INFO,
+        authenticationRouterError: {
+            userName: userName,
+            unauthorizedUserInfo: unauthorizedUserInfo,
+        },
+    };
+}
+
+export const LOGOUT_ERROR = 'LOGOUT_ERROR';
+
+export function setLogoutError(userName, logoutError) {
+    return {
+        type: LOGOUT_ERROR,
+        authenticationRouterError: {
+            userName: userName,
+            logoutError: logoutError,
+        },
+    };
+}
+
+export const USER_VALIDATION_ERROR = 'USER_VALIDATION_ERROR';
+
+export function setUserValidationError(userName, userValidationError) {
+    return {
+        type: USER_VALIDATION_ERROR,
+        authenticationRouterError: {
+            userName: userName,
+            userValidationError: userValidationError,
+        },
+    };
+}
+
+export const SHOW_AUTH_INFO_LOGIN = 'SHOW_AUTH_INFO_LOGIN';
+
+export function setShowAuthenticationRouterLogin(
+    showAuthenticationRouterLogin
+) {
+    return {
+        type: SHOW_AUTH_INFO_LOGIN,
+        showAuthenticationRouterLogin: showAuthenticationRouterLogin,
+    };
+}

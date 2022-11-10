@@ -83,6 +83,8 @@ import { Grid } from '@mui/material';
 import { EquipmentItem } from '../../src/components/ElementSearchDialog/equipment-item';
 import OverflowableText from '../../src/components/OverflowableText';
 
+import { setShowAuthenticationRouterLogin } from '../../src/utils/actions';
+
 const messages = {
     en: {
         ...report_viewer_en,
@@ -270,6 +272,13 @@ function SnackInfoButton() {
     );
 }
 
+const validateUser = (user) => {
+    // change to false to simulate user unauthorized access
+    return new Promise((resolve) =>
+        window.setTimeout(() => resolve(true), 500)
+    );
+};
+
 const AppContent = ({ language, onLanguageClick }) => {
     const navigate = useNavigate();
     const location = useLocation();
@@ -281,6 +290,12 @@ const AppContent = ({ language, onLanguageClick }) => {
         error: null,
     });
     const [user, setUser] = useState(null);
+    const [authenticationRouterError, setAuthenticationRouterError] =
+        useState(null);
+    const [
+        showAuthenticationRouterLoginState,
+        setShowAuthenticationRouterLoginState,
+    ] = useState(false);
 
     const [theme, setTheme] = useState(LIGHT_THEME);
 
@@ -354,6 +369,16 @@ const AppContent = ({ language, onLanguageClick }) => {
     const dispatch = (e) => {
         if (e.type === 'USER') {
             setUser(e.user);
+        } else if (
+            e.type === 'UNAUTHORIZED_USER_INFO' ||
+            e.type === 'USER_VALIDATION_ERROR' ||
+            e.type === 'LOGOUT_ERROR'
+        ) {
+            setAuthenticationRouterError({ ...e.authenticationRouterError });
+        } else if (e.type === 'SHOW_AUTH_INFO_LOGIN') {
+            setShowAuthenticationRouterLoginState(
+                e.showAuthenticationRouterLogin
+            );
         }
     };
 
@@ -395,14 +420,25 @@ const AppContent = ({ language, onLanguageClick }) => {
     useEffect(() => {
         initializeAuthenticationDev(
             dispatch,
-            initialMatchSilentRenewCallbackUrl != null
+            initialMatchSilentRenewCallbackUrl != null,
+            validateUser
         )
             .then((userManager) => {
-                setUserManager({ instance: userManager, error: null });
-                userManager.signinSilent();
+                setUserManager({
+                    instance: userManager,
+                    error: null,
+                });
+                userManager.signinSilent().catch((error) => {
+                    console.log(error);
+                    dispatch(setShowAuthenticationRouterLogin(true));
+                });
             })
-            .catch(function (error) {
-                setUserManager({ instance: null, error: error.message });
+            .catch(function (exception) {
+                setUserManager({
+                    instance: null,
+                    error: exception.message,
+                });
+                dispatch(setShowAuthenticationRouterLogin(true));
                 console.debug('error when creating userManager');
             });
         // Note: initialMatchSilentRenewCallbackUrl doesn't change
@@ -743,6 +779,12 @@ const AppContent = ({ language, onLanguageClick }) => {
                                 <AuthenticationRouter
                                     userManager={userManager}
                                     signInCallbackError={null}
+                                    authenticationRouterError={
+                                        authenticationRouterError
+                                    }
+                                    showAuthenticationRouterLogin={
+                                        showAuthenticationRouterLoginState
+                                    }
                                     dispatch={dispatch}
                                     navigate={navigate}
                                     location={location}

@@ -70,8 +70,9 @@ const defaultStyles = {
  * @param {String}          data[].id - Uuid of the object in Tree
  * @param {String}          data[].parentId - Uuid of the parent node in Tree
  * @param {String}          data[].name - name of the node to print in Tree
+ * @param {String}          data[].icon - JSX of an icon to display next a node
+ * @param {String}          data[].childrenCount - number of children
  * @param {Object[]}        [data[].children] - array of children nodes, if undefined, the node is a leaf.
- * @param {String}          [data[].icon] - JSX of an icon to display next a node
  * @callback                onTreeBrowse - callback to update data prop when walk into Tree
  * @param {Array}           [defaultSelected=[]] - selected items at mount (Uncontrolled)
  * @param {Array}           [defaultExpanded=[]] - ids of the expanded items at mount (Uncontrolled)
@@ -210,6 +211,13 @@ const TreeViewFinder = (props) => {
             </div>
         );
     };
+    const showChevron = (node) => {
+        // by defaut show Chevron if childrenCount is null or undefined otherwise only if > 0
+        return !!(
+            node.childrenCount == null ||
+            (node.childrenCount && node.childrenCount > 0)
+        );
+    };
 
     const renderTree = (node) => {
         if (!node) return;
@@ -218,6 +226,16 @@ const TreeViewFinder = (props) => {
                 key={node.id}
                 nodeId={node.id}
                 label={renderTreeItemLabel(node)}
+                expandIcon={
+                    showChevron(node) ? (
+                        <ChevronRightIcon className={classes.icon} />
+                    ) : null
+                }
+                collapseIcon={
+                    showChevron(node) ? (
+                        <ExpandMoreIcon className={classes.icon} />
+                    ) : null
+                }
             >
                 {Array.isArray(node.children)
                     ? node.children.length
@@ -270,12 +288,6 @@ const TreeViewFinder = (props) => {
                     onNodeToggle={handleNodeToggle}
                     onNodeSelect={handleNodeSelect}
                     // Uncontrolled props
-                    defaultCollapseIcon={
-                        <ExpandMoreIcon className={classes.icon} />
-                    }
-                    defaultExpandIcon={
-                        <ChevronRightIcon className={classes.icon} />
-                    }
                     multiSelect={multiselect}
                 >
                     {data && Array.isArray(data)
