@@ -149,7 +149,7 @@ const styles = (theme) => ({
     },
     tableRowHover: {
         '&:hover': {
-            backgroundColor: theme.palette.primary.light,
+            backgroundColor: theme.palette.info.light,
         },
     },
     tableCell: {
@@ -163,15 +163,15 @@ const styles = (theme) => ({
         color: theme.palette.primary.contrastText,
     },
     header: {
-        backgroundColor: theme.palette.primary.light,
+        backgroundColor: theme.palette.info.light,
         color: theme.palette.primary.contrastText,
         fontWeight: 'bold',
     },
     rowBackgroundDark: {
-        backgroundColor: theme.palette.primary.dark,
+        backgroundColor: theme.palette.info.dark,
     },
     rowBackgroundLight: {
-        backgroundColor: theme.palette.primary.main,
+        backgroundColor: theme.palette.info.main,
     },
 });
 
