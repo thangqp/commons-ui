@@ -9,30 +9,6 @@ import { useCallback } from 'react';
 import { useSnackbar } from 'notistack';
 import { useIntlRef } from './useIntlRef';
 
-function displayMessageWithSnackbar(
-    message,
-    header,
-    enqueueSnackbar,
-    level,
-    persistent
-) {
-    let fullMessage = '';
-    if (header) {
-        fullMessage += header;
-    }
-    if (message) {
-        if (header) {
-            fullMessage += '\n\n';
-        }
-        fullMessage += message;
-    }
-    enqueueSnackbar(fullMessage, {
-        variant: level,
-        persist: persistent,
-        style: { whiteSpace: 'pre-line' },
-    });
-}
-
 export function useSnackMessage() {
     const intlRef = useIntlRef();
     const { enqueueSnackbar } = useSnackbar();
@@ -125,4 +101,28 @@ function checkInputs(txt, id, values) {
     if (txt && (id || values)) {
         console.warn('Snack inputs should be [*Txt] OR [*Id, *Values]');
     }
+}
+
+function displayMessageWithSnackbar(
+  message,
+  header,
+  enqueueSnackbar,
+  level,
+  persistent
+) {
+    let fullMessage = '';
+    if (header) {
+        fullMessage += header;
+    }
+    if (message) {
+        if (header) {
+            fullMessage += '\n\n';
+        }
+        fullMessage += message;
+    }
+    enqueueSnackbar(fullMessage, {
+        variant: level,
+        persist: persistent,
+        style: { whiteSpace: 'pre-line' },
+    });
 }
