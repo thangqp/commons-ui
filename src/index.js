@@ -75,3 +75,5 @@ export { TagRenderer } from './components/ElementSearchDialog';
 export { EquipmentItem } from './components/ElementSearchDialog/equipment-item';
 export CardErrorBoundary from './components/CardErrorBoundary';
 export { useImportExportParams } from './hooks/useImportExportParams';
+export { useIntlRef } from './hooks/useIntlRef';
+export { useSnackMessage } from './hooks/useSnackMessage';
