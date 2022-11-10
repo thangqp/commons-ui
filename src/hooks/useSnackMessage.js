@@ -104,11 +104,11 @@ function checkInputs(txt, id, values) {
 }
 
 function displayMessageWithSnackbar(
-  message,
-  header,
-  enqueueSnackbar,
-  level,
-  persistent
+    message,
+    header,
+    enqueueSnackbar,
+    level,
+    persistent
 ) {
     let fullMessage = '';
     if (header) {
