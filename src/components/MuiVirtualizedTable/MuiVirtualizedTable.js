@@ -457,6 +457,9 @@ class MuiVirtualizedTable extends React.PureComponent {
             enableExportCSV,
             ...tableProps
         } = this.props;
+        if (tableProps.onRowClick) {
+            tableProps.onRowClick = this.onClickableRowClick;
+        }
 
         const reorderedIndex = this.reorderIndex(
             this.state.key,
