@@ -5,7 +5,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, {
+    useCallback,
+    useEffect,
+    useMemo,
+    useRef,
+    useState,
+} from 'react';
 import makeStyles from '@mui/styles/makeStyles';
 import TreeView from '@mui/lab/TreeView';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
@@ -102,24 +108,31 @@ export default function ReportViewer({
         }
     };
 
-    const isHighlighted = useCallback(
-        (reportId) => highlightedReportId === reportId,
+    const isHighlighted = useMemo(
+        () => ({
+            isHighlighted: (reportId) => highlightedReportId === reportId,
+        }),
         [highlightedReportId]
     );
 
-    const onRowClick = (data) => {
-        let nodesToExpand = [];
-        let reportId = data.reportId;
-        while (allReports.current[reportId]?.parentReportId) {
-            let parentReportId = allReports.current[reportId].parentReportId;
-            nodesToExpand.push(parentReportId);
-            reportId = parentReportId;
-        }
-        setExpandedNodes((previouslyExpandedNodes) =>
-            nodesToExpand.concat(previouslyExpandedNodes)
-        );
+    const onRowClick = useCallback((data) => {
+        setExpandedNodes((previouslyExpandedNodes) => {
+            let nodesToExpand = [];
+            let reportId = data.reportId;
+            while (allReports.current[reportId]?.parentReportId) {
+                let parentReportId =
+                    allReports.current[reportId].parentReportId;
+                if (!previouslyExpandedNodes.includes(parentReportId)) {
+                    nodesToExpand.push(parentReportId);
+                }
+                reportId = parentReportId;
+            }
+            if (nodesToExpand.length > 0)
+                return nodesToExpand.concat(previouslyExpandedNodes);
+            else return previouslyExpandedNodes;
+        });
         setHighlightedReportId(data.reportId);
-    };
+    }, []);
 
     return (
         rootReport.current && (
@@ -133,11 +146,7 @@ export default function ReportViewer({
                         borderRight: '1px solid rgba(81, 81, 81, 1)',
                     }}
                 >
-                    <ReportTreeViewContext.Provider
-                        value={{
-                            isHighlighted,
-                        }}
-                    >
+                    <ReportTreeViewContext.Provider value={isHighlighted}>
                         <TreeView
                             className={classes.treeView}
                             defaultCollapseIcon={<ArrowDropDownIcon />}
