@@ -245,7 +245,7 @@ class MuiVirtualizedTable extends React.PureComponent {
 
     onClickableRowClick = ({ e, index, rowData }) => {
         if (!(rowData?.notClickable === true)) {
-            this.props.onRowClick();
+            this.props.onRowClick(e, index, rowData);
         }
     };
 

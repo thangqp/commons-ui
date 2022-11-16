@@ -94,8 +94,8 @@ const LogTable = ({ logs, onRowClick }) => {
         });
     };
 
-    const handleRowClick = (data) => {
-        setSelectedRowIndex(data.index);
+    const handleRowClick = (event, index, data) => {
+        setSelectedRowIndex(index);
         onRowClick(data);
     };
 

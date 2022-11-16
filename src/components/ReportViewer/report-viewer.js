@@ -109,7 +109,7 @@ export default function ReportViewer({
 
     const onRowClick = (data) => {
         let nodesToExpand = [];
-        let reportId = data.rowData.reportId;
+        let reportId = data.reportId;
         while (allReports.current[reportId]?.parentReportId) {
             let parentReportId = allReports.current[reportId].parentReportId;
             nodesToExpand.push(parentReportId);
@@ -118,7 +118,7 @@ export default function ReportViewer({
         setExpandedNodes((previouslyExpandedNodes) =>
             nodesToExpand.concat(previouslyExpandedNodes)
         );
-        setHighlightedReportId(data.rowData.reportId);
+        setHighlightedReportId(data.reportId);
     };
 
     return (
