@@ -146,6 +146,13 @@ export default function ReportViewer({
                         borderRight: '1px solid rgba(81, 81, 81, 1)',
                     }}
                 >
+                    {/*Passing a ref to isHighlighted to all children (here
+                    TreeItems) wouldn't work since TreeView children are
+                    memoized and would then be rerendered only when TreeView is
+                    rerendered. That's why we pass the isHighligted callback in
+                    a new context, to which all children subscribe and as soon
+                    as the context is modified, children will be rerendered
+                    accordingly */}
                     <ReportTreeViewContext.Provider value={isHighlighted}>
                         <TreeView
                             className={classes.treeView}
