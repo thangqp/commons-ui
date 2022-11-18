@@ -108,6 +108,7 @@ export default function ReportViewer({
         }
     };
 
+    // The MUI TreeView/TreeItems use useMemo on our items, so it's important to avoid changing the context
     const isHighlighted = useMemo(
         () => ({
             isHighlighted: (reportId) => highlightedReportId === reportId,
@@ -115,7 +116,7 @@ export default function ReportViewer({
         [highlightedReportId]
     );
 
-    const onRowClick = useCallback((data) => {
+    const onRowClick = (data) => {
         setExpandedNodes((previouslyExpandedNodes) => {
             let nodesToExpand = [];
             let reportId = data.reportId;
@@ -132,7 +133,7 @@ export default function ReportViewer({
             else return previouslyExpandedNodes;
         });
         setHighlightedReportId(data.reportId);
-    }, []);
+    };
 
     return (
         rootReport.current && (
@@ -154,6 +155,7 @@ export default function ReportViewer({
                     as the context is modified, children will be rerendered
                     accordingly */}
                     <ReportTreeViewContext.Provider value={isHighlighted}>
+                        {/*TODO do we need to useMemo/useCallback these props to avoid rerenders ?*/}
                         <TreeView
                             className={classes.treeView}
                             defaultCollapseIcon={<ArrowDropDownIcon />}

@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import React, { memo, useCallback, useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 import withStyles from '@mui/styles/withStyles';
 import TableCell from '@mui/material/TableCell';
@@ -99,23 +99,21 @@ const LogTable = ({ logs, onRowClick }) => {
         onRowClick(data);
     };
 
-    const rowStyleFormat = useCallback(
-        (row) => {
-            if (row.index < 0) return;
-            if (selectedRowIndex === row.index) {
-                return {
-                    backgroundColor: theme.palette.action.selected,
-                };
-            }
-        },
-        [selectedRowIndex, theme.palette.action.selected]
-    );
+    const rowStyleFormat = (row) => {
+        if (row.index < 0) return;
+        if (selectedRowIndex === row.index) {
+            return {
+                backgroundColor: theme.palette.action.selected,
+            };
+        }
+    };
 
     useEffect(() => {
         setSelectedRowIndex(-1);
     }, [logs]);
 
     return (
+        //TODO do we need to useMemo/useCallback these props to avoid rerenders ?
         <VirtualizedTable
             columns={generateTableColumns()}
             rows={generateTableRows()}
