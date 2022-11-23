@@ -34,7 +34,6 @@ import { useMatch } from 'react-router';
 import { IntlProvider, useIntl } from 'react-intl';
 
 import { BrowserRouter, useNavigate, useLocation } from 'react-router-dom';
-import { useSnackbar } from 'notistack';
 import { useSnackMessage } from '../../src/hooks/useSnackMessage';
 
 import {
@@ -197,22 +196,6 @@ const Crasher = () => {
         window.foonotexists.bar();
     }
     return <Button onClick={() => setCrash(true)}>CRASH ME</Button>;
-};
-
-const MyButton = (props) => {
-    const { enqueueSnackbar } = useSnackbar();
-    return (
-        <Button
-            variant="contained"
-            color={props.variant}
-            style={{ float: 'left', color: '#fff', margin: '5px' }}
-            onClick={() => {
-                enqueueSnackbar(props.message, { variant: props.variant });
-            }}
-        >
-            {props.variant}
-        </Button>
-    );
 };
 
 function SnackErrorButton() {
@@ -401,15 +384,6 @@ const AppContent = ({ language, onLanguageClick }) => {
         { name: 'App3', url: '/app3', hiddenInAppsMenu: true },
     ];
 
-    const buttons = [
-        {
-            variant: 'success',
-            message: 'Successfully done the operation.',
-            id: 'button1',
-        },
-        { variant: 'error', message: 'Something went wrong.', id: 'button2' },
-    ];
-
     const rows = [
         { key1: 'row1_val1', key2: 'row1_val2', key3: 'row1_val3' },
         {
@@ -578,9 +552,6 @@ const AppContent = ({ language, onLanguageClick }) => {
                                     {testIcons()}
                                     <hr />
 
-                                    {buttons.map((button) => (
-                                        <MyButton {...button} key={button.id} />
-                                    ))}
                                     <SnackErrorButton />
                                     <SnackWarningButton />
                                     <SnackInfoButton />

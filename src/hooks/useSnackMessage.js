@@ -27,14 +27,14 @@ export function useSnackMessage() {
    */
     const snackError = useCallback(
         (snackInputs) =>
-            makeCallBack(snackInputs, intlRef, enqueueSnackbar, 'error', true),
+            makeSnackbar(snackInputs, intlRef, enqueueSnackbar, 'error', true),
         [enqueueSnackbar, intlRef]
     );
 
     /* see snackError */
     const snackWarning = useCallback(
         (snackInputs) =>
-            makeCallBack(
+            makeSnackbar(
                 snackInputs,
                 intlRef,
                 enqueueSnackbar,
@@ -47,14 +47,14 @@ export function useSnackMessage() {
     /* see snackError */
     const snackInfo = useCallback(
         (snackInputs) =>
-            makeCallBack(snackInputs, intlRef, enqueueSnackbar, 'info', false),
+            makeSnackbar(snackInputs, intlRef, enqueueSnackbar, 'info', false),
         [enqueueSnackbar, intlRef]
     );
 
     return { snackError, snackInfo, snackWarning };
 }
 
-function makeCallBack(
+function makeSnackbar(
     snackInputs,
     intlRef,
     enqueueSnackbar,
