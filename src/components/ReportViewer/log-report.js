@@ -10,7 +10,7 @@ import LogReportItem from './log-report-item';
 import { v4 as uuid4 } from 'uuid';
 
 export default class LogReport {
-    constructor(jsonReporter) {
+    constructor(jsonReporter, parentReportId) {
         this.id = uuid4();
         this.key = jsonReporter.taskKey;
         this.title = LogReportItem.resolveTemplateMessage(
@@ -19,6 +19,7 @@ export default class LogReport {
         );
         this.subReports = [];
         this.logs = [];
+        this.parentReportId = parentReportId;
         this.init(jsonReporter);
     }
 
@@ -46,10 +47,10 @@ export default class LogReport {
 
     init(jsonReporter) {
         jsonReporter.subReporters.map((value) =>
-            this.subReports.push(new LogReport(value))
+            this.subReports.push(new LogReport(value, this.id))
         );
         jsonReporter.reports.map((value) =>
-            this.logs.push(new LogReportItem(value))
+            this.logs.push(new LogReportItem(value, this.id))
         );
     }
 

@@ -5,7 +5,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, {
+    useCallback,
+    useEffect,
+    useMemo,
+    useRef,
+    useState,
+} from 'react';
 import makeStyles from '@mui/styles/makeStyles';
 import TreeView from '@mui/lab/TreeView';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
@@ -14,6 +20,7 @@ import ReportItem from './report-item';
 import LogReport from './log-report';
 import Grid from '@mui/material/Grid';
 import LogTable from './log-table';
+import ReportTreeViewContext from './report-tree-view-context';
 
 const MAX_SUB_REPORTS = 500;
 
@@ -36,6 +43,8 @@ export default function ReportViewer({
     const [selectedNode, setSelectedNode] = useState(null);
     const [expandedNodes, setExpandedNodes] = useState([]);
     const [logs, setLogs] = useState(null);
+
+    const [highlightedReportId, setHighlightedReportId] = useState();
 
     const rootReport = useRef(null);
     const allReports = useRef({});
@@ -95,7 +104,35 @@ export default function ReportViewer({
         if (selectedNode !== nodeId) {
             setSelectedNode(nodeId);
             setLogs(allReports.current[nodeId].getAllLogs());
+            setHighlightedReportId(null);
         }
+    };
+
+    // The MUI TreeView/TreeItems use useMemo on our items, so it's important to avoid changing the context
+    const isHighlighted = useMemo(
+        () => ({
+            isHighlighted: (reportId) => highlightedReportId === reportId,
+        }),
+        [highlightedReportId]
+    );
+
+    const onRowClick = (data) => {
+        setExpandedNodes((previouslyExpandedNodes) => {
+            let nodesToExpand = [];
+            let reportId = data.reportId;
+            while (allReports.current[reportId]?.parentReportId) {
+                let parentReportId =
+                    allReports.current[reportId].parentReportId;
+                if (!previouslyExpandedNodes.includes(parentReportId)) {
+                    nodesToExpand.push(parentReportId);
+                }
+                reportId = parentReportId;
+            }
+            if (nodesToExpand.length > 0)
+                return nodesToExpand.concat(previouslyExpandedNodes);
+            else return previouslyExpandedNodes;
+        });
+        setHighlightedReportId(data.reportId);
     };
 
     return (
@@ -110,21 +147,31 @@ export default function ReportViewer({
                         borderRight: '1px solid rgba(81, 81, 81, 1)',
                     }}
                 >
-                    <TreeView
-                        className={classes.treeView}
-                        defaultCollapseIcon={<ArrowDropDownIcon />}
-                        defaultExpandIcon={<ArrowRightIcon />}
-                        defaultEndIcon={<div style={{ width: 24 }} />}
-                        onNodeToggle={handleToggleNode}
-                        onNodeSelect={handleSelectNode}
-                        selected={selectedNode}
-                        expanded={expandedNodes}
-                    >
-                        {treeView.current}
-                    </TreeView>
+                    {/*Passing a ref to isHighlighted to all children (here
+                    TreeItems) wouldn't work since TreeView children are
+                    memoized and would then be rerendered only when TreeView is
+                    rerendered. That's why we pass the isHighlighted callback in
+                    a new context, to which all children subscribe and as soon
+                    as the context is modified, children will be rerendered
+                    accordingly */}
+                    <ReportTreeViewContext.Provider value={isHighlighted}>
+                        {/*TODO do we need to useMemo/useCallback these props to avoid rerenders ?*/}
+                        <TreeView
+                            className={classes.treeView}
+                            defaultCollapseIcon={<ArrowDropDownIcon />}
+                            defaultExpandIcon={<ArrowRightIcon />}
+                            defaultEndIcon={<div style={{ width: 24 }} />}
+                            onNodeToggle={handleToggleNode}
+                            onNodeSelect={handleSelectNode}
+                            selected={selectedNode}
+                            expanded={expandedNodes}
+                        >
+                            {treeView.current}
+                        </TreeView>
+                    </ReportTreeViewContext.Provider>
                 </Grid>
                 <Grid item xs={12} sm={9} style={{ height: '95%' }}>
-                    <LogTable logs={logs} />
+                    <LogTable logs={logs} onRowClick={onRowClick} />
                 </Grid>
             </Grid>
         )

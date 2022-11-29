@@ -5,12 +5,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import makeStyles from '@mui/styles/makeStyles';
 import TreeItem from '@mui/lab/TreeItem';
 import Typography from '@mui/material/Typography';
 import Label from '@mui/icons-material/Label';
+import ReportTreeViewContext from './report-tree-view-context';
 
 const useReportItemStyles = makeStyles((theme) => ({
     root: {
@@ -54,6 +55,12 @@ const useReportItemStyles = makeStyles((theme) => ({
         alignItems: 'center',
         padding: theme.spacing(0.5, 0),
     },
+    labelRootHighlighted: {
+        display: 'flex',
+        alignItems: 'center',
+        padding: theme.spacing(0.5, 0),
+        backgroundColor: theme.palette.action.selected,
+    },
     labelIcon: {
         marginRight: theme.spacing(1),
     },
@@ -64,6 +71,11 @@ const useReportItemStyles = makeStyles((theme) => ({
 }));
 
 const ReportItem = (props) => {
+    // using a context because TreeItem uses useMemo on this. See report-viewer.js for the provider
+    const { isHighlighted } = useContext(ReportTreeViewContext);
+
+    const highlighted = isHighlighted ? isHighlighted(props.nodeId) : false;
+
     const classes = useReportItemStyles();
     const { labelText, labelIconColor, ...other } = props;
 
@@ -78,7 +90,13 @@ const ReportItem = (props) => {
                 label: classes.label,
             }}
             label={
-                <div className={classes.labelRoot}>
+                <div
+                    className={
+                        highlighted
+                            ? classes.labelRootHighlighted
+                            : classes.labelRoot
+                    }
+                >
                     <Label
                         htmlColor={labelIconColor}
                         className={classes.labelIcon}

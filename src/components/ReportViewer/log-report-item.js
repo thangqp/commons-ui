@@ -50,17 +50,22 @@ export default class LogReportItem {
         });
     }
 
-    constructor(jsonReport) {
+    constructor(jsonReport, reportId) {
         this.key = jsonReport.reportKey;
         this.log = LogReportItem.resolveTemplateMessage(
             jsonReport.defaultMessage,
             jsonReport.values
         );
+        this.reportId = reportId;
         this.severity = this.initSeverity(jsonReport.values.reportSeverity);
     }
 
     getLog() {
         return this.log;
+    }
+
+    getReportId() {
+        return this.reportId;
     }
 
     getSeverity() {
