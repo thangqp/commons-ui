@@ -56,7 +56,6 @@ export function setUserValidationError(userName, userValidationError) {
     };
 }
 
-
 export const RESET_AUTHENTICATION_ROUTER_ERROR =
     'RESET_AUTHENTICATION_ROUTER_ERROR';
 
