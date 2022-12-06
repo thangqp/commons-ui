@@ -12,6 +12,7 @@ import {
     setUnauthorizedUserInfo,
     setLogoutError,
     setUserValidationError,
+    resetAuthenticationRouterError,
     setShowAuthenticationRouterLogin,
 } from './actions';
 import jwtDecode from 'jwt-decode';
@@ -176,6 +177,8 @@ function logout(dispatch, userManagerInstance) {
                 })
                 .then(() => {
                     console.debug('logged out, window is closing...');
+                    // clean previous errors if logout is OK.
+                    dispatch(resetAuthenticationRouterError());
                 })
                 .catch((e) => {
                     console.log('Error during logout :', e);
@@ -205,6 +208,8 @@ function dispatchUser(dispatch, userManagerInstance, validateUser) {
                             setUnauthorizedUserInfo(user?.profile?.name, {})
                         );
                     }
+                    // clean previous errors if validation is OK now
+                    dispatch(resetAuthenticationRouterError());
                     const now = parseInt(Date.now() / 1000);
                     const exp = jwtDecode(user.id_token).exp;
                     const idTokenExpiresIn = exp - now;

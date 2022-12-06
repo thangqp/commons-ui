@@ -52,6 +52,7 @@ export {
     UNAUTHORIZED_USER_INFO,
     LOGOUT_ERROR,
     USER_VALIDATION_ERROR,
+    RESET_AUTHENTICATION_ROUTER_ERROR,
     setShowAuthenticationRouterLogin,
     SHOW_AUTH_INFO_LOGIN,
 } from './utils/actions';

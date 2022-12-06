@@ -56,6 +56,17 @@ export function setUserValidationError(userName, userValidationError) {
     };
 }
 
+
+export const RESET_AUTHENTICATION_ROUTER_ERROR =
+    'RESET_AUTHENTICATION_ROUTER_ERROR';
+
+export function resetAuthenticationRouterError() {
+    return {
+        type: RESET_AUTHENTICATION_ROUTER_ERROR,
+        authenticationRouterError: null,
+    };
+}
+
 export const SHOW_AUTH_INFO_LOGIN = 'SHOW_AUTH_INFO_LOGIN';
 
 export function setShowAuthenticationRouterLogin(

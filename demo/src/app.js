@@ -359,6 +359,8 @@ const AppContent = ({ language, onLanguageClick }) => {
             e.type === 'LOGOUT_ERROR'
         ) {
             setAuthenticationRouterError({ ...e.authenticationRouterError });
+        } else if (e.type === 'RESET_AUTHENTICATION_ROUTER_ERROR') {
+            setAuthenticationRouterError(null);
         } else if (e.type === 'SHOW_AUTH_INFO_LOGIN') {
             setShowAuthenticationRouterLoginState(
                 e.showAuthenticationRouterLogin
