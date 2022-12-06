@@ -208,8 +208,7 @@ function dispatchUser(dispatch, userManagerInstance, validateUser) {
                             setUnauthorizedUserInfo(user?.profile?.name, {})
                         );
                     }
-                    // clean previous errors if validation is OK now
-                    dispatch(resetAuthenticationRouterError());
+                    
                     const now = parseInt(Date.now() / 1000);
                     const exp = jwtDecode(user.id_token).exp;
                     const idTokenExpiresIn = exp - now;
@@ -286,6 +285,8 @@ function handleUser(dispatch, userManager, validateUser) {
                     // TODO here allow to continue to use the app but in some kind of frozen state because we can't make API calls anymore
                     // remove the user from our app, but don't sso logout on all other apps
                     dispatch(setShowAuthenticationRouterLogin(true));
+                    // logout during token expiration, show login without errors
+                    dispatch(resetAuthenticationRouterError());
                     return dispatch(setLoggedUser(null));
                 } else if (userManager.idpSettings.maxExpiresIn) {
                     if (
@@ -296,11 +297,12 @@ function handleUser(dispatch, userManager, validateUser) {
                         console.log(
                             'Error in silent renew, but idtoken ALMOST expiring (expiring in' +
                                 idTokenExpiresIn +
-                                ') => last chance' +
-                                userManager.idpSettings.maxExpiresIn,
+                                ') => last chance, next error will logout',
+                                'maxExpiresIn = ' + userManager.idpSettings.maxExpiresIn,
+                                'last renew attempt in ' + idTokenExpiresIn - accessTokenExpiringNotificationTime + 'seconds' ,
                             error
                         );
-                        user.expires_in = userManager.idpSettings.maxExpiresIn;
+                        user.expires_in = idTokenExpiresIn;
                         userManager.storeUser(user).then(() => {
                             userManager.getUser();
                         });
