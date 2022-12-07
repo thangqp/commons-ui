@@ -102,6 +102,7 @@ export class KeyedColumnsRowIndexer {
         delegatorCallback = null,
         versionSetter = null
     ) {
+        console.debug('KeyedColumnsRowIndexer');
         this._versionSetter = versionSetter;
         this.version = 0;
         this.filterVersion = 0;
