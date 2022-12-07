@@ -9,6 +9,11 @@ import React from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@mui/styles';
 
+import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
+
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+
 const useStyles = makeStyles((theme) => ({
     label: {
         fontWeight: 'bold',
@@ -30,22 +35,13 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
     },
     sortButton: {
-        width: '1em',
-        height: '2em',
         fill: 'currentcolor',
     },
     filterButton: {
-        width: '1em',
-        height: '1em',
-        fill: 'none',
         stroke: 'currentcolor',
-        strokeWidth: '3',
-    },
-    tr180: {
-        transform: 'rotate(180deg)',
     },
     filterTooLossy: {
-        fill: theme.palette.secondary.main,
+        stroke: theme.palette.secondary.main,
     },
     transparent: {
         opacity: 0,
@@ -55,6 +51,11 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+// Shows an arrow pointing to smaller value when sorting is active.
+// signedRank of 0 means no sorting, we only show the arrow on hovering of the header,
+// in the same direction as it will get if clicked (once).
+// signedRank > 0 means sorted by ascending value from lower indices to higher indices
+// so lesser values are at top, so the upward arrow
 const SortButton = (props) => {
     const classes = useStyles();
     const sortRank = Math.abs(props.signedRank);
@@ -64,16 +65,11 @@ const SortButton = (props) => {
     return (
         <>
             <div className={clsx(classes.sortDiv)} onClick={props.onClick}>
-                <svg
-                    className={clsx(
-                        classes.sortButton,
-                        props.signedRank >= 0 && classes.tr180,
-                        visibilityClass
-                    )}
-                    viewBox="0 0 24 24"
-                >
-                    <path d="M 20,12 l -1.41,-1.41 L 13,16.17 V4 h -2 v12.17 l-5.58,-5.59 L4,12 l8,8 8,-8z" />
-                </svg>
+                {props.signedRank >= 0 ? (
+                    <ArrowUpwardIcon className={clsx(visibilityClass)} />
+                ) : (
+                    <ArrowDownwardIcon className={clsx(visibilityClass)} />
+                )}
                 {sortRank > 1 && !props.hovered && <sub>{sortRank}</sub>}
             </div>
         </>
@@ -86,17 +82,14 @@ const FilterButton = (props) => {
         !props.filterLevel &&
         (props.headerHovered ? classes.hovered : classes.transparent);
     return (
-        <svg
+        <FilterAltOutlinedIcon
+            onClick={props.onClick}
             className={clsx(
                 classes.filterButton,
                 props.filterLevel > 1 && classes.filterTooLossy,
                 visibilityClass
             )}
-            viewBox="0 0 50 55"
-            onClick={props.onClick}
-        >
-            <path d="m 0,0 50,0 -21,21 0,34 -8,-8 0,-26 z" />
-        </svg>
+        />
     );
 };
 
@@ -125,35 +118,33 @@ export const ColumnHeader = ({
     }, [onFilterClick]);
 
     return (
-        <>
-            <div
-                onMouseEnter={onHover}
-                onMouseLeave={onHover}
-                className={clsx(
-                    classes.divFlex,
-                    numeric && classes.divNum,
-                    className
-                )}
-                onContextMenu={onContextMenu}
-            >
-                <div className={clsx(classes.label)}>{label}</div>
-                {onSortClick && (
-                    <SortButton
-                        headerHovered={hovered}
-                        onClick={onSortClick}
-                        signedRank={sortSignedRank}
-                    />
-                )}
-                {onFC && (
-                    <FilterButton
-                        headerHovered={hovered}
-                        onClick={onFC}
-                        filterLevel={filterLevel}
-                    />
-                )}
-            </div>
-        </>
+        <div
+            onMouseEnter={onHover}
+            onMouseLeave={onHover}
+            className={clsx(
+                classes.divFlex,
+                numeric && classes.divNum,
+                className
+            )}
+            onContextMenu={onContextMenu}
+        >
+            <div className={clsx(classes.label)}>{label}</div>
+            {onSortClick && (
+                <SortButton
+                    headerHovered={hovered}
+                    onClick={onSortClick}
+                    signedRank={sortSignedRank}
+                />
+            )}
+            {onFC && (
+                <FilterButton
+                    headerHovered={hovered}
+                    onClick={onFC}
+                    filterLevel={filterLevel}
+                />
+            )}
+        </div>
     );
 };
 
-// export default withStyles(defaultStyles)(ColumnHeader);
+export default ColumnHeader;
