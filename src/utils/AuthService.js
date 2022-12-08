@@ -291,11 +291,16 @@ function handleUser(dispatch, userManager, validateUser) {
                         console.log(
                             'Error in silent renew, but idtoken ALMOST expiring (expiring in' +
                                 idTokenExpiresIn +
-                                ') => last chance' +
+                                ') => last chance, next error will logout',
+                            'maxExpiresIn = ' +
                                 userManager.idpSettings.maxExpiresIn,
+                            'last renew attempt in ' +
+                                idTokenExpiresIn -
+                                accessTokenExpiringNotificationTime +
+                                'seconds',
                             error
                         );
-                        user.expires_in = userManager.idpSettings.maxExpiresIn;
+                        user.expires_in = idTokenExpiresIn;
                         userManager.storeUser(user).then(() => {
                             userManager.getUser();
                         });
