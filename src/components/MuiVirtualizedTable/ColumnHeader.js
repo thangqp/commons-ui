@@ -63,16 +63,14 @@ const SortButton = (props) => {
         !props.signedRank &&
         (props.headerHovered ? classes.hovered : classes.transparent);
     return (
-        <>
-            <div className={clsx(classes.sortDiv)} onClick={props.onClick}>
-                {props.signedRank >= 0 ? (
-                    <ArrowUpwardIcon className={clsx(visibilityClass)} />
-                ) : (
-                    <ArrowDownwardIcon className={clsx(visibilityClass)} />
-                )}
-                {sortRank > 1 && !props.hovered && <sub>{sortRank}</sub>}
-            </div>
-        </>
+        <div className={clsx(classes.sortDiv)} onClick={props.onClick}>
+            {props.signedRank >= 0 ? (
+                <ArrowUpwardIcon className={clsx(visibilityClass)} />
+            ) : (
+                <ArrowDownwardIcon className={clsx(visibilityClass)} />
+            )}
+            {sortRank > 1 && !props.hovered && <sub>{sortRank}</sub>}
+        </div>
     );
 };
 
