@@ -177,8 +177,6 @@ function logout(dispatch, userManagerInstance) {
                 })
                 .then(() => {
                     console.debug('logged out, window is closing...');
-                    // clean previous errors if logout is OK.
-                    dispatch(resetAuthenticationRouterError());
                 })
                 .catch((e) => {
                     console.log('Error during logout :', e);
