@@ -208,7 +208,7 @@ function dispatchUser(dispatch, userManagerInstance, validateUser) {
                             setUnauthorizedUserInfo(user?.profile?.name, {})
                         );
                     }
-                    
+
                     const now = parseInt(Date.now() / 1000);
                     const exp = jwtDecode(user.id_token).exp;
                     const idTokenExpiresIn = exp - now;
@@ -298,8 +298,12 @@ function handleUser(dispatch, userManager, validateUser) {
                             'Error in silent renew, but idtoken ALMOST expiring (expiring in' +
                                 idTokenExpiresIn +
                                 ') => last chance, next error will logout',
-                                'maxExpiresIn = ' + userManager.idpSettings.maxExpiresIn,
-                                'last renew attempt in ' + idTokenExpiresIn - accessTokenExpiringNotificationTime + 'seconds' ,
+                            'maxExpiresIn = ' +
+                                userManager.idpSettings.maxExpiresIn,
+                            'last renew attempt in ' +
+                                idTokenExpiresIn -
+                                accessTokenExpiringNotificationTime +
+                                'seconds',
                             error
                         );
                         user.expires_in = idTokenExpiresIn;
