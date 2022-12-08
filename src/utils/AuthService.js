@@ -206,7 +206,6 @@ function dispatchUser(dispatch, userManagerInstance, validateUser) {
                             setUnauthorizedUserInfo(user?.profile?.name, {})
                         );
                     }
-
                     const now = parseInt(Date.now() / 1000);
                     const exp = jwtDecode(user.id_token).exp;
                     const idTokenExpiresIn = exp - now;
