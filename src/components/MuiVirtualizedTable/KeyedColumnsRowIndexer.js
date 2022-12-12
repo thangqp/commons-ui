@@ -86,6 +86,11 @@ export const getHelper = (column) => {
     }
 };
 
+/**
+ * A rows indexer for MuiVirtualizedTable to delegate to an instance of it
+ * for filtering, grouping and multi-column sorting via
+ * a view index to model index array.
+ */
 export class KeyedColumnsRowIndexer {
     static get CHANGE_WAYS() {
         return CHANGE_WAYS;
