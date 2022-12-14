@@ -5,15 +5,15 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { useCallback, useEffect, useState, useMemo } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import TopBar from '../../src/components/TopBar';
 import SnackbarProvider from '../../src/components/SnackbarProvider';
 
 import {
     createTheme,
-    ThemeProvider,
     StyledEngineProvider,
+    ThemeProvider,
 } from '@mui/material/styles';
 import makeStyles from '@mui/styles/makeStyles';
 import withStyles from '@mui/styles/withStyles';
@@ -21,8 +21,10 @@ import AuthenticationRouter from '../../src/components/AuthenticationRouter';
 import CardErrorBoundary from '../../src/components/CardErrorBoundary';
 import {
     DEFAULT_CELL_PADDING,
+    elementType,
     EQUIPMENT_TYPE,
     equipmentStyles,
+    getFileIcon,
     initializeAuthenticationDev,
     LANG_ENGLISH,
     LANG_FRENCH,
@@ -33,7 +35,7 @@ import {
 import { useMatch } from 'react-router';
 import { IntlProvider, useIntl } from 'react-intl';
 
-import { BrowserRouter, useNavigate, useLocation } from 'react-router-dom';
+import { BrowserRouter, useLocation, useNavigate } from 'react-router-dom';
 import { useSnackMessage } from '../../src/hooks/useSnackMessage';
 
 import {
@@ -61,8 +63,6 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 
 import PowsyblLogo from '-!@svgr/webpack!../images/powsybl_logo.svg';
-import { KeyedColumnsRowIndexer } from '../../src/components/MuiVirtualizedTable';
-import MuiVirtualizedTable from '../../src/components/MuiVirtualizedTable';
 
 import ReportViewerDialog from '../../src/components/ReportViewerDialog';
 import TreeViewFinder from '../../src/components/TreeViewFinder';
@@ -78,12 +78,12 @@ import {
 import { LOGS_JSON } from '../data/ReportViewer';
 
 import { searchEquipments } from '../data/EquipmentSearchBar';
-import { elementType, getFileIcon } from '../../src';
 import { Grid, Tab, Tabs } from '@mui/material';
 import { EquipmentItem } from '../../src/components/ElementSearchDialog/equipment-item';
 import OverflowableText from '../../src/components/OverflowableText';
 
 import { setShowAuthenticationRouterLogin } from '../../src/utils/actions';
+import { TableTab } from './TableTab';
 
 const messages = {
     en: {
@@ -187,7 +187,6 @@ const TreeViewFinderCustomStyles = (theme) => ({
     },
 });
 
-const VirtualizedTable = withStyles(styles)(MuiVirtualizedTable);
 const CustomTreeViewFinder = withStyles(TreeViewFinderCustomStyles)(
     TreeViewFinder
 );
@@ -261,74 +260,6 @@ const validateUser = (user) => {
     // change to false to simulate user unauthorized access
     return new Promise((resolve) =>
         window.setTimeout(() => resolve(true), 500)
-    );
-};
-
-const TableTabs = () => {
-    const [version, setVersion] = useState(0);
-
-    const columns = useMemo(
-        () => [
-            {
-                label: 'header1',
-                dataKey: 'key1',
-            },
-            {
-                label: 'header2',
-                dataKey: 'key2',
-            },
-            {
-                label: 'header3 and some integers',
-                dataKey: 'key3',
-                numeric: true,
-            },
-            {
-                label: 'floats',
-                dataKey: 'key4',
-                numeric: true,
-                fractionDigits: 1,
-            },
-        ],
-        []
-    );
-
-    const rows = useMemo(
-        () => [
-            { key1: 'group2', key2: 'val2', key3: 1, key4: 2.35 },
-            { key1: 'group1', key2: 'val1', key3: 2, key4: 5.32 },
-            { key1: 'group2', key2: 'val4', key3: 3, key4: 23.5 },
-            { key1: 'group1', key2: 'val3', key3: 4, key4: 52.3 },
-            { key1: 'group3', key2: 'val3', key3: 5, key4: 2.53 },
-            { key1: 'group3', key2: 'val2', key3: 6, key4: 25.3 },
-            { key1: 'group4', key2: 'val3', key3: 5, key4: 53.2 },
-            { key1: 'group4', key2: 'val4', key3: 2, key4: 3.25 },
-            { key1: 'group4', key2: 'val4', key3: 1, key4: 3.52 },
-        ],
-        []
-    );
-
-    const indexer = useMemo(() => {
-        const ret = new KeyedColumnsRowIndexer(true, false, null, setVersion);
-        ret.setColFilterOuterParams('key2', ['val9']);
-        return ret;
-    }, []);
-
-    return (
-        <Box style={{ height: '20rem' }}>
-            <VirtualizedTable
-                name="Demo Virtualized Table"
-                rows={rows}
-                sortable={true}
-                columns={columns}
-                enableExportCSV={true}
-                exportCSVDataKeys={['key2', 'key3']}
-                // onRowClick={(...args) => console.log('onRowClick', args)}
-                // onClick={(...args) => console.log('onClick', args)}
-                // onCellClick={(...args) => console.log('onCellClick', args)}
-                indexer={indexer}
-                version={version}
-            />
-        </Box>
     );
 };
 
@@ -575,7 +506,7 @@ const AppContent = ({ language, onLanguageClick }) => {
                                         <Tab label="virtual" />
                                     </Tabs>
                                     {tabIndex === 1 ? (
-                                        <TableTabs />
+                                        <TableTab styles={styles} />
                                     ) : (
                                         <div>
                                             <Box mt={3}>
