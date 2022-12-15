@@ -1,12 +1,59 @@
+/**
+ * Copyright (c) 2020, RTE (http://www.rte-france.com)
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
 import React, { useMemo, useState } from 'react';
-import { KeyedColumnsRowIndexer } from '../../src';
+import { DEFAULT_CELL_PADDING, KeyedColumnsRowIndexer } from '../../src';
 import withStyles from '@mui/styles/withStyles';
-//import MuiVirtualizedTable from "../../src/components/MuiVirtualizedTable/MuiVirtualizedTable";
 
 import MuiVirtualizedTable from '../../src/components/MuiVirtualizedTable';
 import Box from '@mui/material/Box';
 
-export const TableTab = ({ styles }) => {
+const styles = (theme) => ({
+    table: {
+        // temporary right-to-left patch, waiting for
+        // https://github.com/bvaughn/react-virtualized/issues/454
+        '& .ReactVirtualized__Table__headerRow': {
+            flip: false,
+            paddingRight:
+                theme.direction === 'rtl' ? '0 !important' : undefined,
+        },
+    },
+    tableRow: {
+        cursor: 'pointer',
+    },
+    tableRowHover: {
+        '&:hover': {
+            backgroundColor: theme.palette.info.light,
+        },
+    },
+    tableCell: {
+        flex: 1,
+        padding: DEFAULT_CELL_PADDING + 'px',
+    },
+    noClick: {
+        cursor: 'initial',
+    },
+    tableCellColor: {
+        color: theme.palette.primary.contrastText,
+    },
+    header: {
+        backgroundColor: theme.palette.info.light,
+        color: theme.palette.primary.contrastText,
+        fontWeight: 'bold',
+    },
+    rowBackgroundDark: {
+        backgroundColor: theme.palette.info.dark,
+    },
+    rowBackgroundLight: {
+        backgroundColor: theme.palette.info.main,
+    },
+});
+
+export const TableTab = () => {
     const VirtualizedTable = withStyles(styles)(MuiVirtualizedTable);
 
     const [version, setVersion] = useState(0);
@@ -66,9 +113,9 @@ export const TableTab = ({ styles }) => {
                 columns={columns}
                 enableExportCSV={true}
                 exportCSVDataKeys={['key2', 'key3']}
-                // onRowClick={(...args) => console.log('onRowClick', args)}
-                // onClick={(...args) => console.log('onClick', args)}
-                // onCellClick={(...args) => console.log('onCellClick', args)}
+                onRowClick={(...args) => console.log('onRowClick', args)}
+                onClick={(...args) => console.log('onClick', args)}
+                onCellClick={(...args) => console.log('onCellClick', args)}
                 indexer={indexer}
                 version={version}
             />

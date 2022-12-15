@@ -17,7 +17,6 @@ import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 const useStyles = makeStyles((theme) => ({
     label: {
         fontWeight: 'bold',
-        padding: '16px',
     },
     divFlex: {
         display: 'flex',
@@ -28,6 +27,7 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         flexDirection: 'row-reverse',
         alignItems: 'center',
+        textAlign: 'right',
     },
     sortDiv: {
         display: 'flex',

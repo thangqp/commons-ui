@@ -20,7 +20,6 @@ import withStyles from '@mui/styles/withStyles';
 import AuthenticationRouter from '../../src/components/AuthenticationRouter';
 import CardErrorBoundary from '../../src/components/CardErrorBoundary';
 import {
-    DEFAULT_CELL_PADDING,
     elementType,
     EQUIPMENT_TYPE,
     equipmentStyles,
@@ -129,52 +128,6 @@ const getMuiTheme = (theme) => {
 };
 
 const useEquipmentStyles = makeStyles(equipmentStyles);
-
-const styles = (theme) => ({
-    flexContainer: {
-        display: 'flex',
-        alignItems: 'center',
-        boxSizing: 'border-box',
-    },
-    table: {
-        // temporary right-to-left patch, waiting for
-        // https://github.com/bvaughn/react-virtualized/issues/454
-        '& .ReactVirtualized__Table__headerRow': {
-            flip: false,
-            paddingRight:
-                theme.direction === 'rtl' ? '0 !important' : undefined,
-        },
-    },
-    tableRow: {
-        cursor: 'pointer',
-    },
-    tableRowHover: {
-        '&:hover': {
-            backgroundColor: theme.palette.info.light,
-        },
-    },
-    tableCell: {
-        flex: 1,
-        padding: DEFAULT_CELL_PADDING + 'px',
-    },
-    noClick: {
-        cursor: 'initial',
-    },
-    tableCellColor: {
-        color: theme.palette.primary.contrastText,
-    },
-    header: {
-        backgroundColor: theme.palette.info.light,
-        color: theme.palette.primary.contrastText,
-        fontWeight: 'bold',
-    },
-    rowBackgroundDark: {
-        backgroundColor: theme.palette.info.dark,
-    },
-    rowBackgroundLight: {
-        backgroundColor: theme.palette.info.main,
-    },
-});
 
 const TreeViewFinderCustomStyles = (theme) => ({
     icon: {
@@ -506,7 +459,7 @@ const AppContent = ({ language, onLanguageClick }) => {
                                         <Tab label="virtual" />
                                     </Tabs>
                                     {tabIndex === 1 ? (
-                                        <TableTab styles={styles} />
+                                        <TableTab />
                                     ) : (
                                         <div>
                                             <Box mt={3}>
