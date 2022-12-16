@@ -92,16 +92,19 @@ const FilterButton = (props) => {
     );
 };
 
-export const ColumnHeader = ({
-    className,
-    label,
-    numeric,
-    sortSignedRank,
-    filterLevel,
-    onSortClick,
-    onFilterClick,
-    onContextMenu,
-}) => {
+export const ColumnHeader = React.forwardRef((props, ref) => {
+    const {
+        className,
+        label,
+        numeric,
+        sortSignedRank,
+        filterLevel,
+        onSortClick,
+        onFilterClick,
+        onContextMenu,
+        style,
+    } = props;
+
     const classes = useStyles();
 
     const [hovered, setHovered] = React.useState();
@@ -125,7 +128,9 @@ export const ColumnHeader = ({
                 numeric && classes.divNum,
                 className
             )}
+            style={style}
             onContextMenu={onContextMenu}
+            ref={ref}
         >
             <div className={clsx(classes.label)}>{label}</div>
             {onSortClick && (
@@ -144,6 +149,6 @@ export const ColumnHeader = ({
             )}
         </div>
     );
-};
+});
 
 export default ColumnHeader;

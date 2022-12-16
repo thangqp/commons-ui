@@ -326,7 +326,6 @@ class MuiVirtualizedTable extends React.PureComponent {
         }
 
         this.setState({
-            ...this.state,
             popoverAnchorEl: popoverTarget,
             popoverColKey: colKey,
         });
@@ -338,7 +337,6 @@ class MuiVirtualizedTable extends React.PureComponent {
             bumpsVersion = this._commitFilterChange();
         }
         this.setState({
-            ...this.state,
             popoverAnchorEl: null,
             popoverColKey: null,
             deferredFilterChange: null,
@@ -408,14 +406,12 @@ class MuiVirtualizedTable extends React.PureComponent {
         const nonEmpty = newVal.length === 0 ? null : newVal;
         if (this.props.defersFilterChanges) {
             this.setState({
-                ...this.state,
                 deferredFilterChange: { newVal: newVal, colKey },
             });
         } else if (
             this.state.indexer.setColFilterUserParams(colKey, nonEmpty)
         ) {
             this.setState({
-                ...this.state,
                 indirectionVersion: this.state.indirectionVersion + 1,
             });
         }
@@ -440,7 +436,6 @@ class MuiVirtualizedTable extends React.PureComponent {
 
         if (this.state.indexer.updateSortingFromUser(colKey, way)) {
             this.setState({
-                ...this.state,
                 indirectionVersion: this.state.indirectionVersion + 1,
             });
         }
@@ -477,21 +472,24 @@ class MuiVirtualizedTable extends React.PureComponent {
                       this.filterClickHandler(ev, retargeted, columnIndex);
                   };
         return (
-            <ColumnHeader
-                label={label}
-                className={clsx(
-                    classes.tableCell,
-                    classes.flexContainer,
-                    classes.header
-                )}
-                sortSignedRank={signedRank}
-                filterLevel={filterLevel}
-                numeric={numeric}
-                onSortClick={(ev, name) => {
-                    this.sortClickHandler(ev, name, columnIndex);
-                }}
-                onFilterClick={onFilterClick}
-            />
+            <div
+                className={clsx(classes.flexContainer)}
+                ref={(e) => this._registerObserver(e)}
+            >
+                <ColumnHeader
+                    label={label}
+                    ref={(e) => this._registerHeader(label, e)}
+                    className={clsx(classes.tableCell, classes.header)}
+                    style={{ height: this.state.headerHeight }}
+                    sortSignedRank={signedRank}
+                    filterLevel={filterLevel}
+                    numeric={numeric}
+                    onSortClick={(ev, name) => {
+                        this.sortClickHandler(ev, name, columnIndex);
+                    }}
+                    onFilterClick={onFilterClick}
+                />
+            </div>
         );
     };
 
@@ -628,10 +626,7 @@ class MuiVirtualizedTable extends React.PureComponent {
             // The scrollHeight value is equal to the minimum height the element
             // would require in order to fit all the content in the viewport
             // without using a vertical scrollbar.
-            headerHeight = Math.max(
-                h.scrollHeight + DEFAULT_CELL_PADDING,
-                headerHeight
-            );
+            headerHeight = Math.max(h.scrollHeight, headerHeight);
         });
         if (headerHeight !== this.state.headerHeight) {
             this.setState({
@@ -663,13 +658,13 @@ class MuiVirtualizedTable extends React.PureComponent {
 
         return (
             <Table
+                {...otherProps}
                 height={height}
                 width={width}
                 rowHeight={otherProps.rowHeight}
                 gridStyle={{ direction: 'inherit' }}
                 headerHeight={this.state.headerHeight}
                 className={otherProps.classes.table}
-                {...otherProps}
                 onRowClick={
                     this.props.onRowClick &&
                     /* The {...otherProps} just above would hold the slot onRowClick */
