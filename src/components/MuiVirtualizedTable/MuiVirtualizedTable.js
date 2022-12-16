@@ -9,16 +9,22 @@
  * This class has been taken from 'Virtualized Table' example at https://material-ui.com/components/tables/
  */
 import React, { createRef } from 'react';
+import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import TableCell from '@mui/material/TableCell';
-import { AutoSizer, Column, Table } from 'react-virtualized';
 import memoize from 'memoize-one';
-import GetAppIcon from '@mui/icons-material/GetApp';
-import CsvDownloader from 'react-csv-downloader';
-import IconButton from '@mui/material/IconButton';
-import { FormattedMessage } from 'react-intl';
+import {
+    Autocomplete,
+    Chip,
+    IconButton,
+    Popover,
+    TableCell,
+    TextField,
+} from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
+import GetAppIcon from '@mui/icons-material/GetApp';
+import { AutoSizer, Column, Table } from 'react-virtualized';
+import CsvDownloader from 'react-csv-downloader';
 import OverflowableText from '../OverflowableText/overflowable-text';
 import {
     collectibleHelper,
@@ -26,10 +32,7 @@ import {
     KeyedColumnsRowIndexer,
     CHANGE_WAYS,
 } from './KeyedColumnsRowIndexer';
-import Popover from '@mui/material/Popover';
-import Autocomplete from '@mui/material/Autocomplete';
-import { Chip, TextField } from '@mui/material';
-import { ColumnHeader } from './ColumnHeader';
+import ColumnHeader from './ColumnHeader';
 
 function getTextWidth(text) {
     // re-use canvas object for better performance
