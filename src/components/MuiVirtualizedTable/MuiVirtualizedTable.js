@@ -124,7 +124,7 @@ const AmongChooser = (props) => {
 };
 
 const initIndexer = (props, oldProps, versionSetter) => {
-    console.debug('initing indexer');
+    console.debug('initing indexer', props.sortable);
     if (!props.sortable) {
         return null;
     }
@@ -625,6 +625,7 @@ class MuiVirtualizedTable extends React.PureComponent {
     }
 
     _computeHeaderSize() {
+        console.debug('_computeHeaderSize', this.headers.current);
         const headers = Object.values(this.headers.current);
         if (headers.length === 0) return;
         let headerHeight = this.props.headerHeight;
@@ -662,7 +663,6 @@ class MuiVirtualizedTable extends React.PureComponent {
 
     makeSizedTable = (height, width, sizes, reorderedIndex, rowGetter) => {
         const { sort, ...otherProps } = this.props;
-        console.debug('makeSizedTable', !!sort);
 
         return (
             <Table
