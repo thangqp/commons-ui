@@ -105,20 +105,37 @@ export const TableTab = () => {
     }, []);
 
     return (
-        <Box style={{ height: '20rem' }}>
-            <VirtualizedTable
-                name="Demo Virtualized Table"
-                rows={rows}
-                sortable={true}
-                columns={columns}
-                enableExportCSV={true}
-                exportCSVDataKeys={['key2', 'key3']}
-                onRowClick={(...args) => console.log('onRowClick', args)}
-                onClick={(...args) => console.log('onClick', args)}
-                onCellClick={(...args) => console.log('onCellClick', args)}
-                indexer={indexer}
-                version={version}
-            />
-        </Box>
+        <>
+            <Box style={{ height: '20rem' }}>
+                <VirtualizedTable
+                    name="Demo Virtualized Table"
+                    rows={rows}
+                    sortable={true}
+                    columns={columns}
+                    enableExportCSV={true}
+                    exportCSVDataKeys={['key2', 'key3']}
+                    onRowClick={(...args) => console.log('onRowClick', args)}
+                    onClick={(...args) => console.log('onClick', args)}
+                    onCellClick={(...args) => console.log('onCellClick', args)}
+                    indexer={indexer}
+                    version={version}
+                />
+            </Box>
+            <Box style={{ height: '20rem' }}>
+                <VirtualizedTable
+                    name="Demo Virtualized Table"
+                    rows={rows}
+                    sortable={false}
+                    columns={columns}
+                    enableExportCSV={true}
+                    exportCSVDataKeys={['key2', 'key3']}
+                    onRowClick={(...args) => console.log('onRowClick', args)}
+                    onClick={(...args) => console.log('onClick', args)}
+                    onCellClick={(...args) => console.log('onCellClick', args)}
+                    indexer={indexer}
+                    version={version}
+                />
+            </Box>
+        </>
     );
 };
