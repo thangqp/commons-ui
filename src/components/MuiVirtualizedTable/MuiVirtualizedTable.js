@@ -124,7 +124,6 @@ const AmongChooser = (props) => {
 };
 
 const initIndexer = (props, oldProps, versionSetter) => {
-    console.debug('initing indexer', props.sortable);
     if (!props.sortable) {
         return null;
     }
@@ -169,7 +168,6 @@ class MuiVirtualizedTable extends React.PureComponent {
 
     constructor(props, context) {
         super(props, context);
-        console.debug('MuiVirtualizedTable');
 
         this._computeHeaderSize = this._computeHeaderSize.bind(this);
         this._registerHeader = this._registerHeader.bind(this);
@@ -197,12 +195,10 @@ class MuiVirtualizedTable extends React.PureComponent {
     }
 
     setVersion = (v) => {
-        console.debug('MuiVirtualizedTable.setVersion', v);
         this.setState({ indirectionVersion: v });
     };
 
     componentDidUpdate(oldProps) {
-        console.debug('componentDidUpdate...');
         if (oldProps.data !== this.props.data) {
             this.setState({
                 indexer: initIndexer(this.props, oldProps),
@@ -211,12 +207,10 @@ class MuiVirtualizedTable extends React.PureComponent {
     }
 
     componentDidMount() {
-        console.debug('componentDidMount...');
         window.addEventListener('resize', this._computeHeaderSize);
     }
 
     componentWillUnmount() {
-        console.debug('componentWillUnmount...');
         window.removeEventListener('resize', this._computeHeaderSize);
         this.observer.disconnect();
     }
@@ -637,12 +631,6 @@ class MuiVirtualizedTable extends React.PureComponent {
         // though it can not make a difference from clientHeight,
         // as overflow-y as no scroll value
         const scrollHeights = headers.map((header) => header.scrollHeight);
-        const offsetTops = headers.map((header) => header.offsetTop);
-        console.debug('_computeHeaderSize', scrollHeights, {
-            entries,
-            headers,
-            offsetTops,
-        });
         let headerHeight = Math.max(
             Math.max(...scrollHeights) + DEFAULT_CELL_PADDING,
             this.props.headerHeight
@@ -675,9 +663,6 @@ class MuiVirtualizedTable extends React.PureComponent {
 
     makeSizedTable = (height, width, sizes, reorderedIndex, rowGetter) => {
         const { sort, ...otherProps } = this.props;
-        console.debug('makeSizedTable', sizes, this.state.headerHeight, {
-            otherProps,
-        });
 
         return (
             <Table
@@ -783,7 +768,6 @@ class MuiVirtualizedTable extends React.PureComponent {
             this.props.rows,
             this.props.columns
         );
-        console.debug('render', viewIndexToModel);
 
         const sizes = this.sizes(
             this.props.columns,
