@@ -9,8 +9,8 @@ import React, { useMemo, useState } from 'react';
 import { DEFAULT_CELL_PADDING, KeyedColumnsRowIndexer } from '../../src';
 import withStyles from '@mui/styles/withStyles';
 
+import { Box, FormControlLabel, Switch } from '@mui/material';
 import MuiVirtualizedTable from '../../src/components/MuiVirtualizedTable';
-import Box from '@mui/material/Box';
 
 const styles = (theme) => ({
     table: {
@@ -54,7 +54,11 @@ const styles = (theme) => ({
 });
 
 export const TableTab = () => {
-    const VirtualizedTable = withStyles(styles)(MuiVirtualizedTable);
+    const [usesCustomStyles, setUsesCustomStyles] = useState(false);
+
+    const VirtualizedTable = usesCustomStyles
+        ? withStyles(styles)(MuiVirtualizedTable)
+        : MuiVirtualizedTable;
 
     const [version, setVersion] = useState(0);
 
@@ -106,6 +110,16 @@ export const TableTab = () => {
 
     return (
         <>
+            <FormControlLabel
+                control={
+                    <Switch
+                        checked={usesCustomStyles}
+                        onChange={() => setUsesCustomStyles((was) => !was)}
+                    />
+                }
+                labelPlacement={'start'}
+                label="Custom theme"
+            />
             <Box style={{ height: '20rem' }}>
                 <VirtualizedTable
                     name="Demo Virtualized Table"

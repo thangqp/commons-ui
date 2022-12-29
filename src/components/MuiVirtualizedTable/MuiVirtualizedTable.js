@@ -479,8 +479,6 @@ class MuiVirtualizedTable extends React.PureComponent {
                 className={clsx(classes.flexContainer)}
                 style={{
                     height: this.state.headerHeight,
-                    backgroundColor: 'white',
-                    marginBottom: '2px',
                 }}
                 ref={(e) => this._registerObserver(e)}
             >
