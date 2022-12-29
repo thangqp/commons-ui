@@ -69,7 +69,7 @@ export const TableTab = () => {
                 dataKey: 'key2',
             },
             {
-                label: 'header3 and some integers',
+                label: 'header3 and some integers, and more, to be sure many lines are shown',
                 dataKey: 'key3',
                 numeric: true,
             },

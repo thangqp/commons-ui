@@ -305,7 +305,9 @@ class MuiVirtualizedTable extends React.PureComponent {
             if (col.width) {
                 sizes[col.dataKey] = col.width;
             } else {
-                /* calculate the header (and min size if exists) */
+                /* calculate the header (and min size if exists)
+                 * NB : ignores the possible icons
+                 */
                 let size = Math.max(
                     col.minWidth || 0,
                     this.computeDataWidth(col.label)
@@ -481,13 +483,17 @@ class MuiVirtualizedTable extends React.PureComponent {
         return (
             <div
                 className={clsx(classes.flexContainer)}
+                style={{
+                    height: this.state.headerHeight,
+                    backgroundColor: 'white',
+                    marginBottom: '2px',
+                }}
                 ref={(e) => this._registerObserver(e)}
             >
                 <ColumnHeader
                     label={label}
                     ref={(e) => this._registerHeader(label, e)}
                     className={clsx(classes.tableCell, classes.header)}
-                    style={{ height: this.state.headerHeight }}
                     sortSignedRank={signedRank}
                     filterLevel={filterLevel}
                     numeric={numeric}
@@ -624,18 +630,24 @@ class MuiVirtualizedTable extends React.PureComponent {
         return displayedValue;
     }
 
-    _computeHeaderSize() {
-        console.debug('_computeHeaderSize', this.headers.current);
+    _computeHeaderSize(entries, observer) {
         const headers = Object.values(this.headers.current);
         if (headers.length === 0) return;
-        let headerHeight = this.props.headerHeight;
-        headers.forEach((h) => {
-            // https://developer.mozilla.org/fr/docs/Web/API/Element/scrollHeight
-            // The scrollHeight value is equal to the minimum height the element
-            // would require in order to fit all the content in the viewport
-            // without using a vertical scrollbar.
-            headerHeight = Math.max(h.scrollHeight, headerHeight);
+        // for now keep 'historical' use of scrollHeight,
+        // though it can not make a difference from clientHeight,
+        // as overflow-y as no scroll value
+        const scrollHeights = headers.map((header) => header.scrollHeight);
+        const offsetTops = headers.map((header) => header.offsetTop);
+        console.debug('_computeHeaderSize', scrollHeights, {
+            entries,
+            headers,
+            offsetTops,
         });
+        let headerHeight = Math.max(
+            Math.max(...scrollHeights) + DEFAULT_CELL_PADDING,
+            this.props.headerHeight
+            // hides (most often) padding override by forcing height
+        );
         if (headerHeight !== this.state.headerHeight) {
             this.setState({
                 headerHeight: headerHeight,
@@ -663,6 +675,9 @@ class MuiVirtualizedTable extends React.PureComponent {
 
     makeSizedTable = (height, width, sizes, reorderedIndex, rowGetter) => {
         const { sort, ...otherProps } = this.props;
+        console.debug('makeSizedTable', sizes, this.state.headerHeight, {
+            otherProps,
+        });
 
         return (
             <Table

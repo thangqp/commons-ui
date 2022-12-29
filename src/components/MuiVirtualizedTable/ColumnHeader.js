@@ -23,11 +23,10 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
+        height: '99%',
     },
     divNum: {
-        display: 'flex',
         flexDirection: 'row-reverse',
-        alignItems: 'center',
         textAlign: 'right',
     },
     sortDiv: {
@@ -130,9 +129,11 @@ export const ColumnHeader = React.forwardRef((props, ref) => {
             )}
             style={style}
             onContextMenu={onContextMenu}
-            ref={ref}
         >
-            <div className={clsx(classes.label)}>{label}</div>
+            {/* we cheat here to get the _variable_ height */}
+            <div ref={ref} className={clsx(classes.label)}>
+                {label}
+            </div>
             {onSortClick && (
                 <SortButton
                     headerHovered={hovered}
