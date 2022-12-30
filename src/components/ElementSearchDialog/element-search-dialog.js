@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 import SearchIcon from '@mui/icons-material/Search';
 import { useIntl } from 'react-intl';
 
-const TERM_MIN_SIZE_BEFORE_SEARCH = 3;
+const TERM_MIN_SIZE_BEFORE_SEARCH = 1;
 
 const ElementSearchDialog = (props) => {
     const intl = useIntl();
