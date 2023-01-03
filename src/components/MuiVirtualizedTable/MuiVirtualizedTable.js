@@ -475,59 +475,30 @@ class MuiVirtualizedTable extends React.PureComponent {
                       this.filterClickHandler(ev, retargeted, columnIndex);
                   };
         return (
-            <TableCell
-                component="div"
-                className={clsx(
-                    classes.tableCell,
-                    classes.flexContainer,
-                    classes.noClick,
-                    classes.header
-                )}
-                variant="head"
-                style={{ height: this.state.headerHeight }}
-                align={columns[columnIndex].numeric || false ? 'right' : 'left'}
-                ref={(e) => this._registerObserver(e)}
-            >
-                <ColumnHeader
-                    label={label}
-                    ref={(e) => this._registerHeader(label, e)}
-                    className={clsx(classes.tableCell, classes.header)}
-                    sortSignedRank={signedRank}
-                    filterLevel={filterLevel}
-                    numeric={numeric}
-                    onSortClick={(ev, name) => {
-                        this.sortClickHandler(ev, name, columnIndex);
-                    }}
-                    onFilterClick={onFilterClick}
-                />
-            </TableCell>
+            <ColumnHeader
+                label={label}
+                ref={(e) => this._registerHeader(label, e)}
+                className={clsx(classes.tableCell, classes.header)}
+                sortSignedRank={signedRank}
+                filterLevel={filterLevel}
+                numeric={numeric}
+                onSortClick={(ev, name) => {
+                    this.sortClickHandler(ev, name, columnIndex);
+                }}
+                onFilterClick={onFilterClick}
+            />
         );
     };
 
     simpleHeaderRenderer = ({ label, columnIndex }) => {
-        const { columns, classes } = this.props;
         return (
-            <TableCell
-                component="div"
-                className={clsx(
-                    classes.tableCell,
-                    classes.flexContainer,
-                    classes.noClick,
-                    classes.header
-                )}
-                variant="head"
-                style={{ height: this.state.headerHeight }}
-                align={columns[columnIndex].numeric || false ? 'right' : 'left'}
-                ref={(e) => this._registerObserver(e)}
+            <div
+                ref={(element) => {
+                    this._registerHeader(label, element);
+                }}
             >
-                <div
-                    ref={(element) => {
-                        this._registerHeader(label, element);
-                    }}
-                >
-                    {label}
-                </div>
-            </TableCell>
+                {label}
+            </div>
         );
     };
 
@@ -647,21 +618,38 @@ class MuiVirtualizedTable extends React.PureComponent {
         }
     }
 
-    makeHeaderRenderer(sizes, dataKey, index) {
+    makeHeaderRenderer(sizes, dataKey, columnIndex) {
+        const { columns, classes } = this.props;
         return (headerProps) => {
-            if (this.props.sortable) {
-                return this.sortableHeader({
-                    ...headerProps,
-                    width: sizes[dataKey],
-                    columnIndex: index,
-                    key: { dataKey },
-                });
-            } else {
-                return this.simpleHeaderRenderer({
-                    ...headerProps,
-                    columnIndex: index,
-                });
-            }
+            return (
+                <TableCell
+                    component="div"
+                    className={clsx(
+                        classes.tableCell,
+                        classes.flexContainer,
+                        classes.noClick,
+                        classes.header
+                    )}
+                    variant="head"
+                    style={{ height: this.state.headerHeight }}
+                    align={
+                        columns[columnIndex].numeric || false ? 'right' : 'left'
+                    }
+                    ref={(e) => this._registerObserver(e)}
+                >
+                    {this.props.sortable
+                        ? this.sortableHeader({
+                              ...headerProps,
+                              width: sizes[dataKey],
+                              columnIndex,
+                              key: { dataKey },
+                          })
+                        : this.simpleHeaderRenderer({
+                              ...headerProps,
+                              columnIndex,
+                          })}
+                </TableCell>
+            );
         };
     }
 
