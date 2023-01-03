@@ -54,7 +54,7 @@ const styles = (theme) => ({
 });
 
 export const TableTab = () => {
-    const [usesCustomStyles, setUsesCustomStyles] = useState(false);
+    const [usesCustomStyles, setUsesCustomStyles] = useState(true);
 
     const VirtualizedTable = usesCustomStyles
         ? withStyles(styles)(MuiVirtualizedTable)

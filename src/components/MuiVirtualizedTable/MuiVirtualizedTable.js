@@ -475,11 +475,17 @@ class MuiVirtualizedTable extends React.PureComponent {
                       this.filterClickHandler(ev, retargeted, columnIndex);
                   };
         return (
-            <div
-                className={clsx(classes.flexContainer)}
-                style={{
-                    height: this.state.headerHeight,
-                }}
+            <TableCell
+                component="div"
+                className={clsx(
+                    classes.tableCell,
+                    classes.flexContainer,
+                    classes.noClick,
+                    classes.header
+                )}
+                variant="head"
+                style={{ height: this.state.headerHeight }}
+                align={columns[columnIndex].numeric || false ? 'right' : 'left'}
                 ref={(e) => this._registerObserver(e)}
             >
                 <ColumnHeader
@@ -494,7 +500,7 @@ class MuiVirtualizedTable extends React.PureComponent {
                     }}
                     onFilterClick={onFilterClick}
                 />
-            </div>
+            </TableCell>
         );
     };
 

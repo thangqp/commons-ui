@@ -13,7 +13,6 @@ import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
 
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import { alpha, darken, lighten } from '@mui/system';
 
 const useStyles = makeStyles((theme) => ({
     label: {
@@ -25,13 +24,6 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: 'row',
         alignItems: 'center',
         height: '100%',
-        borderBottomStyle: 'solid',
-        borderBottomWidth: '1px',
-        borderBottomColor: theme.vars
-            ? theme.vars.palette.TableCell.border
-            : theme.palette.mode === 'light'
-            ? lighten(alpha(theme.palette.divider, 1), 0.88)
-            : darken(alpha(theme.palette.divider, 1), 0.68),
     },
     divNum: {
         flexDirection: 'row-reverse',
