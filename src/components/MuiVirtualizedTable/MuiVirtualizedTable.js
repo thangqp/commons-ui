@@ -27,10 +27,10 @@ import { AutoSizer, Column, Table } from 'react-virtualized';
 import CsvDownloader from 'react-csv-downloader';
 import OverflowableText from '../OverflowableText/overflowable-text';
 import {
+    CHANGE_WAYS,
     collectibleHelper,
     getHelper,
     KeyedColumnsRowIndexer,
-    CHANGE_WAYS,
 } from './KeyedColumnsRowIndexer';
 import ColumnHeader from './ColumnHeader';
 
@@ -131,15 +131,9 @@ const initIndexer = (props, oldProps, versionSetter) => {
     if (props.indexer) {
         return props.indexer;
     } else if (!props.sort) {
-        const indexer = new KeyedColumnsRowIndexer(
-            true,
-            true,
-            null,
-            versionSetter
-        );
-        return indexer;
+        return new KeyedColumnsRowIndexer(true, true, null, versionSetter);
     } else if (typeof props.sort === 'function') {
-        const indexer = new KeyedColumnsRowIndexer(
+        return new KeyedColumnsRowIndexer(
             true,
             true,
             (cbfgs, done_cb) => {
@@ -148,15 +142,13 @@ const initIndexer = (props, oldProps, versionSetter) => {
             },
             versionSetter
         );
-        return indexer;
     } else if (typeof props.sort === 'object') {
         return props.sort;
     } else {
         console.warn('unknown type of sort', props.sort);
     }
 
-    const indexer = new KeyedColumnsRowIndexer(true, true, null, versionSetter);
-    return indexer;
+    return new KeyedColumnsRowIndexer(true, true, null, versionSetter);
 };
 
 class MuiVirtualizedTable extends React.PureComponent {
@@ -227,7 +219,7 @@ class MuiVirtualizedTable extends React.PureComponent {
         }
     }
 
-    preFilterData = memoize((columns, rows, filterVersion) => {
+    preFilterData = memoize((columns, rows) => {
         return this.state.indexer.preFilterRowMapping(columns, rows);
     });
 
@@ -264,8 +256,7 @@ class MuiVirtualizedTable extends React.PureComponent {
                 };
             }
         } else if (indexer) {
-            const fv = this.state.indexer.filterVersion;
-            const prefiltered = this.preFilterData(columns, rows, fv);
+            const prefiltered = this.preFilterData(columns, rows);
             const reorderedIndex = indexer.makeGroupAndSortIndirector(
                 prefiltered,
                 columns
@@ -295,7 +286,7 @@ class MuiVirtualizedTable extends React.PureComponent {
 
     sizes = memoize((columns, rows, rowGetter) => {
         let sizes = {};
-        columns.forEach((col, colIdx) => {
+        columns.forEach((col) => {
             if (col.width) {
                 sizes[col.dataKey] = col.width;
             } else {
@@ -355,11 +346,9 @@ class MuiVirtualizedTable extends React.PureComponent {
             !this.props.defersFilterChanges || !this.state.deferredFilterChange
                 ? this.state.indexer.getColFilterUserParams(colKey)
                 : this.state.deferredFilterChange.newVal;
-        const fv = this.state.indexer.filterVersion;
         const prefiltered = this.preFilterData(
             this.props.columns,
-            this.props.rows,
-            fv
+            this.props.rows
         );
 
         let options = [];
@@ -369,7 +358,7 @@ class MuiVirtualizedTable extends React.PureComponent {
         const colStat = prefiltered?.colsStats?.[colKey];
         if (colStat?.seen) {
             for (let key of Object.getOwnPropertyNames(colStat.seen)) {
-                if (options.findIndex((o, i) => o === key) < 0) {
+                if (options.findIndex((o) => o === key) < 0) {
                     options.push(key);
                 }
             }
@@ -449,7 +438,7 @@ class MuiVirtualizedTable extends React.PureComponent {
         this.openPopover(retargeted, colKey);
     };
 
-    sortableHeader = ({ label, columnIndex, width }) => {
+    sortableHeader = ({ label, columnIndex }) => {
         const { columns, classes } = this.props;
         const indexer = this.state.indexer;
         const colKey = columns[columnIndex].dataKey;
@@ -457,8 +446,7 @@ class MuiVirtualizedTable extends React.PureComponent {
         const userParams = indexer.getColFilterUserParams(colKey);
         const numeric = columns[columnIndex].numeric;
 
-        const fv = this.state.indexer.filterVersion;
-        const prefiltered = this.preFilterData(columns, this.props.rows, fv);
+        const prefiltered = this.preFilterData(columns, this.props.rows);
         const colStat = prefiltered?.colsStats?.[colKey];
         let filterLevel = 0;
         if (colStat?.seen) {
@@ -490,7 +478,7 @@ class MuiVirtualizedTable extends React.PureComponent {
         );
     };
 
-    simpleHeaderRenderer = ({ label, columnIndex }) => {
+    simpleHeaderRenderer = ({ label }) => {
         return (
             <div
                 ref={(element) => {
@@ -599,7 +587,7 @@ class MuiVirtualizedTable extends React.PureComponent {
         return displayedValue;
     }
 
-    _computeHeaderSize(entries, observer) {
+    _computeHeaderSize() {
         const headers = Object.values(this.headers.current);
         if (headers.length === 0) return;
         // for now keep 'historical' use of scrollHeight,
@@ -618,7 +606,7 @@ class MuiVirtualizedTable extends React.PureComponent {
         }
     }
 
-    makeHeaderRenderer(sizes, dataKey, columnIndex) {
+    makeHeaderRenderer(dataKey, columnIndex) {
         const { columns, classes } = this.props;
         return (headerProps) => {
             return (
@@ -640,13 +628,11 @@ class MuiVirtualizedTable extends React.PureComponent {
                     {this.props.sortable
                         ? this.sortableHeader({
                               ...headerProps,
-                              width: sizes[dataKey],
                               columnIndex,
                               key: { dataKey },
                           })
                         : this.simpleHeaderRenderer({
                               ...headerProps,
-                              columnIndex,
                           })}
                 </TableCell>
             );
@@ -681,7 +667,6 @@ class MuiVirtualizedTable extends React.PureComponent {
                         <Column
                             key={dataKey}
                             headerRenderer={this.makeHeaderRenderer(
-                                sizes,
                                 dataKey,
                                 index
                             )}
@@ -699,14 +684,12 @@ class MuiVirtualizedTable extends React.PureComponent {
     };
 
     getCSVFilename = () => {
-        if (this.props.name && this.props.name.length > 0) {
+        if (!this.props.name && this.props.name.length > 0) {
             return this.props.name.replace(/\s/g, '_');
         } else {
-            let filename = '';
-            this.props.columns.forEach((col, idx) => {
-                filename += col.label;
-                if (idx !== this.props.columns.length - 1) filename += '_';
-            });
+            let filename = Object.entries(this.props.columns)
+                .map((p) => p[1].label)
+                .join('_');
             return filename;
         }
     };
