@@ -111,7 +111,7 @@ export const ColumnHeader = React.forwardRef((props, ref) => {
         setHovered(evt.type === 'mouseenter');
     }, []);
 
-    const onFC = React.useMemo(() => {
+    const handleFilterClick = React.useMemo(() => {
         if (!onFilterClick) return undefined;
         return (evt, ...others) => {
             onFilterClick(evt, evt.target.parentNode.parentNode);
@@ -141,10 +141,10 @@ export const ColumnHeader = React.forwardRef((props, ref) => {
                     signedRank={sortSignedRank}
                 />
             )}
-            {onFC && (
+            {handleFilterClick && (
                 <FilterButton
                     headerHovered={hovered}
-                    onClick={onFC}
+                    onClick={handleFilterClick}
                     filterLevel={filterLevel}
                 />
             )}

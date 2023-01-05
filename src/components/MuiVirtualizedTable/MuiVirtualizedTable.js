@@ -684,7 +684,7 @@ class MuiVirtualizedTable extends React.PureComponent {
     };
 
     getCSVFilename = () => {
-        if (!this.props.name && this.props.name.length > 0) {
+        if (this.props.name?.length > 0) {
             return this.props.name.replace(/\s/g, '_');
         } else {
             let filename = Object.entries(this.props.columns)
