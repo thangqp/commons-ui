@@ -11,8 +11,6 @@ import PropTypes from 'prop-types';
 import SearchIcon from '@mui/icons-material/Search';
 import { useIntl } from 'react-intl';
 
-const TERM_MIN_SIZE_BEFORE_SEARCH = 3;
-
 const ElementSearchDialog = (props) => {
     const intl = useIntl();
 
@@ -37,7 +35,7 @@ const ElementSearchDialog = (props) => {
     }, [elementsFound]);
 
     const handleSearchTermChange = (term) => {
-        if (term.length >= TERM_MIN_SIZE_BEFORE_SEARCH) {
+        if (term) {
             setLoading(true);
             onSearchTermChange(term);
             setExpanded(true);

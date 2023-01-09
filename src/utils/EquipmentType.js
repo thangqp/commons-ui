@@ -114,10 +114,10 @@ export const EQUIPMENT_TYPE = {
 
 export const getEquipmentsInfosForSearchBar = (
     equipmentsInfos,
-    equipmentLabelling
+    getNameOrId
 ) => {
     return equipmentsInfos.flatMap((e) => {
-        let label = equipmentLabelling ? e.name : e.id;
+        let label = getNameOrId(e);
         return e.type === 'SUBSTATION'
             ? [
                   {
@@ -133,7 +133,7 @@ export const getEquipmentsInfosForSearchBar = (
                       id: e.id,
                       key: e.id + '_' + vli.id,
                       type: e.type,
-                      voltageLevelLabel: equipmentLabelling ? vli.name : vli.id,
+                      voltageLevelLabel: getNameOrId(vli),
                       voltageLevelId: vli.id,
                   };
               });
