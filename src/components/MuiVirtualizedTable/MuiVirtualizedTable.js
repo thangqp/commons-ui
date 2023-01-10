@@ -700,8 +700,11 @@ class MuiVirtualizedTable extends React.PureComponent {
             this.props.rows,
             this.props.columns
         );
+        let rowsCount =
+            reorderedIndex.viewIndexToModel?.length ?? this.props.rows.length;
 
-        const csvData = this.props.rows.map((_, index) => {
+        const csvData = [];
+        for (let index = 0; index < rowsCount; ++index) {
             const myobj = {};
             const sortedRow = reorderedIndex.rowGetter(index);
             const exportedKeys = this.props.exportCSVDataKeys;
@@ -710,8 +713,8 @@ class MuiVirtualizedTable extends React.PureComponent {
                     myobj[col.dataKey] = sortedRow[col.dataKey];
                 }
             });
-            return myobj;
-        });
+            csvData.push(myobj);
+        }
 
         return Promise.resolve(csvData);
     };
