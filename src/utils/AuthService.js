@@ -203,8 +203,8 @@ function dispatchUser(dispatch, userManagerInstance, validateUser) {
             // If session storage contains a expired token at initialization
             // We do not dispatch the user
             // Our explicit SigninSilent will attempt to connect once
-            if (user && getIdTokenExpiresIn(user) < 0) {
-                console.debug('User token is expired, You are not logged in.');
+            if (getIdTokenExpiresIn(user) < 0) {
+                console.debug('User token is expired and will not be dispatched');
                 return;
             }
             // without validateUser defined, valid user by default
@@ -274,10 +274,11 @@ function handleUser(dispatch, userManager, validateUser) {
         // otherwise the library tries to signin immediately when we do getUser()
         window.setTimeout(() => {
             userManager.getUser().then((user) => {
-                if (!user)
+                if (!user) {
                     console.error(
                         "user is null at silent renew error, it shouldn't happen."
                     );
+                }                   
                 const idTokenExpiresIn = getIdTokenExpiresIn(user);
                 if (idTokenExpiresIn < 0) {
                     console.log(
