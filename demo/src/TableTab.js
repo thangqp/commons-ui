@@ -137,7 +137,6 @@ export const TableTab = () => {
             </Box>
             <Box style={{ height: '20rem' }}>
                 <VirtualizedTable
-                    name="Demo Virtualized Table"
                     rows={rows}
                     sortable={false}
                     columns={columns}

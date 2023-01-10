@@ -701,21 +701,16 @@ class MuiVirtualizedTable extends React.PureComponent {
             this.props.columns
         );
 
-        let csvData = [];
-        reorderedIndex.forEach((index) => {
-            var myobj = {};
-            let sortedRow = this.props.rows[index];
+        const csvData = this.props.rows.map((_, index) => {
+            const myobj = {};
+            const sortedRow = reorderedIndex.rowGetter(index);
+            const exportedKeys = this.props.exportCSVDataKeys;
             this.props.columns.forEach((col) => {
-                if (
-                    this.props.exportCSVDataKeys !== undefined &&
-                    this.props.exportCSVDataKeys.find(
-                        (el) => el === col.dataKey
-                    )
-                ) {
+                if (exportedKeys?.find((el) => el === col.dataKey)) {
                     myobj[col.dataKey] = sortedRow[col.dataKey];
                 }
             });
-            csvData.push(myobj);
+            return myobj;
         });
 
         return Promise.resolve(csvData);
