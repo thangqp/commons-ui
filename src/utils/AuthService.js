@@ -167,6 +167,7 @@ function logout(dispatch, userManagerInstance) {
     sessionStorage.removeItem(hackauthoritykey); //To remove when hack is removed
     return userManagerInstance.getUser().then((user) => {
         if (user) {
+            // We don't need to check if token is valid at this point
             return userManagerInstance
                 .signoutRedirect({
                     extraQueryParams: {
@@ -190,9 +191,24 @@ function logout(dispatch, userManagerInstance) {
     });
 }
 
+function getIdTokenExpiresIn(user) {
+    const now = parseInt(Date.now() / 1000);
+    const exp = jwtDecode(user.id_token).exp;
+    return exp - now;
+}
+
 function dispatchUser(dispatch, userManagerInstance, validateUser) {
     return userManagerInstance.getUser().then((user) => {
         if (user) {
+            // If session storage contains a expired token at initialization
+            // We do not dispatch the user
+            // Our explicit SigninSilent will attempt to connect once
+            if (getIdTokenExpiresIn(user) < 0) {
+                console.debug(
+                    'User token is expired and will not be dispatched'
+                );
+                return;
+            }
             // without validateUser defined, valid user by default
             let validateUserPromise =
                 (validateUser && validateUser(user)) || Promise.resolve(true);
@@ -205,15 +221,6 @@ function dispatchUser(dispatch, userManagerInstance, validateUser) {
                         return dispatch(
                             setUnauthorizedUserInfo(user?.profile?.name, {})
                         );
-                    }
-                    const now = parseInt(Date.now() / 1000);
-                    const exp = jwtDecode(user.id_token).exp;
-                    const idTokenExpiresIn = exp - now;
-                    if (idTokenExpiresIn < 0) {
-                        console.debug(
-                            'User token is expired and will not be dispatched'
-                        );
-                        return;
                     }
                     console.debug(
                         'User has been successfully loaded from store.'
@@ -269,9 +276,12 @@ function handleUser(dispatch, userManager, validateUser) {
         // otherwise the library tries to signin immediately when we do getUser()
         window.setTimeout(() => {
             userManager.getUser().then((user) => {
-                const now = parseInt(Date.now() / 1000);
-                const exp = jwtDecode(user.id_token).exp;
-                const idTokenExpiresIn = exp - now;
+                if (!user) {
+                    console.error(
+                        "user is null at silent renew error, it shouldn't happen."
+                    );
+                }
+                const idTokenExpiresIn = getIdTokenExpiresIn(user);
                 if (idTokenExpiresIn < 0) {
                     console.log(
                         'Error in silent renew, idtoken expired: ' +
@@ -279,7 +289,6 @@ function handleUser(dispatch, userManager, validateUser) {
                             ' => Logging out.',
                         error
                     );
-                    // TODO here allow to continue to use the app but in some kind of frozen state because we can't make API calls anymore
                     // remove the user from our app, but don't sso logout on all other apps
                     dispatch(setShowAuthenticationRouterLogin(true));
                     // logout during token expiration, show login without errors
@@ -331,6 +340,11 @@ function handleUser(dispatch, userManager, validateUser) {
                 }
             });
         }, accessTokenExpiringNotificationTime * 1000);
+        // Should be min(accessTokenExpiringNotificationTime * 1000, idTokenExpiresIn) to avoid rare case
+        // when user connection is dying and you refresh the page between expiring and expired.
+        // but gateway has a DEFAULT_MAX_CLOCK_SKEW = 60s then the token is still valid for this time
+        // even if expired
+        // We accept to not manage this case further
     });
 
     console.debug('dispatch user');
@@ -346,4 +360,5 @@ export {
     dispatchUser,
     handleSigninCallback,
     getPreLoginPath,
+    getIdTokenExpiresIn,
 };
