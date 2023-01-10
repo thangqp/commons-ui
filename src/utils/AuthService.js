@@ -204,7 +204,9 @@ function dispatchUser(dispatch, userManagerInstance, validateUser) {
             // We do not dispatch the user
             // Our explicit SigninSilent will attempt to connect once
             if (getIdTokenExpiresIn(user) < 0) {
-                console.debug('User token is expired and will not be dispatched');
+                console.debug(
+                    'User token is expired and will not be dispatched'
+                );
                 return;
             }
             // without validateUser defined, valid user by default
@@ -278,7 +280,7 @@ function handleUser(dispatch, userManager, validateUser) {
                     console.error(
                         "user is null at silent renew error, it shouldn't happen."
                     );
-                }                   
+                }
                 const idTokenExpiresIn = getIdTokenExpiresIn(user);
                 if (idTokenExpiresIn < 0) {
                     console.log(
