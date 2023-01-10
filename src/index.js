@@ -27,6 +27,7 @@ export {
     logout,
     dispatchUser,
     getPreLoginPath,
+    getIdTokenExpiresIn,
 } from './utils/AuthService';
 
 export { elementType, getFileIcon } from './utils/ElementType';
