@@ -36,9 +36,7 @@ function handleSigninSilent(dispatch, userManager) {
                         'authority mismatch on settings vs. signin state'
                 ) {
                     sessionStorage.setItem(oidcHackReloaded, true);
-                    console.log(
-                        'Hack oidc, reload page to make login work'
-                    );
+                    console.log('Hack oidc, reload page to make login work');
                     window.location.reload();
                 }
             });
