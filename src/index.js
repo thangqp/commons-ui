@@ -57,7 +57,6 @@ export {
     LOGOUT_ERROR,
     USER_VALIDATION_ERROR,
     RESET_AUTHENTICATION_ROUTER_ERROR,
-    setShowAuthenticationRouterLogin,
     SHOW_AUTH_INFO_LOGIN,
 } from './utils/actions';
 export report_viewer_en from './components/translations/report-viewer-en';
