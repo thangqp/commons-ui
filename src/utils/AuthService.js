@@ -382,5 +382,4 @@ export {
     dispatchUser,
     handleSigninCallback,
     getPreLoginPath,
-    getIdTokenExpiresIn,
 };
