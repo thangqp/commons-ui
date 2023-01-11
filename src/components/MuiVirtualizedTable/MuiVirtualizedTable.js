@@ -439,7 +439,7 @@ class MuiVirtualizedTable extends React.PureComponent {
     };
 
     sortableHeader = ({ label, columnIndex }) => {
-        const { columns, classes } = this.props;
+        const { columns } = this.props;
         const indexer = this.state.indexer;
         const colKey = columns[columnIndex].dataKey;
         const signedRank = indexer.columnSortingSignedRank(colKey);
@@ -466,7 +466,6 @@ class MuiVirtualizedTable extends React.PureComponent {
             <ColumnHeader
                 label={label}
                 ref={(e) => this._registerHeader(label, e)}
-                className={clsx(classes.tableCell, classes.header)}
                 sortSignedRank={signedRank}
                 filterLevel={filterLevel}
                 numeric={numeric}
