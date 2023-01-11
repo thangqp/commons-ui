@@ -33,7 +33,7 @@ function handleSigninSilent(dispatch, userManager) {
                 if (
                     !sessionStorage.getItem(oidcHackReloaded) &&
                     error.message ===
-                        'authority mismatch on settings vs. signin state'
+                    'authority mismatch on settings vs. signin state'
                 ) {
                     sessionStorage.setItem(oidcHackReloaded, true);
                     console.log('Hack oidc, reload page to make login work');
@@ -116,7 +116,7 @@ function initializeAuthenticationProd(
                             if (
                                 idpSettings.maxExpiresIn &&
                                 idpSettings.maxExpiresIn <
-                                    minAccesstokenOrIdtokenOrIdpSettingsExpiresIn
+                                minAccesstokenOrIdtokenOrIdpSettingsExpiresIn
                             ) {
                                 minAccesstokenOrIdtokenOrIdpSettingsExpiresIn =
                                     idpSettings.maxExpiresIn;
@@ -127,23 +127,23 @@ function initializeAuthenticationProd(
                                 const newhash = window.location.hash.replace(
                                     matched_expires[0],
                                     'expires_in=' +
-                                        minAccesstokenOrIdtokenOrIdpSettingsExpiresIn
+                                    minAccesstokenOrIdtokenOrIdpSettingsExpiresIn
                                 );
                                 console.debug(
                                     'Replacing expires_in in window.location.hash to ' +
-                                        minAccesstokenOrIdtokenOrIdpSettingsExpiresIn +
-                                        ' because ' +
-                                        newExpireReplaceReason +
-                                        '. ',
+                                    minAccesstokenOrIdtokenOrIdpSettingsExpiresIn +
+                                    ' because ' +
+                                    newExpireReplaceReason +
+                                    '. ',
                                     'debug:',
                                     'original expires_in: ' + expires_in + ', ',
                                     'idTokenExpiresIn: ' +
-                                        idTokenExpiresIn +
-                                        '(idtoken exp: ' +
-                                        exp +
-                                        '), ',
+                                    idTokenExpiresIn +
+                                    '(idtoken exp: ' +
+                                    exp +
+                                    '), ',
                                     'idpSettings maxExpiresIn: ' +
-                                        idpSettings.maxExpiresIn
+                                    idpSettings.maxExpiresIn
                                 );
                                 window.location.hash = newhash;
                             }
@@ -176,7 +176,7 @@ function initializeAuthenticationProd(
             }
             return userManager;
         })
-        .catch( (error) => {
+        .catch((error) => {
             console.debug('error when importing the idp settings', error);
             dispatch(setShowAuthenticationRouterLogin(true));
             throw error;
@@ -312,8 +312,8 @@ function handleUser(dispatch, userManager, validateUser) {
                 if (idTokenExpiresIn < 0) {
                     console.log(
                         'Error in silent renew, idtoken expired: ' +
-                            idTokenExpiresIn +
-                            ' => Logging out.',
+                        idTokenExpiresIn +
+                        ' => Logging out.',
                         error
                     );
                     // remove the user from our app, but don't sso logout on all other apps
@@ -329,14 +329,14 @@ function handleUser(dispatch, userManager, validateUser) {
                         // for now we do the same thing as in the else block
                         console.log(
                             'Error in silent renew, but idtoken ALMOST expiring (expiring in' +
-                                idTokenExpiresIn +
-                                ') => last chance, next error will logout',
+                            idTokenExpiresIn +
+                            ') => last chance, next error will logout',
                             'maxExpiresIn = ' +
-                                userManager.idpSettings.maxExpiresIn,
+                            userManager.idpSettings.maxExpiresIn,
                             'last renew attempt in ' +
-                                idTokenExpiresIn -
-                                accessTokenExpiringNotificationTime +
-                                'seconds',
+                            idTokenExpiresIn -
+                            accessTokenExpiringNotificationTime +
+                            'seconds',
                             error
                         );
                         user.expires_in = idTokenExpiresIn;
@@ -346,9 +346,9 @@ function handleUser(dispatch, userManager, validateUser) {
                     } else {
                         console.log(
                             'Error in silent renew, but idtoken NOT expiring (expiring in' +
-                                idTokenExpiresIn +
-                                ') => postponing expiration to' +
-                                userManager.idpSettings.maxExpiresIn,
+                            idTokenExpiresIn +
+                            ') => postponing expiration to' +
+                            userManager.idpSettings.maxExpiresIn,
                             error
                         );
                         user.expires_in = userManager.idpSettings.maxExpiresIn;
@@ -359,9 +359,9 @@ function handleUser(dispatch, userManager, validateUser) {
                 } else {
                     console.log(
                         'Error in silent renew, unsupported configuration: token still valid for ' +
-                            idTokenExpiresIn +
-                            ' but maxExpiresIn is not configured:' +
-                            userManager.idpSettings.maxExpiresIn,
+                        idTokenExpiresIn +
+                        ' but maxExpiresIn is not configured:' +
+                        userManager.idpSettings.maxExpiresIn,
                         error
                     );
                 }
