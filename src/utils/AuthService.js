@@ -179,7 +179,7 @@ function initializeAuthenticationProd(
         .catch( (error) => {
             console.debug('error when importing the idp settings', error);
             dispatch(setShowAuthenticationRouterLogin(true));
-            return Promise.reject(error);
+            throw error;
         });
 }
 
