@@ -14,7 +14,7 @@ export const CHANGE_WAYS = {
     REMOVE: 'Remove',
 };
 
-/*
+/* This is not real code commented
 const someTypicalColumns = [
     { label: 'strings column', dataKey: 'key1' },
     {
@@ -183,8 +183,7 @@ export class KeyedColumnsRowIndexer {
         const ri = [];
         const cs = {};
 
-        for (let colIdx = 0; colIdx < columns.length; colIdx++) {
-            const col = columns[colIdx];
+        for (const col of columns) {
             const helper = getHelper(col);
             const colStat = helper.initStat();
             if (colStat) {
@@ -478,8 +477,7 @@ const codedColumnsFromKeyAndDirection = (keyAndDirections, columns) => {
         columIndexByKey[colKey] = colIdx;
     }
 
-    for (let i = 0; i < keyAndDirections.length; i++) {
-        const knd = keyAndDirections[i];
+    for (const knd of keyAndDirections) {
         const colKey = knd[0];
         const dir = knd[1];
 
@@ -496,9 +494,13 @@ const compareValue = (a, b, isNumeric, undefSign = -1) => {
     if (a === undefined && b === undefined) return 0;
     else if (a === undefined) return undefSign;
     else if (b === undefined) return -undefSign;
-    return isNumeric
-        ? Math.sign(Number(a) - Number(b))
-        : ('' + a).localeCompare(b);
+    if (!isNumeric) {
+        return ('' + a).localeCompare(b);
+    } else {
+        if (isNaN(a)) return isNaN(b) ? 0 : 1;
+        if (isNaN(b)) return -1;
+        return Math.sign(Number(a) - Number(b));
+    }
 };
 
 const makeCompositeComparatorFromCodedColumns = (

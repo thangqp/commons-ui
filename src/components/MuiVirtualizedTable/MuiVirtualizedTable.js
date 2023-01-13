@@ -357,7 +357,7 @@ class MuiVirtualizedTable extends React.PureComponent {
         }
         const colStat = prefiltered?.colsStats?.[colKey];
         if (colStat?.seen) {
-            for (let key of Object.getOwnPropertyNames(colStat.seen)) {
+            for (const key of Object.getOwnPropertyNames(colStat.seen)) {
                 if (options.findIndex((o) => o === key) < 0) {
                     options.push(key);
                 }
