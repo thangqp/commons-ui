@@ -357,7 +357,7 @@ class MuiVirtualizedTable extends React.PureComponent {
         }
         const colStat = prefiltered?.colsStats?.[colKey];
         if (colStat?.seen) {
-            for (let key of Object.getOwnPropertyNames(colStat.seen)) {
+            for (const key of Object.getOwnPropertyNames(colStat.seen)) {
                 if (options.findIndex((o) => o === key) < 0) {
                     options.push(key);
                 }
@@ -439,7 +439,7 @@ class MuiVirtualizedTable extends React.PureComponent {
     };
 
     sortableHeader = ({ label, columnIndex }) => {
-        const { columns, classes } = this.props;
+        const { columns } = this.props;
         const indexer = this.state.indexer;
         const colKey = columns[columnIndex].dataKey;
         const signedRank = indexer.columnSortingSignedRank(colKey);
@@ -456,8 +456,10 @@ class MuiVirtualizedTable extends React.PureComponent {
             filterLevel += userSelectedCount >= countSeen ? 2 : 0;
         }
 
+        // disable filtering when a cellRenderer is defined,
+        // as we have no simple way to match for chosen value(s)
         const onFilterClick =
-            numeric || this.props.sort
+            numeric || this.props.sort || columns[columnIndex].cellRenderer
                 ? undefined
                 : (ev, retargeted) => {
                       this.filterClickHandler(ev, retargeted, columnIndex);
@@ -466,7 +468,6 @@ class MuiVirtualizedTable extends React.PureComponent {
             <ColumnHeader
                 label={label}
                 ref={(e) => this._registerHeader(label, e)}
-                className={clsx(classes.tableCell, classes.header)}
                 sortSignedRank={signedRank}
                 filterLevel={filterLevel}
                 numeric={numeric}
