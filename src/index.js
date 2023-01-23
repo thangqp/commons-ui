@@ -81,3 +81,4 @@ export CardErrorBoundary from './components/CardErrorBoundary';
 export { useImportExportParams } from './hooks/useImportExportParams';
 export { useIntlRef } from './hooks/useIntlRef';
 export { useSnackMessage } from './hooks/useSnackMessage';
+export { useWindowDimensions } from './hooks/useWindowDimensions';
