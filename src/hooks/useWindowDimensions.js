@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 function getWindowDimensions() {
     const { innerWidth: windowWidth, innerHeight: windowHeight } = window;
