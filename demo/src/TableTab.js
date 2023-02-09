@@ -53,11 +53,13 @@ const styles = (theme) => ({
     },
 });
 
+const StyledVirtualizedTable = withStyles(styles)(MuiVirtualizedTable);
+
 export const TableTab = () => {
     const [usesCustomStyles, setUsesCustomStyles] = useState(true);
 
     const VirtualizedTable = usesCustomStyles
-        ? withStyles(styles)(MuiVirtualizedTable)
+        ? StyledVirtualizedTable
         : MuiVirtualizedTable;
 
     const [version, setVersion] = useState(0);
