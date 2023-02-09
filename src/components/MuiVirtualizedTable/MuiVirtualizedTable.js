@@ -228,7 +228,7 @@ class MuiVirtualizedTable extends React.PureComponent {
     });
 
     reorderIndex = memoize(
-        (indirectorVersion, rows, columns, filterFromProps) => {
+        (indirectorVersion, rows, columns, filterFromProps, sortFromProps) => {
             const indexer = this.state.indexer;
             if (!rows)
                 return {
@@ -237,20 +237,27 @@ class MuiVirtualizedTable extends React.PureComponent {
                 };
 
             const props = this.props;
-            if (indexer && props.sort) {
-                const highestCodedColumn = indexer.highestCodedColumn(
-                    props.columns
+            const highestCodedColumn = !indexer
+                ? 0
+                : indexer.highestCodedColumn(props.columns);
+            if (sortFromProps && highestCodedColumn) {
+                const colIdx = Math.abs(highestCodedColumn) - 1;
+                let reorderedIndex = sortFromProps(
+                    props.columns[colIdx].dataKey,
+                    highestCodedColumn > 0,
+                    !!props.columns[colIdx].numeric
                 );
-                if (highestCodedColumn !== 0) {
-                    const colIdx = Math.abs(highestCodedColumn) - 1;
-                    const ret = props.sort(
-                        props.columns[colIdx].dataKey,
-                        highestCodedColumn > 0,
-                        !!props.columns[colIdx].numeric
-                    );
-
-                    return this.makeIndexRecord(ret, rows);
+                return this.makeIndexRecord(reorderedIndex, rows);
+            } else if (sortFromProps) {
+                let viewIndexToModel;
+                try {
+                    viewIndexToModel = sortFromProps(null, false, false);
+                } catch (e) {
+                    //some external sort functions may expect to only be called
+                    //when the user has select a column. Catch their errors and ignore
+                    viewIndexToModel = null;
                 }
+                return this.makeIndexRecord(viewIndexToModel, rows);
             } else if (indexer) {
                 const prefiltered = this.preFilterData(
                     columns,
@@ -717,7 +724,8 @@ class MuiVirtualizedTable extends React.PureComponent {
             this.state.indirectionVersion,
             this.props.rows,
             this.props.columns,
-            this.props.filter
+            this.props.filter,
+            this.props.sort
         );
         let rowsCount =
             reorderedIndex.viewIndexToModel?.length ?? this.props.rows.length;
@@ -759,7 +767,8 @@ class MuiVirtualizedTable extends React.PureComponent {
             this.state.indirectionVersion,
             this.props.rows,
             this.props.columns,
-            this.props.filter
+            this.props.filter,
+            this.props.sort
         );
 
         const sizes = this.sizes(

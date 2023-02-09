@@ -12,6 +12,24 @@ import withStyles from '@mui/styles/withStyles';
 import { Box, FormControlLabel, Switch, TextField } from '@mui/material';
 import MuiVirtualizedTable from '../../src/components/MuiVirtualizedTable';
 
+// For demo and fun.. all even numbers first, then all ascending odd numbers, only postive numbers..
+const evenThenOddOrderingKey = (n) => {
+    const remainder = Math.abs(n % 2);
+    if (n <= 0 && remainder < 1) {
+        // first negative even and zero ]...-3,-2,-1]
+        return n / 2 - 1;
+    } else if (n > 0 && remainder < 1) {
+        // then positive even [-1/2, -1/3 ..., 0[
+        return -1 / (n / 2 + 1);
+    } else if (n < 0 && remainder >= 1) {
+        // then negative odds ]0, 1/3, 1/2...
+        return -1 / ((n - 1) / 2 - 1);
+    } else {
+        //positive odd [1,2,3,4...[
+        return (n + 1) / 2;
+    }
+};
+
 const styles = (theme) => ({
     table: {
         // temporary right-to-left patch, waiting for
@@ -111,11 +129,36 @@ export const TableTab = () => {
     }, []);
 
     const [filterValue, setFilterValue] = useState('');
+    const [doesSort, setDoesSort] = useState(false);
     const filter = useCallback(
         (row) => {
             return row.key2 && row.key2.includes(filterValue);
         },
         [filterValue]
+    );
+    const sort = useCallback(
+        (dataKey, reverse, isNumeric) => {
+            let filtered = rows
+                .map((r, i) => [r, i])
+                .filter(([r]) => !filter || filter(r));
+            if (dataKey) {
+                filtered = filtered
+                    .map(([r, j]) => [r[dataKey], j])
+                    .map(([r, j]) => [
+                        isNumeric ? r : Number(r.replace(/[^0-9.]/g, '')),
+                        j,
+                    ]); // for demo, extract any number from a string..
+                filtered.sort(
+                    ([a], [b]) =>
+                        evenThenOddOrderingKey(b) - evenThenOddOrderingKey(a)
+                );
+                if (reverse) {
+                    filtered = filtered.reverse();
+                }
+            }
+            return filtered.map(([d, j]) => j);
+        },
+        [rows, filter]
     );
 
     return (
@@ -129,6 +172,16 @@ export const TableTab = () => {
                 }
                 labelPlacement={'start'}
                 label="Custom theme"
+            />
+            <FormControlLabel
+                control={
+                    <Switch
+                        checked={doesSort}
+                        onChange={() => setDoesSort((was) => !was)}
+                    />
+                }
+                labelPlacement={'start'}
+                label="External sort (even then odds)"
             />
             <TextField
                 style={{ marginLeft: '10px' }}
@@ -150,6 +203,7 @@ export const TableTab = () => {
                     indexer={indexer}
                     version={version}
                     {...(filterValue && { filter })}
+                    {...(doesSort && { sort })}
                 />
             </Box>
             <Box style={{ height: '20rem' }}>
@@ -165,6 +219,7 @@ export const TableTab = () => {
                     indexer={indexer}
                     version={version}
                     {...(filterValue && { filter })}
+                    {...(doesSort && { sort })}
                 />
             </Box>
             <Box style={{ height: '20rem' }}>
@@ -179,6 +234,7 @@ export const TableTab = () => {
                     onCellClick={(...args) => console.log('onCellClick', args)}
                     version={version}
                     {...(filterValue && { filter })}
+                    {...(doesSort && { sort })}
                 />
             </Box>
         </>
