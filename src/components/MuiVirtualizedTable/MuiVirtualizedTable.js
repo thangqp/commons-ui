@@ -249,16 +249,7 @@ class MuiVirtualizedTable extends React.PureComponent {
                         !!props.columns[colIdx].numeric
                     );
 
-                    return {
-                        viewIndexToModel: ret,
-                        rowGetter: (viewIndex) => {
-                            if (viewIndex >= ret.length || viewIndex < 0) {
-                                return {};
-                            }
-                            const modelIndex = ret[viewIndex];
-                            return rows[modelIndex];
-                        },
-                    };
+                    return this.makeIndexRecord(ret, rows);
                 }
             } else if (indexer) {
                 const prefiltered = this.preFilterData(
@@ -270,46 +261,36 @@ class MuiVirtualizedTable extends React.PureComponent {
                     prefiltered,
                     columns
                 );
-                return {
-                    viewIndexToModel: reorderedIndex,
-                    rowGetter: (viewIndex) => {
-                        if (reorderedIndex === null) return rows[viewIndex];
-                        if (
-                            viewIndex >= reorderedIndex.length ||
-                            viewIndex < 0
-                        ) {
-                            return {};
-                        }
-                        const modelIndex = reorderedIndex[viewIndex];
-                        return rows[modelIndex];
-                    },
-                };
+                return this.makeIndexRecord(reorderedIndex, rows);
             } else if (filterFromProps) {
                 const viewIndexToModel = rows
                     .map((r, i) => [r, i])
                     .filter(([r, idx]) => filterFromProps(r))
                     .map(([r, j]) => j);
-                return {
-                    viewIndexToModel: viewIndexToModel,
-                    rowGetter: (viewIndex) => {
-                        if (
-                            viewIndex >= viewIndexToModel.length ||
-                            viewIndex < 0
-                        ) {
-                            return {};
-                        }
-                        const modelIndex = viewIndexToModel[viewIndex];
-                        return rows[modelIndex];
-                    },
-                };
+                return this.makeIndexRecord(viewIndexToModel, rows);
             }
 
-            return {
-                viewIndexToModel: null,
-                rowGetter: (viewIndex) => rows[viewIndex],
-            };
+            return this.makeIndexRecord(null, rows);
         }
     );
+
+    makeIndexRecord(viewIndexToModel, rows) {
+        return {
+            viewIndexToModel,
+            rowGetter: !viewIndexToModel
+                ? (viewIndex) => rows[viewIndex]
+                : (viewIndex) => {
+                      if (
+                          viewIndex >= viewIndexToModel.length ||
+                          viewIndex < 0
+                      ) {
+                          return {};
+                      }
+                      const modelIndex = viewIndexToModel[viewIndex];
+                      return rows[modelIndex];
+                  },
+        };
+    }
 
     computeDataWidth = (text) => {
         return getTextWidth(text || '') + 2 * DEFAULT_CELL_PADDING;
