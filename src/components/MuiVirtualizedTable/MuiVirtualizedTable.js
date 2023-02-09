@@ -248,17 +248,20 @@ class MuiVirtualizedTable extends React.PureComponent {
                     !!props.columns[colIdx].numeric
                 );
                 return this.makeIndexRecord(reorderedIndex, rows);
-            } else if (sortFromProps) {
-                let viewIndexToModel;
+            }
+            if (sortFromProps) {
                 try {
-                    viewIndexToModel = sortFromProps(null, false, false);
+                    const viewIndexToModel = sortFromProps(null, false, false);
+                    return this.makeIndexRecord(viewIndexToModel, rows);
                 } catch (e) {
                     //some external sort functions may expect to only be called
                     //when the user has select a column. Catch their errors and ignore
-                    viewIndexToModel = null;
+                    console.warn(
+                        'error in external sort. consider adding support for datakey=null in your external sort function'
+                    );
                 }
-                return this.makeIndexRecord(viewIndexToModel, rows);
-            } else if (indexer) {
+            }
+            if (indexer) {
                 const prefiltered = this.preFilterData(
                     columns,
                     rows,
@@ -269,7 +272,8 @@ class MuiVirtualizedTable extends React.PureComponent {
                     columns
                 );
                 return this.makeIndexRecord(reorderedIndex, rows);
-            } else if (filterFromProps) {
+            }
+            if (filterFromProps) {
                 const viewIndexToModel = rows
                     .map((r, i) => [r, i])
                     .filter(([r, idx]) => filterFromProps(r))
