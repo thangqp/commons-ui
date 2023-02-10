@@ -134,6 +134,8 @@ export const TableTab = () => {
 
     const [defersFilterChanges, setDefersFilterChanges] = useState(false);
 
+    const [headerHeight, setHeaderHeight] = useState('');
+
     const [filterValue, setFilterValue] = useState('');
     const [doesSort, setDoesSort] = useState(false);
     const filter = useCallback(
@@ -225,6 +227,17 @@ export const TableTab = () => {
                     defersFilterChanges,
                     setDefersFilterChanges
                 )}
+                <TextField
+                    label="initial header height"
+                    size={'small'}
+                    onChange={(event) => {
+                        updateKeyIfNeeded();
+                        const newHeaderHeight = Number(event.target.value);
+                        if (!isNaN(newHeaderHeight)) {
+                            setHeaderHeight(event.target.value);
+                        }
+                    }}
+                />
             </Stack>
         );
     }
@@ -242,6 +255,9 @@ export const TableTab = () => {
                     columns={columns}
                     enableExportCSV={true}
                     exportCSVDataKeys={['key2', 'key3']}
+                    headerHeight={
+                        !headerHeight ? undefined : Number(headerHeight)
+                    }
                     onRowClick={(...args) => console.log('onRowClick', args)}
                     onClick={(...args) => console.log('onClick', args)}
                     onCellClick={(...args) => console.log('onCellClick', args)}
