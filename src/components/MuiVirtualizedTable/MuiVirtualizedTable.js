@@ -337,6 +337,7 @@ class MuiVirtualizedTable extends React.PureComponent {
             return;
         }
 
+        this.dropDownVisible = false;
         this.setState({
             popoverAnchorEl: popoverTarget,
             popoverColKey: colKey,
@@ -393,7 +394,6 @@ class MuiVirtualizedTable extends React.PureComponent {
         }
 
         const col = this.props.columns.find((c) => c.dataKey === colKey);
-        this.dropDownVisible = false;
 
         return (
             <AmongChooser
