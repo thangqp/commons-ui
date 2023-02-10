@@ -87,7 +87,7 @@ const defaultStyles = {
 };
 
 const AmongChooser = (props) => {
-    const { options, value, setValue, id } = props;
+    const { options, value, setValue, id, onDropDownVisibility } = props;
     return (
         <>
             <span>{props.label}</span>
@@ -98,6 +98,8 @@ const AmongChooser = (props) => {
                 onChange={(evt, newVal) => {
                     setValue(newVal);
                 }}
+                onClose={() => onDropDownVisibility(false)}
+                onOpen={() => onDropDownVisibility(true)}
                 options={options}
                 // getOptionLabel={(code) => options.get(code)}
                 renderInput={(props) => (
@@ -341,9 +343,15 @@ class MuiVirtualizedTable extends React.PureComponent {
         });
     };
 
+    handleKeyDownOnPopover = (evt) => {
+        if (evt.key === 'Enter' && !this.dropDownVisible) {
+            this.closePopover(evt, 'enterKeyDown');
+        }
+    };
+
     closePopover = (evt, reason) => {
         let bumpsVersion = false;
-        if (reason === 'backdropClick') {
+        if (reason === 'backdropClick' || reason === 'enterKeyDown') {
             bumpsVersion = this._commitFilterChange();
         }
         this.setState((state, props) => {
@@ -385,16 +393,20 @@ class MuiVirtualizedTable extends React.PureComponent {
         }
 
         const col = this.props.columns.find((c) => c.dataKey === colKey);
+        this.dropDownVisible = false;
 
         return (
             <AmongChooser
                 options={options}
                 value={userParams}
                 id={'fielt' + colKey}
-                label={col?.label ?? '\u2208'}
+                label={col?.label ?? '\u2208'} // "contained in" math symbol
                 setValue={(newVal) => {
                     this.onFilterParamsChange(newVal, colKey);
                 }}
+                onDropDownVisibility={(visible) =>
+                    (this.dropdownvisible = visible)
+                }
             />
         );
     };
@@ -839,6 +851,7 @@ class MuiVirtualizedTable extends React.PureComponent {
                             vertical: 'center',
                             horizontal: 'center',
                         }}
+                        onKeyDown={this.handleKeyDownOnPopover}
                         onClose={this.closePopover}
                         open={!!this.state.popoverAnchorEl}
                     >
