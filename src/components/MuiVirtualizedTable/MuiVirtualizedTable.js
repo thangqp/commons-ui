@@ -204,13 +204,20 @@ class MuiVirtualizedTable extends React.PureComponent {
         }
     }
 
-    preFilterData = memoize((columns, rows, filterFromProps) => {
-        return this.state.indexer.preFilterRowMapping(
+    preFilterData = memoize(
+        (
             columns,
             rows,
-            filterFromProps
-        );
-    });
+            filterFromProps,
+            filterVersion // filterVersion is unused directly, used only as a workaround just to reset the memoization
+        ) => {
+            return this.state.indexer.preFilterRowMapping(
+                columns,
+                rows,
+                filterFromProps
+            );
+        }
+    );
 
     reorderIndex = memoize(
         (indirectorVersion, rows, columns, filterFromProps, sortFromProps) => {
@@ -250,7 +257,8 @@ class MuiVirtualizedTable extends React.PureComponent {
                 const prefiltered = this.preFilterData(
                     columns,
                     rows,
-                    filterFromProps
+                    filterFromProps,
+                    indexer.filterVersion
                 );
                 const reorderedIndex = indexer.makeGroupAndSortIndirector(
                     prefiltered,
@@ -359,7 +367,8 @@ class MuiVirtualizedTable extends React.PureComponent {
         const prefiltered = this.preFilterData(
             this.props.columns,
             this.props.rows,
-            this.props.filter
+            this.props.filter,
+            this.state.indexer.filterVersion
         );
 
         let options = [];
@@ -460,7 +469,8 @@ class MuiVirtualizedTable extends React.PureComponent {
         const prefiltered = this.preFilterData(
             columns,
             this.props.rows,
-            this.props.filter
+            this.props.filter,
+            indexer.filterVersion
         );
         const colStat = prefiltered?.colsStats?.[colKey];
         let filterLevel = 0;
