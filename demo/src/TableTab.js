@@ -130,7 +130,7 @@ export const TableTab = () => {
 
     const [isIndexerExternal, setIndexerIsExternal] = useState(true);
     const [sortable, setSortable] = useState(true);
-    const [recreats, setRecreats] = useState(false);
+    const [recreates, setRecreates] = useState(false);
 
     const [defersFilterChanges, setDefersFilterChanges] = useState(false);
 
@@ -168,7 +168,7 @@ export const TableTab = () => {
     );
 
     const instanceKey = useRef(0);
-    if (recreats) {
+    if (recreates) {
         instanceKey.current += 1;
     }
 
@@ -182,7 +182,6 @@ export const TableTab = () => {
                             onChange={() => setUsesCustomStyles((was) => !was)}
                         />
                     }
-                    // labelPlacement={'start'}
                     label="Custom theme"
                 />
                 <FormControlLabel
@@ -192,17 +191,15 @@ export const TableTab = () => {
                             onChange={() => setSortable((was) => !was)}
                         />
                     }
-                    // labelPlacement={'start'}
                     label="Sortable"
                 />
                 <FormControlLabel
                     control={
                         <Switch
-                            checked={recreats}
-                            onChange={() => setRecreats((was) => !was)}
+                            checked={recreates}
+                            onChange={() => setRecreates((was) => !was)}
                         />
                     }
-                    // labelPlacement={'start'}
                     label="Instance renewal"
                 />
                 <FormControlLabel
@@ -212,7 +209,6 @@ export const TableTab = () => {
                             onChange={() => setIndexerIsExternal((was) => !was)}
                         />
                     }
-                    // labelPlacement={'start'}
                     label="Uses external indexer"
                 />
                 <FormControlLabel
@@ -222,7 +218,6 @@ export const TableTab = () => {
                             onChange={() => setDoesSort((was) => !was)}
                         />
                     }
-                    // labelPlacement={'start'}
                     label="External sort (reverses)"
                 />
                 <TextField
@@ -240,7 +235,6 @@ export const TableTab = () => {
                             }
                         />
                     }
-                    // labelPlacement={'start'}
                     label="Defer filter changes"
                 />
             </Stack>
@@ -253,7 +247,7 @@ export const TableTab = () => {
             <Stack sx={{ width: '100%' }}>
                 <Box style={{ height: '20rem' }}>
                     <VirtualizedTable
-                        key={recreats ? 'key' + instanceKey.current : undefined}
+                        key={recreates ? 'k' + instanceKey.current : undefined}
                         name="Demo Virtualized Table"
                         rows={rows}
                         sortable={sortable}
