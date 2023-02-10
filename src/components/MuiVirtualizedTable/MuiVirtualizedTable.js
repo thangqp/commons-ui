@@ -132,8 +132,6 @@ const initIndexer = (props, oldProps, versionSetter) => {
 
     if (props.indexer) {
         return props.indexer;
-    } else if (typeof props.sort === 'object') {
-        return props.sort;
     }
 
     return new KeyedColumnsRowIndexer(true, true, null, versionSetter);
@@ -178,7 +176,10 @@ class MuiVirtualizedTable extends React.PureComponent {
     };
 
     componentDidUpdate(oldProps) {
-        if (oldProps.data !== this.props.data) {
+        if (
+            oldProps.indexer !== this.props.indexer ||
+            oldProps.sortable !== this.props.sortable
+        ) {
             this.setState({
                 indexer: initIndexer(this.props, oldProps),
             });
@@ -329,9 +330,6 @@ class MuiVirtualizedTable extends React.PureComponent {
     });
 
     openPopover = (popoverTarget, colKey) => {
-        if (this.state.indexer.delegatorCallback) {
-            return; // retro compatibility stops here ;-)
-        }
         const col = this.props.columns.find((c) => c.dataKey === colKey);
         if (getHelper(col) !== collectibleHelper) {
             return;
@@ -665,7 +663,7 @@ class MuiVirtualizedTable extends React.PureComponent {
                     }
                     ref={(e) => this._registerObserver(e)}
                 >
-                    {this.props.sortable
+                    {this.props.sortable && this.state.indexer
                         ? this.sortableHeader({
                               ...headerProps,
                               columnIndex,
