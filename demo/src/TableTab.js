@@ -5,11 +5,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { useMemo, useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { DEFAULT_CELL_PADDING, KeyedColumnsRowIndexer } from '../../src';
 import withStyles from '@mui/styles/withStyles';
 
-import { Box, FormControlLabel, Switch, TextField } from '@mui/material';
+import { Box, FormControlLabel, Stack, Switch, TextField } from '@mui/material';
 import MuiVirtualizedTable from '../../src/components/MuiVirtualizedTable';
 
 // For demo and fun.. all even numbers first, then all ascending odd numbers, only postive numbers..
@@ -128,6 +128,12 @@ export const TableTab = () => {
         return ret;
     }, []);
 
+    const [isIndexerExternal, setIndexerIsExternal] = useState(true);
+    const [sortable, setSortable] = useState(true);
+    const [recreats, setRecreats] = useState(false);
+
+    const [defersFilterChanges, setDefersFilterChanges] = useState(false);
+
     const [filterValue, setFilterValue] = useState('');
     const [doesSort, setDoesSort] = useState(false);
     const filter = useCallback(
@@ -161,82 +167,114 @@ export const TableTab = () => {
         [rows, filter]
     );
 
+    const instanceKey = useRef(0);
+    if (recreats) {
+        instanceKey.current += 1;
+    }
+
+    function renderParams() {
+        return (
+            <Stack sx={{ margin: '1ex' }}>
+                <FormControlLabel
+                    control={
+                        <Switch
+                            checked={usesCustomStyles}
+                            onChange={() => setUsesCustomStyles((was) => !was)}
+                        />
+                    }
+                    // labelPlacement={'start'}
+                    label="Custom theme"
+                />
+                <FormControlLabel
+                    control={
+                        <Switch
+                            checked={sortable}
+                            onChange={() => setSortable((was) => !was)}
+                        />
+                    }
+                    // labelPlacement={'start'}
+                    label="Sortable"
+                />
+                <FormControlLabel
+                    control={
+                        <Switch
+                            checked={recreats}
+                            onChange={() => setRecreats((was) => !was)}
+                        />
+                    }
+                    // labelPlacement={'start'}
+                    label="Instance renewal"
+                />
+                <FormControlLabel
+                    control={
+                        <Switch
+                            checked={isIndexerExternal}
+                            onChange={() => setIndexerIsExternal((was) => !was)}
+                        />
+                    }
+                    // labelPlacement={'start'}
+                    label="Uses external indexer"
+                />
+                <FormControlLabel
+                    control={
+                        <Switch
+                            checked={doesSort}
+                            onChange={() => setDoesSort((was) => !was)}
+                        />
+                    }
+                    // labelPlacement={'start'}
+                    label="External sort (reverses)"
+                />
+                <TextField
+                    style={{ marginLeft: '10px' }}
+                    label="header2 filter"
+                    size={'small'}
+                    onChange={(event) => setFilterValue(event.target.value)}
+                />
+                <FormControlLabel
+                    control={
+                        <Switch
+                            checked={defersFilterChanges}
+                            onChange={() =>
+                                setDefersFilterChanges((was) => !was)
+                            }
+                        />
+                    }
+                    // labelPlacement={'start'}
+                    label="Defer filter changes"
+                />
+            </Stack>
+        );
+    }
+
     return (
-        <>
-            <FormControlLabel
-                control={
-                    <Switch
-                        checked={usesCustomStyles}
-                        onChange={() => setUsesCustomStyles((was) => !was)}
+        <Stack direction="row">
+            {renderParams()}
+            <Stack sx={{ width: '100%' }}>
+                <Box style={{ height: '20rem' }}>
+                    <VirtualizedTable
+                        key={recreats ? 'key' + instanceKey.current : undefined}
+                        name="Demo Virtualized Table"
+                        rows={rows}
+                        sortable={sortable}
+                        defersFilterChanges={defersFilterChanges}
+                        columns={columns}
+                        enableExportCSV={true}
+                        exportCSVDataKeys={['key2', 'key3']}
+                        onRowClick={(...args) =>
+                            console.log('onRowClick', args)
+                        }
+                        onClick={(...args) => console.log('onClick', args)}
+                        onCellClick={(...args) =>
+                            console.log('onCellClick', args)
+                        }
+                        indexer={isIndexerExternal ? indexer : null}
+                        version={version}
+                        {...(filterValue && { filter })}
+                        {...(doesSort && { sort })}
                     />
-                }
-                labelPlacement={'start'}
-                label="Custom theme"
-            />
-            <FormControlLabel
-                control={
-                    <Switch
-                        checked={doesSort}
-                        onChange={() => setDoesSort((was) => !was)}
-                    />
-                }
-                labelPlacement={'start'}
-                label="External sort (even then odds)"
-            />
-            <TextField
-                style={{ marginLeft: '10px' }}
-                label="header2 filter"
-                size={'small'}
-                onChange={(event) => setFilterValue(event.target.value)}
-            />
-            <Box style={{ height: '20rem' }}>
-                <VirtualizedTable
-                    name="Demo Virtualized Table"
-                    rows={rows}
-                    sortable={true}
-                    columns={columns}
-                    enableExportCSV={true}
-                    exportCSVDataKeys={['key2', 'key3']}
-                    onRowClick={(...args) => console.log('onRowClick', args)}
-                    onClick={(...args) => console.log('onClick', args)}
-                    onCellClick={(...args) => console.log('onCellClick', args)}
-                    indexer={indexer}
-                    version={version}
-                    {...(filterValue && { filter })}
-                    {...(doesSort && { sort })}
-                />
-            </Box>
-            <Box style={{ height: '20rem' }}>
-                <VirtualizedTable
-                    rows={rows}
-                    sortable={false}
-                    columns={columns}
-                    enableExportCSV={true}
-                    exportCSVDataKeys={['key2', 'key3']}
-                    onRowClick={(...args) => console.log('onRowClick', args)}
-                    onClick={(...args) => console.log('onClick', args)}
-                    onCellClick={(...args) => console.log('onCellClick', args)}
-                    indexer={indexer}
-                    version={version}
-                    {...(filterValue && { filter })}
-                    {...(doesSort && { sort })}
-                />
-            </Box>
-            <Box style={{ height: '20rem' }}>
-                <VirtualizedTable
-                    rows={rows}
-                    sortable={false}
-                    columns={columns}
-                    enableExportCSV={true}
-                    exportCSVDataKeys={['key2', 'key3']}
-                    onRowClick={(...args) => console.log('onRowClick', args)}
-                    onClick={(...args) => console.log('onClick', args)}
-                    onCellClick={(...args) => console.log('onCellClick', args)}
-                    version={version}
-                    {...(filterValue && { filter })}
-                    {...(doesSort && { sort })}
-                />
-            </Box>
-        </>
+                </Box>
+            </Stack>
+        </Stack>
     );
 };
