@@ -167,76 +167,60 @@ export const TableTab = () => {
         [rows, filter]
     );
 
+    const [key, setKey] = useState();
     const instanceKey = useRef(0);
     if (recreates) {
         instanceKey.current += 1;
     }
 
+    function updateKeyIfNeeded() {
+        if (recreates) {
+            setKey(crypto.randomUUID());
+        }
+    }
+
+    function mkSwitch(label, value, setter) {
+        return (
+            <FormControlLabel
+                control={
+                    <Switch
+                        checked={value}
+                        onChange={() => {
+                            updateKeyIfNeeded();
+                            setter((was) => !was);
+                        }}
+                    />
+                }
+                label={label}
+            />
+        );
+    }
+
     function renderParams() {
         return (
             <Stack sx={{ margin: '1ex' }}>
-                <FormControlLabel
-                    control={
-                        <Switch
-                            checked={usesCustomStyles}
-                            onChange={() => setUsesCustomStyles((was) => !was)}
-                        />
-                    }
-                    label="Custom theme"
-                />
-                <FormControlLabel
-                    control={
-                        <Switch
-                            checked={sortable}
-                            onChange={() => setSortable((was) => !was)}
-                        />
-                    }
-                    label="Sortable"
-                />
-                <FormControlLabel
-                    control={
-                        <Switch
-                            checked={recreates}
-                            onChange={() => setRecreates((was) => !was)}
-                        />
-                    }
-                    label="Instance renewal"
-                />
-                <FormControlLabel
-                    control={
-                        <Switch
-                            checked={isIndexerExternal}
-                            onChange={() => setIndexerIsExternal((was) => !was)}
-                        />
-                    }
-                    label="Uses external indexer"
-                />
-                <FormControlLabel
-                    control={
-                        <Switch
-                            checked={doesSort}
-                            onChange={() => setDoesSort((was) => !was)}
-                        />
-                    }
-                    label="External sort (reverses)"
-                />
+                {mkSwitch('Custom them', usesCustomStyles, setUsesCustomStyles)}
+                {mkSwitch('Sortable', sortable, setSortable)}
+                {mkSwitch('Instance renewal', recreates, setRecreates)}
+                {mkSwitch(
+                    'Uses external indexer',
+                    isIndexerExternal,
+                    setIndexerIsExternal
+                )}
+                {mkSwitch('External sort (reverses)', doesSort, setDoesSort)}
                 <TextField
-                    style={{ marginLeft: '10px' }}
                     label="header2 filter"
                     size={'small'}
-                    onChange={(event) => setFilterValue(event.target.value)}
+                    onChange={(event) => {
+                        updateKeyIfNeeded();
+                        setFilterValue(event.target.value);
+                    }}
                 />
-                <FormControlLabel
-                    control={
-                        <Switch
-                            checked={defersFilterChanges}
-                            onChange={() =>
-                                setDefersFilterChanges((was) => !was)
-                            }
-                        />
-                    }
-                    label="Defer filter changes"
-                />
+                {mkSwitch(
+                    'Defer filter changes',
+                    defersFilterChanges,
+                    setDefersFilterChanges
+                )}
             </Stack>
         );
     }
@@ -244,31 +228,25 @@ export const TableTab = () => {
     return (
         <Stack direction="row">
             {renderParams()}
-            <Stack sx={{ width: '100%' }}>
-                <Box style={{ height: '20rem' }}>
-                    <VirtualizedTable
-                        key={recreates ? 'k' + instanceKey.current : undefined}
-                        name="Demo Virtualized Table"
-                        rows={rows}
-                        sortable={sortable}
-                        defersFilterChanges={defersFilterChanges}
-                        columns={columns}
-                        enableExportCSV={true}
-                        exportCSVDataKeys={['key2', 'key3']}
-                        onRowClick={(...args) =>
-                            console.log('onRowClick', args)
-                        }
-                        onClick={(...args) => console.log('onClick', args)}
-                        onCellClick={(...args) =>
-                            console.log('onCellClick', args)
-                        }
-                        indexer={isIndexerExternal ? indexer : null}
-                        version={version}
-                        {...(filterValue && { filter })}
-                        {...(doesSort && { sort })}
-                    />
-                </Box>
-            </Stack>
+            <Box style={{ width: '100%', height: 'auto' }}>
+                <VirtualizedTable
+                    key={recreates ? key : undefined}
+                    name="Demo Virtualized Table"
+                    rows={rows}
+                    sortable={sortable}
+                    defersFilterChanges={defersFilterChanges}
+                    columns={columns}
+                    enableExportCSV={true}
+                    exportCSVDataKeys={['key2', 'key3']}
+                    onRowClick={(...args) => console.log('onRowClick', args)}
+                    onClick={(...args) => console.log('onClick', args)}
+                    onCellClick={(...args) => console.log('onCellClick', args)}
+                    indexer={isIndexerExternal ? indexer : null}
+                    version={version}
+                    {...(filterValue && { filter })}
+                    {...(doesSort && { sort })}
+                />
+            </Box>
         </Stack>
     );
 };
