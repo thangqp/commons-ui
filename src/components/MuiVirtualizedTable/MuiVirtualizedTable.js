@@ -130,22 +130,8 @@ const initIndexer = (props, oldProps, versionSetter) => {
 
     if (props.indexer) {
         return props.indexer;
-    } else if (!props.sort) {
-        return new KeyedColumnsRowIndexer(true, true, null, versionSetter);
-    } else if (typeof props.sort === 'function') {
-        return new KeyedColumnsRowIndexer(
-            true,
-            true,
-            (cbfgs, done_cb) => {
-                console.debug('dummy func, now :-/');
-                done_cb(true);
-            },
-            versionSetter
-        );
     } else if (typeof props.sort === 'object') {
         return props.sort;
-    } else {
-        console.warn('unknown type of sort', props.sort);
     }
 
     return new KeyedColumnsRowIndexer(true, true, null, versionSetter);
@@ -179,7 +165,6 @@ class MuiVirtualizedTable extends React.PureComponent {
             headerHeight: this.props.headerHeight,
             indexer: initIndexer(props, null, this.setVersion),
             indirectionVersion: 0,
-            reorderIndex: null,
             popoverAnchorEl: null,
             popoverColKey: null,
             deferredFilterChange: null,
@@ -353,12 +338,14 @@ class MuiVirtualizedTable extends React.PureComponent {
         if (reason === 'backdropClick') {
             bumpsVersion = this._commitFilterChange();
         }
-        this.setState({
-            popoverAnchorEl: null,
-            popoverColKey: null,
-            deferredFilterChange: null,
-            indirectionVersion:
-                this.state.indirectionVersion + (bumpsVersion ? 1 : 0),
+        this.setState((state, props) => {
+            return {
+                popoverAnchorEl: null,
+                popoverColKey: null,
+                deferredFilterChange: null,
+                indirectionVersion:
+                    state.indirectionVersion + (bumpsVersion ? 1 : 0),
+            };
         });
     };
 
@@ -484,8 +471,10 @@ class MuiVirtualizedTable extends React.PureComponent {
             filterLevel += userSelectedCount >= countSeen ? 2 : 0;
         }
 
-        // disable filtering when a cellRenderer is defined,
-        // as we have no simple way to match for chosen value(s)
+        // disable filtering when either:
+        //  - the column is numeric, we only handle tags for string values
+        //  - a cellRenderer is defined, as we have no simple way to match for chosen value(s)
+        //  - using an external sort, because it would hardly know about the indexer filtering
         const onFilterClick =
             numeric || this.props.sort || columns[columnIndex].cellRenderer
                 ? undefined
