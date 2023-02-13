@@ -88,9 +88,9 @@ const defaultStyles = {
 
 const AmongChooser = (props) => {
     const { options, value, setValue, id, onDropDownVisibility } = props;
+
     return (
-        <>
-            <span>{props.label}</span>
+        <span>
             <Autocomplete
                 id={id}
                 value={value ?? []}
@@ -101,13 +101,7 @@ const AmongChooser = (props) => {
                 onClose={() => onDropDownVisibility(false)}
                 onOpen={() => onDropDownVisibility(true)}
                 options={options}
-                // getOptionLabel={(code) => options.get(code)}
-                renderInput={(props) => (
-                    <TextField
-                        // label={<FormattedMessage id={titleMessage} />}
-                        {...props}
-                    />
-                )}
+                renderInput={(props) => <TextField autoFocus {...props} />}
                 renderTags={(val, getTagsProps) => {
                     return val.map((code, index) => {
                         return (
@@ -121,7 +115,7 @@ const AmongChooser = (props) => {
                     });
                 }}
             />
-        </>
+        </span>
     );
 };
 
@@ -397,6 +391,7 @@ class MuiVirtualizedTable extends React.PureComponent {
                 }
             }
         }
+        options.sort();
 
         const col = this.props.columns.find((c) => c.dataKey === colKey);
 
@@ -852,16 +847,17 @@ class MuiVirtualizedTable extends React.PureComponent {
                     <Popover
                         anchorEl={this.state.popoverAnchorEl}
                         anchorOrigin={{
-                            vertical: 'center',
-                            horizontal: 'center',
+                            vertical: 'bottom',
+                            horizontal: 'left',
                         }}
                         transformOrigin={{
-                            vertical: 'center',
-                            horizontal: 'center',
+                            vertical: 'top',
+                            horizontal: 'left',
                         }}
                         onKeyDownCapture={this.handleKeyDownOnPopover}
                         onClose={this.closePopover}
                         open={!!this.state.popoverAnchorEl}
+                        PaperProps={{ style: { minWidth: '20ex' } }}
                     >
                         {this.makeColumnFilterEditor()}
                     </Popover>
