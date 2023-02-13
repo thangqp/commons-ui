@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { DEFAULT_CELL_PADDING, KeyedColumnsRowIndexer } from '../../src';
 import withStyles from '@mui/styles/withStyles';
 
@@ -195,7 +195,11 @@ export const TableTab = () => {
     function renderParams() {
         return (
             <Stack sx={{ margin: '1ex' }}>
-                {mkSwitch('Custom theme', usesCustomStyles, setUsesCustomStyles)}
+                {mkSwitch(
+                    'Custom theme',
+                    usesCustomStyles,
+                    setUsesCustomStyles
+                )}
                 {mkSwitch('Sortable', sortable, setSortable)}
                 {mkSwitch('Instance renewal', recreates, setRecreates)}
                 {mkSwitch(
@@ -203,7 +207,11 @@ export const TableTab = () => {
                     isIndexerExternal,
                     setIndexerIsExternal
                 )}
-                {mkSwitch('External sort (reverses)', doesSort, setDoesSort)}
+                {mkSwitch(
+                    'External sort (even then odds)',
+                    doesSort,
+                    setDoesSort
+                )}
                 <TextField
                     label="header2 filter"
                     size={'small'}
