@@ -184,6 +184,9 @@ class MuiVirtualizedTable extends React.PureComponent {
                 indexer: initIndexer(this.props, oldProps),
             });
         }
+        if (oldProps.headerHeight !== this.props.headerHeight) {
+            this._computeHeaderSize();
+        }
     }
 
     componentDidMount() {
