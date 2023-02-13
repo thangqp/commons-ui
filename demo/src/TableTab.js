@@ -82,8 +82,6 @@ export const TableTab = () => {
         ? StyledVirtualizedTable
         : MuiVirtualizedTable;
 
-    const [version, setVersion] = useState(0);
-
     const columns = useMemo(
         () => [
             {
@@ -125,7 +123,7 @@ export const TableTab = () => {
     );
 
     function makeIndexer() {
-        const ret = new KeyedColumnsRowIndexer(true, false, null, setVersion);
+        const ret = new KeyedColumnsRowIndexer(true, false);
         ret.setColFilterOuterParams('key2', ['val9']);
 
         const colKey = 'key' + Math.floor(1 + Math.random() * 4);
@@ -281,7 +279,6 @@ export const TableTab = () => {
                     onClick={(...args) => console.log('onClick', args)}
                     onCellClick={(...args) => console.log('onCellClick', args)}
                     indexer={isIndexerExternal ? indexer : null}
-                    version={version}
                     {...(filterValue && { filter })}
                     {...(doesSort && { sort })}
                 />
