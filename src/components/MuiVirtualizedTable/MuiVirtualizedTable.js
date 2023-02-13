@@ -152,6 +152,83 @@ const initIndexer = (props, oldProps, versionSetter) => {
     return new KeyedColumnsRowIndexer(true, true, null, versionSetter);
 };
 
+const preFilterData = memoize(
+    (
+        columns,
+        rows,
+        filterFromProps,
+        indexer,
+        filterVersion // filterVersion is unused directly, used only as a workaround just to reset the memoization
+    ) => {
+        return indexer.preFilterRowMapping(columns, rows, filterFromProps);
+    }
+);
+
+const reorderIndex = memoize(
+    (
+        indexer,
+        indirectionVersion,
+        rows,
+        columns,
+        filterFromProps,
+        sortFromProps
+    ) => {
+        if (!rows)
+            return {
+                viewIndexToModel: [],
+                rowGetter: (viewIndex) => viewIndex,
+            };
+
+        const highestCodedColumn = !indexer
+            ? 0
+            : indexer.highestCodedColumn(columns);
+        if (sortFromProps && highestCodedColumn) {
+            const colIdx = Math.abs(highestCodedColumn) - 1;
+            let reorderedIndex = sortFromProps(
+                columns[colIdx].dataKey,
+                highestCodedColumn > 0,
+                !!columns[colIdx].numeric
+            );
+            return makeIndexRecord(reorderedIndex, rows);
+        }
+        if (sortFromProps) {
+            try {
+                const viewIndexToModel = sortFromProps(null, false, false);
+                return makeIndexRecord(viewIndexToModel, rows);
+            } catch (e) {
+                //some external sort functions may expect to only be called
+                //when the user has select a column. Catch their errors and ignore
+                console.warn(
+                    'error in external sort. consider adding support for datakey=null in your external sort function'
+                );
+            }
+        }
+        if (indexer) {
+            const prefiltered = preFilterData(
+                columns,
+                rows,
+                filterFromProps,
+                indexer,
+                indirectionVersion
+            );
+            const reorderedIndex = indexer.makeGroupAndSortIndirector(
+                prefiltered,
+                columns
+            );
+            return makeIndexRecord(reorderedIndex, rows);
+        }
+        if (filterFromProps) {
+            const viewIndexToModel = rows
+                .map((r, i) => [r, i])
+                .filter(([r, idx]) => filterFromProps(r))
+                .map(([r, j]) => j);
+            return makeIndexRecord(viewIndexToModel, rows);
+        }
+
+        return makeIndexRecord(null, rows);
+    }
+);
+
 class MuiVirtualizedTable extends React.PureComponent {
     static defaultProps = {
         headerHeight: DEFAULT_HEADER_HEIGHT,
@@ -228,79 +305,6 @@ class MuiVirtualizedTable extends React.PureComponent {
         }
     }
 
-    preFilterData = memoize(
-        (
-            columns,
-            rows,
-            filterFromProps,
-            filterVersion // filterVersion is unused directly, used only as a workaround just to reset the memoization
-        ) => {
-            return this.state.indexer.preFilterRowMapping(
-                columns,
-                rows,
-                filterFromProps
-            );
-        }
-    );
-
-    reorderIndex = memoize(
-        (indirectionVersion, rows, columns, filterFromProps, sortFromProps) => {
-            const indexer = this.state.indexer;
-            if (!rows)
-                return {
-                    viewIndexToModel: [],
-                    rowGetter: (viewIndex) => viewIndex,
-                };
-
-            const highestCodedColumn = !indexer
-                ? 0
-                : indexer.highestCodedColumn(columns);
-            if (sortFromProps && highestCodedColumn) {
-                const colIdx = Math.abs(highestCodedColumn) - 1;
-                let reorderedIndex = sortFromProps(
-                    columns[colIdx].dataKey,
-                    highestCodedColumn > 0,
-                    !!columns[colIdx].numeric
-                );
-                return makeIndexRecord(reorderedIndex, rows);
-            }
-            if (sortFromProps) {
-                try {
-                    const viewIndexToModel = sortFromProps(null, false, false);
-                    return makeIndexRecord(viewIndexToModel, rows);
-                } catch (e) {
-                    //some external sort functions may expect to only be called
-                    //when the user has select a column. Catch their errors and ignore
-                    console.warn(
-                        'error in external sort. consider adding support for datakey=null in your external sort function'
-                    );
-                }
-            }
-            if (indexer) {
-                const prefiltered = this.preFilterData(
-                    columns,
-                    rows,
-                    filterFromProps,
-                    indirectionVersion
-                );
-                const reorderedIndex = indexer.makeGroupAndSortIndirector(
-                    prefiltered,
-                    columns
-                );
-                return makeIndexRecord(reorderedIndex, rows);
-            }
-            if (filterFromProps) {
-                const viewIndexToModel = rows
-                    .map((r, i) => [r, i])
-                    .filter(([r, idx]) => filterFromProps(r))
-                    .map(([r, j]) => j);
-                return makeIndexRecord(viewIndexToModel, rows);
-            }
-
-            return makeIndexRecord(null, rows);
-        }
-    );
-
     computeDataWidth = (text) => {
         return getTextWidth(text || '') + 2 * DEFAULT_CELL_PADDING;
     };
@@ -373,10 +377,11 @@ class MuiVirtualizedTable extends React.PureComponent {
             !this.props.defersFilterChanges || !this.state.deferredFilterChange
                 ? this.state.indexer.getColFilterUserParams(colKey)
                 : this.state.deferredFilterChange.newVal;
-        const prefiltered = this.preFilterData(
+        const prefiltered = preFilterData(
             this.props.columns,
             this.props.rows,
             this.props.filter,
+            this.state.indexer,
             this.state.indirectionVersion
         );
 
@@ -478,10 +483,11 @@ class MuiVirtualizedTable extends React.PureComponent {
         const userParams = indexer.getColFilterUserParams(colKey);
         const numeric = columns[columnIndex].numeric;
 
-        const prefiltered = this.preFilterData(
+        const prefiltered = preFilterData(
             columns,
             this.props.rows,
             this.props.filter,
+            indexer,
             indexer.filterVersion
         );
         const colStat = prefiltered?.colsStats?.[colKey];
@@ -735,7 +741,8 @@ class MuiVirtualizedTable extends React.PureComponent {
     };
 
     getCSVData = () => {
-        let reorderedIndex = this.reorderIndex(
+        let reorderedIndex = reorderIndex(
+            this.state.indexer,
             this.state.indirectionVersion,
             this.props.rows,
             this.props.columns,
@@ -778,7 +785,8 @@ class MuiVirtualizedTable extends React.PureComponent {
     });
 
     render() {
-        const { viewIndexToModel, rowGetter } = this.reorderIndex(
+        const { viewIndexToModel, rowGetter } = reorderIndex(
+            this.state.indexer,
             this.state.indirectionVersion,
             this.props.rows,
             this.props.columns,

@@ -122,11 +122,12 @@ export const TableTab = () => {
         []
     );
 
-    function makeIndexer() {
+    function makeIndexer(prevIndexer) {
+        const prevCol = prevIndexer?.highestCodedColumn(columns);
+        let colKey = !prevCol ? 'key2' : 'key' + ((Math.abs(prevCol) % 4) + 1);
         const ret = new KeyedColumnsRowIndexer(true, false);
-        ret.setColFilterOuterParams('key2', ['val9']);
+        ret.setColFilterOuterParams(colKey, ['val9']);
 
-        const colKey = 'key' + Math.floor(1 + Math.random() * 4);
         const changeWay = CHANGE_WAYS.SIMPLE;
         // fake user click twice, to set descending order
         ret.updateSortingFromUser(colKey, changeWay);
@@ -219,7 +220,7 @@ export const TableTab = () => {
                 )}
                 <Button
                     disabled={!isIndexerExternal}
-                    onClick={() => setIndexer(makeIndexer())}
+                    onClick={() => setIndexer(makeIndexer(indexer))}
                     variant={'contained'}
                 >
                     New external indexer
@@ -271,7 +272,7 @@ export const TableTab = () => {
                     defersFilterChanges={defersFilterChanges}
                     columns={columns}
                     enableExportCSV={true}
-                    exportCSVDataKeys={['key2', 'key3']}
+                    exportCSVDataKeys={['key2', 'key4']}
                     headerHeight={
                         !headerHeight ? undefined : Number(headerHeight)
                     }
