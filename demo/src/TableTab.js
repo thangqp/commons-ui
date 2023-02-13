@@ -228,10 +228,11 @@ export const TableTab = () => {
                     setDefersFilterChanges
                 )}
                 <TextField
-                    label="initial header height"
+                    label="Header height"
                     size={'small'}
                     onChange={(event) => {
-                        // next line left before if as an occasion to test free re-render for free
+                        // still update the key to cause unmount/remount even if we don't get a new different number
+                        // from the field to give more occasions to test unmount/remounts
                         updateKeyIfNeeded();
                         const newHeaderHeight = Number(event.target.value);
                         if (!isNaN(newHeaderHeight)) {
