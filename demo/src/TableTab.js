@@ -168,10 +168,6 @@ export const TableTab = () => {
     );
 
     const [key, setKey] = useState();
-    const instanceKey = useRef(0);
-    if (recreates) {
-        instanceKey.current += 1;
-    }
 
     function updateKeyIfNeeded() {
         if (recreates) {
@@ -199,7 +195,7 @@ export const TableTab = () => {
     function renderParams() {
         return (
             <Stack sx={{ margin: '1ex' }}>
-                {mkSwitch('Custom them', usesCustomStyles, setUsesCustomStyles)}
+                {mkSwitch('Custom theme', usesCustomStyles, setUsesCustomStyles)}
                 {mkSwitch('Sortable', sortable, setSortable)}
                 {mkSwitch('Instance renewal', recreates, setRecreates)}
                 {mkSwitch(
