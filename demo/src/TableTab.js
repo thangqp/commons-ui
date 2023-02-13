@@ -231,6 +231,7 @@ export const TableTab = () => {
                     label="initial header height"
                     size={'small'}
                     onChange={(event) => {
+                        // next line left before if as an occasion to test free re-render for free
                         updateKeyIfNeeded();
                         const newHeaderHeight = Number(event.target.value);
                         if (!isNaN(newHeaderHeight)) {
