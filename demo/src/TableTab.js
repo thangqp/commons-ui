@@ -11,6 +11,8 @@ import withStyles from '@mui/styles/withStyles';
 
 import { Box, FormControlLabel, Stack, Switch, TextField } from '@mui/material';
 import MuiVirtualizedTable from '../../src/components/MuiVirtualizedTable';
+import Button from '@mui/material/Button';
+import { CHANGE_WAYS } from '../../src/components/MuiVirtualizedTable/KeyedColumnsRowIndexer';
 
 // For demo and fun.. all even numbers first, then all ascending odd numbers, only postive numbers..
 const evenThenOddOrderingKey = (n) => {
@@ -122,11 +124,19 @@ export const TableTab = () => {
         []
     );
 
-    const indexer = useMemo(() => {
+    function makeIndexer() {
         const ret = new KeyedColumnsRowIndexer(true, false, null, setVersion);
         ret.setColFilterOuterParams('key2', ['val9']);
+
+        const colKey = 'key' + Math.floor(1 + Math.random() * 4);
+        const changeWay = CHANGE_WAYS.SIMPLE;
+        // fake user click twice, to set descending order
+        ret.updateSortingFromUser(colKey, changeWay);
+        ret.updateSortingFromUser(colKey, changeWay);
         return ret;
-    }, []);
+    }
+
+    const [indexer, setIndexer] = useState(() => makeIndexer());
 
     const [isIndexerExternal, setIndexerIsExternal] = useState(true);
     const [sortable, setSortable] = useState(true);
@@ -209,6 +219,13 @@ export const TableTab = () => {
                     isIndexerExternal,
                     setIndexerIsExternal
                 )}
+                <Button
+                    disabled={!isIndexerExternal}
+                    onClick={() => setIndexer(makeIndexer())}
+                    variant={'contained'}
+                >
+                    New external indexer
+                </Button>
                 {mkSwitch(
                     'External sort (even then odds)',
                     doesSort,
