@@ -410,7 +410,7 @@ class MuiVirtualizedTable extends React.PureComponent {
                     this.onFilterParamsChange(newVal, colKey);
                 }}
                 onDropDownVisibility={(visible) =>
-                    (this.dropdownvisible = visible)
+                    (this.dropDownVisible = visible)
                 }
             />
         );
@@ -859,7 +859,7 @@ class MuiVirtualizedTable extends React.PureComponent {
                             vertical: 'center',
                             horizontal: 'center',
                         }}
-                        onKeyDown={this.handleKeyDownOnPopover}
+                        onKeyDownCapture={this.handleKeyDownOnPopover}
                         onClose={this.closePopover}
                         open={!!this.state.popoverAnchorEl}
                     >
