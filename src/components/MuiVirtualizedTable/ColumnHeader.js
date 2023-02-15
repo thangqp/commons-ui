@@ -116,7 +116,7 @@ export const ColumnHeader = React.forwardRef((props, ref) => {
     const handleFilterClick = React.useMemo(() => {
         if (!onFilterClick) return undefined;
         return (evt) => {
-            onFilterClick(evt, topmostDiv.current, evt.target);
+            onFilterClick(evt, topmostDiv.current);
         };
     }, [onFilterClick]);
 
