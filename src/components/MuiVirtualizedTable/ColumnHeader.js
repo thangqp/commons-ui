@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React from 'react';
+import React, { useRef } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@mui/styles';
 
@@ -111,15 +111,18 @@ export const ColumnHeader = React.forwardRef((props, ref) => {
         setHovered(evt.type === 'mouseenter');
     }, []);
 
+    const topmostDiv = useRef();
+
     const handleFilterClick = React.useMemo(() => {
         if (!onFilterClick) return undefined;
-        return (evt, ...others) => {
-            onFilterClick(evt, evt.target.parentNode.parentNode);
+        return (evt) => {
+            onFilterClick(evt, topmostDiv.current, evt.target);
         };
     }, [onFilterClick]);
 
     return (
         <div
+            ref={topmostDiv}
             onMouseEnter={onHover}
             onMouseLeave={onHover}
             className={clsx(

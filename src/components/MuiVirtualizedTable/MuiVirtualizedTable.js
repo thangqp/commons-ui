@@ -465,7 +465,10 @@ class MuiVirtualizedTable extends React.PureComponent {
         }
     };
 
-    filterClickHandler = (evt, retargeted, columnIndex) => {
+    filterClickHandler = (evt, target, columnIndex) => {
+        // ColumnHeader to (header) TableCell
+        const retargeted = target.parentNode ?? target;
+
         const colKey = this.props.columns[columnIndex].dataKey;
         this.openPopover(retargeted, colKey);
     };
