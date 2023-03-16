@@ -6,7 +6,7 @@
  */
 
 const equipment_search_fr = {
-    'equipment_search/label': 'Rechercher un équipement',
+    'equipment_search/label': 'Rechercher un ouvrage',
     'equipment_search/switchTag': 'SWITCH',
     'equipment_search/busbarSectionTag': 'SJB',
     'equipment_search/lineTag': 'LIGNE',
