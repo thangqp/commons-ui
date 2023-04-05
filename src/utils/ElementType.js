@@ -6,8 +6,8 @@
  */
 import React from 'react';
 import LibraryBooksOutlinedIcon from '@mui/icons-material/LibraryBooksOutlined';
-import DescriptionIcon from '@mui/icons-material/Description';
-import FilterListIcon from '@mui/icons-material/FilterList';
+import OfflineBoltIcon from '@mui/icons-material/OfflineBolt';
+import ArticleIcon from '@mui/icons-material/Article';
 
 export const elementType = {
     DIRECTORY: 'DIRECTORY',
@@ -21,9 +21,9 @@ export function getFileIcon(type, theme) {
         case elementType.STUDY:
             return <LibraryBooksOutlinedIcon className={theme} />;
         case elementType.CONTINGENCY_LIST:
-            return <DescriptionIcon className={theme} />;
+            return <OfflineBoltIcon className={theme} />;
         case elementType.FILTER:
-            return <FilterListIcon className={theme} />;
+            return <ArticleIcon className={theme} />;
         case elementType.DIRECTORY:
             // to easily use in TreeView we do not give icons for directories
             return;
