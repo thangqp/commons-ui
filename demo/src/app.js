@@ -83,6 +83,7 @@ import OverflowableText from '../../src/components/OverflowableText';
 
 import { setShowAuthenticationRouterLogin } from '../../src/utils/actions';
 import { TableTab } from './TableTab';
+import { GenericParametersTreePane } from './GenericParametersTree';
 
 const messages = {
     en: {
@@ -682,6 +683,14 @@ const AppContent = ({ language, onLanguageClick }) => {
                                                     }
                                                 />
                                             </div>
+                                            {/*<div*/}
+                                            {/*    style={{*/}
+                                            {/*        display: 'flex',*/}
+                                            {/*        alignItems: 'center',*/}
+                                            {/*    }}*/}
+                                            {/*>*/}
+                                            <GenericParametersTreePane />
+                                            {/*</div>*/}
                                             <div
                                                 style={{
                                                     margin: '10px 0px 0px 0px',
