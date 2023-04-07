@@ -70,10 +70,7 @@ export const useImportExportParams = (paramsAsArray) => {
             paramsAsArray.map((m) => {
                 if (m.type === 'BOOLEAN') return [m.name, m.defaultValue];
                 if (m.type === 'STRING_LIST')
-                    return [
-                        m.name,
-                        preparePossibleValues(m.defaultValue),
-                    ];
+                    return [m.name, preparePossibleValues(m.defaultValue)];
                 return [m.name, m.defaultValue ?? null];
             })
         );
@@ -108,9 +105,7 @@ export const useImportExportParams = (paramsAsArray) => {
                     <Autocomplete
                         fullWidth
                         multiple
-                        options={
-                            preparePossibleValues(param.possibleValues)
-                        }
+                        options={preparePossibleValues(param.possibleValues)}
                         freeSolo={!param.possibleValues}
                         onChange={(e, value) =>
                             onFieldChange(value, param.name)
