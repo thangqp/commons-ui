@@ -83,7 +83,7 @@ import OverflowableText from '../../src/components/OverflowableText';
 
 import { setShowAuthenticationRouterLogin } from '../../src/utils/actions';
 import { TableTab } from './TableTab';
-import { GenericParametersTreePane } from './GenericParametersTree';
+import { GenericParametersTestPane } from './GenericParametersTree';
 
 const messages = {
     en: {
@@ -689,7 +689,7 @@ const AppContent = ({ language, onLanguageClick }) => {
                                             {/*        alignItems: 'center',*/}
                                             {/*    }}*/}
                                             {/*>*/}
-                                            <GenericParametersTreePane />
+                                            <GenericParametersTestPane />
                                             {/*</div>*/}
                                             <div
                                                 style={{

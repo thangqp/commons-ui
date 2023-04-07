@@ -12,26 +12,10 @@
 // - a render of a form allowing to modify those values
 // - a function allowing to reset the fields
 
-import React, {
-    useCallback,
-    useEffect,
-    useMemo,
-    useRef,
-    useState,
-} from 'react';
-import {
-    Autocomplete,
-    Chip,
-    List,
-    ListItem,
-    Switch,
-    TextField,
-    Tooltip,
-    Typography,
-} from '@mui/material';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import makeStyles from '@mui/styles/makeStyles';
-import Grid from '@mui/material/Grid';
-import {useMemoDebug} from "../utils/functions";
+import { useMemoDebug } from '../utils/functions';
+import FlatParameters from '../components/FlatParameters';
 
 const useStyles = makeStyles((theme) => ({
     paramListItem: {
@@ -166,72 +150,23 @@ export const useImportExportParams = (
     }, [defaultValues, initValues]);
 
     const [currentValues, setCurrentValues] = useState(baseValues);
-    const [uncommitted, setUncommitted] = useState(null);
-    const [inEditionParam, setInEditionParam] = useState(null);
     const prevRef = useRef();
 
-    // console.debug('useImportExportParams', {
-    //     returnsDelta,
-    //     initValues,
-    //     paramsAsArray,
-    //     inEditionParam,
-    //     uncommitted,
-    //     currentValues,
-    //     prev: prevRef.current,
-    // });
-
-    const onFieldChange = useCallback(
-        (value, paramName) => {
-            // console.debug('onFieldChange', inEditionParam, value, paramName);
-            if (inEditionParam === paramName) {
-                setUncommitted(value);
-            } else {
-                setCurrentValues((prevCurrentValues) => {
-                    const ret = {
-                        ...prevCurrentValues,
-                        ...{ [paramName]: value },
-                    };
-                    // console.debug(
-                    //     'setCurrentValues',
-                    //     paramName,
-                    //     value,
-                    //     ret,
-                    //     prevCurrentValues
-                    // );
-                    return ret;
-                });
-            }
-        },
-        [inEditionParam]
-    );
-
-    const onUncommited = useCallback(
-        (param, inEdit) => {
-            // console.debug('onUncommited.0', inEdit, inEditionParam, param);
-            if (inEdit) {
-                setInEditionParam(param.name);
-            } else {
-                // console.debug('onUncommited.1', uncommitted);
-                if (uncommitted != null) {
-                    setCurrentValues((prevCurrentValues) => {
-                        const ret = { ...prevCurrentValues };
-                        if (['INTEGER', 'DOUBLE'].includes(param.type)) {
-                            ret[param.name] = uncommitted - 0;
-                        } else {
-                            ret[param.name] = uncommitted;
-                        }
-                        // console.debug('onUncommited.2', ret);
-                        return ret;
-                    });
-                }
-                // console.debug('onUncommited.3');
-                setInEditionParam(null);
-                setUncommitted(null);
-                // console.debug('onUncommited.4');
-            }
-        },
-        [inEditionParam, uncommitted]
-    );
+    const onChange = useCallback((paramName, value, isEdit) => {
+        console.debug('useImportExportParams.onChange', {
+            isEdit,
+            paramName,
+            value,
+        });
+        if (!isEdit) {
+            setCurrentValues((prevCurrentValues) => {
+                return {
+                    ...prevCurrentValues,
+                    ...{ [paramName]: value },
+                };
+            });
+        }
+    }, []);
 
     const resetValuesToDefault = useCallback(
         (isToInit = true) => {
@@ -240,173 +175,15 @@ export const useImportExportParams = (
         [defaultValues, baseValues]
     );
 
-    const renderField = (param) => {
-        const value = param.name === inEditionParam && uncommitted !== null
-            ? uncommitted
-            : currentValues?.[param.name] ?? baseValues[param.name] ?? null;
-        // console.debug('renderField', value, param);
-        switch (param.type) {
-            case 'BOOLEAN':
-                return (
-                    <Switch
-                        checked={!!value}
-                        onChange={(e) =>
-                            onFieldChange(e.target.checked, param.name)
-                        }
-                    />
-                );
-            case 'DOUBLE':
-                return (
-                    <TextField
-                        fullWidth
-                        value={value}
-                        onFocus={() => onUncommited(param, true)}
-                        onBlur={() => onUncommited(param, false)}
-                        onChange={(e) => {
-                            const m = FloatRE.exec(e.target.value);
-                            console.debug(
-                                'double.onChange',
-                                value,
-                                m,
-                                e.target.value
-                            );
-                            if (m) {
-                                onFieldChange(e.target.value, param.name);
-                            }
-                        }}
-                        variant={'standard'}
-                    />
-                );
-            case 'INTEGER':
-                return (
-                    <TextField
-                        fullWidth
-                        value={value}
-                        onFocus={() => onUncommited(param, true)}
-                        onBlur={() => onUncommited(param, false)}
-                        onChange={(e) => {
-                            const m = IntegerRE.exec(e.target.value);
-                            console.debug(
-                                'double.onChange',
-                                value,
-                                m,
-                                e.target.value
-                            );
-                            if (m) {
-                                onFieldChange(e.target.value, param.name);
-                            }
-                        }}
-                        variant={'standard'}
-                    />
-                );
-            case 'STRING_LIST':
-                if (param.possibleValues) {
-                    return (
-                        <Autocomplete
-                            fullWidth
-                            multiple
-                            options={param.possibleValues}
-                            onChange={(e, value) =>
-                                onFieldChange(value, param.name)
-                            }
-                            value={value}
-                            renderTags={(value, getTagProps) =>
-                                value.map((option, index) => (
-                                    <Chip
-                                        variant="outlined"
-                                        label={option}
-                                        {...getTagProps({ index })}
-                                    />
-                                ))
-                            }
-                            renderInput={(options) => (
-                                <TextField {...options} variant="standard" />
-                            )}
-                        />
-                    );
-                }
-            // else fallthrough to default
-            case 'STRING':
-                if (param.possibleValues) {
-                    return (
-                        <Autocomplete
-                            fullWidth
-                            disableClearable
-                            options={param.possibleValues}
-                            onChange={(e, value) =>
-                                onFieldChange(value, param.name)
-                            }
-                            value={value}
-                            renderInput={(options) => (
-                                <TextField {...options} variant="standard" />
-                            )}
-                        />
-                    );
-                }
-            // else fallthrough to default
-            default:
-                return (
-                    <TextField
-                        fullWidth
-                        defaultValue={value}
-                        onFocus={() => onUncommited(param, true)}
-                        onBlur={() => onUncommited(param, false)}
-                        onChange={(e) =>
-                            onFieldChange(e.target.value, param.name)
-                        }
-                        variant={'standard'}
-                    />
-                );
-        }
-    };
-
-    const renderAsList = () => {
+    const jsx = useMemo(() => {
         return (
-            <List>
-                {paramsAsArray.map((param) => (
-                    <Tooltip
-                        title={param.description}
-                        enterDelay={1200}
-                        key={param.name}
-                    >
-                        <ListItem
-                            key={param.name}
-                            className={classes.paramListItem}
-                        >
-                            <Typography style={{ minWidth: '30%' }}>
-                                {param.name.slice(prefix.length)}
-                            </Typography>
-                            {renderField(param)}
-                        </ListItem>
-                    </Tooltip>
-                ))}
-            </List>
+            <FlatParameters
+                paramsAsArray={paramsAsArray}
+                initValues={currentValues}
+                onChange={onChange}
+            />
         );
-    };
-
-    const renderAsGrid = () => {
-        return (
-            <Grid container>
-                {paramsAsArray.map((param) => (
-                    <>
-                        <Grid item xs="4" key={param.name + '^title'}>
-                            <Tooltip
-                                title={param.description}
-                                enterDelay={1200}
-                            >
-                                <Typography style={{ minWidth: '30%' }}>
-                                    {param.name.slice(prefix.length)}
-                                </Typography>
-                            </Tooltip>
-                        </Grid>
-                        <Grid item xs={8} key={param.name + '^value'}>
-                            {renderField(param)}
-                        </Grid>
-                    </>
-                ))}
-            </Grid>
-        );
-    };
+    }, [paramsAsArray, currentValues, onChange]);
 
     let ret;
     if (
@@ -414,30 +191,22 @@ export const useImportExportParams = (
         areEquivDeeply(prevRef.current.currentValues, currentValues)
     ) {
         if (!returnsDelta) {
-            ret = [
-                prevRef.current.currentValues,
-                renderAsGrid(),
-                resetValuesToDefault,
-            ];
+            ret = [prevRef.current.currentValues, jsx, resetValuesToDefault];
         } else if (!prevRef.current.deltaValues) {
             ret = [
                 makeDeltaMap(defaultValues, currentValues),
-                renderAsGrid(),
+                jsx,
                 resetValuesToDefault,
             ];
         } else {
-            ret = [
-                prevRef.current.deltaValues,
-                renderAsGrid(),
-                resetValuesToDefault,
-            ];
+            ret = [prevRef.current.deltaValues, jsx, resetValuesToDefault];
         }
     } else {
         ret = [
             returnsDelta
                 ? makeDeltaMap(defaultValues, currentValues)
                 : currentValues,
-            renderAsGrid(),
+            jsx,
             resetValuesToDefault,
         ];
     }
@@ -447,14 +216,6 @@ export const useImportExportParams = (
         jsx: ret[1],
         deltaValues: returnsDelta ? ret[0] : null,
     };
-
-    // console.debug(
-    //     'genericParams',
-    //     returnsDelta,
-    //     inEditionParam,
-    //     prevRef.current,
-    //     { ret0: ret[0], uncommitted }
-    // );
 
     return ret;
 };
