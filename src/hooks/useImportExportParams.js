@@ -12,7 +12,8 @@
 // - a render of a form allowing to modify those values
 // - a function allowing to reset the fields
 
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
 import {
     Autocomplete,
     Chip,
@@ -48,20 +49,36 @@ function longestCommonPrefix(strs) {
 
 export const useImportExportParams = (paramsAsArray) => {
     const classes = useStyles();
+    const intl = useIntl();
+
     const longestPrefix = longestCommonPrefix(paramsAsArray.map((m) => m.name));
     const lastDotIndex = longestPrefix.lastIndexOf('.');
     const prefix = longestPrefix.slice(0, lastDotIndex + 1);
+
+    const preparePossibleValues = useCallback(
+        (values) => {
+            if (values == null) return [];
+            return values
+                .map((v) => intl.formatMessage({ id: v, defaultMessage: v }))
+                .sort((a, b) => a.localeCompare(b));
+        },
+        [intl]
+    );
 
     const defaultValues = useMemo(() => {
         return Object.fromEntries(
             paramsAsArray.map((m) => {
                 if (m.type === 'BOOLEAN') return [m.name, m.defaultValue];
                 if (m.type === 'STRING_LIST')
-                    return [m.name, m.defaultValue ?? []];
+                    return [
+                        m.name,
+                        preparePossibleValues(m.defaultValue),
+                    ];
                 return [m.name, m.defaultValue ?? null];
             })
         );
-    }, [paramsAsArray]);
+    }, [paramsAsArray, preparePossibleValues]);
+
     const [currentValues, setCurrentValues] = useState(defaultValues);
 
     const onFieldChange = (value, paramName) => {
@@ -91,7 +108,9 @@ export const useImportExportParams = (paramsAsArray) => {
                     <Autocomplete
                         fullWidth
                         multiple
-                        options={param.possibleValues ?? []}
+                        options={
+                            preparePossibleValues(param.possibleValues)
+                        }
                         freeSolo={!param.possibleValues}
                         onChange={(e, value) =>
                             onFieldChange(value, param.name)
@@ -173,7 +192,12 @@ export const useImportExportParams = (paramsAsArray) => {
         <List>
             {paramsAsArray.map((param) => (
                 <Tooltip
-                    title={param.description}
+                    title={
+                        <FormattedMessage
+                            id={param.name + '.desc'}
+                            defaultMessage={param.description}
+                        />
+                    }
                     enterDelay={1200}
                     key={param.name}
                 >
@@ -182,7 +206,10 @@ export const useImportExportParams = (paramsAsArray) => {
                         className={classes.paramListItem}
                     >
                         <Typography style={{ minWidth: '30%' }}>
-                            {param.name.slice(prefix.length)}
+                            <FormattedMessage
+                                id={param.name}
+                                defaultMessage={param.name.slice(prefix.length)}
+                            />
                         </Typography>
                         {renderField(param)}
                     </ListItem>
