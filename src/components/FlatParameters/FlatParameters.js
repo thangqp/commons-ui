@@ -135,7 +135,7 @@ export const FlatParameters = ({ paramsAsArray, initValues, onChange }) => {
         const value =
             param.name === inEditionParam && uncommitted !== null
                 ? uncommitted
-                : initValues.hasOwnProperty(param.name)
+                : initValues && initValues.hasOwnProperty(param.name)
                 ? initValues[param.name]
                 : extractDefault(param);
         switch (param.type) {

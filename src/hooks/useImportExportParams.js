@@ -15,7 +15,7 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import makeStyles from '@mui/styles/makeStyles';
 import { useMemoDebug } from '../utils/functions';
-import FlatParameters from '../components/FlatParameters';
+import FlatParameters from '../components/FlatParameters/FlatParameters';
 
 const useStyles = makeStyles((theme) => ({
     paramListItem: {
@@ -62,14 +62,6 @@ function extractDefault(paramDescription) {
     return d ?? null;
 }
 
-function extractDefaultMap(paramsAsArray) {
-    return Object.fromEntries(
-        paramsAsArray.map((paramDescription) => {
-            return [paramDescription.name, extractDefault(paramDescription)];
-        })
-    );
-}
-
 function areEquivDeeply(a, b) {
     if (a === b) return true;
     const aIsArray = Array.isArray(a);
@@ -95,6 +87,30 @@ function areEquivDeeply(a, b) {
     return false;
 }
 
+export function extractDefaultMap(paramsAsArray) {
+    return Object.fromEntries(
+        paramsAsArray.map((paramDescription) => {
+            return [paramDescription.name, extractDefault(paramDescription)];
+        })
+    );
+}
+
+export function makeDeltaMap(defaultMap, changingMap) {
+    if (!changingMap) return null;
+
+    const delta = {};
+
+    Object.entries(defaultMap).forEach(([k, v]) => {
+        const m = changingMap[k];
+        if (!areEquivDeeply(v, m)) {
+            console.debug('Δ', k, v, m);
+            delta[k] = m;
+        }
+    });
+
+    return Object.keys(delta).length ? delta : null;
+}
+
 function makeFullMap(defaultMap, changingMap) {
     if (!changingMap) return { ...defaultMap };
 
@@ -114,22 +130,6 @@ function makeFullMap(defaultMap, changingMap) {
     });
 
     return full;
-}
-
-function makeDeltaMap(defaultMap, changingMap) {
-    if (!changingMap) return null;
-
-    const delta = {};
-
-    Object.entries(defaultMap).forEach(([k, v]) => {
-        const m = changingMap[k];
-        if (!areEquivDeeply(v, m)) {
-            console.debug('Δ', k, v, m);
-            delta[k] = m;
-        }
-    });
-
-    return Object.keys(delta).length ? delta : null;
 }
 
 export const useImportExportParams = (

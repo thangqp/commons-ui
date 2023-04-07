@@ -83,7 +83,7 @@ import OverflowableText from '../../src/components/OverflowableText';
 
 import { setShowAuthenticationRouterLogin } from '../../src/utils/actions';
 import { TableTab } from './TableTab';
-import { GenericParametersTestPane } from './GenericParametersTree';
+import { GenericParametersTestPane } from './GenericParametersTestPane';
 
 const messages = {
     en: {

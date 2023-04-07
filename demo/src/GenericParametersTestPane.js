@@ -1,7 +1,7 @@
 import { useImportExportParams } from '../../src/hooks/useImportExportParams';
 import React, { useState } from 'react';
 import TreePanelResizableBox from './tree-panel-resizable-box';
-import FlatParameters from '../../src/components/FlatParameters';
+import FlatParameters from '../../src/components/FlatParameters/FlatParameters';
 
 const EXAMPLE_PARAMETERS = [
     {
