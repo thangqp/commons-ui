@@ -1,6 +1,6 @@
-import { useImportExportParams } from '../../src/hooks/useImportExportParams';
+import { useImportExportParams } from '../../src';
 import React, { useState } from 'react';
-import TreePanelResizableBox from './tree-panel-resizable-box';
+import RightResizableBox from './right-resizable-box';
 import FlatParameters from '../../src/components/FlatParameters/FlatParameters';
 
 const EXAMPLE_PARAMETERS = [
@@ -97,36 +97,22 @@ const EXAMPLE_PARAMETERS = [
     },
 ];
 
-export const GenericParametersTestPane = () => {
-    const [commited, setCommited] = useState(null);
+export const FlatParametersTab = () => {
+    const [commited] = useState(null);
     const [currentParameters1, paramsComponent1] = useImportExportParams(
         EXAMPLE_PARAMETERS,
         commited,
         false
     );
-    // const [currentParameters2, paramsComponent2, reset2] = useImportExportParams(
-    //     exampleParameters,
-    //     currentParameters1,
-    //     true
-    // );
-    // useEffectDebug(() => {
-    //     console.debug('GenericParametersTreePane.effect 1');
-    //     setCommited(currentParameters2);
-    //     reset1(true);
-    // }, [currentParameters2, reset1]);
-    //
-    // console.debug('GenericParametersTreePane', currentParameters1, currentParameters2);
     return (
-        <div style={{ display: 'flex'}}>
-            <TreePanelResizableBox>{paramsComponent1}</TreePanelResizableBox>
-            <TreePanelResizableBox>
+        <div style={{ display: 'flex' }}>
+            <RightResizableBox>{paramsComponent1}</RightResizableBox>
+            <RightResizableBox>
                 <FlatParameters
                     paramsAsArray={EXAMPLE_PARAMETERS}
                     initValues={currentParameters1}
                 />
-            </TreePanelResizableBox>
-            {/*<TreePanelResizableBox>{paramsComponent2}</TreePanelResizableBox>*/}
+            </RightResizableBox>
         </div>
     );
-    // return <div style={{display: 'flex'}}>{paramsComponent}</div>;
 };

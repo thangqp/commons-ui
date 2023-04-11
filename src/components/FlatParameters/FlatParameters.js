@@ -10,7 +10,6 @@ import {
     Tooltip,
     Typography,
 } from '@mui/material';
-import Grid from '@mui/material/Grid';
 
 const useStyles = makeStyles((theme) => ({
     paramListItem: {
@@ -19,8 +18,8 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const FloatRE = /^-?[0-9]*[.,]?[0-9]*([eE]-?[0-9]*)?$/;
-const IntegerRE = /^-?[0-9]*$/;
+const FloatRE = /^-?\d*[.,]?\d*([eE]-?\d*)?$/;
+const IntegerRE = /^-?\d*$/;
 const ListRE = /^\[(.*)]$/;
 const sepRE = /[, ]/;
 
@@ -57,7 +56,7 @@ function longestCommonPrefix(strs) {
     return prefix;
 }
 
-var instanceCount = 0;
+let instanceCount = 0;
 
 /**
  *
@@ -77,13 +76,13 @@ export const FlatParameters = ({ paramsAsArray, initValues, onChange }) => {
         instanceId,
         paramsAsArray,
         initValues,
-        onChange,
     });
     useEffect(() => {
         console.debug('FlatParameters.mount', instanceId, instanceCount);
         return () => {
             console.debug('FlatParameters.unmount', instanceId);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const classes = useStyles();
@@ -266,30 +265,6 @@ export const FlatParameters = ({ paramsAsArray, initValues, onChange }) => {
                     </Tooltip>
                 ))}
             </List>
-        );
-    };
-
-    const renderAsGrid = () => {
-        return (
-            <Grid container>
-                {paramsAsArray.map((param) => (
-                    <>
-                        <Grid item xs="4" key={param.name + '^title'}>
-                            <Tooltip
-                                title={param.description}
-                                enterDelay={1200}
-                            >
-                                <Typography style={{ minWidth: '30%' }}>
-                                    {param.name.slice(prefix.length)}
-                                </Typography>
-                            </Tooltip>
-                        </Grid>
-                        <Grid item xs={8} key={param.name + '^value'}>
-                            {renderField(param)}
-                        </Grid>
-                    </>
-                ))}
-            </Grid>
         );
     };
 

@@ -11,11 +11,6 @@ import { ResizableBox } from 'react-resizable';
 import { useWindowWidth } from '@react-hook/window-size';
 import makeStyles from '@mui/styles/makeStyles';
 import PropTypes from 'prop-types';
-// import {
-//     DRAWER_NODE_EDITOR_WIDTH,
-//     TREE_PANEL_MIN_WIDTH_PERCENTAGE,
-//     TREE_PANEL_MAX_WIDTH_PERCENTAGE,
-// } from '../utils/UIconstants';
 import clsx from 'clsx';
 
 const useStyles = makeStyles((theme) => ({
@@ -53,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const TreePanelResizableBox = (props) => {
+const RightResizableBox = (props) => {
     const classes = useStyles();
 
     const windowWidth = useWindowWidth();
@@ -63,11 +58,6 @@ const TreePanelResizableBox = (props) => {
     const updateResizedTreePercentage = (treePanelWidth, totalWidth) => {
         if (totalWidth > 0) {
             let newPercentage = treePanelWidth / totalWidth;
-            // if (newPercentage < TREE_PANEL_MIN_WIDTH_PERCENTAGE) {
-            //     newPercentage = TREE_PANEL_MIN_WIDTH_PERCENTAGE;
-            // } else if (newPercentage > TREE_PANEL_MAX_WIDTH_PERCENTAGE) {
-            //     newPercentage = TREE_PANEL_MAX_WIDTH_PERCENTAGE;
-            // }
             setResizedTreePercentage(newPercentage);
         }
     };
@@ -75,7 +65,6 @@ const TreePanelResizableBox = (props) => {
         updateResizedTreePercentage(size.width, windowWidth);
     };
 
-    // const drawerWidth = DRAWER_NODE_EDITOR_WIDTH + 4; // 4 pixels for the handle's width
     return (
         <ResizableBox
             style={{ display: props.hide ? 'none' : undefined }}
@@ -83,28 +72,11 @@ const TreePanelResizableBox = (props) => {
             width={
                 props.fullscreen
                     ? windowWidth
-                    // : windowWidth * resizedTreePercentage <= drawerWidth
-                    // ? drawerWidth
                     : windowWidth * resizedTreePercentage
             }
             className={clsx(classes.panel, {
                 [classes.resizePanelHandle]: !props.disableResize,
             })}
-            // minConstraints={
-            //     props.fullscreen || props.hide
-            //         ? undefined
-            //         : [
-            //               windowWidth * TREE_PANEL_MIN_WIDTH_PERCENTAGE >
-            //               drawerWidth
-            //                   ? windowWidth * TREE_PANEL_MIN_WIDTH_PERCENTAGE
-            //                   : drawerWidth,
-            //           ]
-            // }
-            // maxConstraints={
-            //     props.fullscreen || props.hide
-            //         ? undefined
-            //         : [windowWidth * TREE_PANEL_MAX_WIDTH_PERCENTAGE]
-            // }
             resizeHandles={['e']}
             axis={props.disableResize ? 'none' : 'x'}
             onResize={onResize}
@@ -119,17 +91,17 @@ const TreePanelResizableBox = (props) => {
     );
 };
 
-TreePanelResizableBox.defaultProps = {
+RightResizableBox.defaultProps = {
     disableResize: false,
     fullscreen: false,
     hide: false,
 };
 
-TreePanelResizableBox.propTypes = {
+RightResizableBox.propTypes = {
     children: PropTypes.node,
     disableResize: PropTypes.bool,
     fullscreen: PropTypes.bool,
     hide: PropTypes.bool,
 };
 
-export default TreePanelResizableBox;
+export default RightResizableBox;

@@ -13,33 +13,8 @@
 // - a function allowing to reset the fields
 
 import React, { useCallback, useMemo, useRef, useState } from 'react';
-import makeStyles from '@mui/styles/makeStyles';
-import { useMemoDebug } from '../utils/functions';
 import FlatParameters from '../components/FlatParameters/FlatParameters';
 
-const useStyles = makeStyles((theme) => ({
-    paramListItem: {
-        justifyContent: 'space-between',
-        gap: theme.spacing(2),
-    },
-}));
-
-function longestCommonPrefix(strs) {
-    if (!strs?.length) return '';
-    let prefix = strs.reduce((acc, str) =>
-        str.length < acc.length ? str : acc
-    );
-
-    for (let str of strs) {
-        while (str.slice(0, prefix.length) !== prefix) {
-            prefix = prefix.slice(0, -1);
-        }
-    }
-    return prefix;
-}
-
-const FloatRE = /^-?[0-9]*[.,]?[0-9]*$/;
-const IntegerRE = /^-?[0-9]*$/;
 const ListRE = /^\[(.*)]$/;
 const sepRE = /[, ]/;
 
@@ -137,15 +112,10 @@ export const useImportExportParams = (
     initValues,
     returnsDelta = true
 ) => {
-    const classes = useStyles();
-    const longestPrefix = longestCommonPrefix(paramsAsArray.map((m) => m.name));
-    const lastDotIndex = longestPrefix.lastIndexOf('.');
-    const prefix = longestPrefix.slice(0, lastDotIndex + 1);
-
     const defaultValues = useMemo(() => {
         return extractDefaultMap(paramsAsArray);
     }, [paramsAsArray]);
-    const baseValues = useMemoDebug(() => {
+    const baseValues = useMemo(() => {
         return makeFullMap(defaultValues, initValues);
     }, [defaultValues, initValues]);
 
