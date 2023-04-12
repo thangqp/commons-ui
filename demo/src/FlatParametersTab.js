@@ -105,7 +105,7 @@ export const FlatParametersTab = () => {
         false
     );
     return (
-        <div style={{ display: 'flex' }}>
+        <div style={{ display: 'flex', margin: 8 }}>
             <RightResizableBox>{paramsComponent1}</RightResizableBox>
             <RightResizableBox>
                 <FlatParameters

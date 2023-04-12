@@ -12,9 +12,20 @@ import {
 } from '@mui/material';
 
 const useStyles = makeStyles((theme) => ({
+    paramList: {
+        width: '100%',
+        margin: 0,
+    },
     paramListItem: {
         justifyContent: 'space-between',
         gap: theme.spacing(2),
+        paddingLeft: 0,
+        paddingRight: 0,
+    },
+    paramName: {
+        fontWeight: 'bold',
+        minWidth: '30%',
+        overflowWrap: 'anywhere',
     },
 }));
 
@@ -246,7 +257,7 @@ export const FlatParameters = ({ paramsAsArray, initValues, onChange }) => {
 
     const renderAsList = () => {
         return (
-            <List>
+            <List className={classes.paramList}>
                 {paramsAsArray.map((param) => (
                     <Tooltip
                         title={param.description}
@@ -257,7 +268,7 @@ export const FlatParameters = ({ paramsAsArray, initValues, onChange }) => {
                             key={param.name}
                             className={classes.paramListItem}
                         >
-                            <Typography style={{ minWidth: '30%' }}>
+                            <Typography className={classes.paramName}>
                                 {param.name.slice(prefix.length)}
                             </Typography>
                             {renderField(param)}
