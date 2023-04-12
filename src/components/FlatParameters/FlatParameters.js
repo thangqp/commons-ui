@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import makeStyles from '@mui/styles/makeStyles';
 import {
     Autocomplete,
@@ -67,8 +67,6 @@ function longestCommonPrefix(strs) {
     return prefix;
 }
 
-let instanceCount = 0;
-
 /**
  *
  * @param paramsAsArray [{type,name,possibleValues,defaultValue}]
@@ -78,24 +76,6 @@ let instanceCount = 0;
  * @constructor
  */
 export const FlatParameters = ({ paramsAsArray, initValues, onChange }) => {
-    const [instanceId] = useState(() => {
-        console.debug('FlatParameters.instanceInit', instanceCount);
-        instanceCount += 1;
-        return instanceCount;
-    });
-    console.debug('FlatParameters', {
-        instanceId,
-        paramsAsArray,
-        initValues,
-    });
-    useEffect(() => {
-        console.debug('FlatParameters.mount', instanceId, instanceCount);
-        return () => {
-            console.debug('FlatParameters.unmount', instanceId);
-        };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
     const classes = useStyles();
     const longestPrefix = longestCommonPrefix(paramsAsArray.map((m) => m.name));
     const lastDotIndex = longestPrefix.lastIndexOf('.');

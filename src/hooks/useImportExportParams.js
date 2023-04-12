@@ -123,11 +123,6 @@ export const useImportExportParams = (
     const prevRef = useRef();
 
     const onChange = useCallback((paramName, value, isEdit) => {
-        console.debug('useImportExportParams.onChange', {
-            isEdit,
-            paramName,
-            value,
-        });
         if (!isEdit) {
             setCurrentValues((prevCurrentValues) => {
                 return {
