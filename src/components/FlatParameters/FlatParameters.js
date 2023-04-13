@@ -255,31 +255,27 @@ export const FlatParameters = ({ paramsAsArray, initValues, onChange }) => {
         }
     };
 
-    const renderAsList = () => {
-        return (
-            <List className={classes.paramList}>
-                {paramsAsArray.map((param) => (
-                    <Tooltip
-                        title={param.description}
-                        enterDelay={1200}
+    return (
+        <List className={classes.paramList}>
+            {paramsAsArray.map((param) => (
+                <Tooltip
+                    title={param.description}
+                    enterDelay={1200}
+                    key={param.name}
+                >
+                    <ListItem
                         key={param.name}
+                        className={classes.paramListItem}
                     >
-                        <ListItem
-                            key={param.name}
-                            className={classes.paramListItem}
-                        >
-                            <Typography className={classes.paramName}>
-                                {param.name.slice(prefix.length)}
-                            </Typography>
-                            {renderField(param)}
-                        </ListItem>
-                    </Tooltip>
-                ))}
-            </List>
-        );
-    };
-
-    return renderAsList();
+                        <Typography className={classes.paramName}>
+                            {param.name.slice(prefix.length)}
+                        </Typography>
+                        {renderField(param)}
+                    </ListItem>
+                </Tooltip>
+            ))}
+        </List>
+    );
 };
 
 export default FlatParameters;
