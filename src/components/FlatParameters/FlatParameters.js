@@ -10,6 +10,7 @@ import {
     Tooltip,
     Typography,
 } from '@mui/material';
+import { useIntl } from 'react-intl';
 
 const useStyles = makeStyles((theme) => ({
     paramList: {
@@ -34,7 +35,7 @@ const IntegerRE = /^-?\d*$/;
 const ListRE = /^\[(.*)]$/;
 const sepRE = /[, ]/;
 
-function extractDefault(paramDescription) {
+export function extractDefault(paramDescription) {
     const d = paramDescription.defaultValue;
     if (paramDescription.type === 'BOOLEAN') return !!d;
     if (paramDescription.type === 'DOUBLE') return d - 0.0;
@@ -77,12 +78,24 @@ function longestCommonPrefix(strs) {
  */
 export const FlatParameters = ({ paramsAsArray, initValues, onChange }) => {
     const classes = useStyles();
+    const intl = useIntl();
+
     const longestPrefix = longestCommonPrefix(paramsAsArray.map((m) => m.name));
     const lastDotIndex = longestPrefix.lastIndexOf('.');
     const prefix = longestPrefix.slice(0, lastDotIndex + 1);
 
     const [uncommitted, setUncommitted] = useState(null);
     const [inEditionParam, setInEditionParam] = useState(null);
+
+    const preparePossibleValues = useCallback(
+        (values) => {
+            if (values == null) return [];
+            return values
+                .map((v) => intl.formatMessage({ id: v, defaultMessage: v }))
+                .sort((a, b) => a.localeCompare(b));
+        },
+        [intl]
+    );
 
     const onFieldChange = useCallback(
         (value, param) => {
@@ -121,13 +134,18 @@ export const FlatParameters = ({ paramsAsArray, initValues, onChange }) => {
         [uncommitted, onChange]
     );
 
+    function mixInitAndDefault(param) {
+        if (param.name === inEditionParam && uncommitted !== null) {
+            return uncommitted;
+        } else if (initValues && initValues.hasOwnProperty(param.name)) {
+            return initValues[param.name];
+        } else {
+            return extractDefault(param);
+        }
+    }
+
     const renderField = (param) => {
-        const value =
-            param.name === inEditionParam && uncommitted !== null
-                ? uncommitted
-                : initValues && initValues.hasOwnProperty(param.name)
-                ? initValues[param.name]
-                : extractDefault(param);
+        const value = mixInitAndDefault(param);
         switch (param.type) {
             case 'BOOLEAN':
                 return (
@@ -186,7 +204,9 @@ export const FlatParameters = ({ paramsAsArray, initValues, onChange }) => {
                         <Autocomplete
                             fullWidth
                             multiple
-                            options={param.possibleValues}
+                            options={preparePossibleValues(
+                                param.possibleValues
+                            )}
                             onChange={(e, value) => onFieldChange(value, param)}
                             value={value}
                             renderTags={(value, getTagProps) =>

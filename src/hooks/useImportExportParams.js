@@ -13,53 +13,27 @@
 // - a function allowing to reset the fields
 
 import React, { useCallback, useMemo, useRef, useState } from 'react';
-import FlatParameters from '../components/FlatParameters/FlatParameters';
-
-const ListRE = /^\[(.*)]$/;
-const sepRE = /[, ]/;
-
-function extractDefault(paramDescription) {
-    const d = paramDescription.defaultValue;
-    if (paramDescription.type === 'BOOLEAN') return !!d;
-    if (paramDescription.type === 'DOUBLE') return d - 0.0;
-    if (paramDescription.type === 'INTEGER') return d - 0;
-    if (paramDescription.type === 'STRING_LIST') {
-        if (Array.isArray(d)) return d;
-        const mo = ListRE.exec(d);
-        if (mo?.length > 1) {
-            return mo[1]
-                .split(sepRE)
-                .map((s) => s.trim())
-                .filter((s) => !!s);
-        }
-        return [];
-    }
-    return d ?? null;
-}
+import FlatParameters, {
+    extractDefault,
+} from '../components/FlatParameters/FlatParameters';
 
 function areEquivDeeply(a, b) {
     if (a === b) return true;
+
     const aIsArray = Array.isArray(a);
     const bIsArray = Array.isArray(b);
     if (aIsArray || bIsArray) {
         if (aIsArray && bIsArray && a.length === b.length) {
             let i = 0;
-            for (; i < a.length && areEquivDeeply(a[i], b[i]); ++i) {}
+            while (i < a.length && areEquivDeeply(a[i], b[i])) ++i;
             if (i >= a.length) return true;
         }
         return false;
     }
-    const aIsObj = typeof a === 'object';
-    const bIsObj = typeof b === 'object';
-    if (aIsObj || bIsObj) {
-        return (
-            aIsObj &&
-            bIsObj &&
-            areEquivDeeply(Object.entries(a), Object.entries(b))
-        );
-    }
 
-    return false;
+    if (typeof a !== 'object' || typeof b !== 'object') return false;
+
+    return areEquivDeeply(Object.entries(a), Object.entries(b));
 }
 
 export function extractDefaultMap(paramsAsArray) {
