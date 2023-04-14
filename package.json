@@ -31,9 +31,7 @@
         "prop-types": "^15.7.2",
         "react-csv-downloader": "^2.7.0",
         "react-request-fullscreen": "^1.1.2",
-        "react-virtualized": "^9.21.2",
-        "@react-hook/window-size": "^3.1.1",
-        "react-resizable": "^3.0.4"
+        "react-virtualized": "^9.21.2"
     },
     "peerDependencies": {
         "@emotion/react": "^11.8.1",
@@ -79,7 +77,9 @@
         "react-router-dom": "^6.0.0",
         "type-fest": "^2.0.0",
         "utf-8-validate": "^5.0.2",
-        "webpack-plugin-serve": "^1.0.1"
+        "webpack-plugin-serve": "^1.0.1",
+        "@react-hook/window-size": "^3.1.1",
+        "react-resizable": "^3.0.4"
     },
     "eslintConfig": {
         "extends": [
