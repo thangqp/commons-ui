@@ -158,6 +158,7 @@ export const FlatParameters = ({ paramsAsArray, initValues, onChange }) => {
                 return (
                     <TextField
                         fullWidth
+                        sx={{ input: { textAlign: 'right' } }}
                         value={value}
                         onFocus={() => onUncommited(param, true)}
                         onBlur={() => onUncommited(param, false)}
@@ -180,6 +181,7 @@ export const FlatParameters = ({ paramsAsArray, initValues, onChange }) => {
                 return (
                     <TextField
                         fullWidth
+                        sx={{ input: { textAlign: 'right' } }}
                         value={value}
                         onFocus={() => onUncommited(param, true)}
                         onBlur={() => onUncommited(param, false)}
