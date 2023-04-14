@@ -68,7 +68,6 @@ const RightResizableBox = (props) => {
     return (
         <ResizableBox
             style={{ display: props.hide ? 'none' : undefined }}
-            height={'100%'}
             width={
                 props.fullscreen
                     ? windowWidth
