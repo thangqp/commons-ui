@@ -12,6 +12,8 @@ import {
     Chip,
     List,
     ListItem,
+    MenuItem,
+    Select,
     Switch,
     TextField,
     Tooltip,
@@ -225,18 +227,27 @@ export const FlatParameters = ({ paramsAsArray, initValues, onChange }) => {
             case 'STRING':
                 if (param.possibleValues) {
                     return (
-                        <Autocomplete
-                            fullWidth
-                            disableClearable
-                            options={preparePossibleValues(
-                                param.possibleValues
-                            )}
-                            onChange={(e, value) => onFieldChange(value, param)}
-                            value={value}
-                            renderInput={(options) => (
-                                <TextField {...options} variant="standard" />
-                            )}
-                        />
+                        <>
+                            <Select
+                                labelId={param.name}
+                                value={value ?? ''}
+                                onChange={(ev, may) => {
+                                    onFieldChange(ev.target.value, param);
+                                }}
+                                size="small"
+                            >
+                                {param.possibleValues.map((value) => (
+                                    <MenuItem key={value} value={value}>
+                                        <Typography>
+                                            {intl.formatMessage({
+                                                id: value,
+                                                defaultMessage: value,
+                                            })}
+                                        </Typography>
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </>
                     );
                 }
             // else fallthrough to default
