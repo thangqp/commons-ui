@@ -228,7 +228,9 @@ export const FlatParameters = ({ paramsAsArray, initValues, onChange }) => {
                         <Autocomplete
                             fullWidth
                             disableClearable
-                            options={param.possibleValues}
+                            options={preparePossibleValues(
+                                param.possibleValues
+                            )}
                             onChange={(e, value) => onFieldChange(value, param)}
                             value={value}
                             renderInput={(options) => (
