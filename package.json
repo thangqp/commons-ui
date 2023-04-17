@@ -86,6 +86,7 @@
         ],
         "rules": {
             "prettier/prettier": "warn",
+            "curly": "error",
             "import/no-webpack-loader-syntax": "off"
         }
     },

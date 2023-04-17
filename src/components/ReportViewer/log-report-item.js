@@ -86,11 +86,15 @@ export default class LogReportItem {
 
     initSeverity(jsonSeverity) {
         let severity = LogReportItem.SEVERITY.UNKNOWN;
-        if (!jsonSeverity) return severity;
+        if (!jsonSeverity) {
+            return severity;
+        }
 
         Object.values(LogReportItem.SEVERITY).some((value) => {
             let severityFound = jsonSeverity.value.includes(value.name);
-            if (severityFound) severity = value;
+            if (severityFound) {
+                severity = value;
+            }
             return severityFound;
         });
 

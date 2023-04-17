@@ -260,9 +260,11 @@ const AppContent = ({ language, onLanguageClick }) => {
     const countNodes = (nodesList) => {
         return nodesList
             .map((node) => {
-                if (node.children && node.children.length > 0)
+                if (node.children && node.children.length > 0) {
                     return 1 + countNodes(node.children);
-                else return 1;
+                } else {
+                    return 1;
+                }
             })
             .reduce((a, b) => {
                 return a + b;

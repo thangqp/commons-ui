@@ -118,11 +118,12 @@ const TreeViewFinder = (props) => {
         let newMapPrintedNodes = {};
         nodes.forEach((node) => {
             newMapPrintedNodes[node.id] = node;
-            if (!isLeaf(node))
+            if (!isLeaf(node)) {
                 Object.assign(
                     newMapPrintedNodes,
                     computeMapPrintedNodes(node.children)
                 );
+            }
         });
         return newMapPrintedNodes;
     }, []);
@@ -171,34 +172,47 @@ const TreeViewFinder = (props) => {
             );
         } else {
             // Toggle selection to allow unselection
-            if (selected.includes(values)) setSelected([]);
-            else
+            if (selected.includes(values)) {
+                setSelected([]);
+            } else {
                 setSelected(
                     isSelectable(mapPrintedNodes[values]) ? [values] : []
                 );
+            }
         }
     };
 
     /* Render utilities */
     const getValidationButtonText = () => {
-        if (validationButtonText) return validationButtonText;
-        else
+        if (validationButtonText) {
+            return validationButtonText;
+        } else {
             return intl.formatMessage(
                 { id: 'treeview_finder/addElementsValidation' },
                 {
                     nbElements: selected.length,
                 }
             );
+        }
     };
 
     const getNodeIcon = (node) => {
-        if (!node) return null;
+        if (!node) {
+            return null;
+        }
 
-        if (isSelectable(node) && selected.find((nodeId) => nodeId === node.id))
+        if (
+            isSelectable(node) &&
+            selected.find((nodeId) => nodeId === node.id)
+        ) {
             return <CheckIcon className={classes.labelIcon} />;
-        else if (node.icon)
-            return <div className={classes.labelIcon}>{node.icon}</div>;
-        else return null;
+        } else {
+            if (node.icon) {
+                return <div className={classes.labelIcon}>{node.icon}</div>;
+            } else {
+                return null;
+            }
+        }
     };
 
     const renderTreeItemLabel = (node) => {
@@ -220,7 +234,9 @@ const TreeViewFinder = (props) => {
     };
 
     const renderTree = (node) => {
-        if (!node) return;
+        if (!node) {
+            return;
+        }
         return (
             <TreeItem
                 key={node.id}

@@ -34,7 +34,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function longestCommonPrefix(strs) {
-    if (!strs?.length) return '';
+    if (!strs?.length) {
+        return '';
+    }
     let prefix = strs.reduce((acc, str) =>
         str.length < acc.length ? str : acc
     );
@@ -57,7 +59,9 @@ export const useImportExportParams = (paramsAsArray) => {
 
     const preparePossibleValues = useCallback(
         (values) => {
-            if (values == null) return [];
+            if (values == null) {
+                return [];
+            }
             return values
                 .map((v) => intl.formatMessage({ id: v, defaultMessage: v }))
                 .sort((a, b) => a.localeCompare(b));
@@ -68,9 +72,12 @@ export const useImportExportParams = (paramsAsArray) => {
     const defaultValues = useMemo(() => {
         return Object.fromEntries(
             paramsAsArray.map((m) => {
-                if (m.type === 'BOOLEAN') return [m.name, m.defaultValue];
-                if (m.type === 'STRING_LIST')
+                if (m.type === 'BOOLEAN') {
+                    return [m.name, m.defaultValue];
+                }
+                if (m.type === 'STRING_LIST') {
                     return [m.name, preparePossibleValues(m.defaultValue)];
+                }
                 return [m.name, m.defaultValue ?? null];
             })
         );
