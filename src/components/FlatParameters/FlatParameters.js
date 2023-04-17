@@ -46,11 +46,19 @@ const sepRE = /[, ]/;
 
 export function extractDefault(paramDescription) {
     const d = paramDescription.defaultValue;
-    if (paramDescription.type === 'BOOLEAN') return !!d;
-    if (paramDescription.type === 'DOUBLE') return d - 0.0;
-    if (paramDescription.type === 'INTEGER') return d - 0;
+    if (paramDescription.type === 'BOOLEAN') {
+        return !!d;
+    }
+    if (paramDescription.type === 'DOUBLE') {
+        return d - 0.0;
+    }
+    if (paramDescription.type === 'INTEGER') {
+        return d - 0;
+    }
     if (paramDescription.type === 'STRING_LIST') {
-        if (Array.isArray(d)) return d;
+        if (Array.isArray(d)) {
+            return d;
+        }
         const mo = ListRE.exec(d);
         if (mo?.length > 1) {
             return mo[1]
@@ -64,7 +72,9 @@ export function extractDefault(paramDescription) {
 }
 
 function longestCommonPrefix(strs) {
-    if (!strs?.length) return '';
+    if (!strs?.length) {
+        return '';
+    }
     let prefix = strs.reduce((acc, str) =>
         str.length < acc.length ? str : acc
     );
@@ -98,7 +108,9 @@ export const FlatParameters = ({ paramsAsArray, initValues, onChange }) => {
 
     const preparePossibleValues = useCallback(
         (values) => {
-            if (values == null) return [];
+            if (values == null) {
+                return [];
+            }
             return values
                 .map((v) => intl.formatMessage({ id: v, defaultMessage: v }))
                 .sort((a, b) => a.localeCompare(b));
