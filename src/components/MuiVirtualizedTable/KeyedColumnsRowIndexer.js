@@ -68,8 +68,11 @@ export const collectibleHelper = Object.freeze({
     },
     updateStat: (colStat, cellValue, isForKeep) => {
         const m = isForKeep ? colStat.kept : colStat.seen;
-        if (!m[cellValue]) m[cellValue] = 1;
-        else m[cellValue] += 1;
+        if (!m[cellValue]) {
+            m[cellValue] = 1;
+        } else {
+            m[cellValue] += 1;
+        }
     },
     accepts: (value, userParams, outerParams) => {
         return !userParams || userParams.some((v) => v === value);
@@ -177,7 +180,9 @@ export class KeyedColumnsRowIndexer {
     //   }
     // }
     preFilterRowMapping = (columns, rows, rowFilter) => {
-        if (!rows?.length || !columns?.length) return null;
+        if (!rows?.length || !columns?.length) {
+            return null;
+        }
 
         const ri = [];
         const cs = {};
@@ -240,7 +245,9 @@ export class KeyedColumnsRowIndexer {
     // Does not mutate any internal
     // returns an array of indexes in rows given to preFilter
     makeGroupAndSortIndirector = (preFilteredRowPairs, columns) => {
-        if (!preFilteredRowPairs) return null;
+        if (!preFilteredRowPairs) {
+            return null;
+        }
 
         const codedColumns = !this.sortingState
             ? null
@@ -257,7 +264,9 @@ export class KeyedColumnsRowIndexer {
     };
 
     getSortingAsKeyAndCodedRank = () => {
-        if (!this.sortingState) return [];
+        if (!this.sortingState) {
+            return [];
+        }
 
         return this.sortingState.map((kd, i) => {
             const sign = giveDirSignFor(kd[1]);
@@ -349,19 +358,27 @@ export class KeyedColumnsRowIndexer {
     };
 
     columnSortingSignedRank = (colKey) => {
-        if (!this?.sortingState?.length) return 0;
+        if (!this?.sortingState?.length) {
+            return 0;
+        }
         const idx = this.sortingState.findIndex((kd) => kd[0] === colKey);
-        if (idx < 0) return 0;
+        if (idx < 0) {
+            return 0;
+        }
         const colSorting = this.sortingState[idx];
         return giveDirSignFor(colSorting[1]) * (idx + 1);
     };
 
     highestCodedColumn = (columns) => {
-        if (!this?.sortingState?.length) return 0;
+        if (!this?.sortingState?.length) {
+            return 0;
+        }
         const colSorting = this.sortingState[0];
         const colKey = colSorting[0];
         const idx = columns.findIndex((col) => col.dataKey === colKey);
-        if (idx < 0) return 0;
+        if (idx < 0) {
+            return 0;
+        }
         return giveDirSignFor(colSorting[1]) * (idx + 1);
     };
 
@@ -438,7 +455,9 @@ export class KeyedColumnsRowIndexer {
         const ret = {};
         if (this.byColFilter) {
             Object.entries(this.byColFilter).forEach(([k, v]) => {
-                if (!v.userParams) return;
+                if (!v.userParams) {
+                    return;
+                }
                 ret[k] = [...v.userParams];
             });
         }
@@ -455,21 +474,35 @@ export class KeyedColumnsRowIndexer {
 }
 
 const giveDirSignFor = (fuzzySign) => {
-    if (fuzzySign < 0) return -1;
-    if (fuzzySign > 0) return 1;
-    if (fuzzySign === 'asc') return 1;
-    if (fuzzySign === 'desc') return -1;
+    if (fuzzySign < 0) {
+        return -1;
+    }
+    if (fuzzySign > 0) {
+        return 1;
+    }
+    if (fuzzySign === 'asc') {
+        return 1;
+    }
+    if (fuzzySign === 'desc') {
+        return -1;
+    }
     return 0;
 };
 
 const canonicalForSign = (dirSign) => {
-    if (dirSign > 0) return 'asc';
-    if (dirSign < 0) return 'desc';
+    if (dirSign > 0) {
+        return 'asc';
+    }
+    if (dirSign < 0) {
+        return 'desc';
+    }
     return undefined;
 };
 
 const codedColumnsFromKeyAndDirection = (keyAndDirections, columns) => {
-    if (!keyAndDirections) return null;
+    if (!keyAndDirections) {
+        return null;
+    }
 
     const ret = [];
     const columIndexByKey = {};
@@ -484,7 +517,9 @@ const codedColumnsFromKeyAndDirection = (keyAndDirections, columns) => {
         const dir = knd[1];
 
         const colIdx = columIndexByKey[colKey];
-        if (colIdx === undefined) continue;
+        if (colIdx === undefined) {
+            continue;
+        }
 
         const sign = giveDirSignFor(dir);
         ret.push((colIdx + 1) * sign);
@@ -493,14 +528,26 @@ const codedColumnsFromKeyAndDirection = (keyAndDirections, columns) => {
 };
 
 const compareValue = (a, b, isNumeric, undefSign = -1) => {
-    if (a === undefined && b === undefined) return 0;
-    else if (a === undefined) return undefSign;
-    else if (b === undefined) return -undefSign;
+    if (a === undefined && b === undefined) {
+        return 0;
+    } else {
+        if (a === undefined) {
+            return undefSign;
+        } else {
+            if (b === undefined) {
+                return -undefSign;
+            }
+        }
+    }
     if (!isNumeric) {
         return ('' + a).localeCompare(b);
     } else {
-        if (isNaN(a)) return isNaN(b) ? 0 : 1;
-        if (isNaN(b)) return -1;
+        if (isNaN(a)) {
+            return isNaN(b) ? 0 : 1;
+        }
+        if (isNaN(b)) {
+            return -1;
+        }
         return Math.sign(Number(a) - Number(b));
     }
 };

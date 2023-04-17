@@ -100,7 +100,9 @@ const LogTable = ({ logs, onRowClick }) => {
     };
 
     const rowStyleFormat = (row) => {
-        if (row.index < 0) return;
+        if (row.index < 0) {
+            return;
+        }
         if (selectedRowIndex === row.index) {
             return {
                 backgroundColor: theme.palette.action.selected,
