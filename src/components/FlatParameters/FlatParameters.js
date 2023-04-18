@@ -83,9 +83,14 @@ function longestCommonPrefix(strs) {
  * @param paramsAsArray [{type,name,possibleValues,defaultValue}]
  * @param initValues {k:v}
  * @param onChange (paramName, newValue, isInEdition)
- * @returns JSX
+ * @param variant style variant for TextField, Autocomplete and Select parameter fields
  */
-export const FlatParameters = ({ paramsAsArray, initValues, onChange }) => {
+export const FlatParameters = ({
+    paramsAsArray,
+    initValues,
+    onChange,
+    variant = 'outlined',
+}) => {
     const classes = useStyles();
     const intl = useIntl();
 
@@ -177,7 +182,7 @@ export const FlatParameters = ({ paramsAsArray, initValues, onChange }) => {
                                 onFieldChange(e.target.value, param);
                             }
                         }}
-                        variant={'standard'}
+                        variant={variant}
                     />
                 );
             case 'INTEGER':
@@ -194,7 +199,7 @@ export const FlatParameters = ({ paramsAsArray, initValues, onChange }) => {
                                 onFieldChange(e.target.value, param);
                             }
                         }}
-                        variant={'standard'}
+                        variant={variant}
                     />
                 );
             case 'STRING_LIST':
@@ -211,14 +216,13 @@ export const FlatParameters = ({ paramsAsArray, initValues, onChange }) => {
                             renderTags={(value, getTagProps) =>
                                 value.map((option, index) => (
                                     <Chip
-                                        variant="outlined"
                                         label={option}
                                         {...getTagProps({ index })}
                                     />
                                 ))
                             }
                             renderInput={(options) => (
-                                <TextField {...options} variant="standard" />
+                                <TextField {...options} variant={variant} />
                             )}
                         />
                     );
@@ -235,6 +239,7 @@ export const FlatParameters = ({ paramsAsArray, initValues, onChange }) => {
                                     onFieldChange(ev.target.value, param);
                                 }}
                                 size="small"
+                                variant={variant}
                             >
                                 {param.possibleValues.map((value) => (
                                     <MenuItem key={value} value={value}>
@@ -259,7 +264,7 @@ export const FlatParameters = ({ paramsAsArray, initValues, onChange }) => {
                         onFocus={() => onUncommited(param, true)}
                         onBlur={() => onUncommited(param, false)}
                         onChange={(e) => onFieldChange(e.target.value, param)}
-                        variant={'standard'}
+                        variant={variant}
                     />
                 );
         }

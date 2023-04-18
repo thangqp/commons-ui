@@ -84,7 +84,8 @@ function makeFullMap(defaultMap, changingMap) {
 export const useImportExportParams = (
     paramsAsArray,
     initValues,
-    returnsDelta = true
+    returnsDelta = true,
+    variant = 'outlined'
 ) => {
     const defaultValues = useMemo(() => {
         return extractDefaultMap(paramsAsArray);
@@ -120,6 +121,7 @@ export const useImportExportParams = (
                 paramsAsArray={paramsAsArray}
                 initValues={currentValues}
                 onChange={onChange}
+                variant={variant}
             />
         );
     }, [paramsAsArray, currentValues, onChange]);
