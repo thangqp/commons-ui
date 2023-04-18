@@ -62,7 +62,6 @@ export function makeDeltaMap(defaultMap, changingMap) {
     Object.entries(defaultMap).forEach(([k, v]) => {
         const m = changingMap[k];
         if (!areEquivDeeply(v, m)) {
-            console.debug('Δ', k, v, m);
             delta[k] = m;
         }
     });
