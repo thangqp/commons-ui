@@ -258,6 +258,7 @@ export const FlatParameters = ({
                                     onFieldChange(ev.target.value, param);
                                 }}
                                 size="small"
+                                sx={{ minWidth: '4em' }}
                                 variant={variant}
                             >
                                 {param.possibleValues.map((value) => (
