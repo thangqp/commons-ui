@@ -12,213 +12,162 @@
 // - a render of a form allowing to modify those values
 // - a function allowing to reset the fields
 
-import React, { useCallback, useMemo, useState } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
-import {
-    Autocomplete,
-    Chip,
-    List,
-    ListItem,
-    Switch,
-    Tooltip,
-    Typography,
-    TextField,
-} from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
+import FlatParameters, {
+    extractDefault,
+} from '../components/FlatParameters/FlatParameters';
 
-const useStyles = makeStyles((theme) => ({
-    paramListItem: {
-        justifyContent: 'space-between',
-        gap: theme.spacing(2),
-    },
-}));
-
-function longestCommonPrefix(strs) {
-    if (!strs?.length) {
-        return '';
+function areEquivDeeply(a, b) {
+    if (a === b) {
+        return true;
     }
-    let prefix = strs.reduce((acc, str) =>
-        str.length < acc.length ? str : acc
-    );
 
-    for (let str of strs) {
-        while (str.slice(0, prefix.length) !== prefix) {
-            prefix = prefix.slice(0, -1);
+    const aIsArray = Array.isArray(a);
+    const bIsArray = Array.isArray(b);
+    if (aIsArray || bIsArray) {
+        if (aIsArray && bIsArray && a.length === b.length) {
+            let i = 0;
+            while (i < a.length && areEquivDeeply(a[i], b[i])) {
+                ++i;
+            }
+            if (i >= a.length) {
+                return true;
+            }
         }
+        return false;
     }
-    return prefix;
+
+    if (typeof a !== 'object' || typeof b !== 'object') {
+        return false;
+    }
+
+    return areEquivDeeply(Object.entries(a), Object.entries(b));
 }
 
-export const useImportExportParams = (paramsAsArray) => {
-    const classes = useStyles();
-    const intl = useIntl();
-
-    const longestPrefix = longestCommonPrefix(paramsAsArray.map((m) => m.name));
-    const lastDotIndex = longestPrefix.lastIndexOf('.');
-    const prefix = longestPrefix.slice(0, lastDotIndex + 1);
-
-    const preparePossibleValues = useCallback(
-        (values) => {
-            if (values == null) {
-                return [];
-            }
-            return values
-                .map((v) => intl.formatMessage({ id: v, defaultMessage: v }))
-                .sort((a, b) => a.localeCompare(b));
-        },
-        [intl]
+export function extractDefaultMap(paramsAsArray) {
+    return Object.fromEntries(
+        paramsAsArray.map((paramDescription) => {
+            return [paramDescription.name, extractDefault(paramDescription)];
+        })
     );
+}
 
-    const defaultValues = useMemo(() => {
-        return Object.fromEntries(
-            paramsAsArray.map((m) => {
-                if (m.type === 'BOOLEAN') {
-                    return [m.name, m.defaultValue];
-                }
-                if (m.type === 'STRING_LIST') {
-                    return [m.name, preparePossibleValues(m.defaultValue)];
-                }
-                return [m.name, m.defaultValue ?? null];
-            })
-        );
-    }, [paramsAsArray, preparePossibleValues]);
+export function makeDeltaMap(defaultMap, changingMap) {
+    if (!changingMap) {
+        return null;
+    }
 
-    const [currentValues, setCurrentValues] = useState(defaultValues);
+    const delta = {};
 
-    const onFieldChange = (value, paramName) => {
-        setCurrentValues((prevCurrentValues) => {
-            const nextCurrentValues = { ...prevCurrentValues };
-            nextCurrentValues[paramName] = value;
-            return nextCurrentValues;
-        });
-    };
-
-    const renderField = (param) => {
-        switch (param.type) {
-            case 'BOOLEAN':
-                return (
-                    <Switch
-                        checked={
-                            currentValues?.[param.name] ??
-                            defaultValues[param.name]
-                        }
-                        onChange={(e) =>
-                            onFieldChange(e.target.checked, param.name)
-                        }
-                    />
-                );
-            case 'STRING_LIST':
-                return (
-                    <Autocomplete
-                        fullWidth
-                        multiple
-                        options={preparePossibleValues(param.possibleValues)}
-                        freeSolo={!param.possibleValues}
-                        onChange={(e, value) =>
-                            onFieldChange(value, param.name)
-                        }
-                        value={
-                            currentValues?.[param.name] ??
-                            defaultValues[param.name]
-                        }
-                        renderTags={(value, getTagProps) =>
-                            value.map((option, index) => (
-                                <Chip
-                                    variant="outlined"
-                                    label={option}
-                                    {...getTagProps({ index })}
-                                />
-                            ))
-                        }
-                        renderInput={(options) => (
-                            <TextField {...options} variant="standard" />
-                        )}
-                    />
-                );
-            case 'STRING':
-                if (param.possibleValues) {
-                    return (
-                        <Autocomplete
-                            fullWidth
-                            disableClearable
-                            options={param.possibleValues}
-                            onChange={(e, value) =>
-                                onFieldChange(value, param.name)
-                            }
-                            value={
-                                currentValues?.[param.name] ??
-                                defaultValues[param.name]
-                            }
-                            renderInput={(options) => (
-                                <TextField {...options} variant="standard" />
-                            )}
-                        />
-                    );
-                } else {
-                    return (
-                        <TextField
-                            fullWidth
-                            defaultValue={
-                                currentValues?.[param.name] ??
-                                defaultValues[param.name]
-                            }
-                            onChange={(e) =>
-                                onFieldChange(e.target.value, param.name)
-                            }
-                            variant={'standard'}
-                        />
-                    );
-                }
-            default:
-                return (
-                    <TextField
-                        fullWidth
-                        defaultValue={
-                            currentValues?.[param.name] ??
-                            defaultValues[param.name]
-                        }
-                        onChange={(e) =>
-                            onFieldChange(e.target.value, param.name)
-                        }
-                        variant={'standard'}
-                    />
-                );
+    Object.entries(defaultMap).forEach(([k, v]) => {
+        const m = changingMap[k];
+        if (!areEquivDeeply(v, m)) {
+            delta[k] = m;
         }
-    };
+    });
 
-    const resetValuesToDefault = () => {
-        setCurrentValues({});
-    };
+    return Object.keys(delta).length ? delta : null;
+}
 
-    const paramsComponent = (
-        <List>
-            {paramsAsArray.map((param) => (
-                <Tooltip
-                    title={
-                        <FormattedMessage
-                            id={param.name + '.desc'}
-                            defaultMessage={param.description}
-                        />
-                    }
-                    enterDelay={1200}
-                    key={param.name}
-                >
-                    <ListItem
-                        key={param.name}
-                        className={classes.paramListItem}
-                    >
-                        <Typography style={{ minWidth: '30%' }}>
-                            <FormattedMessage
-                                id={param.name}
-                                defaultMessage={param.name.slice(prefix.length)}
-                            />
-                        </Typography>
-                        {renderField(param)}
-                    </ListItem>
-                </Tooltip>
-            ))}
-        </List>
+function makeFullMap(defaultMap, changingMap) {
+    if (!changingMap) {
+        return { ...defaultMap };
+    }
+
+    const full = {};
+
+    Object.entries(defaultMap).forEach(([k, v]) => {
+        if (!changingMap.hasOwnProperty(k)) {
+            full[k] = v;
+        } else {
+            const m = changingMap[k];
+            if (!areEquivDeeply(v, m)) {
+                full[k] = m;
+            } else {
+                full[k] = v;
+            }
+        }
+    });
+
+    return full;
+}
+
+export const useImportExportParams = (
+    paramsAsArray,
+    initValues,
+    returnsDelta = true,
+    variant = 'outlined'
+) => {
+    const defaultValues = useMemo(() => {
+        return extractDefaultMap(paramsAsArray);
+    }, [paramsAsArray]);
+    const baseValues = useMemo(() => {
+        return makeFullMap(defaultValues, initValues);
+    }, [defaultValues, initValues]);
+
+    const [currentValues, setCurrentValues] = useState(baseValues);
+    const prevRef = useRef();
+
+    const onChange = useCallback((paramName, value, isEdit) => {
+        if (!isEdit) {
+            setCurrentValues((prevCurrentValues) => {
+                return {
+                    ...prevCurrentValues,
+                    ...{ [paramName]: value },
+                };
+            });
+        }
+    }, []);
+
+    const resetValuesToDefault = useCallback(
+        (isToInit = true) => {
+            setCurrentValues(isToInit ? baseValues : defaultValues);
+        },
+        [defaultValues, baseValues]
     );
 
-    return [currentValues, paramsComponent, resetValuesToDefault];
+    const jsx = useMemo(() => {
+        return (
+            <FlatParameters
+                paramsAsArray={paramsAsArray}
+                initValues={currentValues}
+                onChange={onChange}
+                variant={variant}
+            />
+        );
+    }, [paramsAsArray, currentValues, onChange, variant]);
+
+    let ret;
+    if (
+        prevRef.current &&
+        areEquivDeeply(prevRef.current.currentValues, currentValues)
+    ) {
+        if (!returnsDelta) {
+            ret = [prevRef.current.currentValues, jsx, resetValuesToDefault];
+        } else if (!prevRef.current.deltaValues) {
+            ret = [
+                makeDeltaMap(defaultValues, currentValues),
+                jsx,
+                resetValuesToDefault,
+            ];
+        } else {
+            ret = [prevRef.current.deltaValues, jsx, resetValuesToDefault];
+        }
+    } else {
+        ret = [
+            returnsDelta
+                ? makeDeltaMap(defaultValues, currentValues)
+                : currentValues,
+            jsx,
+            resetValuesToDefault,
+        ];
+    }
+
+    prevRef.current = {
+        currentValues,
+        jsx: ret[1],
+        deltaValues: returnsDelta ? ret[0] : null,
+    };
+
+    return ret;
 };

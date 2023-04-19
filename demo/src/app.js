@@ -83,6 +83,7 @@ import OverflowableText from '../../src/components/OverflowableText';
 
 import { setShowAuthenticationRouterLogin } from '../../src/utils/actions';
 import { TableTab } from './TableTab';
+import { FlatParametersTab } from './FlatParametersTab';
 
 const messages = {
     en: {
@@ -393,6 +394,181 @@ const AppContent = ({ language, onLanguageClick }) => {
         []
     );
 
+    const defaultTab = (
+        <div>
+            <Box mt={3}>
+                <Typography variant="h3" color="textPrimary" align="center">
+                    Connected
+                </Typography>
+            </Box>
+            <hr />
+            <hr />
+            {testIcons()}
+            <hr />
+
+            <SnackErrorButton />
+            <SnackWarningButton />
+            <SnackInfoButton />
+            <Button
+                variant="contained"
+                style={{
+                    float: 'left',
+                    margin: '5px',
+                }}
+                onClick={() => setOpenReportViewer(true)}
+            >
+                Logs
+            </Button>
+            <ReportViewerDialog
+                title={'Logs test'}
+                open={openReportViewer}
+                onClose={() => setOpenReportViewer(false)}
+                jsonReport={LOGS_JSON}
+            />
+            <div
+                style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'flex-start',
+                }}
+            >
+                <TreeViewFinderConfig
+                    dynamicData={dynamicData}
+                    dataFormat={dataFormat}
+                    multiselect={multiselect}
+                    onlyLeaves={onlyLeaves}
+                    sortedAlphabetically={sortedAlphabetically}
+                    onDynamicDataChange={(event) =>
+                        setDynamicData(event.target.value === 'dynamic')
+                    }
+                    onDataFormatChange={(event) =>
+                        setDataFormat(event.target.value)
+                    }
+                    onSelectionTypeChange={(event) =>
+                        setMultiselect(event.target.value === 'multiselect')
+                    }
+                    onOnlyLeavesChange={(event) =>
+                        setOnlyLeaves(event.target.checked)
+                    }
+                    onSortedAlphabeticallyChange={(event) =>
+                        setSortedAlphabetically(event.target.checked)
+                    }
+                />
+                <Button
+                    variant="contained"
+                    style={{
+                        float: 'left',
+                        margin: '5px',
+                    }}
+                    onClick={() => setOpenTreeViewFinderDialog(true)}
+                >
+                    Open TreeViewFinder ...
+                </Button>
+                <Button
+                    variant="contained"
+                    style={{
+                        float: 'left',
+                        margin: '5px',
+                    }}
+                    onClick={handleToggleDisableSearch}
+                >
+                    Toggle search ...
+                </Button>
+                <TreeViewFinder
+                    open={openTreeViewFinderDialog}
+                    onClose={(nodes) => {
+                        setOpenTreeViewFinderDialog(false);
+                        console.log('Elements chosen : ', nodes);
+                    }}
+                    data={dataFormat === 'Tree' ? nodesTree : nodesList}
+                    multiselect={multiselect}
+                    onTreeBrowse={
+                        dynamicData
+                            ? dataFormat === 'Tree'
+                                ? updateInfiniteTestDataTreeCallback
+                                : updateInfiniteTestDataListCallback
+                            : undefined
+                    }
+                    onlyLeaves={onlyLeaves}
+                    sortMethod={
+                        sortedAlphabetically ? sortAlphabetically : undefined
+                    }
+                    // Customisation props to pass the counter in the title
+                    title={
+                        'Number of nodes : ' +
+                        countNodes(
+                            dataFormat === 'Tree' ? nodesTree : nodesList
+                        )
+                    }
+                />
+                <Button
+                    variant="contained"
+                    style={{
+                        float: 'left',
+                        margin: '5px',
+                    }}
+                    onClick={() =>
+                        setOpenTreeViewFinderDialogCustomDialog(true)
+                    }
+                >
+                    Open Custom TreeViewFinder ...
+                </Button>
+                <CustomTreeViewFinder
+                    open={openTreeViewFinderDialogCustomDialog}
+                    onClose={(nodes) => {
+                        setOpenTreeViewFinderDialogCustomDialog(false);
+                        console.log('Elements chosen : ', nodes);
+                    }}
+                    data={dataFormat === 'Tree' ? nodesTree : nodesList}
+                    multiselect={multiselect}
+                    onTreeBrowse={
+                        dynamicData
+                            ? dataFormat === 'Tree'
+                                ? updateInfiniteTestDataTreeCallback
+                                : updateInfiniteTestDataListCallback
+                            : undefined
+                    }
+                    onlyLeaves={onlyLeaves}
+                    // Customisation props
+                    title={
+                        'Custom Title TreeViewFinder, Number of nodes : ' +
+                        countNodes(
+                            dataFormat === 'Tree' ? nodesTree : nodesList
+                        )
+                    }
+                    validationButtonText={'Move To this location'}
+                />
+            </div>
+            <div
+                style={{
+                    margin: '10px 0px 0px 0px',
+                    display: 'flex',
+                    alignItems: 'center',
+                }}
+            >
+                <TextField
+                    style={{
+                        marginRight: '10px',
+                    }}
+                    label="text"
+                    id="overflowableText-textField"
+                    size={'small'}
+                    defaultValue={'Set large text here to test'}
+                    onChange={onChangeOverflowableText}
+                />
+                <OverflowableText
+                    text={overflowableText}
+                    style={{
+                        width: '200px',
+                        border: '1px solid black',
+                    }}
+                />
+            </div>
+            <hr />
+            <Crasher />
+        </div>
+    );
+
     return (
         <StyledEngineProvider injectFirst>
             <ThemeProvider theme={getMuiTheme(theme)}>
@@ -458,265 +634,12 @@ const AppContent = ({ language, onLanguageClick }) => {
                                         }
                                     >
                                         <Tab label="others" />
-                                        <Tab label="virtual" />
+                                        <Tab label="virtual table" />
+                                        <Tab label="parameters" />
                                     </Tabs>
-                                    {tabIndex === 1 ? (
-                                        <TableTab />
-                                    ) : (
-                                        <div>
-                                            <Box mt={3}>
-                                                <Typography
-                                                    variant="h3"
-                                                    color="textPrimary"
-                                                    align="center"
-                                                >
-                                                    Connected
-                                                </Typography>
-                                            </Box>
-                                            <hr />
-                                            <hr />
-                                            {testIcons()}
-                                            <hr />
-
-                                            <SnackErrorButton />
-                                            <SnackWarningButton />
-                                            <SnackInfoButton />
-                                            <Button
-                                                variant="contained"
-                                                style={{
-                                                    float: 'left',
-                                                    margin: '5px',
-                                                }}
-                                                onClick={() =>
-                                                    setOpenReportViewer(true)
-                                                }
-                                            >
-                                                Logs
-                                            </Button>
-                                            <ReportViewerDialog
-                                                title={'Logs test'}
-                                                open={openReportViewer}
-                                                onClose={() =>
-                                                    setOpenReportViewer(false)
-                                                }
-                                                jsonReport={LOGS_JSON}
-                                            />
-                                            <div
-                                                style={{
-                                                    display: 'flex',
-                                                    flexDirection: 'column',
-                                                    alignItems: 'flex-start',
-                                                }}
-                                            >
-                                                <TreeViewFinderConfig
-                                                    dynamicData={dynamicData}
-                                                    dataFormat={dataFormat}
-                                                    multiselect={multiselect}
-                                                    onlyLeaves={onlyLeaves}
-                                                    sortedAlphabetically={
-                                                        sortedAlphabetically
-                                                    }
-                                                    onDynamicDataChange={(
-                                                        event
-                                                    ) =>
-                                                        setDynamicData(
-                                                            event.target
-                                                                .value ===
-                                                                'dynamic'
-                                                        )
-                                                    }
-                                                    onDataFormatChange={(
-                                                        event
-                                                    ) =>
-                                                        setDataFormat(
-                                                            event.target.value
-                                                        )
-                                                    }
-                                                    onSelectionTypeChange={(
-                                                        event
-                                                    ) =>
-                                                        setMultiselect(
-                                                            event.target
-                                                                .value ===
-                                                                'multiselect'
-                                                        )
-                                                    }
-                                                    onOnlyLeavesChange={(
-                                                        event
-                                                    ) =>
-                                                        setOnlyLeaves(
-                                                            event.target.checked
-                                                        )
-                                                    }
-                                                    onSortedAlphabeticallyChange={(
-                                                        event
-                                                    ) =>
-                                                        setSortedAlphabetically(
-                                                            event.target.checked
-                                                        )
-                                                    }
-                                                />
-                                                <Button
-                                                    variant="contained"
-                                                    style={{
-                                                        float: 'left',
-                                                        margin: '5px',
-                                                    }}
-                                                    onClick={() =>
-                                                        setOpenTreeViewFinderDialog(
-                                                            true
-                                                        )
-                                                    }
-                                                >
-                                                    Open TreeViewFinder ...
-                                                </Button>
-                                                <Button
-                                                    variant="contained"
-                                                    style={{
-                                                        float: 'left',
-                                                        margin: '5px',
-                                                    }}
-                                                    onClick={
-                                                        handleToggleDisableSearch
-                                                    }
-                                                >
-                                                    Toggle search ...
-                                                </Button>
-                                                <TreeViewFinder
-                                                    open={
-                                                        openTreeViewFinderDialog
-                                                    }
-                                                    onClose={(nodes) => {
-                                                        setOpenTreeViewFinderDialog(
-                                                            false
-                                                        );
-                                                        console.log(
-                                                            'Elements chosen : ',
-                                                            nodes
-                                                        );
-                                                    }}
-                                                    data={
-                                                        dataFormat === 'Tree'
-                                                            ? nodesTree
-                                                            : nodesList
-                                                    }
-                                                    multiselect={multiselect}
-                                                    onTreeBrowse={
-                                                        dynamicData
-                                                            ? dataFormat ===
-                                                              'Tree'
-                                                                ? updateInfiniteTestDataTreeCallback
-                                                                : updateInfiniteTestDataListCallback
-                                                            : undefined
-                                                    }
-                                                    onlyLeaves={onlyLeaves}
-                                                    sortMethod={
-                                                        sortedAlphabetically
-                                                            ? sortAlphabetically
-                                                            : undefined
-                                                    }
-                                                    // Customisation props to pass the counter in the title
-                                                    title={
-                                                        'Number of nodes : ' +
-                                                        countNodes(
-                                                            dataFormat ===
-                                                                'Tree'
-                                                                ? nodesTree
-                                                                : nodesList
-                                                        )
-                                                    }
-                                                />
-                                                <Button
-                                                    variant="contained"
-                                                    style={{
-                                                        float: 'left',
-                                                        margin: '5px',
-                                                    }}
-                                                    onClick={() =>
-                                                        setOpenTreeViewFinderDialogCustomDialog(
-                                                            true
-                                                        )
-                                                    }
-                                                >
-                                                    Open Custom TreeViewFinder
-                                                    ...
-                                                </Button>
-                                                <CustomTreeViewFinder
-                                                    open={
-                                                        openTreeViewFinderDialogCustomDialog
-                                                    }
-                                                    onClose={(nodes) => {
-                                                        setOpenTreeViewFinderDialogCustomDialog(
-                                                            false
-                                                        );
-                                                        console.log(
-                                                            'Elements chosen : ',
-                                                            nodes
-                                                        );
-                                                    }}
-                                                    data={
-                                                        dataFormat === 'Tree'
-                                                            ? nodesTree
-                                                            : nodesList
-                                                    }
-                                                    multiselect={multiselect}
-                                                    onTreeBrowse={
-                                                        dynamicData
-                                                            ? dataFormat ===
-                                                              'Tree'
-                                                                ? updateInfiniteTestDataTreeCallback
-                                                                : updateInfiniteTestDataListCallback
-                                                            : undefined
-                                                    }
-                                                    onlyLeaves={onlyLeaves}
-                                                    // Customisation props
-                                                    title={
-                                                        'Custom Title TreeViewFinder, Number of nodes : ' +
-                                                        countNodes(
-                                                            dataFormat ===
-                                                                'Tree'
-                                                                ? nodesTree
-                                                                : nodesList
-                                                        )
-                                                    }
-                                                    validationButtonText={
-                                                        'Move To this location'
-                                                    }
-                                                />
-                                            </div>
-                                            <div
-                                                style={{
-                                                    margin: '10px 0px 0px 0px',
-                                                    display: 'flex',
-                                                    alignItems: 'center',
-                                                }}
-                                            >
-                                                <TextField
-                                                    style={{
-                                                        marginRight: '10px',
-                                                    }}
-                                                    label="text"
-                                                    id="overflowableText-textField"
-                                                    size={'small'}
-                                                    defaultValue={
-                                                        'Set large text here to test'
-                                                    }
-                                                    onChange={
-                                                        onChangeOverflowableText
-                                                    }
-                                                />
-                                                <OverflowableText
-                                                    text={overflowableText}
-                                                    style={{
-                                                        width: '200px',
-                                                        border: '1px solid black',
-                                                    }}
-                                                />
-                                            </div>
-                                            <hr />
-                                            <Crasher />
-                                        </div>
-                                    )}
+                                    {tabIndex === 0 && defaultTab}
+                                    {tabIndex === 1 && <TableTab />}
+                                    {tabIndex === 2 && <FlatParametersTab />}
                                 </div>
                             ) : (
                                 <AuthenticationRouter

@@ -77,7 +77,9 @@
         "react-router-dom": "^6.0.0",
         "type-fest": "^2.0.0",
         "utf-8-validate": "^5.0.2",
-        "webpack-plugin-serve": "^1.0.1"
+        "webpack-plugin-serve": "^1.0.1",
+        "@react-hook/window-size": "^3.1.1",
+        "react-resizable": "^3.0.4"
     },
     "eslintConfig": {
         "extends": [
