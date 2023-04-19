@@ -394,7 +394,7 @@ const AppContent = ({ language, onLanguageClick }) => {
         []
     );
 
-    const frontab = (
+    const defaultTab = (
         <div>
             <Box mt={3}>
                 <Typography variant="h3" color="textPrimary" align="center">
@@ -637,7 +637,7 @@ const AppContent = ({ language, onLanguageClick }) => {
                                         <Tab label="virtual table" />
                                         <Tab label="parameters" />
                                     </Tabs>
-                                    {tabIndex === 0 && frontab}
+                                    {tabIndex === 0 && defaultTab}
                                     {tabIndex === 1 && <TableTab />}
                                     {tabIndex === 2 && <FlatParametersTab />}
                                 </div>
