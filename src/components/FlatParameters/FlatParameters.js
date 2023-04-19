@@ -147,10 +147,13 @@ export const FlatParameters = ({
                 setInEditionParam(param.name);
             } else {
                 if (onChange && uncommitted != null) {
-                    if (['INTEGER', 'DOUBLE'].includes(param.type)) {
+                    if (!['INTEGER', 'DOUBLE'].includes(param.type)) {
+                        onChange(param.name, uncommitted, false);
+                    } else if (uncommitted) {
+                        // may give NaN
                         onChange(param.name, uncommitted - 0, false);
                     } else {
-                        onChange(param.name, uncommitted, false);
+                        onChange(param.name, extractDefault(param), false);
                     }
                 }
                 setInEditionParam(null);
@@ -181,6 +184,9 @@ export const FlatParameters = ({
                     />
                 );
             case 'DOUBLE':
+                const err =
+                    isNaN(value) ||
+                    (typeof value !== 'number' && !!value && isNaN(value - 0));
                 return (
                     <TextField
                         fullWidth
@@ -194,6 +200,7 @@ export const FlatParameters = ({
                                 onFieldChange(e.target.value, param);
                             }
                         }}
+                        error={err}
                         variant={variant}
                     />
                 );
