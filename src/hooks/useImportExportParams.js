@@ -135,7 +135,7 @@ export const useImportExportParams = (
                 variant={variant}
             />
         );
-    }, [paramsAsArray, currentValues, onChange]);
+    }, [paramsAsArray, currentValues, onChange, variant]);
 
     let ret;
     if (
