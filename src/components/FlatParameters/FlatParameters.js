@@ -112,12 +112,12 @@ export const FlatParameters = ({
     const [inEditionParam, setInEditionParam] = useState(null);
 
     const preparePossibleValues = useCallback(
-        (values) => {
+        (prefix, values) => {
             if (values == null) {
                 return [];
             }
             return values
-                .map((v) => intl.formatMessage({ id: v, defaultMessage: v }))
+                .map((v) => intl.formatMessage({ id: prefix + '_' + v }))
                 .sort((a, b) => a.localeCompare(b));
         },
         [intl]
@@ -228,6 +228,7 @@ export const FlatParameters = ({
                             fullWidth
                             multiple
                             options={preparePossibleValues(
+                                param.name,
                                 param.possibleValues
                             )}
                             onChange={(e, value) => onFieldChange(value, param)}
@@ -261,12 +262,14 @@ export const FlatParameters = ({
                                 sx={{ minWidth: '4em' }}
                                 variant={variant}
                             >
-                                {param.possibleValues.map((value) => (
+                                {preparePossibleValues(
+                                    param.name,
+                                    param.possibleValues
+                                ).map((value) => (
                                     <MenuItem key={value} value={value}>
                                         <Typography>
                                             {intl.formatMessage({
                                                 id: value,
-                                                defaultMessage: value,
                                             })}
                                         </Typography>
                                     </MenuItem>
@@ -294,12 +297,7 @@ export const FlatParameters = ({
         <List className={classes.paramList}>
             {paramsAsArray.map((param) => (
                 <Tooltip
-                    title={
-                        <FormattedMessage
-                            id={param.name + '.desc'}
-                            defaultMessage={param.description}
-                        />
-                    }
+                    title={<FormattedMessage id={param.name + '.desc'} />}
                     enterDelay={1200}
                     key={param.name}
                 >
@@ -308,10 +306,7 @@ export const FlatParameters = ({
                         className={classes.paramListItem}
                     >
                         <Typography className={classes.paramName}>
-                            <FormattedMessage
-                                id={param.name}
-                                defaultMessage={param.name.slice(prefix.length)}
-                            />
+                            <FormattedMessage id={param.name} />
                         </Typography>
                         {renderField(param)}
                     </ListItem>
