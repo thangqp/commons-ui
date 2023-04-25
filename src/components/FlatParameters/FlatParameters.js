@@ -117,7 +117,7 @@ export const FlatParameters = ({
                 return [];
             }
             return values
-                .map((v) => intl.formatMessage({ id: prefix + '_' + v }))
+                .map((v) => intl.formatMessage({ id: prefix + '.' + v }))
                 .sort((a, b) => a.localeCompare(b));
         },
         [intl]
