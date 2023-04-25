@@ -19,7 +19,7 @@ import {
     Tooltip,
     Typography,
 } from '@mui/material';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 const useStyles = makeStyles((theme) => ({
     paramList: {
@@ -294,7 +294,12 @@ export const FlatParameters = ({
         <List className={classes.paramList}>
             {paramsAsArray.map((param) => (
                 <Tooltip
-                    title={param.description}
+                    title={
+                        <FormattedMessage
+                            id={param.name + '.desc'}
+                            defaultMessage={param.description}
+                        />
+                    }
                     enterDelay={1200}
                     key={param.name}
                 >
@@ -303,7 +308,10 @@ export const FlatParameters = ({
                         className={classes.paramListItem}
                     >
                         <Typography className={classes.paramName}>
-                            {param.name.slice(prefix.length)}
+                            <FormattedMessage
+                                id={param.name}
+                                defaultMessage={param.name.slice(prefix.length)}
+                            />
                         </Typography>
                         {renderField(param)}
                     </ListItem>
