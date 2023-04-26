@@ -111,16 +111,29 @@ export const FlatParameters = ({
     const [uncommitted, setUncommitted] = useState(null);
     const [inEditionParam, setInEditionParam] = useState(null);
 
-    const preparePossibleValues = useCallback(
+    const getTranslatedValue = useCallback(
+        (prefix, value) => {
+            return intl.formatMessage({
+                id: prefix + '.' + value,
+                defaultMessage: value,
+            });
+        },
+        [intl]
+    );
+
+    const sortPossibleValues = useCallback(
         (prefix, values) => {
             if (values == null) {
                 return [];
             }
-            return values
-                .map((v) => intl.formatMessage({ id: prefix + '.' + v }))
-                .sort((a, b) => a.localeCompare(b));
+            return values.sort((a, b) => {
+                // Sort by translated values but return raw values
+                const translatedA = getTranslatedValue(prefix, a);
+                const translatedB = getTranslatedValue(prefix, b);
+                return translatedA.localeCompare(translatedB);
+            });
         },
-        [intl]
+        [getTranslatedValue]
     );
 
     const onFieldChange = useCallback(
@@ -174,24 +187,26 @@ export const FlatParameters = ({
     }
 
     const renderField = (param) => {
-        const value = mixInitAndDefault(param);
+        const fieldValue = mixInitAndDefault(param);
         switch (param.type) {
             case 'BOOLEAN':
                 return (
                     <Switch
-                        checked={!!value}
+                        checked={!!fieldValue}
                         onChange={(e) => onFieldChange(e.target.checked, param)}
                     />
                 );
             case 'DOUBLE':
                 const err =
-                    isNaN(value) ||
-                    (typeof value !== 'number' && !!value && isNaN(value - 0));
+                    isNaN(fieldValue) ||
+                    (typeof fieldValue !== 'number' &&
+                        !!fieldValue &&
+                        isNaN(fieldValue - 0));
                 return (
                     <TextField
                         fullWidth
                         sx={{ input: { textAlign: 'right' } }}
-                        value={value}
+                        value={fieldValue}
                         onFocus={() => onUncommited(param, true)}
                         onBlur={() => onUncommited(param, false)}
                         onChange={(e) => {
@@ -209,7 +224,7 @@ export const FlatParameters = ({
                     <TextField
                         fullWidth
                         sx={{ input: { textAlign: 'right' } }}
-                        value={value}
+                        value={fieldValue}
                         onFocus={() => onUncommited(param, true)}
                         onBlur={() => onUncommited(param, false)}
                         onChange={(e) => {
@@ -227,16 +242,22 @@ export const FlatParameters = ({
                         <Autocomplete
                             fullWidth
                             multiple
-                            options={preparePossibleValues(
+                            options={sortPossibleValues(
                                 param.name,
                                 param.possibleValues
                             )}
+                            getOptionLabel={(option) =>
+                                getTranslatedValue(param.name, option)
+                            }
                             onChange={(e, value) => onFieldChange(value, param)}
-                            value={value}
+                            value={fieldValue}
                             renderTags={(value, getTagProps) =>
                                 value.map((option, index) => (
                                     <Chip
-                                        label={option}
+                                        label={getTranslatedValue(
+                                            param.name,
+                                            option
+                                        )}
                                         {...getTagProps({ index })}
                                     />
                                 ))
@@ -254,7 +275,7 @@ export const FlatParameters = ({
                         <>
                             <Select
                                 labelId={param.name}
-                                value={value ?? ''}
+                                value={fieldValue ?? ''}
                                 onChange={(ev, may) => {
                                     onFieldChange(ev.target.value, param);
                                 }}
@@ -262,15 +283,16 @@ export const FlatParameters = ({
                                 sx={{ minWidth: '4em' }}
                                 variant={variant}
                             >
-                                {preparePossibleValues(
+                                {sortPossibleValues(
                                     param.name,
                                     param.possibleValues
                                 ).map((value) => (
                                     <MenuItem key={value} value={value}>
                                         <Typography>
-                                            {intl.formatMessage({
-                                                id: value,
-                                            })}
+                                            {getTranslatedValue(
+                                                param.name,
+                                                value
+                                            )}
                                         </Typography>
                                     </MenuItem>
                                 ))}
@@ -283,7 +305,7 @@ export const FlatParameters = ({
                 return (
                     <TextField
                         fullWidth
-                        defaultValue={value}
+                        defaultValue={fieldValue}
                         onFocus={() => onUncommited(param, true)}
                         onBlur={() => onUncommited(param, false)}
                         onChange={(e) => onFieldChange(e.target.value, param)}
@@ -297,7 +319,12 @@ export const FlatParameters = ({
         <List className={classes.paramList}>
             {paramsAsArray.map((param) => (
                 <Tooltip
-                    title={<FormattedMessage id={param.name + '.desc'} />}
+                    title={
+                        <FormattedMessage
+                            id={param.name + '.desc'}
+                            defaultMessage={param.description}
+                        />
+                    }
                     enterDelay={1200}
                     key={param.name}
                 >
@@ -306,7 +333,10 @@ export const FlatParameters = ({
                         className={classes.paramListItem}
                     >
                         <Typography className={classes.paramName}>
-                            <FormattedMessage id={param.name} />
+                            <FormattedMessage
+                                id={param.name}
+                                defaultMessage={param.name.slice(prefix.length)}
+                            />
                         </Typography>
                         {renderField(param)}
                     </ListItem>
