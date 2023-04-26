@@ -126,12 +126,15 @@ export const FlatParameters = ({
             if (values == null) {
                 return [];
             }
-            return values.sort((a, b) => {
-                // Sort by translated values but return raw values
-                const translatedA = getTranslatedValue(prefix, a);
-                const translatedB = getTranslatedValue(prefix, b);
-                return translatedA.localeCompare(translatedB);
-            });
+            // Sort by translated values
+            return values
+                .map((value) => {
+                    return {
+                        id: value,
+                        message: getTranslatedValue(prefix, value),
+                    };
+                })
+                .sort((a, b) => a.message.localeCompare(b.message));
         },
         [getTranslatedValue]
     );
@@ -245,25 +248,25 @@ export const FlatParameters = ({
                             options={sortPossibleValues(
                                 param.name,
                                 param.possibleValues
-                            )}
+                            ).map((v) => v.id)}
                             getOptionLabel={(option) =>
                                 getTranslatedValue(param.name, option)
                             }
                             onChange={(e, value) => onFieldChange(value, param)}
                             value={fieldValue}
-                            renderTags={(value, getTagProps) =>
-                                value.map((option, index) => (
+                            renderTags={(values, getTagProps) => {
+                                return values.map((value, index) => (
                                     <Chip
                                         label={getTranslatedValue(
                                             param.name,
-                                            option
+                                            value
                                         )}
                                         {...getTagProps({ index })}
                                     />
-                                ))
-                            }
-                            renderInput={(options) => (
-                                <TextField {...options} variant={variant} />
+                                ));
+                            }}
+                            renderInput={(inputProps) => (
+                                <TextField {...inputProps} variant={variant} />
                             )}
                         />
                     );
@@ -287,13 +290,8 @@ export const FlatParameters = ({
                                     param.name,
                                     param.possibleValues
                                 ).map((value) => (
-                                    <MenuItem key={value} value={value}>
-                                        <Typography>
-                                            {getTranslatedValue(
-                                                param.name,
-                                                value
-                                            )}
-                                        </Typography>
+                                    <MenuItem key={value.id} value={value.id}>
+                                        <Typography>{value.message}</Typography>
                                     </MenuItem>
                                 ))}
                             </Select>
