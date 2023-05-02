@@ -40,19 +40,6 @@ const useStyles = makeStyles((theme) => ({
 const Login = ({ onLoginClick, disabled }) => {
     const classes = useStyles();
 
-    function Copyright() {
-        return (
-            <Typography variant="body2" color="textSecondary" align="center">
-                {'Copyright © '}
-                <Link color="inherit" href="#">
-                    GridSuite
-                </Link>{' '}
-                {new Date().getFullYear()}
-                {'.'}
-            </Typography>
-        );
-    }
-
     return (
         <Container component="main" maxWidth="xs">
             <div className={classes.paper}>
@@ -81,7 +68,18 @@ const Login = ({ onLoginClick, disabled }) => {
                 </Button>
             </div>
             <Box mt={2}>
-                <Copyright />
+                <Typography
+                    variant="body2"
+                    color="textSecondary"
+                    align="center"
+                >
+                    {'Copyright © '}
+                    <Link color="inherit" href="#">
+                        GridSuite
+                    </Link>{' '}
+                    {new Date().getFullYear()}
+                    {'.'}
+                </Typography>
             </Box>
         </Container>
     );
