@@ -71,15 +71,15 @@ export function extractDefault(paramDescription) {
     return d ?? null;
 }
 
-function longestCommonPrefix(strs) {
-    if (!strs?.length) {
+function longestCommonPrefix(stringList) {
+    if (!stringList?.length) {
         return '';
     }
-    let prefix = strs.reduce((acc, str) =>
+    let prefix = stringList.reduce((acc, str) =>
         str.length < acc.length ? str : acc
     );
 
-    for (let str of strs) {
+    for (let str of stringList) {
         while (str.slice(0, prefix.length) !== prefix) {
             prefix = prefix.slice(0, -1);
         }
@@ -157,7 +157,7 @@ export const FlatParameters = ({
         [inEditionParam, onChange]
     );
 
-    const onUncommited = useCallback(
+    const onUncommitted = useCallback(
         (param, inEdit) => {
             if (inEdit) {
                 setInEditionParam(param.name);
@@ -189,6 +189,10 @@ export const FlatParameters = ({
         }
     }
 
+    const outputTransformFloatString = (value) => {
+        return value?.replace(',', '.') || '';
+    };
+
     const renderField = (param) => {
         const fieldValue = mixInitAndDefault(param);
         switch (param.type) {
@@ -210,12 +214,15 @@ export const FlatParameters = ({
                         fullWidth
                         sx={{ input: { textAlign: 'right' } }}
                         value={fieldValue}
-                        onFocus={() => onUncommited(param, true)}
-                        onBlur={() => onUncommited(param, false)}
+                        onFocus={() => onUncommitted(param, true)}
+                        onBlur={() => onUncommitted(param, false)}
                         onChange={(e) => {
                             const m = FloatRE.exec(e.target.value);
                             if (m) {
-                                onFieldChange(e.target.value, param);
+                                onFieldChange(
+                                    outputTransformFloatString(e.target.value),
+                                    param
+                                );
                             }
                         }}
                         error={err}
@@ -228,8 +235,8 @@ export const FlatParameters = ({
                         fullWidth
                         sx={{ input: { textAlign: 'right' } }}
                         value={fieldValue}
-                        onFocus={() => onUncommited(param, true)}
-                        onBlur={() => onUncommited(param, false)}
+                        onFocus={() => onUncommitted(param, true)}
+                        onBlur={() => onUncommitted(param, false)}
                         onChange={(e) => {
                             const m = IntegerRE.exec(e.target.value);
                             if (m) {
@@ -279,7 +286,7 @@ export const FlatParameters = ({
                             <Select
                                 labelId={param.name}
                                 value={fieldValue ?? ''}
-                                onChange={(ev, may) => {
+                                onChange={(ev) => {
                                     onFieldChange(ev.target.value, param);
                                 }}
                                 size="small"
@@ -304,8 +311,8 @@ export const FlatParameters = ({
                     <TextField
                         fullWidth
                         defaultValue={fieldValue}
-                        onFocus={() => onUncommited(param, true)}
-                        onBlur={() => onUncommited(param, false)}
+                        onFocus={() => onUncommitted(param, true)}
+                        onBlur={() => onUncommitted(param, false)}
                         onChange={(e) => onFieldChange(e.target.value, param)}
                         variant={variant}
                     />
