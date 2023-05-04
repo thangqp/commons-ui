@@ -147,8 +147,12 @@ export const FlatParameters = ({
                 setUncommitted(value);
             }
             if (onChange) {
-                if (Array.isArray(value)) {
-                    onChange(paramName, [...value], isInEdition);
+                if (param.type === 'STRING_LIST') {
+                    onChange(
+                        paramName,
+                        value ? value.toString() : null,
+                        isInEdition
+                    );
                 } else {
                     onChange(paramName, value, isInEdition);
                 }
@@ -183,7 +187,20 @@ export const FlatParameters = ({
         if (param.name === inEditionParam && uncommitted !== null) {
             return uncommitted;
         } else if (initValues && initValues.hasOwnProperty(param.name)) {
-            return initValues[param.name];
+            if (param.type !== 'STRING_LIST') {
+                return initValues[param.name];
+            }
+            const valueList = initValues[param.name];
+            if (Array.isArray(valueList)) {
+                return valueList;
+            }
+            // otherwise split string into array
+            return valueList
+                ? valueList
+                      .split(',')
+                      .map((s) => s.trim())
+                      .filter((s) => !!s)
+                : [];
         } else {
             return extractDefault(param);
         }
@@ -277,8 +294,33 @@ export const FlatParameters = ({
                             )}
                         />
                     );
+                } else {
+                    // no possible values => free user inputs
+                    return (
+                        <Autocomplete
+                            fullWidth
+                            multiple
+                            freeSolo
+                            autoSelect
+                            options={[]}
+                            onChange={(e, value) => onFieldChange(value, param)}
+                            value={fieldValue}
+                            renderTags={(values, getTagProps) => {
+                                return values.map((value, index) => (
+                                    <Chip
+                                        id={'chip_' + value}
+                                        size={'small'}
+                                        label={value}
+                                        {...getTagProps({ index })}
+                                    />
+                                ));
+                            }}
+                            renderInput={(inputProps) => (
+                                <TextField {...inputProps} variant={variant} />
+                            )}
+                        />
+                    );
                 }
-            // else fallthrough to default
             case 'STRING':
                 if (param.possibleValues) {
                     return (
@@ -310,7 +352,7 @@ export const FlatParameters = ({
                 return (
                     <TextField
                         fullWidth
-                        defaultValue={fieldValue}
+                        value={fieldValue || ''}
                         onFocus={() => onUncommitted(param, true)}
                         onBlur={() => onUncommitted(param, false)}
                         onChange={(e) => onFieldChange(e.target.value, param)}
