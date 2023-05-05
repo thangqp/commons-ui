@@ -12,34 +12,27 @@ import Link from '@mui/material/Link';
 import Box from '@mui/material/Box';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import Typography from '@mui/material/Typography';
-import makeStyles from '@mui/styles/makeStyles';
 import Container from '@mui/material/Container';
 import { FormattedMessage } from 'react-intl';
 
-const useStyles = makeStyles((theme) => ({
-    paper: {
+const styles = {
+    paper: (theme) => ({
         marginTop: theme.spacing(8),
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-    },
-    avatar: {
+    }),
+    avatar: (theme) => ({
         margin: theme.spacing(1),
         backgroundColor: theme.palette.error.main,
-    },
-    submit: {
+    }),
+    submit: (theme) => ({
         margin: theme.spacing(3, 0, 2),
         borderRadius: '30px',
-    },
-    logo: {
-        width: 64,
-        height: 64,
-    },
-}));
+    }),
+};
 
 const Logout = ({ onLogoutClick, disabled }) => {
-    const classes = useStyles();
-
     function Copyright() {
         return (
             <Typography variant="body2" color="textSecondary" align="center">
@@ -55,8 +48,8 @@ const Logout = ({ onLogoutClick, disabled }) => {
 
     return (
         <Container component="main" maxWidth="xs">
-            <div className={classes.paper}>
-                <Avatar className={classes.avatar}>
+            <Box sx={styles.paper}>
+                <Avatar sx={styles.avatar}>
                     <LogoutOutlinedIcon />
                 </Avatar>
                 <Typography component="h1" variant="h5">
@@ -71,7 +64,7 @@ const Logout = ({ onLogoutClick, disabled }) => {
                     disabled={disabled}
                     fullWidth
                     variant="contained"
-                    className={classes.submit}
+                    sx={styles.submit}
                     onClick={onLogoutClick}
                 >
                     <FormattedMessage
@@ -79,7 +72,7 @@ const Logout = ({ onLogoutClick, disabled }) => {
                         defaultMessage={'logout'}
                     />
                 </Button>
-            </div>
+            </Box>
             <Box mt={2}>
                 <Copyright />
             </Box>

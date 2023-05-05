@@ -13,8 +13,7 @@ import AppBar from '@mui/material/AppBar';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 
 import { darken } from '@mui/material/styles';
-import makeStyles from '@mui/styles/makeStyles';
-import withStyles from '@mui/styles/withStyles';
+import { styled } from '@mui/system';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -22,6 +21,7 @@ import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 
+import Box from '@mui/material/Box';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import AppsIcon from '@mui/icons-material/Apps';
@@ -46,11 +46,11 @@ import Popper from '@mui/material/Popper';
 import Paper from '@mui/material/Paper';
 import MenuList from '@mui/material/MenuList';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
-import clsx from 'clsx';
+import { mergeSx } from '../../utils/styles';
 
 import ElementSearchDialog from '../ElementSearchDialog';
 
-const useStyles = makeStyles((theme) => ({
+const styles = {
     grow: {
         flexGrow: 1,
         display: 'flex',
@@ -60,14 +60,14 @@ const useStyles = makeStyles((theme) => ({
         flexShrink: 0,
         width: 48,
         height: 48,
-        marginBottom: 8,
+        marginBottom: '8px',
     },
     menuIcon: {
         width: 24,
         height: 24,
     },
     title: {
-        marginLeft: 18,
+        marginLeft: '18px',
     },
     clickable: {
         cursor: 'pointer',
@@ -76,7 +76,7 @@ const useStyles = makeStyles((theme) => ({
         textDecoration: 'none',
         color: 'inherit',
     },
-    name: {
+    name: (theme) => ({
         backgroundColor: darken(theme.palette.background.paper, 0.1),
         paddingTop: '10px',
         borderRadius: '100%',
@@ -84,7 +84,7 @@ const useStyles = makeStyles((theme) => ({
         textTransform: 'uppercase',
         height: '48px',
         width: '48px',
-    },
+    }),
     arrowIcon: {
         fontSize: '40px',
     },
@@ -123,13 +123,9 @@ const useStyles = makeStyles((theme) => ({
         height: '30px',
         width: '48px',
     },
-}));
+};
 
-const StyledMenu = withStyles({
-    paper: {
-        border: '1px solid #d3d4d5',
-    },
-})((props) => (
+const StyledMenu = styled((props) => (
     <Menu
         elevation={0}
         anchorOrigin={{
@@ -142,26 +138,26 @@ const StyledMenu = withStyles({
         }}
         {...props}
     />
-));
+))({
+    '& .MuiMenu-paper': {
+        border: '1px solid #d3d4d5',
+    },
+});
 
-const StyledMenuItem = withStyles((theme) => ({
-    root: {
-        '&:focus': {
-            backgroundColor: theme.palette.primary.main,
-            '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
-                color: theme.palette.common.white,
-            },
+const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
+    '&:focus': {
+        backgroundColor: theme.palette.primary.main,
+        '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
+            color: theme.palette.common.white,
         },
     },
-}))(MenuItem);
+}));
 
-const CustomListItemIcon = withStyles((theme) => ({
-    root: {
-        minWidth: '30px',
-        paddingRight: '15px',
-        borderRadius: '25px',
-    },
-}))(ListItemIcon);
+const CustomListItemIcon = styled(ListItemIcon)({
+    minWidth: '30px',
+    paddingRight: '15px',
+    borderRadius: '25px',
+});
 
 export const DARK_THEME = 'Dark';
 export const LIGHT_THEME = 'Light';
@@ -198,8 +194,6 @@ const TopBar = ({
     searchTermDisabled,
     initialSearchTerm,
 }) => {
-    const classes = useStyles();
-
     const [anchorElSettingsMenu, setAnchorElSettingsMenu] =
         React.useState(null);
     const [anchorElAppsMenu, setAnchorElAppsMenu] = React.useState(null);
@@ -292,7 +286,7 @@ const TopBar = ({
     }, [user, withElementsSearch, searchDisabled]);
 
     return (
-        <AppBar position="static" color="default" className={classes.appBar}>
+        <AppBar position="static" color="default" sx={styles.appBar}>
             <FullScreen
                 ref={fullScreenRef}
                 onFullScreenChange={onFullScreenChange}
@@ -301,25 +295,21 @@ const TopBar = ({
                 }
             />
             <Toolbar>
-                <div
-                    className={clsx(classes.logo, {
-                        [classes.clickable]: onLogoClick,
-                    })}
+                <Box
+                    sx={mergeSx(styles.logo, onLogoClick && styles.clickable)}
                     onClick={onLogoClick}
                 >
                     {appLogo}
-                </div>
+                </Box>
                 <Typography
                     variant="h4"
-                    className={clsx(classes.title, {
-                        [classes.clickable]: onLogoClick,
-                    })}
+                    sx={mergeSx(styles.title, onLogoClick && styles.clickable)}
                     onClick={onLogoClick}
                 >
                     <span style={{ fontWeight: 'bold' }}>Grid</span>
                     <span style={{ color: appColor }}>{appName}</span>
                 </Typography>
-                <div className={classes.grow}>{children}</div>
+                <Box sx={styles.grow}>{children}</Box>
                 {user && withElementsSearch && (
                     <React.Fragment>
                         <ElementSearchDialog
@@ -369,10 +359,11 @@ const TopBar = ({
                                 appsAndUrls
                                     .filter((item) => !item.hiddenInAppsMenu)
                                     .map((item) => (
-                                        <a
+                                        <Box
+                                            component="a"
                                             key={item.name}
                                             href={item.url}
-                                            className={classes.link}
+                                            sx={styles.link}
                                             target="_blank"
                                             rel="noopener noreferrer"
                                         >
@@ -401,7 +392,7 @@ const TopBar = ({
                                                     </span>
                                                 </ListItemText>
                                             </StyledMenuItem>
-                                        </a>
+                                        </Box>
                                     ))}
                         </StyledMenu>
                     </div>
@@ -412,7 +403,7 @@ const TopBar = ({
                         <Button
                             aria-controls="settings-menu"
                             aria-haspopup="true"
-                            className={classes.showHideMenu}
+                            sx={styles.showHideMenu}
                             onClick={handleToggleSettingsMenu}
                             color="inherit"
                             style={
@@ -421,27 +412,23 @@ const TopBar = ({
                                     : { cursor: 'pointer' }
                             }
                         >
-                            <span className={classes.name}>
+                            <Box component="span" sx={styles.name}>
                                 {user !== null
                                     ? abbreviationFromUserName(
                                           user.profile.name
                                       )
                                     : ''}
-                            </span>
+                            </Box>
                             {anchorElSettingsMenu ? (
-                                <ArrowDropUpIcon
-                                    className={classes.arrowIcon}
-                                />
+                                <ArrowDropUpIcon sx={styles.arrowIcon} />
                             ) : (
-                                <ArrowDropDownIcon
-                                    className={classes.arrowIcon}
-                                />
+                                <ArrowDropDownIcon sx={styles.arrowIcon} />
                             )}
                         </Button>
 
                         {/* Settings menu */}
                         <Popper
-                            className={classes.settingsMenu}
+                            sx={styles.settingsMenu}
                             open={Boolean(anchorElSettingsMenu)}
                             anchorEl={anchorElSettingsMenu}
                         >
@@ -452,7 +439,7 @@ const TopBar = ({
                                     <MenuList id="settings-menu">
                                         {/* user info */}
                                         <StyledMenuItem
-                                            className={classes.borderBottom}
+                                            sx={styles.borderBottom}
                                             disabled={true}
                                             style={{ opacity: '1' }}
                                         >
@@ -461,21 +448,19 @@ const TopBar = ({
                                             </CustomListItemIcon>
                                             <ListItemText disabled={false}>
                                                 {user !== null && (
-                                                    <span
-                                                        className={
-                                                            classes.sizeLabel
-                                                        }
+                                                    <Box
+                                                        component="span"
+                                                        sx={styles.sizeLabel}
                                                     >
                                                         {user.profile.name}{' '}
                                                         <br />
-                                                        <span
-                                                            className={
-                                                                classes.userMail
-                                                            }
+                                                        <Box
+                                                            component="span"
+                                                            sx={styles.userMail}
                                                         >
                                                             {user.profile.email}
-                                                        </span>
-                                                    </span>
+                                                        </Box>
+                                                    </Box>
                                                 )}
                                             </ListItemText>
                                         </StyledMenuItem>
@@ -492,9 +477,7 @@ const TopBar = ({
                                         >
                                             <ListItemText>
                                                 <Typography
-                                                    className={
-                                                        classes.sizeLabel
-                                                    }
+                                                    sx={styles.sizeLabel}
                                                 >
                                                     <FormattedMessage
                                                         id="top-bar/displayMode"
@@ -508,26 +491,20 @@ const TopBar = ({
                                                 exclusive
                                                 value={theme}
                                                 size="large"
-                                                className={
-                                                    classes.toggleButtonGroup
-                                                }
+                                                sx={styles.toggleButtonGroup}
                                                 onChange={changeTheme}
                                             >
                                                 <ToggleButton
                                                     value={LIGHT_THEME}
                                                     aria-label={LIGHT_THEME}
-                                                    className={
-                                                        classes.toggleButton
-                                                    }
+                                                    sx={styles.toggleButton}
                                                 >
                                                     <WbSunnyIcon fontSize="small" />
                                                 </ToggleButton>
                                                 <ToggleButton
                                                     value={DARK_THEME}
                                                     aria-label={DARK_THEME}
-                                                    className={
-                                                        classes.toggleButton
-                                                    }
+                                                    sx={styles.toggleButton}
                                                 >
                                                     <Brightness3Icon fontSize="small" />
                                                 </ToggleButton>
@@ -550,9 +527,7 @@ const TopBar = ({
                                             >
                                                 <ListItemText>
                                                     <Typography
-                                                        className={
-                                                            classes.sizeLabel
-                                                        }
+                                                        sx={styles.sizeLabel}
                                                     >
                                                         <FormattedMessage
                                                             id="top-bar/equipmentLabel"
@@ -565,8 +540,8 @@ const TopBar = ({
                                                 <ToggleButtonGroup
                                                     exclusive
                                                     value={equipmentLabelling}
-                                                    className={
-                                                        classes.toggleButtonGroup
+                                                    sx={
+                                                        styles.toggleButtonGroup
                                                     }
                                                     onChange={
                                                         changeEquipmentLabelling
@@ -574,9 +549,7 @@ const TopBar = ({
                                                 >
                                                     <ToggleButton
                                                         value={false}
-                                                        className={
-                                                            classes.toggleButton
-                                                        }
+                                                        sx={styles.toggleButton}
                                                     >
                                                         <FormattedMessage
                                                             id="top-bar/id"
@@ -587,9 +560,7 @@ const TopBar = ({
                                                     </ToggleButton>
                                                     <ToggleButton
                                                         value={true}
-                                                        className={
-                                                            classes.toggleButton
-                                                        }
+                                                        sx={styles.toggleButton}
                                                     >
                                                         <FormattedMessage
                                                             id="top-bar/name"
@@ -613,9 +584,7 @@ const TopBar = ({
                                         >
                                             <ListItemText>
                                                 <Typography
-                                                    className={
-                                                        classes.sizeLabel
-                                                    }
+                                                    sx={styles.sizeLabel}
                                                 >
                                                     <FormattedMessage
                                                         id="top-bar/language"
@@ -628,16 +597,14 @@ const TopBar = ({
                                             <ToggleButtonGroup
                                                 exclusive
                                                 value={language}
-                                                className={
-                                                    classes.toggleButtonGroup
-                                                }
+                                                sx={styles.toggleButtonGroup}
                                                 onChange={changeLanguage}
                                             >
                                                 <ToggleButton
                                                     value={LANG_SYSTEM}
                                                     aria-label={LANG_SYSTEM}
-                                                    className={
-                                                        classes.languageToggleButton
+                                                    sx={
+                                                        styles.languageToggleButton
                                                     }
                                                 >
                                                     <ComputerIcon />
@@ -645,8 +612,8 @@ const TopBar = ({
                                                 <ToggleButton
                                                     value={LANG_ENGLISH}
                                                     aria-label={LANG_ENGLISH}
-                                                    className={
-                                                        classes.languageToggleButton
+                                                    sx={
+                                                        styles.languageToggleButton
                                                     }
                                                 >
                                                     {EN}
@@ -654,9 +621,7 @@ const TopBar = ({
                                                 <ToggleButton
                                                     value={LANG_FRENCH}
                                                     aria-label={LANG_FRENCH}
-                                                    className={
-                                                        classes.toggleButton
-                                                    }
+                                                    sx={styles.toggleButton}
                                                 >
                                                     {FR}
                                                 </ToggleButton>
@@ -668,16 +633,14 @@ const TopBar = ({
                                         <StyledMenuItem
                                             disabled={!onParametersClick}
                                             onClick={onParametersClicked}
-                                            className={classes.borderTop}
+                                            sx={styles.borderTop}
                                         >
                                             <CustomListItemIcon>
                                                 <SettingsIcon fontSize="small" />
                                             </CustomListItemIcon>
                                             <ListItemText>
                                                 <Typography
-                                                    className={
-                                                        classes.sizeLabel
-                                                    }
+                                                    sx={styles.sizeLabel}
                                                 >
                                                     <FormattedMessage
                                                         id="top-bar/settings"
@@ -691,7 +654,7 @@ const TopBar = ({
 
                                         {/* About */}
                                         <StyledMenuItem
-                                            className={classes.borderBottom}
+                                            sx={styles.borderBottom}
                                             disabled={true}
                                             style={{ opacity: '1' }}
                                             onClick={onAboutClicked}
@@ -701,9 +664,7 @@ const TopBar = ({
                                             </CustomListItemIcon>
                                             <ListItemText>
                                                 <Typography
-                                                    className={
-                                                        classes.sizeLabel
-                                                    }
+                                                    sx={styles.sizeLabel}
                                                 >
                                                     <FormattedMessage
                                                         id="top-bar/about"
@@ -727,8 +688,8 @@ const TopBar = ({
                                                         </CustomListItemIcon>
                                                         <ListItemText>
                                                             <Typography
-                                                                className={
-                                                                    classes.sizeLabel
+                                                                sx={
+                                                                    styles.sizeLabel
                                                                 }
                                                             >
                                                                 <FormattedMessage
@@ -747,8 +708,8 @@ const TopBar = ({
                                                         </CustomListItemIcon>
                                                         <ListItemText>
                                                             <Typography
-                                                                className={
-                                                                    classes.sizeLabel
+                                                                sx={
+                                                                    styles.sizeLabel
                                                                 }
                                                             >
                                                                 <FormattedMessage
@@ -771,9 +732,7 @@ const TopBar = ({
                                             </CustomListItemIcon>
                                             <ListItemText>
                                                 <Typography
-                                                    className={
-                                                        classes.sizeLabel
-                                                    }
+                                                    sx={styles.sizeLabel}
                                                 >
                                                     <FormattedMessage
                                                         id="top-bar/logout"

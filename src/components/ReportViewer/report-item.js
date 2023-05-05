@@ -6,79 +6,81 @@
  */
 
 import React, { useContext } from 'react';
+import Box from '@mui/material/Box';
+import { styled } from '@mui/system';
 import PropTypes from 'prop-types';
-import makeStyles from '@mui/styles/makeStyles';
 import TreeItem from '@mui/lab/TreeItem';
 import Typography from '@mui/material/Typography';
 import Label from '@mui/icons-material/Label';
 import ReportTreeViewContext from './report-tree-view-context';
 import { alpha } from '@mui/system';
 
-const useReportItemStyles = makeStyles((theme) => ({
-    root: {
+const styles = {
+    root: (theme) => ({
         color: theme.palette.text.secondary,
-        '&:hover > $content': {
+        '&:hover > .MuiTreeItem-content': {
             backgroundColor: theme.palette.action.hover,
         },
-    },
-    content: {
+    }),
+    content: (theme) => ({
         color: theme.palette.text.secondary,
         borderTopRightRadius: theme.spacing(2),
         borderBottomRightRadius: theme.spacing(2),
         paddingRight: theme.spacing(1),
         fontWeight: theme.typography.fontWeightMedium,
-        '&$expanded': {
+        '&.Mui-expanded': {
             fontWeight: theme.typography.fontWeightRegular,
         },
-        /* &&.Mui-focused to increase specifity because mui5 has a rule for &.Mui-selected.Mui-focused */
-        /* &&$selected to increase specifity because we have a rule for &:hover > $content on root */
-        '&&.Mui-focused, &&$selected': {
+        /* &.MuiTreeItem-content.Mui-focused to increase specifity because mui5 has a rule for &.Mui-selected.Mui-focused */
+        '&.MuiTreeItem-content.Mui-focused, &.Mui-selected': {
             backgroundColor: `var(--tree-view-bg-color, ${theme.palette.grey[400]})`,
             color: 'var(--tree-view-color)',
         },
         // same as mui v4 behavior on label text only right after clicking in contrast to after moving away with arrow keys.
-        '&$selected $label:hover, &$selected.Mui-focused $label': {
-            backgroundColor: alpha(
-                theme.palette.primary.main,
-                theme.palette.action.selectedOpacity +
-                    theme.palette.action.hoverOpacity
-            ),
-        },
-        '&.Mui-focused $label, &:hover $label, &$selected $label': {
-            backgroundColor: 'transparent',
-        },
-    },
-    group: {
-        marginLeft: 10,
-        '& $content': {
+        '&.Mui-selected .MuiTreeItem-label:hover, &.Mui-selected.Mui-focused .MuiTreeItem-label':
+            {
+                backgroundColor: alpha(
+                    theme.palette.primary.main,
+                    theme.palette.action.selectedOpacity +
+                        theme.palette.action.hoverOpacity
+                ),
+            },
+        '&.Mui-focused .MuiTreeItem-label, &:hover .MuiTreeItem-label, &Mui-selected .MuiTreeItem-label':
+            {
+                backgroundColor: 'transparent',
+            },
+    }),
+    group: (theme) => ({
+        marginLeft: '10px',
+        '& .MuiTreeItem-content': {
             paddingLeft: theme.spacing(2),
         },
-    },
+    }),
     expanded: {},
     selected: {},
     label: {
         fontWeight: 'inherit',
         color: 'inherit',
     },
-    labelRoot: {
+    labelRoot: (theme) => ({
         display: 'flex',
         alignItems: 'center',
         padding: theme.spacing(0.5, 0),
-    },
-    labelRootHighlighted: {
+    }),
+    labelRootHighlighted: (theme) => ({
         display: 'flex',
         alignItems: 'center',
         padding: theme.spacing(0.5, 0),
         backgroundColor: theme.palette.action.selected,
-    },
-    labelIcon: {
+    }),
+    labelIcon: (theme) => ({
         marginRight: theme.spacing(1),
-    },
-    labelText: {
+    }),
+    labelText: (theme) => ({
         fontWeight: 'inherit',
         marginRight: theme.spacing(2),
-    },
-}));
+    }),
+};
 
 const ReportItem = (props) => {
     // using a context because TreeItem uses useMemo on this. See report-viewer.js for the provider
@@ -86,35 +88,32 @@ const ReportItem = (props) => {
 
     const highlighted = isHighlighted ? isHighlighted(props.nodeId) : false;
 
-    const classes = useReportItemStyles();
-    const { labelText, labelIconColor, ...other } = props;
+    const { labelText, labelIconColor, className, ...other } = props;
 
     return (
         <TreeItem
-            classes={{
-                root: classes.root,
-                content: classes.content,
-                expanded: classes.expanded,
-                selected: classes.selected,
-                group: classes.group,
-                label: classes.label,
+            className={className}
+            sx={{
+                '&': styles.root,
+                '& .MuiTreeItem-content': styles.content,
+                '& .Mui-expanded': styles.expanded,
+                '& .Mui-selected': styles.selected,
+                '& .MuiTreeItem-group': styles.group,
+                '& .MuiTreeItem-label': styles.label,
             }}
             label={
-                <div
-                    className={
+                <Box
+                    sx={
                         highlighted
-                            ? classes.labelRootHighlighted
-                            : classes.labelRoot
+                            ? styles.labelRootHighlighted
+                            : styles.labelRoot
                     }
                 >
-                    <Label
-                        htmlColor={labelIconColor}
-                        className={classes.labelIcon}
-                    />
-                    <Typography variant="body2" className={classes.labelText}>
+                    <Label htmlColor={labelIconColor} sx={styles.labelIcon} />
+                    <Typography variant="body2" sx={styles.labelText}>
                         {labelText}
                     </Typography>
-                </div>
+                </Box>
             }
             {...other}
         />
@@ -128,4 +127,4 @@ ReportItem.propTypes = {
     labelText: PropTypes.string.isRequired,
 };
 
-export default ReportItem;
+export default styled(ReportItem)({});

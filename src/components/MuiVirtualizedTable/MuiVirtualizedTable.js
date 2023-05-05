@@ -21,11 +21,15 @@ import {
     TableCell,
     TextField,
 } from '@mui/material';
-import withStyles from '@mui/styles/withStyles';
+import { styled } from '@mui/system';
 import GetAppIcon from '@mui/icons-material/GetApp';
 import { AutoSizer, Column, Table } from 'react-virtualized';
 import CsvDownloader from 'react-csv-downloader';
 import OverflowableText from '../OverflowableText/overflowable-text';
+import {
+    toNestedGlobalSelectors,
+    makeComposeClasses,
+} from '../../utils/styles';
 import {
     CHANGE_WAYS,
     collectibleHelper,
@@ -50,41 +54,64 @@ export const DEFAULT_CELL_PADDING = 16;
 export const DEFAULT_HEADER_HEIGHT = 48;
 export const DEFAULT_ROW_HEIGHT = 48;
 
+// As a bunch of individual variables to try to make it easier
+// to track that they are all used. Not sure, maybe group them in an object ?
+const cssFlexContainer = 'flexContainer';
+const cssTable = 'table';
+const cssTableRow = 'tableRow';
+const cssTableRowHover = 'tableRowHover';
+const cssTableCell = 'tableCell';
+const cssTableCellColor = 'tableCellColor';
+const cssNoClick = 'noClick';
+const cssHeader = 'header';
+const cssRowBackgroundDark = 'rowBackgroundDark';
+const cssRowBackgroundLight = 'rowBackgroundLight';
+
+// converted to sx nested rules
 const defaultStyles = {
-    flexContainer: {
+    [cssFlexContainer]: {
         display: 'flex',
         alignItems: 'center',
         boxSizing: 'border-box',
     },
-    table: {
+    [cssTable]: {
         // temporary right-to-left patch, waiting for
         // https://github.com/bvaughn/react-virtualized/issues/454
         '& .ReactVirtualized__Table__headerRow': {
             flip: false,
         },
     },
-    tableRow: {
+    [cssTableRow]: {
         cursor: 'pointer',
     },
-    tableRowHover: {},
-    tableCell: {
+    [cssTableRowHover]: {},
+    [cssTableCell]: {
         flex: 1,
         padding: DEFAULT_CELL_PADDING + 'px',
     },
-    tableCellColor: {},
-    noClick: {
+    [cssTableCellColor]: {},
+    [cssNoClick]: {
         cursor: 'initial',
     },
-    header: {
+    [cssHeader]: {
         fontWeight: 'bold',
     },
-    rowBackgroundDark: {},
-    rowBackgroundLight: {},
-    cellTooltip: {
-        maxWidth: '1260px',
-        fontSize: '0.9rem',
-    },
+    [cssRowBackgroundDark]: {},
+    [cssRowBackgroundLight]: {},
 };
+
+// TODO find a better system, maybe MUI will fix/improve this ?
+// Different from all others because of the poor nested sx support for portals
+// requiring classname sharing/forwarding between the content and the tooltip
+const defaultTooltipSx = {
+    maxWidth: '1260px',
+    fontSize: '0.9rem',
+};
+
+//TODO do we need to export this to clients (index.js) ?
+export const generateMuiVirtualizedTableClass = (className) =>
+    `MuiVirtualizedTable-${className}`;
+const composeClasses = makeComposeClasses(generateMuiVirtualizedTableClass);
 
 const AmongChooser = (props) => {
     const { options, value, setValue, id, onDropDownVisibility } = props;
@@ -229,6 +256,7 @@ class MuiVirtualizedTable extends React.PureComponent {
         headerHeight: DEFAULT_HEADER_HEIGHT,
         rowHeight: DEFAULT_ROW_HEIGHT,
         enableExportCSV: false,
+        classes: {},
     };
 
     constructor(props, context) {
@@ -540,13 +568,14 @@ class MuiVirtualizedTable extends React.PureComponent {
     getRowClassName = ({ index, rowGetter }) => {
         const { classes, onRowClick } = this.props;
         return clsx(
-            classes.tableRow,
-            classes.flexContainer,
-            index % 2 === 0 && classes.rowBackgroundDark,
-            index % 2 !== 0 && classes.rowBackgroundLight,
-            rowGetter(index)?.notClickable === true && classes.noClick, // Allow to define a row as not clickable
+            composeClasses(classes, cssTableRow),
+            composeClasses(classes, cssFlexContainer),
+            index % 2 === 0 && composeClasses(classes, cssRowBackgroundDark),
+            index % 2 !== 0 && composeClasses(classes, cssRowBackgroundLight),
+            rowGetter(index)?.notClickable === true &&
+                composeClasses(classes, cssNoClick), // Allow to define a row as not clickable
             {
-                [classes.tableRowHover]:
+                [composeClasses(classes, cssTableRowHover)]:
                     index !== -1 &&
                     onRowClick != null &&
                     !(rowGetter(index)?.notClickable === true),
@@ -561,7 +590,8 @@ class MuiVirtualizedTable extends React.PureComponent {
     };
 
     cellRenderer = ({ cellData, columnIndex, rowIndex }) => {
-        const { columns, classes, rowHeight, onCellClick, rows } = this.props;
+        const { columns, classes, rowHeight, onCellClick, rows, tooltipSx } =
+            this.props;
 
         let displayedValue = this.getDisplayValue(
             columns[columnIndex],
@@ -571,20 +601,24 @@ class MuiVirtualizedTable extends React.PureComponent {
         return (
             <TableCell
                 component="div"
-                className={clsx(classes.tableCell, classes.flexContainer, {
-                    [classes.noClick]:
-                        displayedValue === undefined ||
-                        rows[rowIndex]?.notClickable === true ||
-                        onCellClick == null ||
-                        columns[columnIndex].clickable === undefined ||
-                        !columns[columnIndex].clickable,
-                    [classes.tableCellColor]:
-                        displayedValue === undefined ||
-                        (onCellClick !== null &&
-                            !rows[rowIndex]?.notClickable === true &&
-                            columns[columnIndex].clickable !== undefined &&
-                            columns[columnIndex].clickable),
-                })}
+                className={clsx(
+                    composeClasses(classes, cssTableCell),
+                    composeClasses(classes, cssFlexContainer),
+                    {
+                        [composeClasses(classes, cssNoClick)]:
+                            displayedValue === undefined ||
+                            rows[rowIndex]?.notClickable === true ||
+                            onCellClick == null ||
+                            columns[columnIndex].clickable === undefined ||
+                            !columns[columnIndex].clickable,
+                        [composeClasses(classes, cssTableCellColor)]:
+                            displayedValue === undefined ||
+                            (onCellClick !== null &&
+                                !rows[rowIndex]?.notClickable === true &&
+                                columns[columnIndex].clickable !== undefined &&
+                                columns[columnIndex].clickable),
+                    }
+                )}
                 variant="body"
                 style={{ height: rowHeight, width: '100%' }}
                 align={
@@ -607,6 +641,7 @@ class MuiVirtualizedTable extends React.PureComponent {
                 <OverflowableText
                     text={displayedValue}
                     tooltipStyle={classes.cellTooltip}
+                    tooltipSx={{ ...defaultTooltipSx, ...tooltipSx }}
                 />
             </TableCell>
         );
@@ -662,10 +697,10 @@ class MuiVirtualizedTable extends React.PureComponent {
                 <TableCell
                     component="div"
                     className={clsx(
-                        classes.tableCell,
-                        classes.flexContainer,
-                        classes.noClick,
-                        classes.header
+                        composeClasses(classes, cssTableCell),
+                        composeClasses(classes, cssFlexContainer),
+                        composeClasses(classes, cssNoClick),
+                        composeClasses(classes, cssHeader)
                     )}
                     variant="head"
                     style={{ height: this.state.headerHeight }}
@@ -699,7 +734,7 @@ class MuiVirtualizedTable extends React.PureComponent {
                 rowHeight={otherProps.rowHeight}
                 gridStyle={{ direction: 'inherit' }}
                 headerHeight={this.state.headerHeight}
-                className={otherProps.classes.table}
+                className={composeClasses(otherProps.classes, cssTable)}
                 onRowClick={
                     this.props.onRowClick &&
                     /* The {...otherProps} just above would hold the slot onRowClick */
@@ -719,7 +754,10 @@ class MuiVirtualizedTable extends React.PureComponent {
                                 dataKey,
                                 index
                             )}
-                            className={otherProps.classes.flexContainer}
+                            className={composeClasses(
+                                otherProps.classes,
+                                cssFlexContainer
+                            )}
                             cellRenderer={this.cellRenderer}
                             dataKey={dataKey}
                             flexGrow={1}
@@ -814,6 +852,7 @@ class MuiVirtualizedTable extends React.PureComponent {
                     flexDirection: 'column',
                     height: '100%',
                 }}
+                className={this.props.className}
             >
                 {this.props.enableExportCSV && (
                     <div
@@ -877,7 +916,7 @@ class MuiVirtualizedTable extends React.PureComponent {
 
 MuiVirtualizedTable.propTypes = {
     name: PropTypes.string,
-    classes: PropTypes.object.isRequired,
+    classes: PropTypes.object,
     rows: PropTypes.array,
     columns: PropTypes.arrayOf(
         PropTypes.shape({
@@ -901,6 +940,12 @@ MuiVirtualizedTable.propTypes = {
     onCellClick: PropTypes.func,
     rowHeight: PropTypes.number,
     filter: PropTypes.func,
+    tooltipSx: PropTypes.object,
 };
 
-export default withStyles(defaultStyles)(MuiVirtualizedTable);
+const nestedGlobalSelectorsStyles = toNestedGlobalSelectors(
+    defaultStyles,
+    generateMuiVirtualizedTableClass
+);
+
+export default styled(MuiVirtualizedTable)(nestedGlobalSelectorsStyles);

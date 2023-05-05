@@ -8,8 +8,12 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
+import {
+    toNestedGlobalSelectors,
+    makeComposeClasses,
+} from '../../utils/styles';
 
-import withStyles from '@mui/styles/withStyles';
+import { styled } from '@mui/system';
 
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -25,28 +29,41 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import CheckIcon from '@mui/icons-material/Check';
 
+// As a bunch of individual variables to try to make it easier
+// to track that they are all used. Not sure, maybe group them in an object ?
+const cssDialogPaper = 'dialogPaper';
+const cssLabelRoot = 'labelRoot';
+const cssLabelText = 'labelText';
+const cssLabelIcon = 'labelIcon';
+const cssIcon = 'icon';
+
+// converted to sx nested rules
 const defaultStyles = {
-    dialogPaper: {
+    [cssDialogPaper]: {
         minWidth: '50%',
     },
-    labelRoot: {
+    [cssLabelRoot]: {
         display: 'flex',
         alignContent: 'center',
         alignItems: 'center',
     },
-    labelText: {
+    [cssLabelText]: {
         fontWeight: 'inherit',
         flexGrow: 1,
     },
-    labelIcon: {
+    [cssLabelIcon]: {
         display: 'flex',
         alignContent: 'center',
         alignItems: 'center',
 
         marginRight: '4px',
     },
-    icon: {},
+    [cssIcon]: {},
 };
+
+export const generateTreeViewFinderClass = (className) =>
+    `GsiTreeViewFinder-${className}`;
+const composeClasses = makeComposeClasses(generateTreeViewFinderClass);
 
 /**
  * This callback type is called `onTreeBrowseCallback` and is displayed as a global symbol.
@@ -61,7 +78,7 @@ const defaultStyles = {
  * It is flexible and allow controlled props to let Parent component manage
  * data.
  *
- * @param {Object}          classes - CSS classes, please use withStyles API from MaterialUI
+ * @param {Object}          classes - Deprecated, use sx or styled instead. - Otherwise, CSS classes, please use withStyles API from MaterialUI
  * @param {String}          [title] - Title of the Dialog
  * @param {String}          [contentText] - Content text of the Dialog
  * @param {Boolean}         open - dialog state boolean handler (Controlled)
@@ -96,6 +113,7 @@ const TreeViewFinder = (props) => {
         onlyLeaves,
         multiselect,
         sortMethod,
+        className,
     } = props;
 
     const [mapPrintedNodes, setMapPrintedNodes] = useState({});
@@ -205,10 +223,16 @@ const TreeViewFinder = (props) => {
             isSelectable(node) &&
             selected.find((nodeId) => nodeId === node.id)
         ) {
-            return <CheckIcon className={classes.labelIcon} />;
+            return (
+                <CheckIcon className={composeClasses(classes, cssLabelIcon)} />
+            );
         } else {
             if (node.icon) {
-                return <div className={classes.labelIcon}>{node.icon}</div>;
+                return (
+                    <div className={composeClasses(classes, cssLabelIcon)}>
+                        {node.icon}
+                    </div>
+                );
             } else {
                 return null;
             }
@@ -217,9 +241,9 @@ const TreeViewFinder = (props) => {
 
     const renderTreeItemLabel = (node) => {
         return (
-            <div className={classes.labelRoot}>
+            <div className={composeClasses(classes, cssLabelRoot)}>
                 {getNodeIcon(node)}
-                <Typography className={classes.labelText}>
+                <Typography className={composeClasses(classes, cssLabelText)}>
                     {node.name}
                 </Typography>
             </div>
@@ -244,12 +268,16 @@ const TreeViewFinder = (props) => {
                 label={renderTreeItemLabel(node)}
                 expandIcon={
                     showChevron(node) ? (
-                        <ChevronRightIcon className={classes.icon} />
+                        <ChevronRightIcon
+                            className={composeClasses(classes, cssIcon)}
+                        />
                     ) : null
                 }
                 collapseIcon={
                     showChevron(node) ? (
-                        <ExpandMoreIcon className={classes.icon} />
+                        <ExpandMoreIcon
+                            className={composeClasses(classes, cssIcon)}
+                        />
                     ) : null
                 }
             >
@@ -274,8 +302,9 @@ const TreeViewFinder = (props) => {
                 }
             }}
             aria-labelledby="TreeViewFindertitle"
+            className={className}
             classes={{
-                paper: classes.dialogPaper,
+                paper: composeClasses(classes, cssDialogPaper),
             }}
         >
             <DialogTitle id="TreeViewFindertitle">
@@ -354,7 +383,7 @@ TreeViewFinder.propTypes = {
     ).isRequired,
     onTreeBrowse: PropTypes.func,
     //uncontrolled
-    classes: PropTypes.object.isRequired,
+    classes: PropTypes.object,
     title: PropTypes.string,
     contentText: PropTypes.string,
     validationButtonText: PropTypes.string,
@@ -372,6 +401,12 @@ TreeViewFinder.defaultProps = {
     onlyLeaves: true,
     multiselect: false,
     sortMethod: undefined,
+    classes: {},
 };
 
-export default withStyles(defaultStyles)(TreeViewFinder);
+const nestedGlobalSelectorsStyles = toNestedGlobalSelectors(
+    defaultStyles,
+    generateTreeViewFinderClass
+);
+
+export default styled(TreeViewFinder)(nestedGlobalSelectorsStyles);

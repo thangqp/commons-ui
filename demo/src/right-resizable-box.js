@@ -9,11 +9,12 @@ import React, { useState } from 'react';
 import ResizePanelHandleIcon from '@mui/icons-material/MoreVert';
 import { ResizableBox } from 'react-resizable';
 import { useWindowWidth } from '@react-hook/window-size';
-import makeStyles from '@mui/styles/makeStyles';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
+import Box from '@mui/material/Box';
+import { styled } from '@mui/system';
+import { mergeSx } from '../../src/utils/styles';
 
-const useStyles = makeStyles((theme) => ({
+const styles = {
     panel: {
         position: 'relative',
         boxSizing: 'border-box',
@@ -22,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
         flex: 'auto',
         height: '100%',
     },
-    resizePanelHandle: {
+    resizePanelHandle: (theme) => ({
         // This panel's right border looks like the panel's handle but is only a decoy.
         // The true handle is wider than it seems, to be easier to grip, and is invisible.
         borderRightColor: theme.palette.action.disabled,
@@ -38,19 +39,20 @@ const useStyles = makeStyles((theme) => ({
             backgroundColor: 'rgba(0, 0, 0, 0)', // The handle is invisible (alpha = 0)
             zIndex: 5,
         },
-    },
-    resizePanelHandleIcon: {
+    }),
+    resizePanelHandleIcon: (theme) => ({
         bottom: '50%',
         right: theme.spacing(-1.75),
         position: 'absolute',
         color: theme.palette.text.disabled,
         transform: 'scale(0.5, 1.5)',
-    },
-}));
+    }),
+};
+
+// TODO can we avoid to define a component just to add sx support ?
+const ResizableBoxSx = styled(ResizableBox)({});
 
 const RightResizableBox = (props) => {
-    const classes = useStyles();
-
     const windowWidth = useWindowWidth();
 
     const [resizedTreePercentage, setResizedTreePercentage] = useState(0.5);
@@ -66,27 +68,26 @@ const RightResizableBox = (props) => {
     };
 
     return (
-        <ResizableBox
+        <ResizableBoxSx
             style={{ display: props.hide ? 'none' : undefined }}
             width={
                 props.fullscreen
                     ? windowWidth
                     : windowWidth * resizedTreePercentage
             }
-            className={clsx(classes.panel, {
-                [classes.resizePanelHandle]: !props.disableResize,
-            })}
+            sx={mergeSx(
+                styles.panel,
+                !props.disableResize && styles.resizePanelHandle
+            )}
             resizeHandles={['e']}
             axis={props.disableResize ? 'none' : 'x'}
             onResize={onResize}
         >
-            <div className={classes.innerResizablePanel}>
+            <Box sx={styles.innerResizablePanel}>
                 {props.children}
-                <ResizePanelHandleIcon
-                    className={classes.resizePanelHandleIcon}
-                />
-            </div>
-        </ResizableBox>
+                <ResizePanelHandleIcon sx={styles.resizePanelHandleIcon} />
+            </Box>
+        </ResizableBoxSx>
     );
 };
 

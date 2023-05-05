@@ -5,5 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-export { default } from './MuiVirtualizedTable';
+export {
+    default,
+    generateMuiVirtualizedTableClass,
+} from './MuiVirtualizedTable';
 export { KeyedColumnsRowIndexer, CHANGE_WAYS } from './KeyedColumnsRowIndexer';

@@ -9,7 +9,7 @@ import { LIGHT_THEME } from '../components/TopBar/TopBar';
 export const TYPE_TAG_MAX_SIZE = '90px';
 export const VL_TAG_MAX_SIZE = '100px';
 
-export const equipmentStyles = (theme) => ({
+export const equipmentStyles = {
     equipmentOption: {
         display: 'flex',
         gap: '20px',
@@ -19,13 +19,13 @@ export const equipmentStyles = (theme) => ({
         alignItems: 'center',
         justifyContent: 'space-between',
     },
-    equipmentTag: {
+    equipmentTag: (theme) => ({
         borderRadius: '10px',
         padding: '4px',
         fontSize: 'x-small',
         textAlign: 'center',
         color: theme === LIGHT_THEME ? 'inherit' : 'black',
-    },
+    }),
     equipmentTypeTag: {
         minWidth: TYPE_TAG_MAX_SIZE,
         maxWidth: TYPE_TAG_MAX_SIZE,
@@ -42,7 +42,7 @@ export const equipmentStyles = (theme) => ({
         width: '100%',
         padding: '2px',
     },
-});
+};
 
 // Must be equivalent as the back enum
 export const EQUIPMENT_TYPE = {

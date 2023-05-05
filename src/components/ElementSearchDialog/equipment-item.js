@@ -12,6 +12,8 @@ import { FormattedMessage } from 'react-intl';
 import OverflowableText from '../OverflowableText';
 import React from 'react';
 import { EQUIPMENT_TYPE } from '../../utils/EquipmentType';
+import Box from '@mui/material/Box';
+import { mergeSx } from '../../utils/styles';
 
 export const EquipmentItem = ({
     inputValue,
@@ -28,22 +30,31 @@ export const EquipmentItem = ({
     /* override li.key otherwise it will use label which could be duplicated */
     return (
         <li key={element.key} {...props}>
-            <div className={props.classes.equipmentOption}>
+            <Box
+                className={props.classes?.equipmentOption}
+                sx={props.styles?.equipmentOption}
+            >
                 {!showsJustText && (
-                    <span
+                    <Box
+                        component="span"
                         className={clsx(
-                            props.classes.equipmentTag,
-                            props.classes.equipmentTypeTag
+                            props.classes?.equipmentTag,
+                            props.classes?.equipmentTypeTag
+                        )}
+                        sx={mergeSx(
+                            props.styles?.equipmentTag,
+                            props.styles?.equipmentTypeTag
                         )}
                     >
                         <FormattedMessage
                             id={EQUIPMENT_TYPE[element.type].tagLabel}
                         />
-                    </span>
+                    </Box>
                 )}
                 <OverflowableText
                     text={parts.map((e) => e.text).join()}
-                    className={props.classes.result}
+                    className={props.classes?.result}
+                    sx={props.styles?.result}
                 >
                     {parts.map((part, index) => (
                         <span
@@ -57,7 +68,7 @@ export const EquipmentItem = ({
                     ))}
                 </OverflowableText>
                 {!showsJustText && suffixRenderer({ props, element })}
-            </div>
+            </Box>
         </li>
     );
 };

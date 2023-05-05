@@ -12,7 +12,6 @@ import React, {
     useRef,
     useState,
 } from 'react';
-import makeStyles from '@mui/styles/makeStyles';
 import TreeView from '@mui/lab/TreeView';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
@@ -24,7 +23,7 @@ import ReportTreeViewContext from './report-tree-view-context';
 
 const MAX_SUB_REPORTS = 500;
 
-const useStyles = makeStyles({
+const styles = {
     treeView: {
         height: '100%',
         overflow: 'scroll',
@@ -32,14 +31,12 @@ const useStyles = makeStyles({
     treeItem: {
         whiteSpace: 'nowrap',
     },
-});
+};
 
 export default function ReportViewer({
     jsonReport,
     maxSubReports = MAX_SUB_REPORTS,
 }) {
-    const classes = useStyles();
-
     const [selectedNode, setSelectedNode] = useState(null);
     const [expandedNodes, setExpandedNodes] = useState([]);
     const [logs, setLogs] = useState(null);
@@ -66,7 +63,7 @@ export default function ReportViewer({
                     labelText={logReport.getTitle()}
                     labelIconColor={logReport.getHighestSeverity().colorName}
                     key={logReport.getId().toString()}
-                    className={classes.treeItem}
+                    sx={styles.treeItem}
                     nodeId={logReport.getId().toString()}
                 >
                     {logReport
@@ -76,7 +73,7 @@ export default function ReportViewer({
                 </ReportItem>
             );
         },
-        [maxSubReports, classes.treeItem]
+        [maxSubReports]
     );
 
     useEffect(() => {
@@ -159,7 +156,7 @@ export default function ReportViewer({
                     <ReportTreeViewContext.Provider value={isHighlighted}>
                         {/*TODO do we need to useMemo/useCallback these props to avoid rerenders ?*/}
                         <TreeView
-                            className={classes.treeView}
+                            sx={styles.treeView}
                             defaultCollapseIcon={<ArrowDropDownIcon />}
                             defaultExpandIcon={<ArrowRightIcon />}
                             defaultEndIcon={<div style={{ width: 24 }} />}

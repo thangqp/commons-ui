@@ -17,6 +17,7 @@ import {
 } from '@mui/material/styles';
 import makeStyles from '@mui/styles/makeStyles';
 import withStyles from '@mui/styles/withStyles';
+import { styled } from '@mui/system';
 import AuthenticationRouter from '../../src/components/AuthenticationRouter';
 import CardErrorBoundary from '../../src/components/CardErrorBoundary';
 import {
@@ -60,11 +61,17 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
 
 import PowsyblLogo from '-!@svgr/webpack!../images/powsybl_logo.svg';
 
 import ReportViewerDialog from '../../src/components/ReportViewerDialog';
-import TreeViewFinder from '../../src/components/TreeViewFinder';
+import TreeViewFinder, {
+    generateTreeViewFinderClass,
+} from '../../src/components/TreeViewFinder';
 import TreeViewFinderConfig from './TreeViewFinderConfig';
 
 import {
@@ -84,6 +91,8 @@ import OverflowableText from '../../src/components/OverflowableText';
 import { setShowAuthenticationRouterLogin } from '../../src/utils/actions';
 import { TableTab } from './TableTab';
 import { FlatParametersTab } from './FlatParametersTab';
+
+import { toNestedGlobalSelectors } from '../../src/utils/styles';
 
 const messages = {
     en: {
@@ -140,9 +149,17 @@ const TreeViewFinderCustomStyles = (theme) => ({
         marginRight: theme.spacing(1),
     },
 });
-
-const CustomTreeViewFinder = withStyles(TreeViewFinderCustomStyles)(
+const CustomTreeViewFinderJss = withStyles(TreeViewFinderCustomStyles)(
     TreeViewFinder
+);
+
+const TreeViewFinderCustomStylesEmotion = ({ theme }) =>
+    toNestedGlobalSelectors(
+        TreeViewFinderCustomStyles(theme),
+        generateTreeViewFinderClass
+    );
+const CustomTreeViewFinderEmotion = styled(TreeViewFinder)(
+    TreeViewFinderCustomStylesEmotion
 );
 
 const Crasher = () => {
@@ -236,6 +253,7 @@ const AppContent = ({ language, onLanguageClick }) => {
     ] = useState(false);
 
     const [theme, setTheme] = useState(LIGHT_THEME);
+    const [stylesProvider, setStylesProvider] = useState('emotion');
 
     const [tabIndex, setTabIndex] = useState(0);
 
@@ -394,6 +412,13 @@ const AppContent = ({ language, onLanguageClick }) => {
         []
     );
 
+    const CustomTreeViewFinder =
+        stylesProvider === 'emotion'
+            ? CustomTreeViewFinderEmotion
+            : stylesProvider === 'jss'
+            ? CustomTreeViewFinderJss
+            : undefined;
+
     const defaultTab = (
         <div>
             <Box mt={3}>
@@ -511,7 +536,7 @@ const AppContent = ({ language, onLanguageClick }) => {
                         setOpenTreeViewFinderDialogCustomDialog(true)
                     }
                 >
-                    Open Custom TreeViewFinder ...
+                    Open Custom TreeViewFinder ({stylesProvider}) ...
                 </Button>
                 <CustomTreeViewFinder
                     open={openTreeViewFinderDialogCustomDialog}
@@ -601,7 +626,16 @@ const AppContent = ({ language, onLanguageClick }) => {
                             elementsFound={equipmentsFound}
                             renderElement={(props) => (
                                 <EquipmentItem
-                                    classes={equipmentClasses}
+                                    classes={
+                                        stylesProvider === 'jss'
+                                            ? equipmentClasses
+                                            : undefined
+                                    }
+                                    styles={
+                                        stylesProvider === 'emotion'
+                                            ? equipmentStyles
+                                            : undefined
+                                    }
                                     {...props}
                                     key={props.element.key}
                                 />
@@ -623,6 +657,28 @@ const AppContent = ({ language, onLanguageClick }) => {
                             </div>
                             <div style={{ flexGrow: 1 }} />
                             <div style={{ alignSelf: 'center' }}>baz</div>
+                            <FormControl
+                                sx={{ m: 1, minWidth: 120 }}
+                                size="small"
+                            >
+                                <InputLabel id="styles-provider-label">
+                                    Custom theme
+                                </InputLabel>
+                                <Select
+                                    labelId="styles-provider-label"
+                                    id="styles-provider"
+                                    value={stylesProvider}
+                                    label="Styles Provider"
+                                    onChange={(e) =>
+                                        setStylesProvider(e.target.value)
+                                    }
+                                >
+                                    <MenuItem value={'emotion'}>
+                                        emotion
+                                    </MenuItem>
+                                    <MenuItem value={'jss'}>jss</MenuItem>
+                                </Select>
+                            </FormControl>
                         </TopBar>
                         <CardErrorBoundary>
                             {user !== null ? (
@@ -638,7 +694,11 @@ const AppContent = ({ language, onLanguageClick }) => {
                                         <Tab label="parameters" />
                                     </Tabs>
                                     {tabIndex === 0 && defaultTab}
-                                    {tabIndex === 1 && <TableTab />}
+                                    {tabIndex === 1 && (
+                                        <TableTab
+                                            stylesProvider={stylesProvider}
+                                        />
+                                    )}
                                     {tabIndex === 2 && <FlatParametersTab />}
                                 </div>
                             ) : (

@@ -9,6 +9,7 @@ import clsx from 'clsx';
 import React from 'react';
 import { EQUIPMENT_TYPE } from '../../utils/EquipmentType';
 import PropTypes from 'prop-types';
+import { mergeSx } from '../../utils/styles';
 
 export const TagRenderer = ({ props, element }) => {
     if (
@@ -19,8 +20,12 @@ export const TagRenderer = ({ props, element }) => {
             <OverflowableText
                 text={element.voltageLevelLabel}
                 className={clsx(
-                    props.classes.equipmentTag,
-                    props.classes.equipmentVlTag
+                    props.classes?.equipmentTag,
+                    props.classes?.equipmentVlTag
+                )}
+                sx={mergeSx(
+                    props.styles?.equipmentTag,
+                    props.styles?.equipmentVlTag
                 )}
             />
         );

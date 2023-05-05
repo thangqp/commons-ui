@@ -7,12 +7,17 @@
 
 import React, { useCallback, useMemo, useState } from 'react';
 import { DEFAULT_CELL_PADDING, KeyedColumnsRowIndexer } from '../../src';
+import { styled } from '@mui/system';
 import withStyles from '@mui/styles/withStyles';
 
 import { Box, FormControlLabel, Stack, Switch, TextField } from '@mui/material';
-import MuiVirtualizedTable from '../../src/components/MuiVirtualizedTable';
+import MuiVirtualizedTable, {
+    generateMuiVirtualizedTableClass,
+} from '../../src/components/MuiVirtualizedTable';
 import Button from '@mui/material/Button';
 import { CHANGE_WAYS } from '../../src/components/MuiVirtualizedTable/KeyedColumnsRowIndexer';
+
+import { toNestedGlobalSelectors } from '../../src/utils/styles';
 
 // For demo and fun.. all even numbers first, then all ascending odd numbers, only postive numbers..
 const evenThenOddOrderingKey = (n) => {
@@ -73,10 +78,22 @@ const styles = (theme) => ({
     },
 });
 
-const StyledVirtualizedTable = withStyles(styles)(MuiVirtualizedTable);
+const StyledVirtualizedTableJss = withStyles(styles)(MuiVirtualizedTable);
 
-export const TableTab = () => {
+const stylesEmotion = ({ theme }) =>
+    toNestedGlobalSelectors(styles(theme), generateMuiVirtualizedTableClass);
+const StyledVirtualizedTableEmotion =
+    styled(MuiVirtualizedTable)(stylesEmotion);
+
+export const TableTab = ({ stylesProvider }) => {
     const [usesCustomStyles, setUsesCustomStyles] = useState(true);
+
+    const StyledVirtualizedTable =
+        stylesProvider === 'emotion'
+            ? StyledVirtualizedTableEmotion
+            : stylesProvider === 'jss'
+            ? StyledVirtualizedTableJss
+            : undefined;
 
     const VirtualizedTable = usesCustomStyles
         ? StyledVirtualizedTable
@@ -207,7 +224,7 @@ export const TableTab = () => {
         return (
             <Stack sx={{ margin: '1ex' }}>
                 {mkSwitch(
-                    'Custom theme',
+                    'Custom theme (' + stylesProvider + ')',
                     usesCustomStyles,
                     setUsesCustomStyles
                 )}

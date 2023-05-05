@@ -5,12 +5,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Tooltip } from '@mui/material';
+import { Box, Tooltip } from '@mui/material';
 import PropTypes from 'prop-types';
-import makeStyles from '@mui/styles/makeStyles';
-import clsx from 'clsx';
+import { styled } from '@mui/system';
 
-const overflowStyle = (theme) => ({
+const overflowStyle = {
     overflow: {
         display: 'inline-block',
         whiteSpace: 'pre',
@@ -22,50 +21,57 @@ const overflowStyle = (theme) => ({
         width: 'fit-content',
         maxWidth: 'fit-content',
     },
-});
-
-const useStyles = makeStyles(overflowStyle);
-
-export const OverflowableText = ({
-    text,
-    tooltipStyle,
-    className,
-    children,
-    ...props
-}) => {
-    const element = useRef();
-    const classes = useStyles();
-
-    const [overflowed, setOverflowed] = useState(false);
-
-    const checkOverflow = useCallback(() => {
-        if (!element.current) {
-            return;
-        }
-        setOverflowed(
-            element.current.scrollWidth > element.current.clientWidth
-        );
-    }, [setOverflowed, element]);
-
-    useEffect(() => {
-        checkOverflow();
-    }, [checkOverflow, text]);
-
-    return (
-        <Tooltip
-            title={text || ''}
-            disableHoverListener={!overflowed}
-            classes={{ tooltip: tooltipStyle ? tooltipStyle : classes.tooltip }}
-        >
-            <div
-                {...props}
-                ref={element}
-                children={children || text}
-                className={clsx(className, classes.overflow)}
-            />
-        </Tooltip>
-    );
 };
+
+export const OverflowableText = styled(
+    ({ text, tooltipStyle, tooltipSx, className, children, ...props }) => {
+        const element = useRef();
+
+        const [overflowed, setOverflowed] = useState(false);
+
+        const checkOverflow = useCallback(() => {
+            if (!element.current) {
+                return;
+            }
+            setOverflowed(
+                element.current.scrollWidth > element.current.clientWidth
+            );
+        }, [setOverflowed, element]);
+
+        useEffect(() => {
+            checkOverflow();
+        }, [checkOverflow, text]);
+
+        const defaultTooltipSx = !tooltipStyle ? overflowStyle.tooltip : false;
+        // the previous tooltipStyle classname API was replacing default, not
+        // merging with the defaults, so keep the same behavior with the new tooltipSx API
+        const finalTooltipSx = tooltipSx || defaultTooltipSx;
+        const tooltipStyleProps = {
+            ...(tooltipStyle && { classes: { tooltip: tooltipStyle } }),
+            ...(finalTooltipSx && {
+                slotProps: { tooltip: { sx: finalTooltipSx } },
+            }),
+        };
+
+        return (
+            <Tooltip
+                title={text || ''}
+                disableHoverListener={!overflowed}
+                {
+                    ...tooltipStyleProps /* legacy classes or newer slotProps API */
+                }
+            >
+                <Box
+                    {...props}
+                    ref={element}
+                    children={children || text}
+                    className={className}
+                    sx={overflowStyle.overflow}
+                />
+            </Tooltip>
+        );
+    }
+)({});
 
 OverflowableText.propTypes = {
     children: PropTypes.array,
@@ -75,6 +81,8 @@ OverflowableText.propTypes = {
         PropTypes.node,
     ]),
     tooltipStyle: PropTypes.string,
+    tooltipSx: PropTypes.object,
+    sx: PropTypes.object,
     className: PropTypes.string,
 };
 

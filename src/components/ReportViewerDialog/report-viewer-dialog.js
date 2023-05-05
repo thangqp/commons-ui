@@ -6,7 +6,6 @@
  */
 
 import React, { useState } from 'react';
-import makeStyles from '@mui/styles/makeStyles';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
@@ -16,17 +15,16 @@ import { FormattedMessage } from 'react-intl';
 import { Dialog, DialogContent } from '@mui/material';
 import ReportViewer from '../ReportViewer';
 
-const useStyles = makeStyles({
+const styles = {
     fullScreenIcon: {
         cursor: 'pointer',
     },
     paperFullWidth: {
         height: '100%',
     },
-});
+};
 
 export default function ReportViewerDialog(props) {
-    const classes = useStyles();
     const { title, open, onClose, jsonReport } = props;
 
     const [fullScreen, setFullScreen] = useState(false);
@@ -47,8 +45,8 @@ export default function ReportViewerDialog(props) {
             aria-labelledby="dialog-title-report"
             fullWidth={true}
             maxWidth="lg"
-            classes={{
-                paperFullWidth: classes.paperFullWidth,
+            sx={{
+                '& .MuiDialog-paperFullWidth': styles.paperFullWidth,
             }}
         >
             <DialogTitle>{title}</DialogTitle>
@@ -59,12 +57,12 @@ export default function ReportViewerDialog(props) {
                 {fullScreen ? (
                     <FullscreenExitIcon
                         onClick={hideFullScreen}
-                        className={classes.fullScreenIcon}
+                        sx={styles.fullScreenIcon}
                     />
                 ) : (
                     <FullscreenIcon
                         onClick={showFullScreen}
-                        className={classes.fullScreenIcon}
+                        sx={styles.fullScreenIcon}
                     />
                 )}
                 <Button onClick={() => onClose()} variant="text">

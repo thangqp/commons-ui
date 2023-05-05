@@ -6,20 +6,20 @@
  */
 import React, { memo, useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
-import withStyles from '@mui/styles/withStyles';
 import TableCell from '@mui/material/TableCell';
+import { styled } from '@mui/system';
 import MuiVirtualizedTable from '../MuiVirtualizedTable';
 import { useTheme } from '@mui/material/styles';
 
 const SEVERITY_COLUMN_FIXED_WIDTH = 100;
 
-const styles = (theme) => ({
+const styles = {
     flexContainer: {
         display: 'flex',
         alignItems: 'center',
         boxSizing: 'border-box',
     },
-    table: {
+    table: (theme) => ({
         // temporary right-to-left patch, waiting for
         // https://github.com/bvaughn/react-virtualized/issues/454
         '& .ReactVirtualized__Table__headerRow': {
@@ -27,11 +27,11 @@ const styles = (theme) => ({
             paddingRight:
                 theme.direction === 'rtl' ? '0 !important' : undefined,
         },
-    },
+    }),
     header: { variant: 'header' },
-});
+};
 
-const VirtualizedTable = withStyles(styles)(MuiVirtualizedTable);
+const VirtualizedTable = styled(MuiVirtualizedTable)(styles);
 
 const LogTable = ({ logs, onRowClick }) => {
     const intl = useIntl();

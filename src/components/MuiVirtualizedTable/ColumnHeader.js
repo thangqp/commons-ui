@@ -6,15 +6,16 @@
  */
 
 import React, { useRef } from 'react';
-import clsx from 'clsx';
-import { makeStyles } from '@mui/styles';
 
 import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
 
+import { styled } from '@mui/system';
+import Box from '@mui/material/Box';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import { mergeSx } from '../../utils/styles';
 
-const useStyles = makeStyles((theme) => ({
+const styles = {
     label: {
         fontWeight: 'bold',
         fontSize: '0.875rem', // to mimic TableCellRoot 'binding'
@@ -40,16 +41,16 @@ const useStyles = makeStyles((theme) => ({
     filterButton: {
         stroke: 'currentcolor',
     },
-    filterTooLossy: {
+    filterTooLossy: (theme) => ({
         stroke: theme.palette.secondary.main,
-    },
+    }),
     transparent: {
         opacity: 0,
     },
     hovered: {
         opacity: 0.5,
     },
-}));
+};
 
 // Shows an arrow pointing to smaller value when sorting is active.
 // signedRank of 0 means no sorting, we only show the arrow on hovering of the header,
@@ -57,35 +58,33 @@ const useStyles = makeStyles((theme) => ({
 // signedRank > 0 means sorted by ascending value from lower indices to higher indices
 // so lesser values are at top, so the upward arrow
 const SortButton = (props) => {
-    const classes = useStyles();
     const sortRank = Math.abs(props.signedRank);
-    const visibilityClass =
-        !props.signedRank &&
-        (props.headerHovered ? classes.hovered : classes.transparent);
+    const visibilityStyle =
+        (!props.signedRank || undefined) &&
+        (props.headerHovered ? styles.hovered : styles.transparent);
     return (
-        <div className={clsx(classes.sortDiv)} onClick={props.onClick}>
+        <Box sx={styles.sortDiv} onClick={props.onClick}>
             {props.signedRank >= 0 ? (
-                <ArrowUpwardIcon className={clsx(visibilityClass)} />
+                <ArrowUpwardIcon sx={visibilityStyle} />
             ) : (
-                <ArrowDownwardIcon className={clsx(visibilityClass)} />
+                <ArrowDownwardIcon sx={visibilityStyle} />
             )}
             {sortRank > 1 && !props.hovered && <sub>{sortRank}</sub>}
-        </div>
+        </Box>
     );
 };
 
 const FilterButton = (props) => {
-    const classes = useStyles();
-    const visibilityClass =
+    const visibilityStyle =
         !props.filterLevel &&
-        (props.headerHovered ? classes.hovered : classes.transparent);
+        (props.headerHovered ? styles.hovered : styles.transparent);
     return (
         <FilterAltOutlinedIcon
             onClick={props.onClick}
-            className={clsx(
-                classes.filterButton,
-                props.filterLevel > 1 && classes.filterTooLossy,
-                visibilityClass
+            sx={mergeSx(
+                styles.filterButton,
+                props.filterLevel > 1 && styles.filterTooLossy,
+                visibilityStyle
             )}
         />
     );
@@ -104,8 +103,6 @@ export const ColumnHeader = React.forwardRef((props, ref) => {
         style,
     } = props;
 
-    const classes = useStyles();
-
     const [hovered, setHovered] = React.useState();
     const onHover = React.useCallback((evt) => {
         setHovered(evt.type === 'mouseenter');
@@ -123,22 +120,19 @@ export const ColumnHeader = React.forwardRef((props, ref) => {
     }, [onFilterClick]);
 
     return (
-        <div
+        <Box
             ref={topmostDiv}
             onMouseEnter={onHover}
             onMouseLeave={onHover}
-            className={clsx(
-                classes.divFlex,
-                numeric && classes.divNum,
-                className
-            )}
+            sx={mergeSx(styles.divFlex, numeric && styles.divNum)}
+            className={className}
             style={style}
             onContextMenu={onContextMenu}
         >
             {/* we cheat here to get the _variable_ height */}
-            <div ref={ref} className={clsx(classes.label)}>
+            <Box ref={ref} sx={styles.label}>
                 {label}
-            </div>
+            </Box>
             {onSortClick && (
                 <SortButton
                     headerHovered={hovered}
@@ -153,8 +147,8 @@ export const ColumnHeader = React.forwardRef((props, ref) => {
                     filterLevel={filterLevel}
                 />
             )}
-        </div>
+        </Box>
     );
 });
 
-export default ColumnHeader;
+export default styled(ColumnHeader)({});
