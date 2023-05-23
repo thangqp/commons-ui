@@ -18,6 +18,7 @@ import {
     TextField,
     Tooltip,
     Typography,
+    Divider,
 } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 
@@ -100,6 +101,7 @@ export const FlatParameters = ({
     initValues,
     onChange,
     variant = 'outlined',
+    showSeparator,
 }) => {
     const classes = useStyles();
     const intl = useIntl();
@@ -229,7 +231,13 @@ export const FlatParameters = ({
                 return (
                     <TextField
                         fullWidth
-                        sx={{ input: { textAlign: 'right' } }}
+                        sx={{
+                            input: {
+                                textAlign: 'right',
+                                height: '10px',
+                            },
+                            width: '400px',
+                        }}
                         value={fieldValue}
                         onFocus={() => onUncommitted(param, true)}
                         onBlur={() => onUncommitted(param, false)}
@@ -250,7 +258,13 @@ export const FlatParameters = ({
                 return (
                     <TextField
                         fullWidth
-                        sx={{ input: { textAlign: 'right' } }}
+                        sx={{
+                            input: {
+                                textAlign: 'right',
+                                height: '10px',
+                            },
+                            width: '400px',
+                        }}
                         value={fieldValue}
                         onFocus={() => onUncommitted(param, true)}
                         onBlur={() => onUncommitted(param, false)}
@@ -267,7 +281,6 @@ export const FlatParameters = ({
                 if (param.possibleValues) {
                     return (
                         <Autocomplete
-                            fullWidth
                             multiple
                             options={sortPossibleValues(
                                 param.name,
@@ -290,7 +303,17 @@ export const FlatParameters = ({
                                 ));
                             }}
                             renderInput={(inputProps) => (
-                                <TextField {...inputProps} variant={variant} />
+                                <TextField
+                                    {...inputProps}
+                                    variant={variant}
+                                    sx={{
+                                        input: {
+                                            textAlign: 'right',
+                                            height: '10px',
+                                        },
+                                        width: '400px',
+                                    }}
+                                />
                             )}
                         />
                     );
@@ -298,7 +321,6 @@ export const FlatParameters = ({
                     // no possible values => free user inputs
                     return (
                         <Autocomplete
-                            fullWidth
                             multiple
                             freeSolo
                             autoSelect
@@ -316,7 +338,17 @@ export const FlatParameters = ({
                                 ));
                             }}
                             renderInput={(inputProps) => (
-                                <TextField {...inputProps} variant={variant} />
+                                <TextField
+                                    {...inputProps}
+                                    variant={variant}
+                                    sx={{
+                                        input: {
+                                            textAlign: 'right',
+                                            height: '10px',
+                                        },
+                                        width: '400px',
+                                    }}
+                                />
                             )}
                         />
                     );
@@ -326,13 +358,19 @@ export const FlatParameters = ({
                     return (
                         <>
                             <Select
+                                sx={{
+                                    input: {
+                                        textAlign: 'right',
+                                        height: '10px',
+                                    },
+                                    width: '400px',
+                                }}
                                 labelId={param.name}
                                 value={fieldValue ?? ''}
                                 onChange={(ev) => {
                                     onFieldChange(ev.target.value, param);
                                 }}
                                 size="small"
-                                sx={{ minWidth: '4em' }}
                                 variant={variant}
                             >
                                 {sortPossibleValues(
@@ -351,7 +389,13 @@ export const FlatParameters = ({
             default:
                 return (
                     <TextField
-                        fullWidth
+                        sx={{
+                            input: {
+                                textAlign: 'right',
+                                height: '10px',
+                            },
+                            width: '400px',
+                        }}
                         value={fieldValue || ''}
                         onFocus={() => onUncommitted(param, true)}
                         onBlur={() => onUncommitted(param, false)}
@@ -364,30 +408,34 @@ export const FlatParameters = ({
 
     return (
         <List className={classes.paramList}>
-            {paramsAsArray.map((param) => (
-                <Tooltip
-                    title={
-                        <FormattedMessage
-                            id={param.name + '.desc'}
-                            defaultMessage={param.description}
-                        />
-                    }
-                    enterDelay={1200}
-                    key={param.name}
-                >
-                    <ListItem
-                        key={param.name}
-                        className={classes.paramListItem}
-                    >
-                        <Typography className={classes.paramName}>
+            {paramsAsArray.map((param, index) => (
+                <React.Fragment key={param.name}>
+                    <Tooltip
+                        title={
                             <FormattedMessage
-                                id={param.name}
-                                defaultMessage={param.name.slice(prefix.length)}
+                                id={param.name + '.desc'}
+                                defaultMessage={param.description}
                             />
-                        </Typography>
-                        {renderField(param)}
-                    </ListItem>
-                </Tooltip>
+                        }
+                        enterDelay={1200}
+                    >
+                        <ListItem className={classes.paramListItem}>
+                            <Typography className={classes.paramName}>
+                                <FormattedMessage
+                                    id={param.name}
+                                    defaultMessage={param.name.slice(
+                                        prefix.length
+                                    )}
+                                />
+                            </Typography>
+                            {renderField(param)}
+                        </ListItem>
+                    </Tooltip>
+
+                    {!showSeparator && index !== paramsAsArray.length - 1 && (
+                        <Divider />
+                    )}
+                </React.Fragment>
             ))}
         </List>
     );

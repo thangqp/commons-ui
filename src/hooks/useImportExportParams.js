@@ -132,6 +132,7 @@ export const useImportExportParams = (
                 paramsAsArray={paramsAsArray}
                 initValues={currentValues}
                 onChange={onChange}
+                showSeparator={false}
                 variant={variant}
             />
         );
