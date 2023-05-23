@@ -9,7 +9,7 @@ The `npm start` command install the library's dependencies then launches the dem
 
 If you want to test your library integration with a consumer application my-app you have first
 to build commons-ui via `npm run build` then change the commons-ui dependency in my-app's package.json from `@gridsuite/commons-ui:'^x.x.x'`
-to `@gridsuite/commons-ui:'file:../path/to/the/commons-ui'` then type `npm install` `npm start`.
+to `@gridsuite/commons-ui:'file:../path/to/the/commons-ui'` or `@gridsuite/commons-ui:'file:///home/path/to/the/commons-ui'` then type `npm install` `npm start`.
 
 NOTE: if you have the following error:
 
