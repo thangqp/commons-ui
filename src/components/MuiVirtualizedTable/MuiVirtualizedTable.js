@@ -549,7 +549,7 @@ class MuiVirtualizedTable extends React.PureComponent {
                 [classes.tableRowHover]:
                     index !== -1 &&
                     onRowClick != null &&
-                    !(rowGetter(index)?.notClickable === true),
+                    !(rowGetter(index)?.notClickable === null),
             }
         );
     };
