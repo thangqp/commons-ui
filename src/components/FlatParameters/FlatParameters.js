@@ -71,15 +71,15 @@ export function extractDefault(paramDescription) {
     return d ?? null;
 }
 
-function longestCommonPrefix(strs) {
-    if (!strs?.length) {
+function longestCommonPrefix(stringList) {
+    if (!stringList?.length) {
         return '';
     }
-    let prefix = strs.reduce((acc, str) =>
+    let prefix = stringList.reduce((acc, str) =>
         str.length < acc.length ? str : acc
     );
 
-    for (let str of strs) {
+    for (let str of stringList) {
         while (str.slice(0, prefix.length) !== prefix) {
             prefix = prefix.slice(0, -1);
         }
@@ -147,8 +147,12 @@ export const FlatParameters = ({
                 setUncommitted(value);
             }
             if (onChange) {
-                if (Array.isArray(value)) {
-                    onChange(paramName, [...value], isInEdition);
+                if (param.type === 'STRING_LIST') {
+                    onChange(
+                        paramName,
+                        value ? value.toString() : null,
+                        isInEdition
+                    );
                 } else {
                     onChange(paramName, value, isInEdition);
                 }
@@ -157,7 +161,7 @@ export const FlatParameters = ({
         [inEditionParam, onChange]
     );
 
-    const onUncommited = useCallback(
+    const onUncommitted = useCallback(
         (param, inEdit) => {
             if (inEdit) {
                 setInEditionParam(param.name);
@@ -183,11 +187,28 @@ export const FlatParameters = ({
         if (param.name === inEditionParam && uncommitted !== null) {
             return uncommitted;
         } else if (initValues && initValues.hasOwnProperty(param.name)) {
-            return initValues[param.name];
+            if (param.type !== 'STRING_LIST') {
+                return initValues[param.name];
+            }
+            const valueList = initValues[param.name];
+            if (Array.isArray(valueList)) {
+                return valueList;
+            }
+            // otherwise split string into array
+            return valueList
+                ? valueList
+                      .split(',')
+                      .map((s) => s.trim())
+                      .filter((s) => !!s)
+                : [];
         } else {
             return extractDefault(param);
         }
     }
+
+    const outputTransformFloatString = (value) => {
+        return value?.replace(',', '.') || '';
+    };
 
     const renderField = (param) => {
         const fieldValue = mixInitAndDefault(param);
@@ -210,12 +231,15 @@ export const FlatParameters = ({
                         fullWidth
                         sx={{ input: { textAlign: 'right' } }}
                         value={fieldValue}
-                        onFocus={() => onUncommited(param, true)}
-                        onBlur={() => onUncommited(param, false)}
+                        onFocus={() => onUncommitted(param, true)}
+                        onBlur={() => onUncommitted(param, false)}
                         onChange={(e) => {
                             const m = FloatRE.exec(e.target.value);
                             if (m) {
-                                onFieldChange(e.target.value, param);
+                                onFieldChange(
+                                    outputTransformFloatString(e.target.value),
+                                    param
+                                );
                             }
                         }}
                         error={err}
@@ -228,8 +252,8 @@ export const FlatParameters = ({
                         fullWidth
                         sx={{ input: { textAlign: 'right' } }}
                         value={fieldValue}
-                        onFocus={() => onUncommited(param, true)}
-                        onBlur={() => onUncommited(param, false)}
+                        onFocus={() => onUncommitted(param, true)}
+                        onBlur={() => onUncommitted(param, false)}
                         onChange={(e) => {
                             const m = IntegerRE.exec(e.target.value);
                             if (m) {
@@ -270,8 +294,33 @@ export const FlatParameters = ({
                             )}
                         />
                     );
+                } else {
+                    // no possible values => free user inputs
+                    return (
+                        <Autocomplete
+                            fullWidth
+                            multiple
+                            freeSolo
+                            autoSelect
+                            options={[]}
+                            onChange={(e, value) => onFieldChange(value, param)}
+                            value={fieldValue}
+                            renderTags={(values, getTagProps) => {
+                                return values.map((value, index) => (
+                                    <Chip
+                                        id={'chip_' + value}
+                                        size={'small'}
+                                        label={value}
+                                        {...getTagProps({ index })}
+                                    />
+                                ));
+                            }}
+                            renderInput={(inputProps) => (
+                                <TextField {...inputProps} variant={variant} />
+                            )}
+                        />
+                    );
                 }
-            // else fallthrough to default
             case 'STRING':
                 if (param.possibleValues) {
                     return (
@@ -279,7 +328,7 @@ export const FlatParameters = ({
                             <Select
                                 labelId={param.name}
                                 value={fieldValue ?? ''}
-                                onChange={(ev, may) => {
+                                onChange={(ev) => {
                                     onFieldChange(ev.target.value, param);
                                 }}
                                 size="small"
@@ -303,9 +352,9 @@ export const FlatParameters = ({
                 return (
                     <TextField
                         fullWidth
-                        defaultValue={fieldValue}
-                        onFocus={() => onUncommited(param, true)}
-                        onBlur={() => onUncommited(param, false)}
+                        value={fieldValue || ''}
+                        onFocus={() => onUncommitted(param, true)}
+                        onBlur={() => onUncommitted(param, false)}
                         onChange={(e) => onFieldChange(e.target.value, param)}
                         variant={variant}
                     />
@@ -316,19 +365,16 @@ export const FlatParameters = ({
     return (
         <List className={classes.paramList}>
             {paramsAsArray.map((param) => (
-                <Tooltip
-                    title={
-                        <FormattedMessage
-                            id={param.name + '.desc'}
-                            defaultMessage={param.description}
-                        />
-                    }
-                    enterDelay={1200}
-                    key={param.name}
-                >
-                    <ListItem
+                <ListItem key={param.name} className={classes.paramListItem}>
+                    <Tooltip
+                        title={
+                            <FormattedMessage
+                                id={param.name + '.desc'}
+                                defaultMessage={param.description}
+                            />
+                        }
+                        enterDelay={1200}
                         key={param.name}
-                        className={classes.paramListItem}
                     >
                         <Typography className={classes.paramName}>
                             <FormattedMessage
@@ -336,9 +382,9 @@ export const FlatParameters = ({
                                 defaultMessage={param.name.slice(prefix.length)}
                             />
                         </Typography>
-                        {renderField(param)}
-                    </ListItem>
-                </Tooltip>
+                    </Tooltip>
+                    {renderField(param)}
+                </ListItem>
             ))}
         </List>
     );
