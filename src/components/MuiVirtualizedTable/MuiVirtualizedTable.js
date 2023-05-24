@@ -493,11 +493,13 @@ class MuiVirtualizedTable extends React.PureComponent {
         );
         const colStat = prefiltered?.colsStats?.[colKey];
         let filterLevel = 0;
-        if (colStat?.seen) {
-            const countSeen = Object.getOwnPropertyNames(colStat.seen).length;
-            const userSelectedCount = userParams?.length;
-            filterLevel += userSelectedCount ? 1 : 0;
-            filterLevel += userSelectedCount >= countSeen ? 2 : 0;
+        if (userParams?.length) {
+            filterLevel += 1;
+            if (!colStat?.seen) {
+                filterLevel += 2;
+            } else if (userParams.filter((v) => !colStat.seen[v]).length) {
+                filterLevel += 2;
+            }
         }
 
         // disable filtering when either:
@@ -546,10 +548,7 @@ class MuiVirtualizedTable extends React.PureComponent {
             index % 2 !== 0 && classes.rowBackgroundLight,
             rowGetter(index)?.notClickable === true && classes.noClick, // Allow to define a row as not clickable
             {
-                [classes.tableRowHover]:
-                    index !== -1 &&
-                    onRowClick != null &&
-                    !(rowGetter(index)?.notClickable === true),
+                [classes.tableRowHover]: index !== -1 && onRowClick != null,
             }
         );
     };
