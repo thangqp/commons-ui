@@ -363,7 +363,6 @@ export const FlatParameters = ({
                                         textAlign: 'right',
                                         height: '10px',
                                     },
-                                    width: '400px',
                                 }}
                                 labelId={param.name}
                                 value={fieldValue ?? ''}

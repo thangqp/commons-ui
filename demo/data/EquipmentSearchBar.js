@@ -132,6 +132,20 @@ const EQUIPMENTS = [
         voltageLevels: [{ id: 'vl10', name: 'vl10' }],
         networkUuid: NETWORK_UUID,
     },
+    {
+        id: 'ident11',
+        name: '',
+        type: 'BUS',
+        voltageLevels: [{ id: 'vl10', name: 'vl10' }],
+        networkUuid: NETWORK_UUID,
+    },
+    {
+        id: 'ident15',
+        // no name for testing
+        type: 'BUS',
+        voltageLevels: [{ id: 'vl10', name: 'vl10' }],
+        networkUuid: NETWORK_UUID,
+    },
 ];
 
 export const searchEquipments = (searchTerm, equipmentLabelling) => {
@@ -139,12 +153,12 @@ export const searchEquipments = (searchTerm, equipmentLabelling) => {
         return getEquipmentsInfosForSearchBar(
             equipmentLabelling
                 ? EQUIPMENTS.filter((equipment) =>
-                      equipment.name.includes(searchTerm)
+                      (equipment.name || equipment.id).includes(searchTerm)
                   )
                 : EQUIPMENTS.filter((equipment) =>
                       equipment.id.includes(searchTerm)
                   ),
-            equipmentLabelling
+            equipmentLabelling ? (e) => e.name || e.id : (e) => e.id
         );
     } else {
         return [];
