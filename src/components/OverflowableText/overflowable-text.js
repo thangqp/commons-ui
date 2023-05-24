@@ -39,7 +39,9 @@ export const OverflowableText = ({
     const [overflowed, setOverflowed] = useState(false);
 
     const checkOverflow = useCallback(() => {
-        if (!element.current) return;
+        if (!element.current) {
+            return;
+        }
         setOverflowed(
             element.current.scrollWidth > element.current.clientWidth
         );

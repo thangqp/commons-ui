@@ -18,6 +18,7 @@ export ReportViewer from './components/ReportViewer';
 export ReportViewerDialog from './components/ReportViewerDialog';
 export OverflowableText from './components/OverflowableText';
 export ElementSearchDialog from './components/ElementSearchDialog';
+export FlatParameters from './components/FlatParameters';
 
 export {
     EQUIPMENT_TYPE,
@@ -78,6 +79,10 @@ export card_error_boundary_fr from './components/translations/card-error-boundar
 export { TagRenderer } from './components/ElementSearchDialog';
 export { EquipmentItem } from './components/ElementSearchDialog/equipment-item';
 export CardErrorBoundary from './components/CardErrorBoundary';
-export { useImportExportParams } from './hooks/useImportExportParams';
+export {
+    useImportExportParams,
+    makeDeltaMap,
+    extractDefaultMap,
+} from './hooks/useImportExportParams';
 export { useIntlRef } from './hooks/useIntlRef';
 export { useSnackMessage } from './hooks/useSnackMessage';

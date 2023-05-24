@@ -14,7 +14,7 @@ export const TagRenderer = ({ props, element }) => {
     if (
         element.type !== EQUIPMENT_TYPE.SUBSTATION.name &&
         element.type !== EQUIPMENT_TYPE.VOLTAGE_LEVEL.name
-    )
+    ) {
         return (
             <OverflowableText
                 text={element.voltageLevelLabel}
@@ -24,6 +24,7 @@ export const TagRenderer = ({ props, element }) => {
                 )}
             />
         );
+    }
     return <></>;
 };
 
