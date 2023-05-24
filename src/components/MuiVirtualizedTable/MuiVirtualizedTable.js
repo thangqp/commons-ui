@@ -546,10 +546,7 @@ class MuiVirtualizedTable extends React.PureComponent {
             index % 2 !== 0 && classes.rowBackgroundLight,
             rowGetter(index)?.notClickable === true && classes.noClick, // Allow to define a row as not clickable
             {
-                [classes.tableRowHover]:
-                    index !== -1 &&
-                    onRowClick != null &&
-                    !(rowGetter(index)?.notClickable === null),
+                [classes.tableRowHover]: index !== -1 && onRowClick != null,
             }
         );
     };
