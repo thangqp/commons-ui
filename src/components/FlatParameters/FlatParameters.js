@@ -365,19 +365,16 @@ export const FlatParameters = ({
     return (
         <List className={classes.paramList}>
             {paramsAsArray.map((param) => (
-                <Tooltip
-                    title={
-                        <FormattedMessage
-                            id={param.name + '.desc'}
-                            defaultMessage={param.description}
-                        />
-                    }
-                    enterDelay={1200}
-                    key={param.name}
-                >
-                    <ListItem
+                <ListItem key={param.name} className={classes.paramListItem}>
+                    <Tooltip
+                        title={
+                            <FormattedMessage
+                                id={param.name + '.desc'}
+                                defaultMessage={param.description}
+                            />
+                        }
+                        enterDelay={1200}
                         key={param.name}
-                        className={classes.paramListItem}
                     >
                         <Typography className={classes.paramName}>
                             <FormattedMessage
@@ -385,9 +382,9 @@ export const FlatParameters = ({
                                 defaultMessage={param.name.slice(prefix.length)}
                             />
                         </Typography>
-                        {renderField(param)}
-                    </ListItem>
-                </Tooltip>
+                    </Tooltip>
+                    {renderField(param)}
+                </ListItem>
             ))}
         </List>
     );
