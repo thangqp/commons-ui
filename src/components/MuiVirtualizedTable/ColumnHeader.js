@@ -114,7 +114,9 @@ export const ColumnHeader = React.forwardRef((props, ref) => {
     const topmostDiv = useRef();
 
     const handleFilterClick = React.useMemo(() => {
-        if (!onFilterClick) return undefined;
+        if (!onFilterClick) {
+            return undefined;
+        }
         return (evt) => {
             onFilterClick(evt, topmostDiv.current);
         };

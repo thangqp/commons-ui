@@ -128,9 +128,11 @@ export default function ReportViewer({
                 }
                 reportId = parentReportId;
             }
-            if (nodesToExpand.length > 0)
+            if (nodesToExpand.length > 0) {
                 return nodesToExpand.concat(previouslyExpandedNodes);
-            else return previouslyExpandedNodes;
+            } else {
+                return previouslyExpandedNodes;
+            }
         });
         setHighlightedReportId(data.reportId);
     };

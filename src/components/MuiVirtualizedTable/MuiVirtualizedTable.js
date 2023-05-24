@@ -167,11 +167,12 @@ const reorderIndex = memoize(
         filterFromProps,
         sortFromProps
     ) => {
-        if (!rows)
+        if (!rows) {
             return {
                 viewIndexToModel: [],
                 rowGetter: (viewIndex) => viewIndex,
             };
+        }
 
         const highestCodedColumn = !indexer
             ? 0
@@ -322,7 +323,9 @@ class MuiVirtualizedTable extends React.PureComponent {
                     let text = this.getDisplayValue(col, gotRow[col.dataKey]);
                     size = Math.max(size, this.computeDataWidth(text));
                 }
-                if (col.maxWidth) size = Math.min(col.maxWidth, size);
+                if (col.maxWidth) {
+                    size = Math.min(col.maxWidth, size);
+                }
                 sizes[col.dataKey] = Math.ceil(size);
             }
         });
@@ -543,10 +546,7 @@ class MuiVirtualizedTable extends React.PureComponent {
             index % 2 !== 0 && classes.rowBackgroundLight,
             rowGetter(index)?.notClickable === true && classes.noClick, // Allow to define a row as not clickable
             {
-                [classes.tableRowHover]:
-                    index !== -1 &&
-                    onRowClick != null &&
-                    !(rowGetter(index)?.notClickable === true),
+                [classes.tableRowHover]: index !== -1 && onRowClick != null,
             }
         );
     };
@@ -633,7 +633,9 @@ class MuiVirtualizedTable extends React.PureComponent {
 
     _computeHeaderSize() {
         const headers = Object.values(this.headers.current);
-        if (headers.length === 0) return;
+        if (headers.length === 0) {
+            return;
+        }
         // for now keep 'historical' use of scrollHeight,
         // though it can not make a difference from clientHeight,
         // as overflow-y as no scroll value

@@ -63,10 +63,11 @@ export class UserManagerMock {
         const localStorageUser = JSON.parse(
             localStorage.getItem('powsybl-gridsuite-mock-user')
         );
-        if (localStorageUser === null)
+        if (localStorageUser === null) {
             return Promise.reject(
                 new Error('End-User authentication required')
             );
+        }
         sessionStorage.setItem(
             'powsybl-gridsuite-mock-user',
             JSON.stringify(localStorageUser)
