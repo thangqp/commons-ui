@@ -410,16 +410,17 @@ export const FlatParameters = ({
         <List className={classes.paramList}>
             {paramsAsArray.map((param, index) => (
                 <React.Fragment key={param.name}>
-                    <Tooltip
-                        title={
-                            <FormattedMessage
-                                id={param.name + '.desc'}
-                                defaultMessage={param.description}
-                            />
-                        }
-                        enterDelay={1200}
-                    >
-                        <ListItem className={classes.paramListItem}>
+                    <ListItem className={classes.paramListItem}>
+                        <Tooltip
+                            title={
+                                <FormattedMessage
+                                    id={param.name + '.desc'}
+                                    defaultMessage={param.description}
+                                />
+                            }
+                            enterDelay={1200}
+                            key={param.name}
+                        >
                             <Typography className={classes.paramName}>
                                 <FormattedMessage
                                     id={param.name}
@@ -428,11 +429,10 @@ export const FlatParameters = ({
                                     )}
                                 />
                             </Typography>
-                            {renderField(param)}
-                        </ListItem>
-                    </Tooltip>
-
-                    {!showSeparator && index !== paramsAsArray.length - 1 && (
+                        </Tooltip>
+                        {renderField(param)}
+                    </ListItem>
+                    {!showSeparator && index < paramsAsArray.length - 1 && (
                         <Divider />
                     )}
                 </React.Fragment>
