@@ -232,11 +232,13 @@ export const FlatParameters = ({
                     <TextField
                         fullWidth
                         sx={{
-                            input: {
-                                textAlign: 'right',
-                                height: '10px',
-                            },
-                            width: '400px',
+                            ...(showSeparator && {
+                                input: {
+                                    textAlign: 'right',
+                                    height: '10px',
+                                },
+                                width: '400px',
+                            }),
                         }}
                         value={fieldValue}
                         onFocus={() => onUncommitted(param, true)}
@@ -259,11 +261,13 @@ export const FlatParameters = ({
                     <TextField
                         fullWidth
                         sx={{
-                            input: {
-                                textAlign: 'right',
-                                height: '10px',
-                            },
-                            width: '400px',
+                            ...(showSeparator && {
+                                input: {
+                                    textAlign: 'right',
+                                    height: '10px',
+                                },
+                                width: '400px',
+                            }),
                         }}
                         value={fieldValue}
                         onFocus={() => onUncommitted(param, true)}
@@ -307,11 +311,13 @@ export const FlatParameters = ({
                                     {...inputProps}
                                     variant={variant}
                                     sx={{
-                                        input: {
-                                            textAlign: 'right',
-                                            height: '10px',
-                                        },
-                                        width: '400px',
+                                        ...(showSeparator && {
+                                            input: {
+                                                textAlign: 'right',
+                                                height: '10px',
+                                            },
+                                            width: '400px',
+                                        }),
                                     }}
                                 />
                             )}
@@ -359,10 +365,12 @@ export const FlatParameters = ({
                         <>
                             <Select
                                 sx={{
-                                    input: {
-                                        textAlign: 'right',
-                                        height: '10px',
-                                    },
+                                    ...(showSeparator && {
+                                        input: {
+                                            textAlign: 'right',
+                                            height: '10px',
+                                        },
+                                    }),
                                 }}
                                 labelId={param.name}
                                 value={fieldValue ?? ''}
@@ -389,11 +397,13 @@ export const FlatParameters = ({
                 return (
                     <TextField
                         sx={{
-                            input: {
-                                textAlign: 'right',
-                                height: '10px',
-                            },
-                            width: '400px',
+                            ...(showSeparator && {
+                                input: {
+                                    textAlign: 'right',
+                                    height: '10px',
+                                },
+                                width: '400px',
+                            }),
                         }}
                         value={fieldValue || ''}
                         onFocus={() => onUncommitted(param, true)}
@@ -431,7 +441,7 @@ export const FlatParameters = ({
                         </Tooltip>
                         {renderField(param)}
                     </ListItem>
-                    {!showSeparator && index < paramsAsArray.length - 1 && (
+                    {showSeparator && index < paramsAsArray.length - 1 && (
                         <Divider />
                     )}
                 </React.Fragment>
