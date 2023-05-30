@@ -5,8 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useImportExportParams } from '../../src';
-import React from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import RightResizableBox from './right-resizable-box';
 import FlatParameters from '../../src/components/FlatParameters/FlatParameters';
 
@@ -105,18 +104,34 @@ const EXAMPLE_PARAMETERS = [
 ];
 
 export const FlatParametersTab = () => {
-    const [currentParameters1, paramsComponent1] = useImportExportParams(
-        EXAMPLE_PARAMETERS,
-        null,
-        false
-    );
+    const [currentParameters, setCurrentParameters] = useState({});
+    const onChange = useCallback((paramName, value, isEdit) => {
+        if (!isEdit) {
+            setCurrentParameters((prevCurrentParameters) => {
+                return {
+                    ...prevCurrentParameters,
+                    ...{ [paramName]: value },
+                };
+            });
+        }
+    }, []);
+    const paramsComponent = useMemo(() => {
+        return (
+            <FlatParameters
+                paramsAsArray={EXAMPLE_PARAMETERS}
+                initValues={currentParameters}
+                onChange={onChange}
+                variant="standard"
+            />
+        );
+    }, [currentParameters, onChange]);
     return (
         <div style={{ display: 'flex', margin: 8 }}>
-            <RightResizableBox>{paramsComponent1}</RightResizableBox>
+            <RightResizableBox>{paramsComponent}</RightResizableBox>
             <RightResizableBox>
                 <FlatParameters
                     paramsAsArray={EXAMPLE_PARAMETERS}
-                    initValues={currentParameters1}
+                    initValues={currentParameters}
                     variant={'standard'}
                 />
             </RightResizableBox>
