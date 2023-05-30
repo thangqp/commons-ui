@@ -405,13 +405,15 @@ export const FlatParameters = ({
                     <TextField
                         fullWidth
                         sx={{
-                            ...(showSeparator && {
-                                input: {
-                                    textAlign: 'right',
-                                    height: '10px',
-                                },
-                                width: '300px',
-                            }),
+                            ...(showSeparator
+                                ? {
+                                      input: {
+                                          textAlign: 'right',
+                                          height: '10px',
+                                      },
+                                      width: '300px',
+                                  }
+                                : { input: { textAlign: 'left' } }),
                         }}
                         value={fieldValue || ''}
                         onFocus={() => onUncommitted(param, true)}
