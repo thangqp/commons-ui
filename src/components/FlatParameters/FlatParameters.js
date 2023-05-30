@@ -101,7 +101,7 @@ export const FlatParameters = ({
     initValues,
     onChange,
     variant = 'outlined',
-    showSeparator,
+    showSeparator = false,
 }) => {
     const classes = useStyles();
     const intl = useIntl();
@@ -232,13 +232,15 @@ export const FlatParameters = ({
                     <TextField
                         fullWidth
                         sx={{
-                            ...(showSeparator && {
-                                input: {
-                                    textAlign: 'right',
-                                    height: '10px',
-                                },
-                                width: '300px',
-                            }),
+                            ...(showSeparator
+                                ? {
+                                      input: {
+                                          textAlign: 'right',
+                                          height: '10px',
+                                      },
+                                      width: '300px',
+                                  }
+                                : { input: { textAlign: 'right' } }),
                         }}
                         value={fieldValue}
                         onFocus={() => onUncommitted(param, true)}
@@ -261,13 +263,15 @@ export const FlatParameters = ({
                     <TextField
                         fullWidth
                         sx={{
-                            ...(showSeparator && {
-                                input: {
-                                    textAlign: 'right',
-                                    height: '10px',
-                                },
-                                width: '300px',
-                            }),
+                            ...(showSeparator
+                                ? {
+                                      input: {
+                                          textAlign: 'right',
+                                          height: '10px',
+                                      },
+                                      width: '300px',
+                                  }
+                                : { input: { textAlign: 'right' } }),
                         }}
                         value={fieldValue}
                         onFocus={() => onUncommitted(param, true)}
@@ -285,6 +289,7 @@ export const FlatParameters = ({
                 if (param.possibleValues) {
                     return (
                         <Autocomplete
+                            fullWidth
                             multiple
                             options={sortPossibleValues(
                                 param.name,
@@ -313,10 +318,8 @@ export const FlatParameters = ({
                                     sx={{
                                         ...(showSeparator && {
                                             input: {
-                                                textAlign: 'right',
                                                 height: '10px',
                                             },
-                                            width: '300px',
                                         }),
                                     }}
                                 />
@@ -348,11 +351,13 @@ export const FlatParameters = ({
                                     {...inputProps}
                                     variant={variant}
                                     sx={{
-                                        input: {
-                                            textAlign: 'right',
-                                            height: '10px',
-                                        },
-                                        width: '300px',
+                                        ...(showSeparator && {
+                                            input: {
+                                                textAlign: 'right',
+                                                height: '10px',
+                                            },
+                                            width: '300px',
+                                        }),
                                     }}
                                 />
                             )}
@@ -371,6 +376,7 @@ export const FlatParameters = ({
                                             height: '10px',
                                         },
                                     }),
+                                    minWidth: '4em',
                                 }}
                                 labelId={param.name}
                                 value={fieldValue ?? ''}
@@ -396,14 +402,17 @@ export const FlatParameters = ({
             default:
                 return (
                     <TextField
+                        fullWidth
                         sx={{
-                            ...(showSeparator && {
-                                input: {
-                                    textAlign: 'right',
-                                    height: '10px',
-                                },
-                                width: '300px',
-                            }),
+                            ...(showSeparator
+                                ? {
+                                      input: {
+                                          textAlign: 'right',
+                                          height: '10px',
+                                      },
+                                      width: '300px',
+                                  }
+                                : { input: { textAlign: 'right' } }),
                         }}
                         value={fieldValue || ''}
                         onFocus={() => onUncommitted(param, true)}
