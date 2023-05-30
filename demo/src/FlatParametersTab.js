@@ -121,7 +121,6 @@ export const FlatParametersTab = () => {
                 paramsAsArray={EXAMPLE_PARAMETERS}
                 initValues={currentParameters}
                 onChange={onChange}
-                variant="standard"
             />
         );
     }, [currentParameters, onChange]);
