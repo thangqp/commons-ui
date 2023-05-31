@@ -1,4 +1,4 @@
-import {extractDefault} from "../components/FlatParameters/FlatParameters";
+import { extractDefault } from '../components/FlatParameters/FlatParameters';
 
 const areEquivDeeply = (a, b) => {
     if (a === b) {
@@ -25,14 +25,14 @@ const areEquivDeeply = (a, b) => {
     }
 
     return areEquivDeeply(Object.entries(a), Object.entries(b));
-}
+};
 export const extractDefaultMap = (paramsAsArray) => {
     return Object.fromEntries(
         paramsAsArray.map((paramDescription) => {
             return [paramDescription.name, extractDefault(paramDescription)];
         })
     );
-}
+};
 
 export const makeDeltaMap = (defaultMap, changingMap) => {
     if (!changingMap) {
@@ -49,4 +49,4 @@ export const makeDeltaMap = (defaultMap, changingMap) => {
     });
 
     return Object.keys(delta).length ? delta : null;
-}
+};
