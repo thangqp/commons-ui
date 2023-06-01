@@ -118,7 +118,7 @@ export const FlatParametersTab = () => {
                     paramsAsArray={EXAMPLE_PARAMETERS}
                     initValues={currentParameters1}
                     variant={'standard'}
-                    showSeparator={true}
+                    showSeparator
                 />
             </RightResizableBox>
         </div>
