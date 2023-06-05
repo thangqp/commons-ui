@@ -19,7 +19,6 @@ export ReportViewerDialog from './components/ReportViewerDialog';
 export OverflowableText from './components/OverflowableText';
 export ElementSearchDialog from './components/ElementSearchDialog';
 export FlatParameters from './components/FlatParameters';
-export { makeDeltaMap, extractDefaultMap } from './utils/FlatParameters';
 
 export {
     EQUIPMENT_TYPE,
