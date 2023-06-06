@@ -81,3 +81,4 @@ export { EquipmentItem } from './components/ElementSearchDialog/equipment-item';
 export CardErrorBoundary from './components/CardErrorBoundary';
 export { useIntlRef } from './hooks/useIntlRef';
 export { useSnackMessage } from './hooks/useSnackMessage';
+export { useDebounce } from './hooks/useDebounce';
