@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import RightResizableBox from './right-resizable-box';
 import FlatParameters from '../../src/components/FlatParameters/FlatParameters';
 
@@ -115,22 +115,13 @@ export const FlatParametersTab = () => {
             });
         }
     }, []);
-    const paramsComponent = useMemo(() => {
-        return (
-            <FlatParameters
-                paramsAsArray={EXAMPLE_PARAMETERS}
-                initValues={currentParameters}
-                onChange={onChange}
-            />
-        );
-    }, [currentParameters, onChange]);
     return (
         <div style={{ display: 'flex', margin: 8 }}>
-            <RightResizableBox>{paramsComponent}</RightResizableBox>
             <RightResizableBox>
                 <FlatParameters
                     paramsAsArray={EXAMPLE_PARAMETERS}
                     initValues={currentParameters}
+                    onChange={onChange}
                     variant={'standard'}
                 />
             </RightResizableBox>
