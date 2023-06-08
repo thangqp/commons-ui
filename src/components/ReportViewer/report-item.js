@@ -12,6 +12,7 @@ import TreeItem from '@mui/lab/TreeItem';
 import Typography from '@mui/material/Typography';
 import Label from '@mui/icons-material/Label';
 import ReportTreeViewContext from './report-tree-view-context';
+import { alpha } from '@mui/system';
 
 const useReportItemStyles = makeStyles((theme) => ({
     root: {
@@ -19,23 +20,33 @@ const useReportItemStyles = makeStyles((theme) => ({
         '&:hover > $content': {
             backgroundColor: theme.palette.action.hover,
         },
-        '&:focus > $content, &$selected > $content': {
-            backgroundColor: `var(--tree-view-bg-color, ${theme.palette.grey[400]})`,
-            color: 'var(--tree-view-color)',
-        },
-        '&:focus > $content $label, &:hover > $content $label, &$selected > $content $label':
-            {
-                backgroundColor: 'transparent',
-            },
     },
     content: {
         color: theme.palette.text.secondary,
-        borderTopRightRadius: theme.spacing(2),
-        borderBottomRightRadius: theme.spacing(2),
+        borderRadius: theme.spacing(2),
+        width: 'fit-content',
         paddingRight: theme.spacing(1),
         fontWeight: theme.typography.fontWeightMedium,
-        '$expanded > &': {
+        '&$expanded': {
             fontWeight: theme.typography.fontWeightRegular,
+        },
+        /* &&.Mui-focused to increase specifity because mui5 has a rule for &.Mui-selected.Mui-focused */
+        /* &&$selected to increase specifity because we have a rule for &:hover > $content on root */
+        '&&.Mui-focused, &&$selected': {
+            backgroundColor: `var(--tree-view-bg-color, ${theme.palette.action.selected})`,
+            color: 'var(--tree-view-color)',
+        },
+        // same as mui v4 behavior on label text only right after clicking in contrast to after moving away with arrow keys.
+        '&$selected $label:hover, &$selected.Mui-focused $label': {
+            borderRadius: theme.spacing(2),
+            backgroundColor: alpha(
+                theme.palette.primary.main,
+                theme.palette.action.selectedOpacity +
+                    theme.palette.action.hoverOpacity
+            ),
+        },
+        '&.Mui-focused $label, &:hover $label, &$selected $label': {
+            backgroundColor: 'transparent',
         },
     },
     group: {
