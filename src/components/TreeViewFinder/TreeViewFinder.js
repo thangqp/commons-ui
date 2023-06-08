@@ -37,7 +37,7 @@ const cssLabelText = 'labelText';
 const cssLabelIcon = 'labelIcon';
 const cssIcon = 'icon';
 
-// converted to sx nested rules
+// converted to nested rules
 const defaultStyles = {
     [cssDialogPaper]: {
         minWidth: '50%',

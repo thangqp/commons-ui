@@ -67,7 +67,7 @@ const cssHeader = 'header';
 const cssRowBackgroundDark = 'rowBackgroundDark';
 const cssRowBackgroundLight = 'rowBackgroundLight';
 
-// converted to sx nested rules
+// converted to nested rules
 const defaultStyles = {
     [cssFlexContainer]: {
         display: 'flex',

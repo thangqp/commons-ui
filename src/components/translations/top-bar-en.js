@@ -16,6 +16,7 @@ const top_bar_en = {
     'top-bar/id': 'Id',
     'top-bar/name': 'Name',
     'top-bar/language': 'Language',
+    'top-bar/customTheme': 'Custom theme',
 };
 
 export default top_bar_en;

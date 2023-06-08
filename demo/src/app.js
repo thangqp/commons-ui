@@ -662,7 +662,9 @@ const AppContent = ({ language, onLanguageClick }) => {
                                 size="small"
                             >
                                 <InputLabel id="styles-provider-label">
-                                    Custom theme
+                                    {intl.formatMessage({
+                                        id: 'top-bar/customTheme',
+                                    })}
                                 </InputLabel>
                                 <Select
                                     labelId="styles-provider-label"
