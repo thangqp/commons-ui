@@ -28,6 +28,8 @@ const useStyles = makeStyles((theme) => ({
         margin: 0,
     },
     paramListItem: {
+        display: 'flex',
+        flexDirection: 'row',
         justifyContent: 'space-between',
         gap: theme.spacing(2),
         paddingLeft: 0,
@@ -218,6 +220,7 @@ export const FlatParameters = ({
             case 'BOOLEAN':
                 return (
                     <Switch
+                        size={'small'}
                         checked={!!fieldValue}
                         onChange={(e) => onFieldChange(e.target.checked, param)}
                     />
@@ -230,18 +233,8 @@ export const FlatParameters = ({
                         isNaN(fieldValue - 0));
                 return (
                     <TextField
-                        fullWidth
-                        sx={{
-                            ...(showSeparator
-                                ? {
-                                      input: {
-                                          textAlign: 'right',
-                                          height: '10px',
-                                      },
-                                      width: '300px',
-                                  }
-                                : { input: { textAlign: 'right' } }),
-                        }}
+                        size={'small'}
+                        sx={{ input: { textAlign: 'right' }, width: '50%' }}
                         value={fieldValue}
                         onFocus={() => onUncommitted(param, true)}
                         onBlur={() => onUncommitted(param, false)}
@@ -261,18 +254,8 @@ export const FlatParameters = ({
             case 'INTEGER':
                 return (
                     <TextField
-                        fullWidth
-                        sx={{
-                            ...(showSeparator
-                                ? {
-                                      input: {
-                                          textAlign: 'right',
-                                          height: '10px',
-                                      },
-                                      width: '300px',
-                                  }
-                                : { input: { textAlign: 'right' } }),
-                        }}
+                        size={'small'}
+                        sx={{ input: { textAlign: 'right' }, width: '50%' }}
                         value={fieldValue}
                         onFocus={() => onUncommitted(param, true)}
                         onBlur={() => onUncommitted(param, false)}
@@ -291,6 +274,7 @@ export const FlatParameters = ({
                         <Autocomplete
                             fullWidth
                             multiple
+                            size={'small'}
                             options={sortPossibleValues(
                                 param.name,
                                 param.possibleValues
@@ -312,17 +296,7 @@ export const FlatParameters = ({
                                 ));
                             }}
                             renderInput={(inputProps) => (
-                                <TextField
-                                    {...inputProps}
-                                    variant={variant}
-                                    sx={{
-                                        ...(showSeparator && {
-                                            input: {
-                                                height: '10px',
-                                            },
-                                        }),
-                                    }}
-                                />
+                                <TextField {...inputProps} variant={variant} />
                             )}
                         />
                     );
@@ -330,11 +304,12 @@ export const FlatParameters = ({
                     // no possible values => free user inputs
                     return (
                         <Autocomplete
-                            fullWidth={!showSeparator}
                             multiple
                             freeSolo
                             autoSelect
+                            sx={{ width: '50%' }}
                             options={[]}
+                            size={'small'}
                             onChange={(e, value) => onFieldChange(value, param)}
                             value={fieldValue}
                             renderTags={(values, getTagProps) => {
@@ -348,19 +323,7 @@ export const FlatParameters = ({
                                 ));
                             }}
                             renderInput={(inputProps) => (
-                                <TextField
-                                    {...inputProps}
-                                    variant={variant}
-                                    sx={{
-                                        ...(showSeparator && {
-                                            input: {
-                                                textAlign: 'right',
-                                                height: '10px',
-                                            },
-                                            width: '300px',
-                                        }),
-                                    }}
-                                />
+                                <TextField {...inputProps} variant={variant} />
                             )}
                         />
                     );
@@ -370,21 +333,13 @@ export const FlatParameters = ({
                     return (
                         <>
                             <Select
-                                sx={{
-                                    ...(showSeparator && {
-                                        input: {
-                                            textAlign: 'right',
-                                            height: '10px',
-                                        },
-                                    }),
-                                    minWidth: '4em',
-                                }}
                                 labelId={param.name}
                                 value={fieldValue ?? ''}
                                 onChange={(ev) => {
                                     onFieldChange(ev.target.value, param);
                                 }}
                                 size="small"
+                                sx={{ minWidth: '4em' }}
                                 variant={variant}
                             >
                                 {sortPossibleValues(
@@ -403,18 +358,8 @@ export const FlatParameters = ({
             default:
                 return (
                     <TextField
-                        fullWidth
-                        sx={{
-                            ...(showSeparator
-                                ? {
-                                      input: {
-                                          textAlign: 'right',
-                                          height: '10px',
-                                      },
-                                      width: '300px',
-                                  }
-                                : { input: { textAlign: 'left' } }),
-                        }}
+                        sx={{ width: '50%' }}
+                        size={'small'}
                         value={fieldValue || ''}
                         onFocus={() => onUncommitted(param, true)}
                         onBlur={() => onUncommitted(param, false)}
@@ -451,7 +396,7 @@ export const FlatParameters = ({
                         </Tooltip>
                         {renderField(param)}
                     </ListItem>
-                    {showSeparator && index < paramsAsArray.length - 1 && (
+                    {showSeparator && index !== paramsAsArray.length - 1 && (
                         <Divider />
                     )}
                 </React.Fragment>
