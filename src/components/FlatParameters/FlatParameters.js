@@ -29,7 +29,6 @@ const useStyles = makeStyles((theme) => ({
     },
     paramListItem: {
         display: 'flex',
-        flexDirection: 'row',
         justifyContent: 'space-between',
         gap: theme.spacing(2),
         paddingLeft: 0,
@@ -234,7 +233,8 @@ export const FlatParameters = ({
                 return (
                     <TextField
                         size={'small'}
-                        sx={{ input: { textAlign: 'right' }, width: '50%' }}
+                        sx={{ width: '50%' }}
+                        inputProps={{ style: { textAlign: 'right' } }}
                         value={fieldValue}
                         onFocus={() => onUncommitted(param, true)}
                         onBlur={() => onUncommitted(param, false)}
@@ -255,7 +255,8 @@ export const FlatParameters = ({
                 return (
                     <TextField
                         size={'small'}
-                        sx={{ input: { textAlign: 'right' }, width: '50%' }}
+                        sx={{ width: '50%' }}
+                        inputProps={{ style: { textAlign: 'right' } }}
                         value={fieldValue}
                         onFocus={() => onUncommitted(param, true)}
                         onBlur={() => onUncommitted(param, false)}
