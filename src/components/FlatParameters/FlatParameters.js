@@ -219,7 +219,6 @@ export const FlatParameters = ({
             case 'BOOLEAN':
                 return (
                     <Switch
-                        size={'small'}
                         checked={!!fieldValue}
                         onChange={(e) => onFieldChange(e.target.checked, param)}
                     />
