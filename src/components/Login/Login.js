@@ -37,19 +37,6 @@ const styles = {
 };
 
 const Login = ({ onLoginClick, disabled }) => {
-    function Copyright() {
-        return (
-            <Typography variant="body2" color="textSecondary" align="center">
-                {'Copyright © '}
-                <Link color="inherit" href="#">
-                    GridSuite
-                </Link>{' '}
-                {new Date().getFullYear()}
-                {'.'}
-            </Typography>
-        );
-    }
-
     return (
         <Container component="main" maxWidth="xs">
             <Box sx={styles.paper}>
@@ -78,7 +65,18 @@ const Login = ({ onLoginClick, disabled }) => {
                 </Button>
             </Box>
             <Box mt={2}>
-                <Copyright />
+                <Typography
+                    variant="body2"
+                    color="textSecondary"
+                    align="center"
+                >
+                    {'Copyright © '}
+                    <Link color="inherit" href="#">
+                        GridSuite
+                    </Link>{' '}
+                    {new Date().getFullYear()}
+                    {'.'}
+                </Typography>
             </Box>
         </Container>
     );

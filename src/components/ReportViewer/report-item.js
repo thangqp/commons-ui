@@ -24,8 +24,8 @@ const styles = {
     }),
     content: (theme) => ({
         color: theme.palette.text.secondary,
-        borderTopRightRadius: theme.spacing(2),
-        borderBottomRightRadius: theme.spacing(2),
+        borderRadius: theme.spacing(2),
+        width: 'fit-content',
         paddingRight: theme.spacing(1),
         fontWeight: theme.typography.fontWeightMedium,
         '&.Mui-expanded': {
@@ -33,12 +33,13 @@ const styles = {
         },
         /* &.MuiTreeItem-content.Mui-focused to increase specifity because mui5 has a rule for &.Mui-selected.Mui-focused */
         '&.MuiTreeItem-content.Mui-focused, &.Mui-selected': {
-            backgroundColor: `var(--tree-view-bg-color, ${theme.palette.grey[400]})`,
+            backgroundColor: `var(--tree-view-bg-color, ${theme.palette.action.selected})`,
             color: 'var(--tree-view-color)',
         },
         // same as mui v4 behavior on label text only right after clicking in contrast to after moving away with arrow keys.
         '&.Mui-selected .MuiTreeItem-label:hover, &.Mui-selected.Mui-focused .MuiTreeItem-label':
             {
+                borderRadius: theme.spacing(2),
                 backgroundColor: alpha(
                     theme.palette.primary.main,
                     theme.palette.action.selectedOpacity +
