@@ -18,10 +18,12 @@ import {
     Tooltip,
     Typography,
     Divider,
+    IconButton,
 } from '@mui/material';
+import TuneIcon from '@mui/icons-material/Tune';
 import { FormattedMessage, useIntl } from 'react-intl';
-import Button from "@mui/material/Button";
-import MultipleSelectionDialog from "./multiple-selection-dialog";
+import Button from '@mui/material/Button';
+import MultipleSelectionDialog from './multiple-selection-dialog';
 
 const styles = {
     paramList: {
@@ -214,6 +216,18 @@ export const FlatParameters = ({
         return value?.replace(',', '.') || '';
     };
 
+    const getStringListValue = (allValues) => {
+        console.log('initial values : ', initValues);
+        if (!Array.isArray(initValues) || initValues?.length === 0) {
+            return intl.formatMessage({id: 'flat_parameters/none'})
+        }
+        if (initValues.length === allValues.length) {
+            return intl.formatMessage({id: 'flat_parameters/all'})
+        }
+
+        return intl.formatMessage({id: 'flat_parameters/some'})
+    };
+
     const renderField = (param) => {
         const fieldValue = mixInitAndDefault(param);
         switch (param.type) {
@@ -271,23 +285,45 @@ export const FlatParameters = ({
                 );
             case 'STRING_LIST':
                 if (param.possibleValues) {
-                    console.log('params in common ui : ', initValues);
+                    const allOptions = sortPossibleValues(
+                        param.name,
+                        param.possibleValues
+                    ).map((v) => v.id);
+                    console.log('params in common ui : ', param);
                     return (
                         <>
-                            <Button onClick={() => setOpenExtensionSelector(true)} >
-                                Open Extension Selector
-                            </Button>
+                            <TextField
+                                value={getStringListValue(allOptions)}
+                                size={'small'}
+                                variant={variant}
+                                InputProps={{
+                                    readOnly: true,
+                                    endAdornment: (
+                                        <IconButton>
+                                            <TuneIcon
+                                                onClick={() =>
+                                                    setOpenExtensionSelector(
+                                                        true
+                                                    )
+                                                }
+                                            />
+                                        </IconButton>
+                                    ),
+                                }}
+                            />
                             <MultipleSelectionDialog
-                                options={sortPossibleValues(
-                                    param.name,
-                                    param.possibleValues
-                                ).map((v) => v.id)}
-                                titleId={'treeview_finder/add'}
+                                options={allOptions}
+                                titleId={intl.formatMessage({
+                                    id: 'flat_parameters/extensionsSelection',
+                                })}
                                 open={openExtensionSelector}
                                 getOptionLabel={(option) =>
-                                    getTranslatedValue(param.name, option)}
+                                    getTranslatedValue(param.name, option)
+                                }
                                 selectedOptions={Object.values(initValues)}
-                                handleClose={() => setOpenExtensionSelector(false)}
+                                handleClose={() =>
+                                    setOpenExtensionSelector(false)
+                                }
                                 handleValidate={(selectedOptions) => {
                                     onFieldChange(selectedOptions, param);
                                     setOpenExtensionSelector(false);

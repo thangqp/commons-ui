@@ -1,13 +1,13 @@
 import { Dialog, DialogContent } from '@mui/material';
 import DialogTitle from '@mui/material/DialogTitle';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import React, { useState } from 'react';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
-import Box from "@mui/material/Box";
+import Box from '@mui/material/Box';
 
 const MultipleSelectionDialog = ({
     options,
@@ -18,9 +18,16 @@ const MultipleSelectionDialog = ({
     handleValidate,
     titleId,
 }) => {
-    console.log('selectedOptions : ', selectedOptions)
+    console.log('selectedOptions : ', selectedOptions);
     const [selectedIds, setSelectedIds] = useState(selectedOptions ?? []);
-    const handleOptionToggle = (option) => {
+    const handleSelectAll = () => {
+        if (selectedIds.length !== options.length) {
+            setSelectedIds(options);
+        } else {
+            setSelectedIds([]);
+        }
+    };
+    const handleOptionSelection = (option) => {
         setSelectedIds((oldValues) => {
             if (oldValues.includes(option)) {
                 return oldValues.filter((o) => o !== option);
@@ -36,17 +43,32 @@ const MultipleSelectionDialog = ({
                 <FormattedMessage id={titleId} />
             </DialogTitle>
             <DialogContent>
-                <Grid container spacing={2}>
+                <Grid container spacing={2} alignItems={'stretch'}>
+                    <Grid item xs={12}>
+                        <FormControlLabel
+                            label={
+                                <FormattedMessage id={'flat_parameters/all'} />
+                            }
+                            control={
+                                <Checkbox
+                                    checked={
+                                        selectedIds.length === options.length
+                                    }
+                                    indeterminate={
+                                        selectedIds.length !== options.length &&
+                                        selectedIds.length !== 0
+                                    }
+                                    onChange={handleSelectAll}
+                                />
+                            }
+                        />
+                    </Grid>
                     {options.map((option) => {
-                        console.log('selectedIds : ', selectedIds, option)
+                        console.log('selectedIds : ', selectedIds, option);
                         const optionId = option?.id ?? option;
                         const label = getOptionLabel(option);
                         return (
-                            <Grid
-                                item
-                                xs={12}
-                                key={optionId}
-                            >
+                            <Grid item xs={4} key={optionId}>
                                 <FormControlLabel
                                     key={optionId}
                                     label={label}
@@ -56,7 +78,7 @@ const MultipleSelectionDialog = ({
                                                 optionId
                                             )}
                                             onChange={() =>
-                                                handleOptionToggle(optionId)
+                                                handleOptionSelection(optionId)
                                             }
                                         />
                                     }

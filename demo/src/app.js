@@ -55,6 +55,8 @@ import {
     treeview_finder_fr,
     card_error_boundary_en,
     card_error_boundary_fr,
+    flat_parameters_en,
+    flat_parameters_fr,
 } from '../../src/index';
 import CssBaseline from '@mui/material/CssBaseline';
 import Typography from '@mui/material/Typography';
@@ -104,6 +106,7 @@ const messages = {
         ...element_search_en,
         ...equipment_search_en,
         ...card_error_boundary_en,
+        ...flat_parameters_en,
     },
     fr: {
         ...report_viewer_fr,
@@ -114,6 +117,7 @@ const messages = {
         ...element_search_fr,
         ...equipment_search_fr,
         ...card_error_boundary_fr,
+        ...flat_parameters_fr,
     },
 };
 

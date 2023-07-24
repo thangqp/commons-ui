@@ -5,6 +5,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+import flat_parameters_en from "./components/translations/flat-parameters-en";
+import flat_parameters_fr from "./components/translations/flat-parameters-fr";
+
 export TreeViewFinder from './components/TreeViewFinder';
 export TopBar from './components/TopBar';
 export SnackbarProvider from './components/SnackbarProvider';
@@ -76,6 +79,8 @@ export equipment_search_en from './components/translations/equipment-search-en';
 export equipment_search_fr from './components/translations/equipment-search-fr';
 export card_error_boundary_en from './components/translations/card-error-boundary-en';
 export card_error_boundary_fr from './components/translations/card-error-boundary-fr';
+export flat_parameters_en from './components/translations/flat-parameters-en'
+export flat_parameters_fr from './components/translations/flat-parameters-fr'
 export { TagRenderer } from './components/ElementSearchDialog';
 export { EquipmentItem } from './components/ElementSearchDialog/equipment-item';
 export CardErrorBoundary from './components/CardErrorBoundary';
