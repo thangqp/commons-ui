@@ -20,6 +20,8 @@ import {
     Divider,
 } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
+import Button from "@mui/material/Button";
+import MultipleSelectionDialog from "./multiple-selection-dialog";
 
 const styles = {
     paramList: {
@@ -111,6 +113,7 @@ export const FlatParameters = ({
 
     const [uncommitted, setUncommitted] = useState(null);
     const [inEditionParam, setInEditionParam] = useState(null);
+    const [openExtensionSelector, setOpenExtensionSelector] = useState(false);
 
     const getTranslatedValue = useCallback(
         (prefix, value) => {
@@ -268,35 +271,29 @@ export const FlatParameters = ({
                 );
             case 'STRING_LIST':
                 if (param.possibleValues) {
+                    console.log('params in common ui : ', initValues);
                     return (
-                        <Autocomplete
-                            fullWidth
-                            multiple
-                            size={'small'}
-                            options={sortPossibleValues(
-                                param.name,
-                                param.possibleValues
-                            ).map((v) => v.id)}
-                            getOptionLabel={(option) =>
-                                getTranslatedValue(param.name, option)
-                            }
-                            onChange={(e, value) => onFieldChange(value, param)}
-                            value={fieldValue}
-                            renderTags={(values, getTagProps) => {
-                                return values.map((value, index) => (
-                                    <Chip
-                                        label={getTranslatedValue(
-                                            param.name,
-                                            value
-                                        )}
-                                        {...getTagProps({ index })}
-                                    />
-                                ));
-                            }}
-                            renderInput={(inputProps) => (
-                                <TextField {...inputProps} variant={variant} />
-                            )}
-                        />
+                        <>
+                            <Button onClick={() => setOpenExtensionSelector(true)} >
+                                Open Extension Selector
+                            </Button>
+                            <MultipleSelectionDialog
+                                options={sortPossibleValues(
+                                    param.name,
+                                    param.possibleValues
+                                ).map((v) => v.id)}
+                                titleId={'treeview_finder/add'}
+                                open={openExtensionSelector}
+                                getOptionLabel={(option) =>
+                                    getTranslatedValue(param.name, option)}
+                                selectedOptions={Object.values(initValues)}
+                                handleClose={() => setOpenExtensionSelector(false)}
+                                handleValidate={(selectedOptions) => {
+                                    onFieldChange(selectedOptions, param);
+                                    setOpenExtensionSelector(false);
+                                }}
+                            />
+                        </>
                     );
                 } else {
                     // no possible values => free user inputs
