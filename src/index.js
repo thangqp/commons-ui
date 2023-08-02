@@ -82,3 +82,24 @@ export CardErrorBoundary from './components/CardErrorBoundary';
 export { useIntlRef } from './hooks/useIntlRef';
 export { useSnackMessage } from './hooks/useSnackMessage';
 export { useDebounce } from './hooks/useDebounce';
+export AutocompleteInput from './components/react-hook-form/autocomplete-input';
+export TextInput from './components/react-hook-form/text-input';
+export RadioInput from './components/react-hook-form/radio-input';
+export SliderInput from './components/react-hook-form/slider-input';
+export FloatInput from './components/react-hook-form/numbers/float-input';
+export IntegerInput from './components/react-hook-form/numbers/integer-input';
+export SelectInput from './components/react-hook-form/select-input';
+export CheckboxInput from './components/react-hook-form/booleans/checkbox-input';
+export SwitchInput from './components/react-hook-form/booleans/switch-input';
+export ErrorInput from './components/react-hook-form/error-management/error-input';
+export FieldErrorAlert from './components/react-hook-form/error-management/field-error-alert';
+export MidFormError from './components/react-hook-form/error-management/mid-form-error';
+export TextFieldWithAdornment from './components/react-hook-form/utils/text-field-with-adornment';
+export FieldLabel from './components/react-hook-form/utils/field-label';
+export SubmitButton from './components/react-hook-form/utils/submit-button';
+export {
+    genHelperPreviousValue,
+    genHelperError,
+    identity,
+    isFieldRequired,
+} from './components/react-hook-form/utils/functions';
