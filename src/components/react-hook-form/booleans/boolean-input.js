@@ -13,7 +13,7 @@ import { useController } from 'react-hook-form';
 
 const BooleanInput = ({ name, label, formProps, Input }) => {
     const {
-        field: { onChange, value },
+        field: { onChange, value, ref },
     } = useController({ name });
 
     const intl = useIntl();
@@ -29,6 +29,7 @@ const BooleanInput = ({ name, label, formProps, Input }) => {
         <Input
             checked={value}
             onChange={(e) => handleChangeValue(e)}
+            inputRef={ref}
             inputProps={{
                 'aria-label': 'primary checkbox',
             }}

@@ -62,7 +62,7 @@ const TextFieldWithAdornment = (props) => {
                 </InputAdornment>
             );
         },
-        [adornmentText, variant]
+        [adornmentText, getAdornmentStyle, variant]
     );
 
     const withEndAdornmentText = useCallback(() => {

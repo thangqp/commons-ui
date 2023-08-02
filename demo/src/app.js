@@ -94,8 +94,8 @@ import { FlatParametersTab } from './FlatParametersTab';
 
 import { toNestedGlobalSelectors } from '../../src/utils/styles';
 import { InputsTab } from './InputsTab';
-import inputs_en from "../../src/components/translations/inputs-en";
-import inputs_fr from "../../src/components/translations/inputs-fr";
+import inputs_en from '../../src/components/translations/inputs-en';
+import inputs_fr from '../../src/components/translations/inputs-fr';
 
 const messages = {
     en: {

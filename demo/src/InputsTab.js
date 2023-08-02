@@ -4,15 +4,16 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import AutocompleteInput from '../../src/components/rhf-inputs/autocomplete-input';
-import TextInput from '../../src/components/rhf-inputs/text-input';
-import RadioInput from '../../src/components/rhf-inputs/radio-input';
-import SliderInput from '../../src/components/rhf-inputs/slider-input';
-import FloatInput from '../../src/components/rhf-inputs/numbers/float-input';
-import IntegerInput from '../../src/components/rhf-inputs/numbers/integer-input';
-import SelectInput from '../../src/components/rhf-inputs/select-input';
-import CheckboxInput from '../../src/components/rhf-inputs/booleans/checkbox-input';
-import SwitchInput from '../../src/components/rhf-inputs/booleans/switch-input';
+import AutocompleteInput from '../../src/components/react-hook-form/autocomplete-input';
+import TextInput from '../../src/components/react-hook-form/text-input';
+import RadioInput from '../../src/components/react-hook-form/radio-input';
+import SliderInput from '../../src/components/react-hook-form/slider-input';
+import FloatInput from '../../src/components/react-hook-form/numbers/float-input';
+import IntegerInput from '../../src/components/react-hook-form/numbers/integer-input';
+import SelectInput from '../../src/components/react-hook-form/select-input';
+import CheckboxInput from '../../src/components/react-hook-form/booleans/checkbox-input';
+import SwitchInput from '../../src/components/react-hook-form/booleans/switch-input';
+import SubmitButton from '../../src/components/react-hook-form/utils/submit-button';
 
 const AUTOCOMPLETE_INPUT = 'autocomplete';
 const TEXT_INPUT = 'text';
@@ -63,17 +64,42 @@ const areIdsEqual = (val1, val2) => {
     return val1.id === val2.id;
 };
 
+const logWhenValuesChange = false;
+const logWhenValidate = true;
+
 export function InputsTab() {
     const formMethods = useForm({
         defaultValues: emptyFormData,
         resolver: yupResolver(formSchema),
     });
 
-    //TODO validation button and submit
+    const { handleSubmit, watch } = formMethods;
+
+    const formValues = watch();
+
+    if (logWhenValuesChange) {
+        console.log('Values of the form : ', formValues);
+    }
+
+    function onSubmit(values) {
+        if (logWhenValidate) {
+            console.log('Values of the form when validate : ', values);
+        }
+    }
+
+    function onError(errors) {
+        console.error('Error during validation : ', errors);
+    }
 
     return (
         <FormProvider validationSchema={formSchema} {...formMethods}>
-            <Box sx={{ margin: 4 }}>
+            <Box
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    margin: 4,
+                }}
+            >
                 <Grid container spacing={4}>
                     <Grid item xs={gridSize}>
                         <AutocompleteInput
@@ -131,6 +157,9 @@ export function InputsTab() {
                         />
                     </Grid>
                 </Grid>
+                <Box sx={{ alignSelf: 'center', margin: 5 }}>
+                    <SubmitButton onClick={handleSubmit(onSubmit, onError)} />
+                </Box>
             </Box>
         </FormProvider>
     );
