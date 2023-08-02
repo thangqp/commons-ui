@@ -157,7 +157,13 @@ export function InputsTab() {
                         />
                     </Grid>
                 </Grid>
-                <Box sx={{ alignSelf: 'center', margin: 5 }}>
+                <Box
+                    sx={{
+                        alignSelf: 'center',
+                        margin: 5,
+                        backgroundColor: 'pink',
+                    }}
+                >
                     <SubmitButton onClick={handleSubmit(onSubmit, onError)} />
                 </Box>
             </Box>

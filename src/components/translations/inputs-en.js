@@ -9,7 +9,7 @@ const inputs_en = {
     'inputs/kylianMbappe': 'Kylian Mbappé',
     'inputs/goat': 'GOAT',
     'inputs/president': 'President',
-    'inputs/goldenBall2023': "Golden ball 2023",
+    'inputs/goldenBall2023': 'Golden ball 2023',
     'inputs/float': 'Float',
     'inputs/integer': 'Integer',
     'inputs/radio': 'Radio',

@@ -72,16 +72,18 @@ const AutocompleteInput = ({
             options={options}
             renderInput={({ inputProps, ...rest }) => (
                 <TextField
-                    label={FieldLabel({
-                        label: label,
-                        optional:
-                            !isFieldRequired(
-                                name,
-                                validationSchema,
-                                getValues()
-                            ) &&
-                            !props?.disabled &&
-                            !removeOptional,
+                    {...(label && {
+                        label: FieldLabel({
+                            label: label,
+                            optional:
+                                !isFieldRequired(
+                                    name,
+                                    validationSchema,
+                                    getValues()
+                                ) &&
+                                !props?.disabled &&
+                                !removeOptional,
+                        }),
                     })}
                     FormHelperTextProps={{
                         sx: {
@@ -104,7 +106,7 @@ const AutocompleteInput = ({
 
 AutocompleteInput.propTypes = {
     name: PropTypes.string.isRequired,
-    label: PropTypes.string.isRequired,
+    label: PropTypes.string,
     options: PropTypes.array.isRequired,
     outputTransform: PropTypes.func,
     inputTransform: PropTypes.func,

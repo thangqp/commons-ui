@@ -5,8 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React from "react";
-import Box from "@mui/material/Box";
+import React from 'react';
+import Box from '@mui/material/Box';
 
 // component to display error message in the middle of dialog
 const MidFormError = ({ message }) => {
