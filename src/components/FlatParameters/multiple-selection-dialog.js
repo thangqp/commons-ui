@@ -1,4 +1,4 @@
-import { Dialog, DialogContent } from '@mui/material';
+import { Dialog, DialogContent, Divider } from '@mui/material';
 import DialogTitle from '@mui/material/DialogTitle';
 import { FormattedMessage, useIntl } from 'react-intl';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -18,7 +18,6 @@ const MultipleSelectionDialog = ({
     handleValidate,
     titleId,
 }) => {
-    console.log('selectedOptions : ', selectedOptions);
     const [selectedIds, setSelectedIds] = useState(selectedOptions ?? []);
     const handleSelectAll = () => {
         if (selectedIds.length !== options.length) {
@@ -38,60 +37,73 @@ const MultipleSelectionDialog = ({
     };
 
     return (
-        <Dialog open={open} fullWidth>
+        <Dialog open={open} fullWidth maxWidth={'lg'}>
             <DialogTitle>
-                <FormattedMessage id={titleId} />
+                {titleId}
             </DialogTitle>
             <DialogContent>
                 <Grid container spacing={2} alignItems={'stretch'}>
                     <Grid item xs={12}>
-                        <FormControlLabel
-                            label={
-                                <FormattedMessage id={'flat_parameters/all'} />
-                            }
-                            control={
-                                <Checkbox
-                                    checked={
-                                        selectedIds.length === options.length
-                                    }
-                                    indeterminate={
-                                        selectedIds.length !== options.length &&
-                                        selectedIds.length !== 0
-                                    }
-                                    onChange={handleSelectAll}
-                                />
-                            }
-                        />
+                        <Divider>
+                            <FormControlLabel
+                                label={
+                                    <FormattedMessage id={'flat_parameters/selectAll'} />
+                                }
+                                control={
+                                    <Checkbox
+                                        checked={
+                                            selectedIds.length === options.length
+                                        }
+                                        indeterminate={
+                                            selectedIds.length !== options.length &&
+                                            selectedIds.length !== 0
+                                        }
+                                        onChange={handleSelectAll}
+                                    />
+                                }
+                            />
+                        </Divider>
                     </Grid>
-                    {options.map((option) => {
-                        console.log('selectedIds : ', selectedIds, option);
+                    {options.map((option, index) => {
                         const optionId = option?.id ?? option;
                         const label = getOptionLabel(option);
                         return (
-                            <Grid item xs={4} key={optionId}>
-                                <FormControlLabel
-                                    key={optionId}
-                                    label={label}
-                                    control={
-                                        <Checkbox
-                                            checked={selectedIds.includes(
-                                                optionId
-                                            )}
-                                            onChange={() =>
-                                                handleOptionSelection(optionId)
-                                            }
-                                        />
-                                    }
-                                />
-                            </Grid>
+                            <>
+                                <Grid item xs={4} key={optionId}>
+                                    <FormControlLabel
+                                        key={optionId}
+                                        label={label}
+                                        control={
+                                            <Checkbox
+                                                checked={selectedIds.includes(
+                                                    optionId
+                                                )}
+                                                onChange={() =>
+                                                    handleOptionSelection(
+                                                        optionId
+                                                    )
+                                                }
+                                            />
+                                        }
+                                    />
+                                </Grid>
+                                {/*All rows contain 3 options, and we add divider after each row*/}
+                                {(index + 1) % 3 === 0 && (
+                                    <Grid item xs={12} key={index}>
+                                        <Divider />
+                                    </Grid>
+                                )}
+                            </>
                         );
                     })}
                 </Grid>
             </DialogContent>
             <DialogActions>
-                <Button onClick={() => handleClose()}>Cancel</Button>
+                <Button onClick={() => handleClose()}>
+                    <FormattedMessage id={'flat_parameters/cancel'} />
+                </Button>
                 <Button onClick={() => handleValidate(selectedIds)}>
-                    Validate
+                    <FormattedMessage id={'flat_parameters/validate'} />
                 </Button>
             </DialogActions>
         </Dialog>

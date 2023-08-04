@@ -6,10 +6,12 @@
  */
 
 const flat_parameters_en = {
-    'flat_parameters/extensionsSelection': 'Extensions selection',
     'flat_parameters/none': 'None',
     'flat_parameters/some': 'Some',
     'flat_parameters/all': 'All',
+    'flat_parameters/cancel': 'Cancel',
+    'flat_parameters/validate': 'Validate',
+    'flat_parameters/selectAll': 'Select all',
 };
 
 export default flat_parameters_en;

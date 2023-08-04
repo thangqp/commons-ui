@@ -115,7 +115,7 @@ export const FlatParameters = ({
 
     const [uncommitted, setUncommitted] = useState(null);
     const [inEditionParam, setInEditionParam] = useState(null);
-    const [openExtensionSelector, setOpenExtensionSelector] = useState(false);
+    const [openSelector, setOpenSelector] = useState(false);
 
     const getTranslatedValue = useCallback(
         (prefix, value) => {
@@ -127,6 +127,13 @@ export const FlatParameters = ({
         [intl]
     );
 
+    const getSelectionDialogName = useCallback((paramName) => {
+        const defaultMessage = intl.formatMessage({id: paramName, defaultMessage: paramName});
+       return intl.formatMessage({
+           id: paramName + '.' + 'selectionDialog.name',
+           defaultMessage: defaultMessage
+       })
+    });
     const sortPossibleValues = useCallback(
         (prefix, values) => {
             if (values == null) {
@@ -190,6 +197,10 @@ export const FlatParameters = ({
     );
 
     function mixInitAndDefault(param) {
+        console.log('uncommitted : ', uncommitted)
+        console.log('param.name : ', param.name, '==>', param.name === inEditionParam && uncommitted !== null)
+
+        console.log('initValues : ', initValues, initValues.hasOwnProperty(param.name));
         if (param.name === inEditionParam && uncommitted !== null) {
             return uncommitted;
         } else if (initValues && initValues.hasOwnProperty(param.name)) {
@@ -216,12 +227,12 @@ export const FlatParameters = ({
         return value?.replace(',', '.') || '';
     };
 
-    const getStringListValue = (allValues) => {
-        console.log('initial values : ', initValues);
-        if (!Array.isArray(initValues) || initValues?.length === 0) {
+    const getStringListValue = (allValues, selectValues) => {
+        console.log('selectValues : ', selectValues)
+        if (!Array.isArray(selectValues) || selectValues?.length === 0) {
             return intl.formatMessage({id: 'flat_parameters/none'})
         }
-        if (initValues.length === allValues.length) {
+        if (selectValues.length === allValues.length) {
             return intl.formatMessage({id: 'flat_parameters/all'})
         }
 
@@ -289,11 +300,11 @@ export const FlatParameters = ({
                         param.name,
                         param.possibleValues
                     ).map((v) => v.id);
-                    console.log('params in common ui : ', param);
+
                     return (
                         <>
                             <TextField
-                                value={getStringListValue(allOptions)}
+                                value={getStringListValue(allOptions, fieldValue)}
                                 size={'small'}
                                 variant={variant}
                                 InputProps={{
@@ -302,7 +313,7 @@ export const FlatParameters = ({
                                         <IconButton>
                                             <TuneIcon
                                                 onClick={() =>
-                                                    setOpenExtensionSelector(
+                                                    setOpenSelector(
                                                         true
                                                     )
                                                 }
@@ -313,20 +324,18 @@ export const FlatParameters = ({
                             />
                             <MultipleSelectionDialog
                                 options={allOptions}
-                                titleId={intl.formatMessage({
-                                    id: 'flat_parameters/extensionsSelection',
-                                })}
-                                open={openExtensionSelector}
+                                titleId={getSelectionDialogName(param.name)}
+                                open={openSelector}
                                 getOptionLabel={(option) =>
                                     getTranslatedValue(param.name, option)
                                 }
-                                selectedOptions={Object.values(initValues)}
+                                selectedOptions={fieldValue}
                                 handleClose={() =>
-                                    setOpenExtensionSelector(false)
+                                    setOpenSelector(false)
                                 }
                                 handleValidate={(selectedOptions) => {
                                     onFieldChange(selectedOptions, param);
-                                    setOpenExtensionSelector(false);
+                                    setOpenSelector(false);
                                 }}
                             />
                         </>
