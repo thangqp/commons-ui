@@ -197,10 +197,6 @@ export const FlatParameters = ({
     );
 
     function mixInitAndDefault(param) {
-        console.log('uncommitted : ', uncommitted)
-        console.log('param.name : ', param.name, '==>', param.name === inEditionParam && uncommitted !== null)
-
-        console.log('initValues : ', initValues, initValues.hasOwnProperty(param.name));
         if (param.name === inEditionParam && uncommitted !== null) {
             return uncommitted;
         } else if (initValues && initValues.hasOwnProperty(param.name)) {
@@ -228,10 +224,10 @@ export const FlatParameters = ({
     };
 
     const getStringListValue = (allValues, selectValues) => {
-        console.log('selectValues : ', selectValues)
         if (!Array.isArray(selectValues) || selectValues?.length === 0) {
             return intl.formatMessage({id: 'flat_parameters/none'})
         }
+
         if (selectValues.length === allValues.length) {
             return intl.formatMessage({id: 'flat_parameters/all'})
         }
