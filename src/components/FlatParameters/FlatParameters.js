@@ -22,7 +22,6 @@ import {
 } from '@mui/material';
 import TuneIcon from '@mui/icons-material/Tune';
 import { FormattedMessage, useIntl } from 'react-intl';
-import Button from '@mui/material/Button';
 import MultipleSelectionDialog from './multiple-selection-dialog';
 
 const styles = {
@@ -128,11 +127,14 @@ export const FlatParameters = ({
     );
 
     const getSelectionDialogName = useCallback((paramName) => {
-        const defaultMessage = intl.formatMessage({id: paramName, defaultMessage: paramName});
-       return intl.formatMessage({
-           id: paramName + '.' + 'selectionDialog.name',
-           defaultMessage: defaultMessage
-       })
+        const defaultMessage = intl.formatMessage({
+            id: paramName,
+            defaultMessage: paramName,
+        });
+        return intl.formatMessage({
+            id: paramName + '.' + 'selectionDialog.name',
+            defaultMessage: defaultMessage,
+        });
     });
     const sortPossibleValues = useCallback(
         (prefix, values) => {
@@ -225,14 +227,14 @@ export const FlatParameters = ({
 
     const getStringListValue = (allValues, selectValues) => {
         if (!Array.isArray(selectValues) || selectValues?.length === 0) {
-            return intl.formatMessage({id: 'flat_parameters/none'})
+            return intl.formatMessage({ id: 'flat_parameters/none' });
         }
 
         if (selectValues.length === allValues.length) {
-            return intl.formatMessage({id: 'flat_parameters/all'})
+            return intl.formatMessage({ id: 'flat_parameters/all' });
         }
 
-        return intl.formatMessage({id: 'flat_parameters/some'})
+        return intl.formatMessage({ id: 'flat_parameters/some' });
     };
 
     const renderField = (param) => {
@@ -300,7 +302,10 @@ export const FlatParameters = ({
                     return (
                         <>
                             <TextField
-                                value={getStringListValue(allOptions, fieldValue)}
+                                value={getStringListValue(
+                                    allOptions,
+                                    fieldValue
+                                )}
                                 size={'small'}
                                 variant={variant}
                                 InputProps={{
@@ -309,9 +314,7 @@ export const FlatParameters = ({
                                         <IconButton>
                                             <TuneIcon
                                                 onClick={() =>
-                                                    setOpenSelector(
-                                                        true
-                                                    )
+                                                    setOpenSelector(true)
                                                 }
                                             />
                                         </IconButton>
@@ -326,9 +329,7 @@ export const FlatParameters = ({
                                     getTranslatedValue(param.name, option)
                                 }
                                 selectedOptions={fieldValue}
-                                handleClose={() =>
-                                    setOpenSelector(false)
-                                }
+                                handleClose={() => setOpenSelector(false)}
                                 handleValidate={(selectedOptions) => {
                                     onFieldChange(selectedOptions, param);
                                     setOpenSelector(false);
