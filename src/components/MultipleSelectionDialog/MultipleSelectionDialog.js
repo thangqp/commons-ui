@@ -5,21 +5,17 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import {
-    Dialog,
-    DialogContent,
-    FormControlLabel,
-    Divider,
-    DialogActions,
-    DialogTitle,
-    Button,
-    Grid,
-    Checkbox,
-} from '@mui/material';
+import { Dialog, DialogContent, Divider } from '@mui/material';
+import DialogTitle from '@mui/material/DialogTitle';
 import { FormattedMessage } from 'react-intl';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
 import React, { useState } from 'react';
+import DialogActions from '@mui/material/DialogActions';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
 
-export const MultipleSelectionDialog = ({
+const MultipleSelectionDialog = ({
     options,
     selectedOptions,
     open,
@@ -56,9 +52,7 @@ export const MultipleSelectionDialog = ({
                             <FormControlLabel
                                 label={
                                     <FormattedMessage
-                                        id={
-                                            'multiple_selection_dialog/selectAll'
-                                        }
+                                        id={'multiple_selection_dialog/selectAll'}
                                     />
                                 }
                                 control={
@@ -117,9 +111,7 @@ export const MultipleSelectionDialog = ({
                     <FormattedMessage id={'multiple_selection_dialog/cancel'} />
                 </Button>
                 <Button onClick={() => handleValidate(selectedIds)}>
-                    <FormattedMessage
-                        id={'multiple_selection_dialog/validate'}
-                    />
+                    <FormattedMessage id={'multiple_selection_dialog/validate'} />
                 </Button>
             </DialogActions>
         </Dialog>

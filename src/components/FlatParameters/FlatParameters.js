@@ -22,7 +22,7 @@ import {
 } from '@mui/material';
 import TuneIcon from '@mui/icons-material/Tune';
 import { FormattedMessage, useIntl } from 'react-intl';
-import MultipleSelectionDialog from '../MultipleSelectionDialog/multiple-selection-dialog';
+import MultipleSelectionDialog from '../MultipleSelectionDialog/MultipleSelectionDialog';
 
 const styles = {
     paramList: {
@@ -98,6 +98,8 @@ function longestCommonPrefix(stringList) {
  * @param initValues {k:v}
  * @param onChange (paramName, newValue, isInEdition)
  * @param variant style variant for TextField, Autocomplete and Select parameter fields
+ * @param showSeparator if true, a separator is added between parameters
+ * @param useSelectionDialog {(param: {}) => boolean} if true, param with multiple options use dialog for selection
  */
 export const FlatParameters = ({
     paramsAsArray,
@@ -105,6 +107,7 @@ export const FlatParameters = ({
     onChange,
     variant = 'outlined',
     showSeparator = false,
+    useSelectionDialog = (param) => false,
 }) => {
     const intl = useIntl();
 
@@ -302,43 +305,76 @@ export const FlatParameters = ({
                         param.possibleValues
                     ).map((v) => v.id);
 
+                    const selectionWithDialog = useSelectionDialog(param);
+                    if (selectionWithDialog) {
+                        return (
+                            <>
+                                <TextField
+                                    value={getStringListValue(
+                                        allOptions,
+                                        fieldValue
+                                    )}
+                                    size={'small'}
+                                    variant={variant}
+                                    InputProps={{
+                                        readOnly: true,
+                                        endAdornment: (
+                                            <IconButton>
+                                                <TuneIcon
+                                                    onClick={() =>
+                                                        setOpenSelector(true)
+                                                    }
+                                                />
+                                            </IconButton>
+                                        ),
+                                    }}
+                                />
+                                <MultipleSelectionDialog
+                                    options={allOptions}
+                                    titleId={getSelectionDialogName(param.name)}
+                                    open={openSelector}
+                                    getOptionLabel={(option) =>
+                                        getTranslatedValue(param.name, option)
+                                    }
+                                    selectedOptions={fieldValue}
+                                    handleClose={() => setOpenSelector(false)}
+                                    handleValidate={(selectedOptions) => {
+                                        onFieldChange(selectedOptions, param);
+                                        setOpenSelector(false);
+                                    }}
+                                />
+                            </>
+                        )
+                    }
                     return (
-                        <>
-                            <TextField
-                                value={getStringListValue(
-                                    allOptions,
-                                    fieldValue
-                                )}
-                                size={'small'}
-                                variant={variant}
-                                InputProps={{
-                                    readOnly: true,
-                                    endAdornment: (
-                                        <IconButton>
-                                            <TuneIcon
-                                                onClick={() =>
-                                                    setOpenSelector(true)
-                                                }
-                                            />
-                                        </IconButton>
-                                    ),
-                                }}
-                            />
-                            <MultipleSelectionDialog
-                                options={allOptions}
-                                titleId={getSelectionDialogName(param.name)}
-                                open={openSelector}
-                                getOptionLabel={(option) =>
-                                    getTranslatedValue(param.name, option)
-                                }
-                                selectedOptions={fieldValue}
-                                handleClose={() => setOpenSelector(false)}
-                                handleValidate={(selectedOptions) => {
-                                    onFieldChange(selectedOptions, param);
-                                    setOpenSelector(false);
-                                }}
-                            />
-                        </>
+                        <Autocomplete
+                            fullWidth
+                            multiple
+                            size={'small'}
+                            options={sortPossibleValues(
+                                param.name,
+                                param.possibleValues
+                            ).map((v) => v.id)}
+                            getOptionLabel={(option) =>
+                                getTranslatedValue(param.name, option)
+                            }
+                            onChange={(e, value) => onFieldChange(value, param)}
+                            value={fieldValue}
+                            renderTags={(values, getTagProps) => {
+                                return values.map((value, index) => (
+                                    <Chip
+                                        label={getTranslatedValue(
+                                            param.name,
+                                            value
+                                        )}
+                                        {...getTagProps({ index })}
+                                    />
+                                ));
+                            }}
+                            renderInput={(inputProps) => (
+                                <TextField {...inputProps} variant={variant} />
+                            )}
+                        />
                     );
                 } else {
                     // no possible values => free user inputs

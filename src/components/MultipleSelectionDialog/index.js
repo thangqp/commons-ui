@@ -5,4 +5,4 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-export { default } from './multiple-selection-dialog';
+export { default } from './MultipleSelectionDialog';
