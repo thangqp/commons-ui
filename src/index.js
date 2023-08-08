@@ -19,7 +19,7 @@ export ReportViewerDialog from './components/ReportViewerDialog';
 export OverflowableText from './components/OverflowableText';
 export ElementSearchDialog from './components/ElementSearchDialog';
 export FlatParameters from './components/FlatParameters';
-export MultipleSelectionDialog from './components/MultipleSelectionDialog'
+export MultipleSelectionDialog from './components/MultipleSelectionDialog';
 
 export {
     EQUIPMENT_TYPE,
@@ -77,10 +77,10 @@ export equipment_search_en from './components/translations/equipment-search-en';
 export equipment_search_fr from './components/translations/equipment-search-fr';
 export card_error_boundary_en from './components/translations/card-error-boundary-en';
 export card_error_boundary_fr from './components/translations/card-error-boundary-fr';
-export flat_parameters_en from './components/translations/flat-parameters-en'
-export flat_parameters_fr from './components/translations/flat-parameters-fr'
-export multiple_selection_dialog_en from './components/translations/multiple-selection-dialog-en'
-export multiple_selection_dialog_fr from './components/translations/multiple-selection-dialog-fr'
+export flat_parameters_en from './components/translations/flat-parameters-en';
+export flat_parameters_fr from './components/translations/flat-parameters-fr';
+export multiple_selection_dialog_en from './components/translations/multiple-selection-dialog-en';
+export multiple_selection_dialog_fr from './components/translations/multiple-selection-dialog-fr';
 export { TagRenderer } from './components/ElementSearchDialog';
 export { EquipmentItem } from './components/ElementSearchDialog/equipment-item';
 export CardErrorBoundary from './components/CardErrorBoundary';

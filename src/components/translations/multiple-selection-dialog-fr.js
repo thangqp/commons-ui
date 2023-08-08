@@ -1,5 +1,3 @@
-import multiple_selection_dialog_en from './multiple-selection-dialog-en';
-
 /**
  * Copyright (c) 2023, RTE (http://www.rte-france.com)
  * This Source Code Form is subject to the terms of the Mozilla Public

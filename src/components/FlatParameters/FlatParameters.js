@@ -133,7 +133,7 @@ export const FlatParameters = ({
                 defaultMessage: paramName,
             });
             return intl.formatMessage({
-                id: paramName + '.' + 'selectionDialog.name',
+                id: paramName + '.selectionDialog.name',
                 defaultMessage: defaultMessage,
             });
         },
