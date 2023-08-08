@@ -8,8 +8,9 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useController } from 'react-hook-form';
+import FieldErrorAlert from './field-error-alert';
 
-const ErrorInput = ({ name, InputField }) => {
+const ErrorInput = ({ name, InputField = FieldErrorAlert }) => {
     const {
         fieldState: { error },
     } = useController({

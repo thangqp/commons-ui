@@ -10,11 +10,11 @@ import PropTypes from 'prop-types';
 import AutocompleteInput from './autocomplete-input';
 import { useIntl } from 'react-intl';
 
-const SelectInput = ({ options, ...props }) => {
+const SelectInput = (props) => {
     const intl = useIntl();
 
     const inputTransform = (value) =>
-        options.find((option) => option?.id === value) || null;
+      props.options.find((option) => option?.id === value) || null;
 
     const outputTransform = (value) => {
         return value?.id ?? null;
@@ -22,7 +22,6 @@ const SelectInput = ({ options, ...props }) => {
 
     return (
         <AutocompleteInput
-            options={options}
             getOptionLabel={(option) => {
                 return option?.label
                     ? intl.formatMessage({ id: option?.label }) // If the option has a label property, display the label using internationalization
