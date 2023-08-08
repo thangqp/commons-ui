@@ -5,9 +5,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import flat_parameters_en from "./components/translations/flat-parameters-en";
-import flat_parameters_fr from "./components/translations/flat-parameters-fr";
-
 export TreeViewFinder from './components/TreeViewFinder';
 export TopBar from './components/TopBar';
 export SnackbarProvider from './components/SnackbarProvider';
@@ -22,6 +19,7 @@ export ReportViewerDialog from './components/ReportViewerDialog';
 export OverflowableText from './components/OverflowableText';
 export ElementSearchDialog from './components/ElementSearchDialog';
 export FlatParameters from './components/FlatParameters';
+export MultipleSelectionDialog from './components/MultipleSelectionDialog'
 
 export {
     EQUIPMENT_TYPE,
@@ -81,6 +79,8 @@ export card_error_boundary_en from './components/translations/card-error-boundar
 export card_error_boundary_fr from './components/translations/card-error-boundary-fr';
 export flat_parameters_en from './components/translations/flat-parameters-en'
 export flat_parameters_fr from './components/translations/flat-parameters-fr'
+export multiple_selection_dialog_en from './components/translations/multiple-selection-dialog-en'
+export multiple_selection_dialog_fr from './components/translations/multiple-selection-dialog-fr'
 export { TagRenderer } from './components/ElementSearchDialog';
 export { EquipmentItem } from './components/ElementSearchDialog/equipment-item';
 export CardErrorBoundary from './components/CardErrorBoundary';

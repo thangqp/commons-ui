@@ -7,14 +7,13 @@
 
 import { Dialog, DialogContent, Divider } from '@mui/material';
 import DialogTitle from '@mui/material/DialogTitle';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import React, { useState } from 'react';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
 
 const MultipleSelectionDialog = ({
     options,
@@ -49,12 +48,12 @@ const MultipleSelectionDialog = ({
                 {titleId}
             </DialogTitle>
             <DialogContent>
-                <Grid container spacing={2} alignItems={'stretch'}>
+                <Grid container spacing={2}>
                     <Grid item xs={12}>
                         <Divider>
                             <FormControlLabel
                                 label={
-                                    <FormattedMessage id={'flat_parameters/selectAll'} />
+                                    <FormattedMessage id={'multiple_selection_dialog/selectAll'} />
                                 }
                                 control={
                                     <Checkbox
@@ -107,10 +106,10 @@ const MultipleSelectionDialog = ({
             </DialogContent>
             <DialogActions>
                 <Button onClick={() => handleClose()}>
-                    <FormattedMessage id={'flat_parameters/cancel'} />
+                    <FormattedMessage id={'multiple_selection_dialog/cancel'} />
                 </Button>
                 <Button onClick={() => handleValidate(selectedIds)}>
-                    <FormattedMessage id={'flat_parameters/validate'} />
+                    <FormattedMessage id={'multiple_selection_dialog/validate'} />
                 </Button>
             </DialogActions>
         </Dialog>

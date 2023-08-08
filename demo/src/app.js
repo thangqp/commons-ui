@@ -57,6 +57,8 @@ import {
     card_error_boundary_fr,
     flat_parameters_en,
     flat_parameters_fr,
+    multiple_selection_dialog_en,
+    multiple_selection_dialog_fr,
 } from '../../src/index';
 import CssBaseline from '@mui/material/CssBaseline';
 import Typography from '@mui/material/Typography';
@@ -107,6 +109,7 @@ const messages = {
         ...equipment_search_en,
         ...card_error_boundary_en,
         ...flat_parameters_en,
+        ...multiple_selection_dialog_en,
     },
     fr: {
         ...report_viewer_fr,
@@ -118,6 +121,7 @@ const messages = {
         ...equipment_search_fr,
         ...card_error_boundary_fr,
         ...flat_parameters_fr,
+        ...multiple_selection_dialog_fr,
     },
 };
 

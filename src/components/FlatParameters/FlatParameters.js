@@ -22,7 +22,7 @@ import {
 } from '@mui/material';
 import TuneIcon from '@mui/icons-material/Tune';
 import { FormattedMessage, useIntl } from 'react-intl';
-import MultipleSelectionDialog from './multiple-selection-dialog';
+import MultipleSelectionDialog from '../MultipleSelectionDialog/multiple-selection-dialog';
 
 const styles = {
     paramList: {
@@ -126,16 +126,19 @@ export const FlatParameters = ({
         [intl]
     );
 
-    const getSelectionDialogName = useCallback((paramName) => {
-        const defaultMessage = intl.formatMessage({
-            id: paramName,
-            defaultMessage: paramName,
-        });
-        return intl.formatMessage({
-            id: paramName + '.' + 'selectionDialog.name',
-            defaultMessage: defaultMessage,
-        });
-    });
+    const getSelectionDialogName = useCallback(
+        (paramName) => {
+            const defaultMessage = intl.formatMessage({
+                id: paramName,
+                defaultMessage: paramName,
+            });
+            return intl.formatMessage({
+                id: paramName + '.' + 'selectionDialog.name',
+                defaultMessage: defaultMessage,
+            });
+        },
+        [intl]
+    );
     const sortPossibleValues = useCallback(
         (prefix, values) => {
             if (values == null) {

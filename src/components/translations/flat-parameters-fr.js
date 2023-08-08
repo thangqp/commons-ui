@@ -9,9 +9,6 @@ const flat_parameters_fr = {
     'flat_parameters/none': 'Aucune',
     'flat_parameters/some': 'Quelques-unes',
     'flat_parameters/all': 'Toutes',
-    'flat_parameters/cancel': 'Annuler',
-    'flat_parameters/validate': 'Valider',
-    'flat_parameters/selectAll': 'Tout sélectionner',
 };
 
 export default flat_parameters_fr;
