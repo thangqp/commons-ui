@@ -44,24 +44,28 @@ const MultipleSelectionDialog = ({
 
     return (
         <Dialog open={open} fullWidth maxWidth={'lg'}>
-            <DialogTitle>
-                {titleId}
-            </DialogTitle>
+            <DialogTitle>{titleId}</DialogTitle>
             <DialogContent>
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
                         <Divider>
                             <FormControlLabel
                                 label={
-                                    <FormattedMessage id={'multiple_selection_dialog/selectAll'} />
+                                    <FormattedMessage
+                                        id={
+                                            'multiple_selection_dialog/selectAll'
+                                        }
+                                    />
                                 }
                                 control={
                                     <Checkbox
                                         checked={
-                                            selectedIds.length === options.length
+                                            selectedIds.length ===
+                                            options.length
                                         }
                                         indeterminate={
-                                            selectedIds.length !== options.length &&
+                                            selectedIds.length !==
+                                                options.length &&
                                             selectedIds.length !== 0
                                         }
                                         onChange={handleSelectAll}
@@ -109,7 +113,9 @@ const MultipleSelectionDialog = ({
                     <FormattedMessage id={'multiple_selection_dialog/cancel'} />
                 </Button>
                 <Button onClick={() => handleValidate(selectedIds)}>
-                    <FormattedMessage id={'multiple_selection_dialog/validate'} />
+                    <FormattedMessage
+                        id={'multiple_selection_dialog/validate'}
+                    />
                 </Button>
             </DialogActions>
         </Dialog>

@@ -1,4 +1,4 @@
-import multiple_selection_dialog_en from "./multiple-selection-dialog-en";
+import multiple_selection_dialog_en from './multiple-selection-dialog-en';
 
 /**
  * Copyright (c) 2023, RTE (http://www.rte-france.com)
@@ -11,6 +11,6 @@ const multiple_selection_dialog_fr = {
     'multiple_selection_dialog/cancel': 'Annuler',
     'multiple_selection_dialog/validate': 'Valider',
     'multiple_selection_dialog/selectAll': 'Tout sélectionner',
-}
+};
 
 export default multiple_selection_dialog_fr;
