@@ -133,7 +133,8 @@ export const FlatParameters = ({
         (paramName) => {
             const defaultMessage = intl.formatMessage({
                 id: paramName,
-                defaultMessage: paramName,
+                defaultMessage: paramName.slice(
+                    prefix.length),
             });
             return intl.formatMessage({
                 id: paramName + '.selectionDialog.name',
@@ -319,12 +320,12 @@ export const FlatParameters = ({
                                     InputProps={{
                                         readOnly: true,
                                         endAdornment: (
-                                            <IconButton>
-                                                <TuneIcon
-                                                    onClick={() =>
-                                                        setOpenSelector(true)
-                                                    }
-                                                />
+                                            <IconButton
+                                                onClick={() =>
+                                                    setOpenSelector(true)
+                                                }
+                                            >
+                                                <TuneIcon />
                                             </IconButton>
                                         ),
                                     }}
