@@ -14,7 +14,7 @@ const SelectInput = (props) => {
     const intl = useIntl();
 
     const inputTransform = (value) =>
-      props.options.find((option) => option?.id === value) || null;
+        props.options.find((option) => option?.id === value) || null;
 
     const outputTransform = (value) => {
         return value?.id ?? null;
