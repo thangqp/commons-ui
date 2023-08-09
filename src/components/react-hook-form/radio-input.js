@@ -47,7 +47,7 @@ const RadioInput = ({ name, label, id, options, formProps }) => {
 
 RadioInput.propTypes = {
     name: PropTypes.string.isRequired,
-    label: PropTypes.string.isRequired,
+    label: PropTypes.string,
     id: PropTypes.string,
     options: PropTypes.array.isRequired,
     formProps: PropTypes.object,
