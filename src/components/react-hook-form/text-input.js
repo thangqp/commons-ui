@@ -67,6 +67,7 @@ const TextInput = ({
     return (
         <Field
             key={id ? id : label}
+            size="small"
             fullWidth
             id={id ? id : label}
             label={fieldLabel}
