@@ -133,8 +133,7 @@ export const FlatParameters = ({
         (paramName) => {
             const defaultMessage = intl.formatMessage({
                 id: paramName,
-                defaultMessage: paramName.slice(
-                    prefix.length),
+                defaultMessage: paramName.slice(prefix.length),
             });
             return intl.formatMessage({
                 id: paramName + '.selectionDialog.name',
