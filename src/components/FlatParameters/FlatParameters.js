@@ -140,7 +140,7 @@ export const FlatParameters = ({
                 defaultMessage: defaultMessage,
             });
         },
-        [intl]
+        [intl, prefix.length]
     );
     const sortPossibleValues = useCallback(
         (prefix, values) => {
