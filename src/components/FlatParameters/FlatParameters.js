@@ -99,7 +99,7 @@ function longestCommonPrefix(stringList) {
  * @param onChange (paramName, newValue, isInEdition)
  * @param variant style variant for TextField, Autocomplete and Select parameter fields
  * @param showSeparator if true, a separator is added between parameters
- * @param useSelectionDialog {(param: {}) => boolean} if true, param with multiple options use dialog for selection
+ * @param selectionWithDialog {(param: {}) => boolean} if true, param with multiple options use dialog for selection
  */
 export const FlatParameters = ({
     paramsAsArray,
@@ -107,7 +107,7 @@ export const FlatParameters = ({
     onChange,
     variant = 'outlined',
     showSeparator = false,
-    useSelectionDialog = (param) => false,
+    selectionWithDialog = (param) => false,
 }) => {
     const intl = useIntl();
 
@@ -305,8 +305,8 @@ export const FlatParameters = ({
                         param.possibleValues
                     ).map((v) => v.id);
 
-                    const selectionWithDialog = useSelectionDialog(param);
-                    if (selectionWithDialog) {
+                    const withDialog = selectionWithDialog(param);
+                    if (withDialog) {
                         return (
                             <>
                                 <TextField
@@ -344,7 +344,7 @@ export const FlatParameters = ({
                                     }}
                                 />
                             </>
-                        )
+                        );
                     }
                     return (
                         <Autocomplete

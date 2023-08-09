@@ -52,7 +52,9 @@ const MultipleSelectionDialog = ({
                             <FormControlLabel
                                 label={
                                     <FormattedMessage
-                                        id={'multiple_selection_dialog/selectAll'}
+                                        id={
+                                            'multiple_selection_dialog/selectAll'
+                                        }
                                     />
                                 }
                                 control={
@@ -111,7 +113,9 @@ const MultipleSelectionDialog = ({
                     <FormattedMessage id={'multiple_selection_dialog/cancel'} />
                 </Button>
                 <Button onClick={() => handleValidate(selectedIds)}>
-                    <FormattedMessage id={'multiple_selection_dialog/validate'} />
+                    <FormattedMessage
+                        id={'multiple_selection_dialog/validate'}
+                    />
                 </Button>
             </DialogActions>
         </Dialog>
