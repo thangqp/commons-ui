@@ -38,13 +38,13 @@ const emptyFormData = {
 };
 
 const formSchema = yup.object().shape({
-    [AUTOCOMPLETE_INPUT]: yup.string(),
+    [AUTOCOMPLETE_INPUT]: yup.string().nullable(),
     [TEXT_INPUT]: yup.string(),
-    [SLIDER_INPUT]: yup.number(),
-    [SELECT_INPUT]: yup.string(),
-    [RADIO_INPUT]: yup.string(),
-    [INTEGER_INPUT]: yup.number(),
-    [FLOAT_INPUT]: yup.number(),
+    [SLIDER_INPUT]: yup.number().nullable(),
+    [SELECT_INPUT]: yup.string().nullable(),
+    [RADIO_INPUT]: yup.string().nullable(),
+    [INTEGER_INPUT]: yup.number().nullable(),
+    [FLOAT_INPUT]: yup.number().nullable(),
     [CHECKBOX_INPUT]: yup.boolean(),
     [SWITCH_INPUT]: yup.boolean(),
 });
