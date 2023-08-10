@@ -17,7 +17,7 @@ module.exports = {
         testContext: 'tests.webpack.js',
     },
     npm: {
-        esModules: false,
+        cjs: false,
         umd: false,
     },
     webpack: {

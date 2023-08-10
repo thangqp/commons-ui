@@ -6,7 +6,7 @@
         "npm": "<=6",
         "node": ">=12 <=14"
     },
-    "main": "lib/index.js",
+    "main": "es/index.js",
     "files": [
         "css",
         "es",
