@@ -77,12 +77,6 @@ const TextInput = ({
             })}
             value={transformedValue}
             onChange={handleValueChanged}
-            FormHelperTextProps={{
-                sx: {
-                    margin: 0,
-                    marginTop: 4,
-                },
-            }}
             InputProps={{
                 endAdornment: (
                     <InputAdornment position="end">
