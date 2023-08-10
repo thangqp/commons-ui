@@ -26,15 +26,15 @@ const CHECKBOX_INPUT = 'checkbox';
 const SWITCH_INPUT = 'switch';
 
 const emptyFormData = {
-    [AUTOCOMPLETE_INPUT]: '',
+    [AUTOCOMPLETE_INPUT]: null,
     [TEXT_INPUT]: '',
     [SLIDER_INPUT]: null,
-    [SELECT_INPUT]: '',
-    [RADIO_INPUT]: '',
+    [SELECT_INPUT]: null,
+    [RADIO_INPUT]: null,
     [INTEGER_INPUT]: null,
     [FLOAT_INPUT]: null,
-    [CHECKBOX_INPUT]: null,
-    [SWITCH_INPUT]: null,
+    [CHECKBOX_INPUT]: false, // or null, but should then be nullable in schema
+    [SWITCH_INPUT]: false, // or null, but should then be nullable in schema
 };
 
 const formSchema = yup.object().shape({
