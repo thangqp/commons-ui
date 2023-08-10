@@ -85,12 +85,6 @@ const AutocompleteInput = ({
                                 !removeOptional,
                         }),
                     })}
-                    FormHelperTextProps={{
-                        sx: {
-                            margin: 0,
-                            marginTop: 4,
-                        },
-                    }}
                     inputRef={ref}
                     inputProps={{ ...inputProps, readOnly: readOnly }}
                     {...genHelperPreviousValue(previousValue)}

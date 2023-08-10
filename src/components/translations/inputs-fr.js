@@ -6,10 +6,10 @@
  */
 
 const inputs_fr = {
-    'inputs/kylianMbappe': 'Kylian Mbappé',
-    'inputs/goat': 'GOAT',
-    'inputs/president': 'Président',
-    'inputs/goldenBall2023': "Ballon d'or 2023",
+    'inputs/kiki': 'Kylian Mbappe',
+    'inputs/elflaco': 'Javier Pastore',
+    'inputs/lapulga': 'Lionel Messi',
+    'inputs/ibra': 'Zlatan Ibrahimovic',
     'inputs/float': 'Float',
     'inputs/integer': 'Integer',
     'inputs/radio': 'Radio',

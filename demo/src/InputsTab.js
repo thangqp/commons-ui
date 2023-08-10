@@ -50,13 +50,18 @@ const formSchema = yup.object().shape({
 });
 
 const options = [
-    { id: 'kiki', label: 'inputs/kylianMbappe' },
-    { id: 'goat', label: 'inputs/goat' },
-    { id: 'president', label: 'inputs/president' },
-    { id: 'goldenBall2023', label: 'inputs/goldenBall2023' },
+    { id: 'kiki', label: 'inputs/kiki' },
+    { id: 'elflaco', label: 'inputs/elflaco' },
+    { id: 'lapulga', label: 'inputs/lapulga' },
+    { id: 'ibra', label: 'inputs/ibra' },
 ];
 
-const basicOptions = ['Kylian Mbappé', 'GOAT', 'Président', "Ballon d'or 2023"];
+const basicOptions = [
+    'Kylian Mbappe',
+    'Javier Pastore',
+    'Lionel Messi',
+    'Zlatan Ibrahimovic',
+];
 
 const gridSize = 4;
 
