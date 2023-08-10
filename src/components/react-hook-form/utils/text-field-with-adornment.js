@@ -35,7 +35,7 @@ const TextFieldWithAdornment = (props) => {
                 marginBottom: '0.3em',
             };
         }
-        return {};
+        return undefined;
     }, []);
 
     const getClearAdornment = useCallback(
@@ -56,7 +56,7 @@ const TextFieldWithAdornment = (props) => {
             return (
                 <InputAdornment
                     position={position}
-                    sx={{ ...getAdornmentStyle(variant) }}
+                    sx={getAdornmentStyle(variant)}
                 >
                     {adornmentText}
                 </InputAdornment>
@@ -75,7 +75,7 @@ const TextFieldWithAdornment = (props) => {
                   endAdornment: getTextAdornment('end'),
                   sx: { textAlign: 'end' },
               }
-            : {};
+            : undefined;
     }, [
         value,
         handleClearValue,
@@ -92,7 +92,7 @@ const TextFieldWithAdornment = (props) => {
                       value && handleClearValue && getClearAdornment('end'),
                   sx: { textAlign: 'start' },
               }
-            : {};
+            : undefined;
     }, [
         value,
         handleClearValue,
