@@ -103,7 +103,7 @@ const TextFieldWithAdornment = (props) => {
 
     return (
         <TextField
-            {...otherProps}
+            {...otherProps} //TODO move at the end like other inputs ?
             variant={variant}
             value={value}
             InputProps={
