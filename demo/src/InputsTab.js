@@ -58,14 +58,14 @@ const formSchema = yup.object().shape({
 
 const options = [
     { id: 'kiki', label: 'inputs/kiki' },
-    { id: 'elflaco', label: 'inputs/elflaco' },
+    { id: 'ney', label: 'inputs/ney' },
     { id: 'lapulga', label: 'inputs/lapulga' },
     { id: 'ibra', label: 'inputs/ibra' },
 ];
 
 const basicOptions = [
     'Kylian Mbappe',
-    'Javier Pastore',
+    'Neymar',
     'Lionel Messi',
     'Zlatan Ibrahimovic',
 ];

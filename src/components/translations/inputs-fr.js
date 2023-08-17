@@ -7,7 +7,7 @@
 
 const inputs_fr = {
     'inputs/kiki': 'Kylian Mbappe',
-    'inputs/elflaco': 'Javier Pastore',
+    'inputs/ney': 'Neymar',
     'inputs/lapulga': 'Lionel Messi',
     'inputs/ibra': 'Zlatan Ibrahimovic',
     'inputs/float': 'Float',
