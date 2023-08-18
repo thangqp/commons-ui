@@ -130,8 +130,8 @@ const LogTable = ({
         (row) => {
             return (
                 row.severity &&
-                Object.entries(selectedSeverity).some(([key, value]) =>
-                    key === row.severity && value
+                Object.entries(selectedSeverity).some(
+                    ([key, value]) => key === row.severity && value
                 )
             );
         },
