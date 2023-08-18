@@ -81,7 +81,7 @@ export const MultiSelectList = ({ selectedItems, setSelectedItems }) => {
             <Menu open={open} onClose={handleClose} anchorEl={anchorEl}>
                 {Object.entries(selectedItems).map(([key, value]) => {
                     return (
-                        <MenuItem sx={styles.menuItem}>
+                        <MenuItem sx={styles.menuItem} key={key}>
                             <FormControlLabel
                                 control={
                                     <Checkbox
