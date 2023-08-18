@@ -718,6 +718,7 @@ class MuiVirtualizedTable extends React.PureComponent {
                         : this.simpleHeaderRenderer({
                               ...headerProps,
                           })}
+                    {columns[columnIndex].extra && columns[columnIndex].extra}
                 </TableCell>
             );
         };
@@ -928,6 +929,7 @@ MuiVirtualizedTable.propTypes = {
             maxWidth: PropTypes.number,
             unit: PropTypes.string,
             fractionDigits: PropTypes.number,
+            extra: PropTypes.element,
         })
     ).isRequired,
     enableExportCSV: PropTypes.bool,
