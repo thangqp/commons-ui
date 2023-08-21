@@ -97,6 +97,9 @@ import { TableTab } from './TableTab';
 import { FlatParametersTab } from './FlatParametersTab';
 
 import { toNestedGlobalSelectors } from '../../src/utils/styles';
+import { InputsTab } from './InputsTab';
+import inputs_en from '../../src/components/translations/inputs-en';
+import inputs_fr from '../../src/components/translations/inputs-fr';
 
 const messages = {
     en: {
@@ -110,6 +113,7 @@ const messages = {
         ...card_error_boundary_en,
         ...flat_parameters_en,
         ...multiple_selection_dialog_en,
+        ...inputs_en,
     },
     fr: {
         ...report_viewer_fr,
@@ -122,6 +126,7 @@ const messages = {
         ...card_error_boundary_fr,
         ...flat_parameters_fr,
         ...multiple_selection_dialog_fr,
+        ...inputs_fr,
     },
 };
 
@@ -702,6 +707,7 @@ const AppContent = ({ language, onLanguageClick }) => {
                                         <Tab label="others" />
                                         <Tab label="virtual table" />
                                         <Tab label="parameters" />
+                                        <Tab label="inputs" />
                                     </Tabs>
                                     {tabIndex === 0 && defaultTab}
                                     {tabIndex === 1 && (
@@ -710,6 +716,7 @@ const AppContent = ({ language, onLanguageClick }) => {
                                         />
                                     )}
                                     {tabIndex === 2 && <FlatParametersTab />}
+                                    {tabIndex === 3 && <InputsTab />}
                                 </div>
                             ) : (
                                 <AuthenticationRouter

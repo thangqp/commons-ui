@@ -1,12 +1,12 @@
 {
     "name": "@gridsuite/commons-ui",
-    "version": "0.35.1",
+    "version": "0.35.2",
     "description": "common react components for gridsuite applications",
     "engines": {
         "npm": "<=6",
         "node": ">=12 <=14"
     },
-    "main": "lib/index.js",
+    "module": "es/index.js",
     "files": [
         "css",
         "es",
@@ -39,11 +39,14 @@
         "@mui/icons-material": "^5.5.0",
         "@mui/lab": "^5.0.0-alpha.72",
         "@mui/material": "^5.5.0",
+        "@hookform/resolvers": "^3.0.0",
         "notistack": "^2.0.3",
         "react-router-dom": "^6.0.0",
         "react": "^18.0.0",
         "react-dom": "^18.0.0",
-        "react-intl": "^6.0.0"
+        "react-intl": "^6.0.0",
+        "react-hook-form": "^7.41.0",
+        "yup": "^1.0.0"
     },
     "devDependencies": {
         "@emotion/react": "^11.8.1",
@@ -52,6 +55,7 @@
         "@mui/lab": "^5.0.0-alpha.72",
         "@mui/material": "^5.5.0",
         "@mui/styles": "^5.5.0",
+        "@hookform/resolvers": "^3.0.0",
         "@babel/helper-builder-react-jsx": "7.15.4",
         "@svgr/webpack": "^5.4.0",
         "babel-eslint": "^10.1.0",
@@ -73,12 +77,14 @@
         "react": "^18.0.0",
         "react-dom": "^18.0.0",
         "react-intl": "^6.0.0",
+        "react-hook-form": "^7.41.0",
         "react-router-dom": "^6.0.0",
         "type-fest": "^2.0.0",
         "utf-8-validate": "^5.0.2",
         "webpack-plugin-serve": "^1.0.1",
         "@react-hook/window-size": "^3.1.1",
-        "react-resizable": "^3.0.4"
+        "react-resizable": "^3.0.4",
+        "yup": "^1.0.0"
     },
     "eslintConfig": {
         "extends": [
