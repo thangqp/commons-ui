@@ -232,7 +232,7 @@ export const FlatParameters = ({
     };
 
     const getStringListValue = (allValues, selectValues) => {
-        if (!Array.isArray(selectValues) || selectValues?.length === 0) {
+        if (!selectValues || !selectValues.length) {
             return intl.formatMessage({ id: 'flat_parameters/none' });
         }
 
@@ -303,7 +303,7 @@ export const FlatParameters = ({
                     const allOptions = sortPossibleValues(
                         param.name,
                         param.possibleValues
-                    ).map((v) => v.id);
+                    ).map(({ id }) => id);
 
                     const withDialog = selectionWithDialog(param);
                     if (withDialog) {

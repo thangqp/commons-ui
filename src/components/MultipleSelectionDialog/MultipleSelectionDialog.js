@@ -64,9 +64,9 @@ const MultipleSelectionDialog = ({
                                             options.length
                                         }
                                         indeterminate={
+                                            selectedIds.length &&
                                             selectedIds.length !==
-                                                options.length &&
-                                            selectedIds.length !== 0
+                                                options.length
                                         }
                                         onChange={handleSelectAll}
                                     />
