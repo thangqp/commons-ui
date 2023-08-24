@@ -16,14 +16,14 @@ export const elementType = {
     CONTINGENCY_LIST: 'CONTINGENCY_LIST',
 };
 
-export function getFileIcon(type, theme) {
+export function getFileIcon(type, style) {
     switch (type) {
         case elementType.STUDY:
-            return <LibraryBooksOutlinedIcon className={theme} />;
+            return <LibraryBooksOutlinedIcon sx={style} />;
         case elementType.CONTINGENCY_LIST:
-            return <OfflineBoltIcon className={theme} />;
+            return <OfflineBoltIcon sx={style} />;
         case elementType.FILTER:
-            return <ArticleIcon className={theme} />;
+            return <ArticleIcon sx={style} />;
         case elementType.DIRECTORY:
             // to easily use in TreeView we do not give icons for directories
             return;

@@ -1,11 +1,12 @@
 {
     "name": "@gridsuite/commons-ui",
-    "version": "0.35.2",
+    "version": "0.35.3",
     "description": "common react components for gridsuite applications",
     "engines": {
         "npm": "<=6",
         "node": ">=12 <=14"
     },
+    "exports": "es/index.js",
     "module": "es/index.js",
     "files": [
         "css",
