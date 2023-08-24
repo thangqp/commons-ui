@@ -10,7 +10,7 @@ import TableCell from '@mui/material/TableCell';
 import { styled } from '@mui/system';
 import MuiVirtualizedTable from '../MuiVirtualizedTable';
 import { useTheme } from '@mui/material/styles';
-import { MultiSelectList } from './multi-select-list';
+import { FilterButton } from './filter-button';
 
 const SEVERITY_COLUMN_FIXED_WIDTH = 115;
 
@@ -74,7 +74,7 @@ const LogTable = ({
             minWidth: SEVERITY_COLUMN_FIXED_WIDTH,
             cellRenderer: severityCellRender,
             extra: (
-                <MultiSelectList
+                <FilterButton
                     selectedItems={selectedSeverity}
                     setSelectedItems={setSelectedSeverity}
                 />
