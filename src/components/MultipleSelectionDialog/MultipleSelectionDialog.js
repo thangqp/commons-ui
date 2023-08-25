@@ -78,10 +78,9 @@ const MultipleSelectionDialog = ({
                         const optionId = option?.id ?? option;
                         const label = getOptionLabel(option);
                         return (
-                            <>
-                                <Grid item xs={4} key={optionId}>
+                            <React.Fragment key={optionId}>
+                                <Grid item xs={4}>
                                     <FormControlLabel
-                                        key={optionId}
                                         label={label}
                                         control={
                                             <Checkbox
@@ -103,7 +102,7 @@ const MultipleSelectionDialog = ({
                                         <Divider />
                                     </Grid>
                                 )}
-                            </>
+                            </React.Fragment>
                         );
                     })}
                 </Grid>
