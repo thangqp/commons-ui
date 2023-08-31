@@ -59,6 +59,7 @@
         "@hookform/resolvers": "^3.0.0",
         "@babel/helper-builder-react-jsx": "7.15.4",
         "@svgr/webpack": "^5.4.0",
+        "@testing-library/react": "^13.4.0",
         "babel-eslint": "^10.1.0",
         "bufferutil": "^4.0.1",
         "eslint": "^7.9.0",
