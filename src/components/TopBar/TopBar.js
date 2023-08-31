@@ -275,7 +275,7 @@ const TopBar = ({
     useEffect(() => {
         if (user && withElementsSearch && !searchDisabled) {
             const openSearch = (e) => {
-                if (e.ctrlKey && e.shiftKey && e.key === 'f') {
+                if (e.ctrlKey && e.key === 'F') {
                     e.preventDefault();
                     setDialogSearchOpen(true);
                 }
