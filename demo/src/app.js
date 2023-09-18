@@ -69,6 +69,9 @@ import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
 
 import PowsyblLogo from '-!@svgr/webpack!../images/powsybl_logo.svg';
 
@@ -338,6 +341,8 @@ const AppContent = ({ language, onLanguageClick }) => {
                   );
         }
     };
+    const [initialSearchTerm] = useState('search disabled');
+    const [searchTermDisabled, setSearchTermDisabled] = useState(false);
 
     const dispatch = (e) => {
         if (e.type === 'USER') {
@@ -603,6 +608,34 @@ const AppContent = ({ language, onLanguageClick }) => {
                 />
             </div>
             <hr />
+            <div
+                style={{
+                    margin: '10px 0px 0px 0px',
+                    display: 'flex',
+                    alignItems: 'center',
+                }}
+            >
+                <FormGroup>
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={searchTermDisabled}
+                                onChange={() => {
+                                    setSearchTermDisabled(!searchTermDisabled);
+                                    // TO TEST search activation after some times
+                                    setTimeout(
+                                        () => setSearchTermDisabled(false),
+                                        4000
+                                    );
+                                }}
+                                name="search-disabled"
+                            />
+                        }
+                        label="Disable Search"
+                    />
+                </FormGroup>
+            </div>
+            <hr />
             <Crasher />
         </div>
     );
@@ -636,6 +669,8 @@ const AppContent = ({ language, onLanguageClick }) => {
                             onSearchTermChange={searchMatchingEquipments}
                             onSelectionChange={displayEquipment}
                             searchDisabled={searchDisabled}
+                            searchTermDisabled={searchTermDisabled}
+                            initialSearchTerm={initialSearchTerm}
                             elementsFound={equipmentsFound}
                             renderElement={(props) => (
                                 <EquipmentItem

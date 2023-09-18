@@ -27,6 +27,9 @@ const ElementSearchDialog = (props) => {
     } = props;
 
     const [expanded, setExpanded] = useState(false);
+    const [value, setValue] = useState(
+        searchTermDisabled ? { label: initialSearchTerm } : null
+    );
 
     const [loading, setLoading] = useState(false);
 
@@ -34,13 +37,19 @@ const ElementSearchDialog = (props) => {
         setLoading(false);
     }, [elementsFound]);
 
+    useEffect(() => {
+        setValue(searchTermDisabled ? { label: initialSearchTerm } : null);
+    }, [searchTermDisabled, initialSearchTerm]);
+
     const handleSearchTermChange = (term) => {
         if (term) {
             setLoading(true);
             onSearchTermChange(term);
             setExpanded(true);
+            setValue({ label: term });
         } else {
             setExpanded(false);
+            setValue(null);
         }
     };
 
@@ -111,9 +120,7 @@ const ElementSearchDialog = (props) => {
                             }}
                         />
                     )}
-                    defaultValue={
-                        searchTermDisabled ? { label: initialSearchTerm } : null
-                    }
+                    value={value}
                     disabled={searchTermDisabled}
                 />
             </DialogContent>
