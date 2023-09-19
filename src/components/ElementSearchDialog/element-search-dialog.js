@@ -60,6 +60,7 @@ const ElementSearchDialog = (props) => {
     };
 
     const handleClose = useCallback(() => {
+        setValue(null);
         setExpanded(false);
         onClose();
     }, [onClose]);
@@ -67,7 +68,7 @@ const ElementSearchDialog = (props) => {
     return (
         <Dialog
             open={open}
-            onClose={onClose}
+            onClose={handleClose}
             disableRestoreFocus={true}
             aria-labelledby="dialog-title-search"
             fullWidth={true}
@@ -81,12 +82,16 @@ const ElementSearchDialog = (props) => {
                         setExpanded(false);
                     }}
                     fullWidth
+                    freeSolo
                     onInputChange={(_event, value) => {
                         if (!searchTermDisabled) {
                             handleSearchTermChange(value);
                         }
                     }}
-                    onChange={(_event, newValue) => onSelectionChange(newValue)}
+                    onChange={(_event, newValue) => {
+                        onSelectionChange(newValue);
+                        setValue(null);
+                    }}
                     getOptionLabel={(option) => option.label}
                     isOptionEqualToValue={(option, value) =>
                         option.id === value.id
