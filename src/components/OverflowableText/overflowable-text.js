@@ -87,7 +87,11 @@ OverflowableText.propTypes = {
     ]),
     tooltipStyle: PropTypes.string,
     tooltipSx: PropTypes.object,
-    sx: PropTypes.object,
+    sx: PropTypes.oneOfType([
+        PropTypes.object,
+        PropTypes.array,
+        PropTypes.func,
+    ]),
     className: PropTypes.string,
 };
 
