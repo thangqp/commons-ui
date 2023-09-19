@@ -192,7 +192,7 @@ const TopBar = ({
     onLanguageClick,
     language,
     searchTermDisabled,
-    initialSearchTerm,
+    searchTermDisableReason,
 }) => {
     const [anchorElSettingsMenu, setAnchorElSettingsMenu] =
         React.useState(null);
@@ -328,7 +328,7 @@ const TopBar = ({
                             elementsFound={elementsFound}
                             renderElement={renderElement}
                             searchTermDisabled={searchTermDisabled}
-                            initialSearchTerm={initialSearchTerm}
+                            searchTermDisableReason={searchTermDisableReason}
                         />
                         <div>
                             <Button
@@ -782,7 +782,7 @@ TopBar.propTypes = {
     onLanguageClick: PropTypes.func.isRequired,
     language: PropTypes.string.isRequired,
     searchTermDisabled: PropTypes.bool,
-    initialSearchTerm: PropTypes.string,
+    searchTermDisableReason: PropTypes.string,
 };
 
 export default TopBar;

@@ -341,7 +341,7 @@ const AppContent = ({ language, onLanguageClick }) => {
                   );
         }
     };
-    const [initialSearchTerm] = useState('search disabled');
+    const [searchTermDisableReason] = useState('search disabled');
     const [searchTermDisabled, setSearchTermDisabled] = useState(false);
 
     const dispatch = (e) => {
@@ -670,7 +670,7 @@ const AppContent = ({ language, onLanguageClick }) => {
                             onSelectionChange={displayEquipment}
                             searchDisabled={searchDisabled}
                             searchTermDisabled={searchTermDisabled}
-                            initialSearchTerm={initialSearchTerm}
+                            searchTermDisableReason={searchTermDisableReason}
                             elementsFound={equipmentsFound}
                             renderElement={(props) => (
                                 <EquipmentItem

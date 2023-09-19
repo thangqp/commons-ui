@@ -23,12 +23,14 @@ const ElementSearchDialog = (props) => {
         elementsFound, // [{ label: aLabel, id: anId }, ...]
         renderElement,
         searchTermDisabled,
-        initialSearchTerm,
+        searchTermDisableReason,
     } = props;
 
     const [expanded, setExpanded] = useState(false);
     const [value, setValue] = useState(
-        searchTermDisabled ? { label: initialSearchTerm } : null
+        searchTermDisabled && searchTermDisableReason
+            ? { label: searchTermDisableReason }
+            : null
     );
 
     const [loading, setLoading] = useState(false);
@@ -38,8 +40,12 @@ const ElementSearchDialog = (props) => {
     }, [elementsFound]);
 
     useEffect(() => {
-        setValue(searchTermDisabled ? { label: initialSearchTerm } : null);
-    }, [searchTermDisabled, initialSearchTerm]);
+        if (!searchTermDisabled || !searchTermDisableReason) {
+            setValue(null);
+        } else {
+            setValue({ label: searchTermDisableReason });
+        }
+    }, [searchTermDisabled, searchTermDisableReason]);
 
     const handleSearchTermChange = (term) => {
         if (term) {
@@ -137,7 +143,7 @@ ElementSearchDialog.propTypes = {
     elementsFound: PropTypes.array.isRequired,
     renderElement: PropTypes.func.isRequired,
     searchTermDisabled: PropTypes.bool,
-    initialSearchTerm: PropTypes.string,
+    searchTermDisableReason: PropTypes.string,
 };
 
 export default ElementSearchDialog;
