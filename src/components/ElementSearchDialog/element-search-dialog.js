@@ -83,6 +83,7 @@ const ElementSearchDialog = (props) => {
                     }}
                     fullWidth
                     freeSolo
+                    clearOnBlur
                     onInputChange={(_event, value) => {
                         if (!searchTermDisabled) {
                             handleSearchTermChange(value);
