@@ -8,12 +8,14 @@ import React from 'react';
 import LibraryBooksOutlinedIcon from '@mui/icons-material/LibraryBooksOutlined';
 import OfflineBoltIcon from '@mui/icons-material/OfflineBolt';
 import ArticleIcon from '@mui/icons-material/Article';
+import SettingsIcon from '@mui/icons-material/Settings';
 
 export const elementType = {
     DIRECTORY: 'DIRECTORY',
     STUDY: 'STUDY',
     FILTER: 'FILTER',
     CONTINGENCY_LIST: 'CONTINGENCY_LIST',
+    VOLTAGE_INIT_PARAMETERS: 'VOLTAGE_INIT_PARAMETERS',
 };
 
 export function getFileIcon(type, style) {
@@ -24,6 +26,8 @@ export function getFileIcon(type, style) {
             return <OfflineBoltIcon sx={style} />;
         case elementType.FILTER:
             return <ArticleIcon sx={style} />;
+        case elementType.VOLTAGE_INIT_PARAMETERS:
+            return <SettingsIcon sx={style} />;
         case elementType.DIRECTORY:
             // to easily use in TreeView we do not give icons for directories
             return;
