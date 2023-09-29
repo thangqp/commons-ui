@@ -220,7 +220,7 @@ export const FlatParametersTab = () => {
                     variant={'standard'}
                     showSeparator
                     selectionWithDialog={(param) =>
-                      param?.possibleValues?.length > 10
+                        param?.possibleValues?.length > 10
                     }
                 />
             </RightResizableBox>
