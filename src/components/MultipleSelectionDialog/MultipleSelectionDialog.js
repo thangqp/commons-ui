@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Dialog, DialogContent, Divider } from '@mui/material';
+import { Dialog, DialogContent, List } from '@mui/material';
 import DialogTitle from '@mui/material/DialogTitle';
 import { FormattedMessage } from 'react-intl';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -43,68 +43,60 @@ const MultipleSelectionDialog = ({
     };
 
     return (
-        <Dialog open={open} fullWidth maxWidth={'lg'}>
+        <Dialog open={open}>
             <DialogTitle>{titleId}</DialogTitle>
             <DialogContent>
-                <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                        <Divider>
-                            <FormControlLabel
-                                label={
-                                    <FormattedMessage
-                                        id={
-                                            'multiple_selection_dialog/selectAll'
-                                        }
-                                    />
-                                }
-                                control={
-                                    <Checkbox
-                                        checked={
-                                            selectedIds.length ===
-                                            options.length
-                                        }
-                                        indeterminate={
-                                            selectedIds.length &&
-                                            selectedIds.length !==
-                                                options.length
-                                        }
-                                        onChange={handleSelectAll}
-                                    />
-                                }
-                            />
-                        </Divider>
+                <Grid container spacing={2} flexDirection="column">
+                    <Grid item>
+                        <FormControlLabel
+                            label={
+                                <FormattedMessage
+                                    id={'multiple_selection_dialog/selectAll'}
+                                />
+                            }
+                            control={
+                                <Checkbox
+                                    checked={
+                                        selectedIds.length === options.length
+                                    }
+                                    indeterminate={
+                                        !!selectedIds.length &&
+                                        selectedIds.length !== options.length
+                                    }
+                                    onChange={handleSelectAll}
+                                />
+                            }
+                        />
                     </Grid>
-                    {options.map((option, index) => {
-                        const optionId = option?.id ?? option;
-                        const label = getOptionLabel(option);
-                        return (
-                            <React.Fragment key={optionId}>
-                                <Grid item xs={4}>
-                                    <FormControlLabel
-                                        label={label}
-                                        control={
-                                            <Checkbox
-                                                checked={selectedIds.includes(
-                                                    optionId
-                                                )}
-                                                onChange={() =>
-                                                    handleOptionSelection(
-                                                        optionId
-                                                    )
+                    <Grid item>
+                        <List>
+                            {options.map((option, index) => {
+                                const optionId = option?.id ?? option;
+                                const label = getOptionLabel(option);
+                                return (
+                                    <React.Fragment key={optionId}>
+                                        <Grid item>
+                                            <FormControlLabel
+                                                label={label}
+                                                control={
+                                                    <Checkbox
+                                                        checked={selectedIds.includes(
+                                                            optionId
+                                                        )}
+                                                        onChange={() =>
+                                                            handleOptionSelection(
+                                                                optionId
+                                                            )
+                                                        }
+                                                    />
                                                 }
                                             />
-                                        }
-                                    />
-                                </Grid>
-                                {/*All rows contain 3 options, and we add divider after each row*/}
-                                {(index + 1) % 3 === 0 && (
-                                    <Grid item xs={12} key={index}>
-                                        <Divider />
-                                    </Grid>
-                                )}
-                            </React.Fragment>
-                        );
-                    })}
+                                        </Grid>
+                                    </React.Fragment>
+                                );
+                            })}
+                        </List>
+                    </Grid>
                 </Grid>
             </DialogContent>
             <DialogActions>
