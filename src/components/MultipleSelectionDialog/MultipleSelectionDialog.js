@@ -70,7 +70,7 @@ const MultipleSelectionDialog = ({
                     </Grid>
                     <Grid item>
                         <List>
-                            {options.map((option, index) => {
+                            {options.map((option) => {
                                 const optionId = option?.id ?? option;
                                 const label = getOptionLabel(option);
                                 return (
