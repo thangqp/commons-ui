@@ -89,9 +89,13 @@ const ElementSearchDialog = (props) => {
                             handleSearchTermChange(value);
                         }
                     }}
-                    onChange={(_event, newValue) => {
-                        onSelectionChange(newValue);
-                        setValue(null);
+                    onChange={(_event, newValue, reason) => {
+                        if (reason === 'selectOption') {
+                            onSelectionChange(newValue);
+                            setValue(newValue);
+                        } else {
+                            setValue(null);
+                        }
                     }}
                     getOptionLabel={(option) => option.label}
                     isOptionEqualToValue={(option, value) =>
