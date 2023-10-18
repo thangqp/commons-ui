@@ -102,6 +102,7 @@ export MidFormError from './components/react-hook-form/error-management/mid-form
 export TextFieldWithAdornment from './components/react-hook-form/utils/text-field-with-adornment';
 export FieldLabel from './components/react-hook-form/utils/field-label';
 export SubmitButton from './components/react-hook-form/utils/submit-button';
+export CancelButton from './components/react-hook-form/utils/cancel-button';
 export {
     genHelperPreviousValue,
     genHelperError,
