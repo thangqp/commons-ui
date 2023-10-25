@@ -659,7 +659,7 @@ const TopBar = ({
                                         {/* About */}
                                         <StyledMenuItem
                                             sx={styles.borderBottom}
-                                            disabled={true}
+                                            disabled={!onAboutClick}
                                             style={{ opacity: '1' }}
                                             onClick={onAboutClicked}
                                         >
