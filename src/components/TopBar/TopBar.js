@@ -657,6 +657,7 @@ const TopBar = ({
                                         </StyledMenuItem>
 
                                         {/* About */}
+                                        {/*If the callback onAboutClicked is undefined, about component should be disabled*/}
                                         <StyledMenuItem
                                             sx={styles.borderBottom}
                                             disabled={!onAboutClick}
