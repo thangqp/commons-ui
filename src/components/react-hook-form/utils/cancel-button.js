@@ -13,7 +13,7 @@ const CancelButton = ({
             onClick={onClick}
             variant={variant}
             disabled={disabled}
-            color={withCustomColor ? 'primary' : 'secondary'}
+            color={withCustomColor ? 'primary' : 'customButton'}
         >
             <FormattedMessage id="cancel" />
         </Button>
