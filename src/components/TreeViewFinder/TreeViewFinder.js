@@ -96,6 +96,7 @@ const composeClasses = makeComposeClasses(generateTreeViewFinderClass);
  * @param {String}          [validationButtonText=default text] - Customized Validation Button text (default: Add N Elements)
  * @param {Boolean}         [onlyLeaves=true] - Allow/Forbid selection only on leaves
  * @param {Boolean}         [multiselect=false] - Allow/Forbid multiselection on Tree
+ * @param {Boolean}         [withCustomColor=true] - Display a custom color on the cancel button
  */
 const TreeViewFinder = (props) => {
     const intl = useIntl();
@@ -114,6 +115,7 @@ const TreeViewFinder = (props) => {
         multiselect,
         sortMethod,
         className,
+        withCustomColor = true,
     } = props;
 
     const [mapPrintedNodes, setMapPrintedNodes] = useState({});
@@ -344,17 +346,17 @@ const TreeViewFinder = (props) => {
             </DialogContent>
             <DialogActions>
                 <Button
-                    variant="contained"
                     style={{ float: 'left', margin: '5px' }}
                     onClick={() => {
                         onClose([]);
                         setSelected([]);
                     }}
+                    color={withCustomColor ? 'customButton' : 'primary'}
                 >
                     <FormattedMessage id="treeview_finder/cancel" />
                 </Button>
                 <Button
-                    variant="contained"
+                    variant="outlined"
                     style={{ float: 'left', margin: '5px' }}
                     onClick={() => {
                         onClose(computeSelectedNodes());
@@ -392,6 +394,7 @@ TreeViewFinder.propTypes = {
     onlyLeaves: PropTypes.bool,
     multiselect: PropTypes.bool,
     sortMethod: PropTypes.func,
+    withCustomColor: PropTypes.bool,
 };
 
 /* TreeViewFinder props default values */
