@@ -47,6 +47,11 @@ const ElementSearchDialog = (props) => {
         }
     }, [searchTermDisabled, searchTermDisableReason]);
 
+    // to reset the value between the dialog closing and opening
+    useEffect(() => {
+        setValue((old) => (!open ? null : old));
+    }, [open]);
+
     const handleSearchTermChange = (term) => {
         if (term) {
             setLoading(true);
@@ -93,7 +98,6 @@ const ElementSearchDialog = (props) => {
                         if (reason === 'selectOption') {
                             onSelectionChange(newValue);
                             setValue(newValue);
-                            handleClose();
                         } else {
                             setValue(null);
                         }
