@@ -93,6 +93,7 @@ const ElementSearchDialog = (props) => {
                         if (reason === 'selectOption') {
                             onSelectionChange(newValue);
                             setValue(newValue);
+                            handleClose();
                         } else {
                             setValue(null);
                         }
