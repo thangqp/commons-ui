@@ -81,6 +81,9 @@ export flat_parameters_en from './components/translations/flat-parameters-en';
 export flat_parameters_fr from './components/translations/flat-parameters-fr';
 export multiple_selection_dialog_en from './components/translations/multiple-selection-dialog-en';
 export multiple_selection_dialog_fr from './components/translations/multiple-selection-dialog-fr';
+export common_button_en from './components/translations/common-button-en';
+export common_button_fr from './components/translations/common-button-fr';
+
 export { TagRenderer } from './components/ElementSearchDialog';
 export { EquipmentItem } from './components/ElementSearchDialog/equipment-item';
 export CardErrorBoundary from './components/CardErrorBoundary';

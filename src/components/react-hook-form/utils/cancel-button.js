@@ -10,23 +10,15 @@ import { Button } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 
-const CancelButton = ({ withCustomColor = true, ...buttonProps }) => {
-    const colorKey = useMemo(() => {
-        if (withCustomColor) {
-            return 'customButton';
-        } else {
-            return buttonProps?.color ?? 'primary';
-        }
-    }, [withCustomColor, buttonProps?.color]);
+const CancelButton = ({ ...buttonProps }) => {
     return (
-        <Button {...buttonProps} color={colorKey}>
+        <Button {...buttonProps}>
             <FormattedMessage id="cancel" />
         </Button>
     );
 };
 
 CancelButton.propTypes = {
-    withCustomColor: PropTypes.bool,
     buttonProps: PropTypes.object,
 };
 

@@ -115,7 +115,7 @@ const TreeViewFinder = (props) => {
         multiselect,
         sortMethod,
         className,
-        withCustomColor = true,
+        cancelButtonProps,
     } = props;
 
     const [mapPrintedNodes, setMapPrintedNodes] = useState({});
@@ -351,7 +351,7 @@ const TreeViewFinder = (props) => {
                         onClose([]);
                         setSelected([]);
                     }}
-                    color={withCustomColor ? 'customButton' : 'primary'}
+                    {...cancelButtonProps}
                 >
                     <FormattedMessage id="treeview_finder/cancel" />
                 </Button>
@@ -394,7 +394,7 @@ TreeViewFinder.propTypes = {
     onlyLeaves: PropTypes.bool,
     multiselect: PropTypes.bool,
     sortMethod: PropTypes.func,
-    withCustomColor: PropTypes.bool,
+    cancelButtonProps: PropTypes.object,
 };
 
 /* TreeViewFinder props default values */
