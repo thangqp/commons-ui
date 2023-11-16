@@ -97,7 +97,7 @@ const composeClasses = makeComposeClasses(generateTreeViewFinderClass);
  * @param {String}          [validationButtonText=default text] - Customized Validation Button text (default: Add N Elements)
  * @param {Boolean}         [onlyLeaves=true] - Allow/Forbid selection only on leaves
  * @param {Boolean}         [multiselect=false] - Allow/Forbid multiselection on Tree
- * @param {Boolean}         [withCustomColor=true] - Display a custom color on the cancel button
+ * @param {Object}          [cancelButtonProps] - The cancel button props
  */
 const TreeViewFinder = (props) => {
     const intl = useIntl();
