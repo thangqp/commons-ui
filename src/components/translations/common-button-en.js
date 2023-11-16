@@ -6,8 +6,8 @@
  */
 
 const common_button_en = {
-    'cancel': 'Cancel',
-    'validate': 'Validate',
+    cancel: 'Cancel',
+    validate: 'Validate',
 };
 
 export default common_button_en;

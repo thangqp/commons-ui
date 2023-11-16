@@ -7,7 +7,6 @@
 
 const treeview_finder_fr = {
     'treeview_finder/close': 'Fermer',
-    'treeview_finder/cancel': 'Annuler',
     'treeview_finder/validate': 'Valider',
     'treeview_finder/add': 'Ajouter...',
     'treeview_finder/deleteSelection': 'Supprimer la selection',

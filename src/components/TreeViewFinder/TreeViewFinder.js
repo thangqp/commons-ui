@@ -28,6 +28,7 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import CheckIcon from '@mui/icons-material/Check';
+import CancelButton from '../react-hook-form/utils/cancel-button';
 
 // As a bunch of individual variables to try to make it easier
 // to track that they are all used. Not sure, maybe group them in an object ?
@@ -345,16 +346,14 @@ const TreeViewFinder = (props) => {
                 </TreeView>
             </DialogContent>
             <DialogActions>
-                <Button
+                <CancelButton
                     style={{ float: 'left', margin: '5px' }}
                     onClick={() => {
                         onClose([]);
                         setSelected([]);
                     }}
                     {...cancelButtonProps}
-                >
-                    <FormattedMessage id="treeview_finder/cancel" />
-                </Button>
+                />
                 <Button
                     variant="outlined"
                     style={{ float: 'left', margin: '5px' }}
