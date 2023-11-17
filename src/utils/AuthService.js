@@ -161,8 +161,7 @@ function initializeAuthenticationProd(
                 redirect_uri: idpSettings.redirect_uri,
                 post_logout_redirect_uri: idpSettings.post_logout_redirect_uri,
                 silent_redirect_uri: idpSettings.silent_redirect_uri,
-                response_mode: 'fragment',
-                response_type: 'id_token token',
+                response_type: 'code',
                 scope: idpSettings.scope,
                 automaticSilentRenew: !isSilentRenew,
                 accessTokenExpiringNotificationTime:
