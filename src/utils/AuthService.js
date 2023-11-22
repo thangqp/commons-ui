@@ -59,7 +59,8 @@ function initializeAuthenticationProd(
     dispatch,
     isSilentRenew,
     idpSettings,
-    validateUser
+    validateUser,
+    authorizationCodeFlowEnabled
 ) {
     return idpSettings
         .then((r) => r.json())
@@ -155,17 +156,24 @@ function initializeAuthenticationProd(
                 authority ||
                 sessionStorage.getItem(hackauthoritykey) ||
                 idpSettings.authority;
-            let settings = {
+
+            const responseSettings = authorizationCodeFlowEnabled
+                ? { response_type: 'code' }
+                : {
+                      response_type: 'id_token token',
+                      response_mode: 'fragment',
+                  };
+            const settings = {
                 authority,
                 client_id: idpSettings.client_id,
                 redirect_uri: idpSettings.redirect_uri,
                 post_logout_redirect_uri: idpSettings.post_logout_redirect_uri,
                 silent_redirect_uri: idpSettings.silent_redirect_uri,
-                response_type: 'code',
                 scope: idpSettings.scope,
                 automaticSilentRenew: !isSilentRenew,
                 accessTokenExpiringNotificationTime:
                     accessTokenExpiringNotificationTime,
+                ...responseSettings,
             };
             let userManager = new UserManager(settings);
             userManager.idpSettings = idpSettings; //store our settings in there as well to use it later
