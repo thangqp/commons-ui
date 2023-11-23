@@ -32,7 +32,18 @@ const FloatInput = (props) => {
         if (tmp.endsWith('.') || tmp.endsWith('0')) {
             return tmp;
         }
-        return parseFloat(tmp) || null;
+
+        // toLocaleString never uses exponential notation unlike toString.
+        // Avoiding exponential notation makes in place normalizing of numbers
+        // after each keystroke less intrusive. Note: with 16+ digits, rounding
+        // due to precision still causes the cursor to jump at the end...
+        // This should be fixable with manual cursor handling if we need it.
+        return (
+            parseFloat(tmp).toLocaleString('en-US', {
+                maximumFractionDigits: 20,
+                useGrouping: false,
+            }) || null
+        );
     };
 
     return (
