@@ -25,36 +25,34 @@ import { isFloatNumber } from './utils';
 //   - rounding due to precision causes the last digits of the number to jiggle.
 // These two problems should be fixable with manual rounding and cursor
 // handling if we need it.
-const normalizeFixed = (x) => {
-  return x.toLocaleString('en-US', {
-    maximumFractionDigits: 20,
-    useGrouping: false,
-  });
-}
+const normalizeFixed = (number) => {
+    return number.toLocaleString('en-US', {
+        maximumFractionDigits: 20,
+        useGrouping: false,
+    });
+};
 
 const FloatInput = (props) => {
     const inputTransform = (value) => {
         // do we want to handle infinities here ?
-        if (typeof value == "number" && !isNaN(value)) {
-          // if we have a parsed real number, normalize like we do after each
-          // keystroke in outputTransform for consistency. We get parsed
-          // numbers when the data doesn't come from a user edit in the form,
-          // but from data persisted as a float.
-          return normalizeFixed(value);
+        if (typeof value == 'number' && !isNaN(value)) {
+            // if we have a parsed real number, normalize like we do after each
+            // keystroke in outputTransform for consistency. We get parsed
+            // numbers when the data doesn't come from a user edit in the form,
+            // but from data persisted as a float.
+            return normalizeFixed(value);
         } else {
-          // The user is editing, leave as is because we already did what we
-          // need to do in outputTransform after the previous keystroke.
-          // NOTE: To avoid "bad things", we clear the text on NaN, so we need to
-          // special case known inputs that would be rejected by isNaN but are accepted by
-          // our acceptValue because they are need as intermediate strings for the
-          // user to input useful numbers.
-          // TODO can we remove the isNan check and the special cases check?
-          if (['-', '.'].includes(value)) {
-              return value;
-          }
-          return value === null || isNaN(value)
-              ? ''
-              : value;
+            // The user is editing, leave as is because we already did what we
+            // need to do in outputTransform after the previous keystroke.
+            // NOTE: To avoid "bad things", we clear the text on NaN, so we need to
+            // special case known inputs that would be rejected by isNaN but are accepted by
+            // our acceptValue because they are need as intermediate strings for the
+            // user to input useful numbers.
+            // TODO can we remove the isNaN check and the special cases check?
+            if (['-', '.'].includes(value)) {
+                return value;
+            }
+            return value === null || isNaN(value) ? '' : value;
         }
     };
 
