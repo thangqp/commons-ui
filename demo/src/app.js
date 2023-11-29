@@ -9,15 +9,6 @@ import React, { useCallback, useEffect, useState } from 'react';
 
 import TopBar from '../../src/components/TopBar';
 import SnackbarProvider from '../../src/components/SnackbarProvider';
-
-import {
-    createTheme,
-    StyledEngineProvider,
-    ThemeProvider,
-} from '@mui/material/styles';
-import makeStyles from '@mui/styles/makeStyles';
-import withStyles from '@mui/styles/withStyles';
-import { styled } from '@mui/system';
 import AuthenticationRouter from '../../src/components/AuthenticationRouter';
 import CardErrorBoundary from '../../src/components/CardErrorBoundary';
 import {
@@ -32,11 +23,33 @@ import {
     LIGHT_THEME,
     logout,
 } from '../../src';
+import { useSnackMessage } from '../../src/hooks/useSnackMessage';
+
+import {
+    createTheme,
+    StyledEngineProvider,
+    ThemeProvider,
+} from '@mui/material/styles';
+import { makeStyles, withStyles } from '@mui/styles';
+import { styled } from '@mui/system';
+import {
+    Box,
+    Button,
+    Checkbox,
+    CssBaseline,
+    FormControl,
+    FormControlLabel,
+    FormGroup,
+    InputLabel,
+    MenuItem,
+    Select,
+    TextField,
+    Typography,
+} from '@mui/material';
+
 import { useMatch } from 'react-router';
 import { IntlProvider, useIntl } from 'react-intl';
-
 import { BrowserRouter, useLocation, useNavigate } from 'react-router-dom';
-import { useSnackMessage } from '../../src/hooks/useSnackMessage';
 
 import {
     element_search_en,
@@ -60,18 +73,6 @@ import {
     multiple_selection_dialog_en,
     multiple_selection_dialog_fr,
 } from '../../src/index';
-import CssBaseline from '@mui/material/CssBaseline';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 
 import PowsyblLogo from '-!@svgr/webpack!../images/powsybl_logo.svg';
 
