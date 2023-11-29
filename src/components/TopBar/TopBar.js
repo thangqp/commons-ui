@@ -6,49 +6,48 @@
  */
 
 import React, { useEffect, useRef, useState } from 'react';
-
 import { FormattedMessage } from 'react-intl';
 
-import AppBar from '@mui/material/AppBar';
-import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-
+import {
+    AppBar,
+    Box,
+    Button,
+    ClickAwayListener,
+    ListItemIcon,
+    ListItemText,
+    Menu,
+    MenuItem,
+    MenuList,
+    Paper,
+    Popper,
+    ToggleButton,
+    ToggleButtonGroup,
+    Toolbar,
+    Typography,
+} from '@mui/material';
+import {
+    Apps as AppsIcon,
+    ArrowDropDown as ArrowDropDownIcon,
+    ArrowDropUp as ArrowDropUpIcon,
+    Brightness3 as Brightness3Icon,
+    Computer as ComputerIcon,
+    ExitToApp as ExitToAppIcon,
+    FullscreenExit as FullscreenExitIcon,
+    Fullscreen as FullscreenIcon,
+    HelpOutline as HelpOutlineIcon,
+    Person as PersonIcon,
+    Search as SearchIcon,
+    Settings as SettingsIcon,
+    WbSunny as WbSunnyIcon,
+} from '@mui/icons-material';
 import { darken } from '@mui/material/styles';
 import { styled } from '@mui/system';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import SettingsIcon from '@mui/icons-material/Settings';
-import Button from '@mui/material/Button';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-
-import Box from '@mui/material/Box';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import AppsIcon from '@mui/icons-material/Apps';
-import SearchIcon from '@mui/icons-material/Search';
-import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
-import PersonIcon from '@mui/icons-material/Person';
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
-import Brightness3Icon from '@mui/icons-material/Brightness3';
-import WbSunnyIcon from '@mui/icons-material/WbSunny';
-import ComputerIcon from '@mui/icons-material/Computer';
-
-import ToggleButton from '@mui/material/ToggleButton';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
 import PropTypes from 'prop-types';
-import FullscreenIcon from '@mui/icons-material/Fullscreen';
 import FullScreen, { fullScreenSupported } from 'react-request-fullscreen';
 
-import Popper from '@mui/material/Popper';
-import Paper from '@mui/material/Paper';
-import MenuList from '@mui/material/MenuList';
-import ClickAwayListener from '@mui/material/ClickAwayListener';
-import { mergeSx } from '../../utils/styles';
-
 import ElementSearchDialog from '../ElementSearchDialog';
+import LogoWithText from './LogoWithText';
 
 const styles = {
     grow: {
@@ -56,21 +55,9 @@ const styles = {
         display: 'flex',
         overflow: 'hidden',
     },
-    logo: {
-        flexShrink: 0,
-        width: 48,
-        height: 48,
-        marginBottom: '8px',
-    },
     menuIcon: {
         width: 24,
         height: 24,
-    },
-    title: {
-        marginLeft: '18px',
-    },
-    clickable: {
-        cursor: 'pointer',
     },
     link: {
         textDecoration: 'none',
@@ -299,20 +286,12 @@ const TopBar = ({
                 }
             />
             <Toolbar>
-                <Box
-                    sx={mergeSx(styles.logo, onLogoClick && styles.clickable)}
+                <LogoWithText
                     onClick={onLogoClick}
-                >
-                    {appLogo}
-                </Box>
-                <Typography
-                    variant="h4"
-                    sx={mergeSx(styles.title, onLogoClick && styles.clickable)}
-                    onClick={onLogoClick}
-                >
-                    <span style={{ fontWeight: 'bold' }}>Grid</span>
-                    <span style={{ color: appColor }}>{appName}</span>
-                </Typography>
+                    appLogo={appLogo}
+                    appName={appName}
+                    appColor={appColor}
+                />
                 <Box sx={styles.grow}>{children}</Box>
                 {user && withElementsSearch && (
                     <React.Fragment>
