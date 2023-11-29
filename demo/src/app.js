@@ -786,6 +786,7 @@ const AppContent = ({ language, onLanguageClick }) => {
                             open={isAboutDialogOpen}
                             onClose={() => setAboutDialogOpen(false)}
                             appVersion={AppPackage.version}
+                            appLicense={AppPackage.license}
                             getGlobalVersion={(setter) => setter('1.0.0-demo')}
                             getLogoThemed={(mode) => (
                                 <LogoWithText

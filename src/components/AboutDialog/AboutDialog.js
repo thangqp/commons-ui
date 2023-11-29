@@ -31,6 +31,7 @@ const AboutDialog = ({
     getGlobalVersion,
     getLogoThemed,
     appVersion,
+    appLicense,
 }) => {
     const theme = useTheme();
     const intl = useIntl();
@@ -103,8 +104,45 @@ const AboutDialog = ({
                 >
                     {logo}
                 </Box>
-                <Box component="div" textAlign="center">
-                    Version: <i>{appVersion || '?unknown?'}</i>
+                <Box
+                    component="dl"
+                    sx={{
+                        textAlign: 'center',
+                        marginTop: 0,
+                        'dt, dd': {
+                            display: 'inline',
+                            margin: 0,
+                        },
+                        dt: {
+                            marginRight: '0.5em',
+                            '&:after': {
+                                content: '":"',
+                            },
+                            '&:before': {
+                                content: "'\\A'",
+                                whiteSpace: 'pre',
+                            },
+                            '&:first-child': {
+                                '&:before': {
+                                    content: "''",
+                                },
+                            },
+                        },
+                        dd: {
+                            fontStyle: 'italic',
+                        },
+                    }}
+                >
+                    {appLicense && (
+                        <>
+                            <dt>
+                                <FormattedMessage id="about-dialog/license" />
+                            </dt>
+                            <dd>{appLicense}</dd>
+                        </>
+                    )}
+                    <dt>Version</dt>
+                    <dd>{appVersion || '?unknown?'}</dd>
                 </Box>
                 <Box component="p">
                     GridSuite version{' '}
@@ -146,6 +184,7 @@ AboutDialog.propTypes = {
     open: PropTypes.bool.isRequired,
     onClose: PropTypes.func,
     appVersion: PropTypes.string,
+    appLicense: PropTypes.string,
     getGlobalVersion: PropTypes.func,
     getLogoThemed: PropTypes.func,
 };
