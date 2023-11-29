@@ -7,6 +7,7 @@
 
 export TreeViewFinder from './components/TreeViewFinder';
 export TopBar from './components/TopBar';
+export AboutDialog from './components/AboutDialog';
 export SnackbarProvider from './components/SnackbarProvider';
 export AuthenticationRouter from './components/AuthenticationRouter';
 export MuiVirtualizedTable from './components/MuiVirtualizedTable';

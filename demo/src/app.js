@@ -76,6 +76,14 @@ import {
 
 import PowsyblLogo from '-!@svgr/webpack!../images/powsybl_logo.svg';
 
+import AboutDialog from '../../src/components/AboutDialog';
+import {
+    about_dialog_en,
+    about_dialog_fr,
+} from '../../src/components/translations/about-dialog';
+import { LogoWithText } from '../../src/components/TopBar';
+import AppPackage from '../../package.json';
+
 import ReportViewerDialog from '../../src/components/ReportViewerDialog';
 import TreeViewFinder, {
     generateTreeViewFinderClass,
@@ -118,6 +126,7 @@ const messages = {
         ...flat_parameters_en,
         ...multiple_selection_dialog_en,
         ...inputs_en,
+        ...about_dialog_en,
     },
     fr: {
         ...report_viewer_fr,
@@ -131,6 +140,7 @@ const messages = {
         ...flat_parameters_fr,
         ...multiple_selection_dialog_fr,
         ...inputs_fr,
+        ...about_dialog_fr,
     },
 };
 
@@ -431,6 +441,8 @@ const AppContent = ({ language, onLanguageClick }) => {
         []
     );
 
+    const [isAboutDialogOpen, setAboutDialogOpen] = useState(false);
+
     const CustomTreeViewFinder =
         stylesProvider === 'emotion'
             ? CustomTreeViewFinderEmotion
@@ -658,7 +670,7 @@ const AppContent = ({ language, onLanguageClick }) => {
                             onLogoClick={() => console.log('logo')}
                             onThemeClick={handleThemeClick}
                             theme={theme}
-                            onAboutClick={() => console.log('about')}
+                            onAboutClick={() => setAboutDialogOpen(true)}
                             onEquipmentLabellingClick={
                                 handleEquipmentLabellingClick
                             }
@@ -770,6 +782,19 @@ const AppContent = ({ language, onLanguageClick }) => {
                                 />
                             )}
                         </CardErrorBoundary>
+                        <AboutDialog
+                            open={isAboutDialogOpen}
+                            onClose={() => setAboutDialogOpen(false)}
+                            appVersion={AppPackage.version}
+                            getGlobalVersion={(setter) => setter('1.0.0-demo')}
+                            getLogoThemed={(mode) => (
+                                <LogoWithText
+                                    appName="Demo"
+                                    appColor="#808080"
+                                    appLogo={<PowsyblLogo />}
+                                />
+                            )}
+                        />
                     </CardErrorBoundary>
                 </SnackbarProvider>
             </ThemeProvider>
