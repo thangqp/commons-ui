@@ -74,6 +74,7 @@ const AboutDialog = ({
     logo,
     appName,
     appVersion,
+    appGitTag,
     appLicense,
     getAdditionalComponents,
 }) => {
@@ -119,6 +120,7 @@ const AboutDialog = ({
                 name: `Grid${appName}`,
                 type: 'app',
                 version: appVersion,
+                gitTag: appGitTag,
                 license: appLicense,
             };
             if (getAdditionalComponents) {
@@ -349,6 +351,7 @@ AboutDialog.propTypes = {
     onClose: PropTypes.func,
     appName: PropTypes.string.isRequired,
     appVersion: PropTypes.string,
+    appGitTag: PropTypes.string,
     appLicense: PropTypes.string,
     getGlobalVersion: PropTypes.func,
     logo: PropTypes.element,

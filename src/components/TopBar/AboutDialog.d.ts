@@ -21,6 +21,7 @@ export const AboutDialog: FunctionComponent<{
     onClose?: () => void;
     appName: string;
     appVersion?: string;
+    appGitTag?: string;
     appLicense?: string;
     getGlobalVersion?: (setVersion: React.SetStateAction<string>) => void;
     logo?: React.ReactElement;
