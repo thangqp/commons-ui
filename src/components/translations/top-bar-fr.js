@@ -19,6 +19,7 @@ const top_bar_fr = {
     'top-bar/customTheme': 'Choix de theme',
 
     'about-dialog/title': 'À propos',
+    'about-dialog/deploy': 'GridSuite déploiement ver. {version}',
     'about-dialog/alert-running-old-version-title':
         "Ancienne version de l'application",
     'about-dialog/alert-running-old-version-content':

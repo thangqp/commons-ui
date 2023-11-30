@@ -747,6 +747,7 @@ const TopBar = ({
                 <AboutDialog
                     open={isAboutDialogOpen}
                     onClose={() => setAboutDialogOpen(false)}
+                    appName={appName}
                     appVersion={appVersion}
                     appLicense={appLicense}
                     getGlobalVersion={getGlobalVersion}

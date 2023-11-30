@@ -19,6 +19,7 @@ export type AboutAdditionalComponent = {
 export const AboutDialog: FunctionComponent<{
     open: boolean;
     onClose?: () => void;
+    appName: string;
     appVersion?: string;
     appLicense?: string;
     getGlobalVersion?: (setVersion: React.SetStateAction<string>) => void;
