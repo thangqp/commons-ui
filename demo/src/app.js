@@ -790,8 +790,11 @@ const AppContent = ({ language, onLanguageClick }) => {
                             appVersion={AppPackage.version}
                             appLicense={AppPackage.license}
                             getGlobalVersion={(setter) => {
-                                console.log("getGlobalVersion() called");
-                                aboutTimerVersion.current = window.setTimeout(() => setter('1.0.0-demo'), 1250);
+                                console.log('getGlobalVersion() called');
+                                aboutTimerVersion.current = window.setTimeout(
+                                    () => setter('1.0.0-demo'),
+                                    1250
+                                );
                             }}
                             getLogoThemed={(mode) => (
                                 <LogoWithText
@@ -811,12 +814,22 @@ const AppContent = ({ language, onLanguageClick }) => {
                                                 version: '1.0.0',
                                             },
                                             {
-                                                name: 'Server2',
+                                                name: 'Server3',
                                                 version: '1.0.0',
                                                 gitTag: 'v1.0.0',
                                                 license: 'MPL',
                                                 type: 'server',
                                             },
+                                            { name: 'Server10' },
+                                            { name: 'Server11' },
+                                            { name: 'Server12' },
+                                            { name: 'Server13' },
+                                            { name: 'Server14' },
+                                            { name: 'Server15' },
+                                            { name: 'Server16' },
+                                            { name: 'Server17' },
+                                            { name: 'Server18' },
+                                            { name: 'Server19' },
                                         ]),
                                     3000
                                 );

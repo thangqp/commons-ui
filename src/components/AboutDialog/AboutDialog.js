@@ -116,7 +116,7 @@ const AboutDialog = ({
             onClose();
         }
         setAdditionalComponents(null);
-        setActualGlobalVersion(null)
+        setActualGlobalVersion(null);
     }, [onClose]);
 
     return (
@@ -190,7 +190,7 @@ const AboutDialog = ({
                         style={{ transitionDelay: '500ms' }}
                         unmountOnExit
                     >
-                        <CircularProgress />
+                        <CircularProgress size="1rem" />
                     </Fade>
                 </Box>
                 {startingGlobalVersion !== actualGlobalVersion && (
