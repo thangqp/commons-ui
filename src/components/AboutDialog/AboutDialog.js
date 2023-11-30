@@ -9,8 +9,13 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
     Alert,
     AlertTitle,
+    Avatar,
     Box,
     Button,
+    Card,
+    CardContent,
+    CardHeader,
+    Chip,
     CircularProgress,
     Collapse,
     Dialog,
@@ -18,12 +23,28 @@ import {
     DialogContent,
     DialogTitle,
     Fade,
+    Grid,
+    Skeleton,
+    Tooltip,
     useMediaQuery,
     useTheme,
 } from '@mui/material';
-import { BrokenImage } from '@mui/icons-material';
+import {
+    Bookmark,
+    BrokenImage,
+    DnsOutlined,
+    Gavel,
+    QuestionMark,
+    WidgetsOutlined,
+} from '@mui/icons-material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
+
+const ComponentsTypeIcons = {
+    app: <WidgetsOutlined />,
+    server: <DnsOutlined />,
+    other: <QuestionMark />,
+};
 
 const AboutDialog = ({
     open,
@@ -32,6 +53,7 @@ const AboutDialog = ({
     getLogoThemed,
     appVersion,
     appLicense,
+    getAdditionalComponents,
 }) => {
     const theme = useTheme();
     const intl = useIntl();
@@ -44,12 +66,6 @@ const AboutDialog = ({
             return <BrokenImage />;
         }
     }, [getLogoThemed, theme.palette.mode]);
-
-    const handleClose = useCallback(() => {
-        if (onClose) {
-            onClose();
-        }
-    }, [onClose]);
 
     const handlerGetGlobalVersion = useCallback(getGlobalVersion, [
         getGlobalVersion,
@@ -80,6 +96,28 @@ const AboutDialog = ({
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [open, handlerGetGlobalVersion]);
+
+    const [loadingAdditionalComponents, setLoadingAdditionalComponents] =
+        useState(false);
+    const [additionalComponents, setAdditionalComponents] = useState(null);
+    useEffect(() => {
+        if (open && getAdditionalComponents) {
+            setLoadingAdditionalComponents(true);
+            getAdditionalComponents((values) => {
+                setLoadingAdditionalComponents(false);
+                setAdditionalComponents(values);
+            });
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [open, getAdditionalComponents]);
+
+    const handleClose = useCallback(() => {
+        if (onClose) {
+            onClose();
+        }
+        setAdditionalComponents(null);
+        setActualGlobalVersion(null)
+    }, [onClose]);
 
     return (
         <Dialog
@@ -165,9 +203,135 @@ const AboutDialog = ({
                         </Alert>
                     </Collapse>
                 )}
-                {/* TODO
-                 * List servers + animation loading
-                 */}
+                {getAdditionalComponents && (
+                    <Box
+                        sx={{
+                            '.MuiPaper-root': {
+                                width: '100%',
+                            },
+                            '.MuiCard-root': {
+                                height: '100%',
+                                width: '100%',
+                            },
+                            '.MuiCardHeader-root': {
+                                padding: 1,
+                            },
+                            '.MuiCardContent-root': {
+                                padding: 1,
+                                paddingTop: 0,
+                            },
+                        }}
+                    >
+                        <Box component="p">
+                            <FormattedMessage id="about-dialog/components-version" />
+                        </Box>
+                        <Grid container spacing={{ xs: 1, sm: 2 }}>
+                            {loadingAdditionalComponents ? (
+                                <>
+                                    {[...Array(3)].map((e, i) => (
+                                        <Grid
+                                            item
+                                            xs={12}
+                                            sm={6}
+                                            md={4}
+                                            key={`loader-${i}`}
+                                        >
+                                            <Skeleton
+                                                variant="rectangular"
+                                                height={80}
+                                            />
+                                        </Grid>
+                                    ))}
+                                </>
+                            ) : (
+                                Array.isArray(additionalComponents) && (
+                                    <>
+                                        {additionalComponents.map(
+                                            (cmpnt, idx) => (
+                                                <Grid
+                                                    item
+                                                    xs={12}
+                                                    sm={6}
+                                                    md={4}
+                                                    key={`cmpnt-${idx}`}
+                                                >
+                                                    <Card>
+                                                        <CardHeader
+                                                            avatar={
+                                                                <Avatar aria-label="component">
+                                                                    {ComponentsTypeIcons[
+                                                                        cmpnt
+                                                                            .type
+                                                                    ] ||
+                                                                        ComponentsTypeIcons[
+                                                                            'other'
+                                                                        ]}
+                                                                </Avatar>
+                                                            }
+                                                            title={
+                                                                cmpnt.name ||
+                                                                '<?>'
+                                                            }
+                                                            subheader={
+                                                                cmpnt.version ||
+                                                                ''
+                                                            }
+                                                        />
+                                                        <CardContent>
+                                                            {cmpnt.gitTag && (
+                                                                <Tooltip
+                                                                    title={intl.formatMessage(
+                                                                        {
+                                                                            id: 'about-dialog/git-version',
+                                                                        }
+                                                                    )}
+                                                                    arrow
+                                                                >
+                                                                    <Chip
+                                                                        icon={
+                                                                            <Bookmark />
+                                                                        }
+                                                                        variant="filled"
+                                                                        size="small"
+                                                                        label={
+                                                                            cmpnt.gitTag
+                                                                        }
+                                                                    />
+                                                                </Tooltip>
+                                                            )}
+                                                            {cmpnt.license && (
+                                                                <Tooltip
+                                                                    title={intl.formatMessage(
+                                                                        {
+                                                                            id: 'about-dialog/license',
+                                                                        }
+                                                                    )}
+                                                                    arrow
+                                                                >
+                                                                    <Chip
+                                                                        icon={
+                                                                            <Gavel />
+                                                                        }
+                                                                        variant="outlined"
+                                                                        size="small"
+                                                                        label={
+                                                                            'License: ' +
+                                                                            cmpnt.license
+                                                                        }
+                                                                    />
+                                                                </Tooltip>
+                                                            )}
+                                                        </CardContent>
+                                                    </Card>
+                                                </Grid>
+                                            )
+                                        )}
+                                    </>
+                                )
+                            )}
+                        </Grid>
+                    </Box>
+                )}
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose} autoFocus>
@@ -187,4 +351,5 @@ AboutDialog.propTypes = {
     appLicense: PropTypes.string,
     getGlobalVersion: PropTypes.func,
     getLogoThemed: PropTypes.func,
+    getAdditionalComponents: PropTypes.func,
 };

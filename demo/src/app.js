@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useRef } from 'react';
 
 import TopBar from '../../src/components/TopBar';
 import SnackbarProvider from '../../src/components/SnackbarProvider';
@@ -442,6 +442,8 @@ const AppContent = ({ language, onLanguageClick }) => {
     );
 
     const [isAboutDialogOpen, setAboutDialogOpen] = useState(false);
+    const aboutTimerVersion = useRef();
+    const aboutTimerCmpnt = useRef();
 
     const CustomTreeViewFinder =
         stylesProvider === 'emotion'
@@ -787,7 +789,10 @@ const AppContent = ({ language, onLanguageClick }) => {
                             onClose={() => setAboutDialogOpen(false)}
                             appVersion={AppPackage.version}
                             appLicense={AppPackage.license}
-                            getGlobalVersion={(setter) => setter('1.0.0-demo')}
+                            getGlobalVersion={(setter) => {
+                                console.log("getGlobalVersion() called");
+                                aboutTimerVersion.current = window.setTimeout(() => setter('1.0.0-demo'), 1250);
+                            }}
                             getLogoThemed={(mode) => (
                                 <LogoWithText
                                     appName="Demo"
@@ -795,6 +800,27 @@ const AppContent = ({ language, onLanguageClick }) => {
                                     appLogo={<PowsyblLogo />}
                                 />
                             )}
+                            getAdditionalComponents={(setComponents) => {
+                                console.log('getAdditionalComponents() called');
+                                aboutTimerCmpnt.current = window.setTimeout(
+                                    () =>
+                                        setComponents([
+                                            { name: 'Server1' },
+                                            {
+                                                name: 'Server2',
+                                                version: '1.0.0',
+                                            },
+                                            {
+                                                name: 'Server2',
+                                                version: '1.0.0',
+                                                gitTag: 'v1.0.0',
+                                                license: 'MPL',
+                                                type: 'server',
+                                            },
+                                        ]),
+                                    3000
+                                );
+                            }}
                         />
                     </CardErrorBoundary>
                 </SnackbarProvider>
