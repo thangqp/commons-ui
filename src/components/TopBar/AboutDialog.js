@@ -124,6 +124,11 @@ const AboutDialog = ({
             open={open}
             fullWidth={true}
             maxWidth="md"
+            sx={{
+                [theme.breakpoints.up('md')]: {
+                    maxHeight: '700px',
+                },
+            }}
             fullScreen={useMediaQuery(theme.breakpoints.down('md'))}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
@@ -183,7 +188,7 @@ const AboutDialog = ({
                 </Box>
                 <Box component="p">
                     GridSuite version{' '}
-                    <b>{actualGlobalVersion || '?unknown?'}</b>
+                    {!loadingGlobalVersion && <b>{actualGlobalVersion || '?unknown?'}</b>}
                     <Fade
                         in={loadingGlobalVersion}
                         style={{ transitionDelay: '500ms' }}
