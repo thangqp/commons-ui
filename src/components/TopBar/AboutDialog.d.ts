@@ -23,7 +23,7 @@ export const AboutDialog: FunctionComponent<{
     appVersion?: string;
     appLicense?: string;
     getGlobalVersion?: (setVersion: React.SetStateAction<string>) => void;
-    getLogoThemed?: (themeMode: PaletteMode) => React.ReactElement;
+    logo?: React.ReactElement;
     getAdditionalComponents?: (setComponents: React.SetStateAction<AboutAdditionalComponent[]>) => void;
 }>;
 

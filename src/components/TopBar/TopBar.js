@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import {
@@ -284,13 +284,26 @@ const TopBar = ({
         }
     }, [user, withElementsSearch, searchDisabled]);
 
-    const logo = (
-        <LogoWithText
-            onClick={onLogoClick}
-            appLogo={appLogo}
-            appName={appName}
-            appColor={appColor}
-        />
+    const logo = useMemo(
+        () => (
+            <LogoWithText
+                appLogo={appLogo}
+                appName={appName}
+                appColor={appColor}
+            />
+        ),
+        [appLogo, appName, appColor]
+    );
+    const logo_clickable = useMemo(
+        () => (
+            <LogoWithText
+                onClick={onLogoClick}
+                appLogo={appLogo}
+                appName={appName}
+                appColor={appColor}
+            />
+        ),
+        [onLogoClick, appLogo, appName, appColor]
     );
 
     return (
@@ -303,7 +316,7 @@ const TopBar = ({
                 }
             />
             <Toolbar>
-                {logo}
+                {logo_clickable}
                 <Box sx={styles.grow}>{children}</Box>
                 {user && withElementsSearch && (
                     <React.Fragment>
@@ -751,7 +764,7 @@ const TopBar = ({
                     appVersion={appVersion}
                     appLicense={appLicense}
                     getGlobalVersion={getGlobalVersion}
-                    getLogoThemed={(mode) => logo}
+                    logo={logo}
                     getAdditionalComponents={getAdditionalComponents}
                 />
             </Toolbar>

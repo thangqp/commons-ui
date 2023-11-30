@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
     Alert,
     AlertTitle,
@@ -71,7 +71,7 @@ const AboutDialog = ({
     open,
     onClose,
     getGlobalVersion,
-    getLogoThemed,
+    logo,
     appName,
     appVersion,
     appLicense,
@@ -80,14 +80,6 @@ const AboutDialog = ({
     const theme = useTheme();
 
     //TODO is useCallback in component or in caller?
-    const logo = useMemo(() => {
-        if (getLogoThemed) {
-            return getLogoThemed(theme.palette.mode);
-        } else {
-            return <BrokenImage />;
-        }
-    }, [getLogoThemed, theme.palette.mode]);
-
     const handlerGetGlobalVersion = useCallback(getGlobalVersion, [
         getGlobalVersion,
     ]);
@@ -123,7 +115,6 @@ const AboutDialog = ({
     const [additionalComponents, setAdditionalComponents] = useState(null);
     useEffect(() => {
         if (open) {
-            //
             const currentApp = {
                 name: `Grid${appName}`,
                 type: 'app',
@@ -181,7 +172,7 @@ const AboutDialog = ({
                         justifyContent: 'center',
                     }}
                 >
-                    {logo}
+                    {logo || <BrokenImage />}
                 </Box>
                 <Box component="p">
                     <FormattedMessage
@@ -189,7 +180,7 @@ const AboutDialog = ({
                         values={{
                             version: loadingGlobalVersion
                                 ? '…'
-                                : actualGlobalVersion || '?unknown?',
+                                : actualGlobalVersion || <i>unknown</i>,
                         }}
                     />
                     <Fade
@@ -327,7 +318,6 @@ const AboutDialog = ({
                                                                 variant="filled"
                                                                 size="small"
                                                                 label={
-                                                                    'License: ' +
                                                                     cmpnt.license
                                                                 }
                                                             />
@@ -361,6 +351,6 @@ AboutDialog.propTypes = {
     appVersion: PropTypes.string,
     appLicense: PropTypes.string,
     getGlobalVersion: PropTypes.func,
-    getLogoThemed: PropTypes.func,
+    logo: PropTypes.element,
     getAdditionalComponents: PropTypes.func,
 };
