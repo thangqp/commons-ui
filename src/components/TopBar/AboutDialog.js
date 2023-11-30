@@ -41,10 +41,30 @@ import {
 import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 
-const ComponentsTypeIcons = {
-    app: <WidgetsOutlined />,
-    server: <DnsOutlined />,
-    other: <QuestionMark />,
+const ComponentsTypesAvatar = {
+    app: (
+        <Avatar
+            aria-label="component-type"
+            variant="rounded"
+            sx={{ bgcolor: 'primary.main' }}
+        >
+            <WidgetsOutlined />
+        </Avatar>
+    ),
+    server: (
+        <Avatar
+            aria-label="component-type"
+            variant="rounded"
+            sx={{ bgcolor: 'secondary.main' }}
+        >
+            <DnsOutlined />
+        </Avatar>
+    ),
+    other: (
+        <Avatar aria-label="component-type" variant="rounded">
+            <QuestionMark />
+        </Avatar>
+    ),
 };
 
 const AboutDialog = ({
@@ -207,6 +227,16 @@ const AboutDialog = ({
                         '.MuiCardContent-root': {
                             padding: 1,
                             paddingTop: 0,
+                            '&:last-child': {
+                                //it's something injected by mui by default
+                                paddingBottom: 1,
+                            },
+                            '.MuiChip-root': {
+                                marginRight: 1,
+                                '&:last-child': {
+                                    marginRight: 0,
+                                },
+                            },
                         },
                     }}
                 >
@@ -245,14 +275,12 @@ const AboutDialog = ({
                                             <Card>
                                                 <CardHeader
                                                     avatar={
-                                                        <Avatar aria-label="component">
-                                                            {ComponentsTypeIcons[
-                                                                cmpnt.type
-                                                            ] ||
-                                                                ComponentsTypeIcons[
-                                                                    'other'
-                                                                ]}
-                                                        </Avatar>
+                                                        ComponentsTypesAvatar[
+                                                            cmpnt.type
+                                                        ] ||
+                                                        ComponentsTypesAvatar[
+                                                            'other'
+                                                        ]
                                                     }
                                                     title={cmpnt.name || '<?>'}
                                                     subheader={
@@ -296,7 +324,7 @@ const AboutDialog = ({
                                                         >
                                                             <Chip
                                                                 icon={<Gavel />}
-                                                                variant="outlined"
+                                                                variant="filled"
                                                                 size="small"
                                                                 label={
                                                                     'License: ' +
