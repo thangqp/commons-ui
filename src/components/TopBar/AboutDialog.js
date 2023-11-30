@@ -37,7 +37,7 @@ import {
     QuestionMark,
     WidgetsOutlined,
 } from '@mui/icons-material';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 
 const ComponentsTypeIcons = {
@@ -56,7 +56,6 @@ const AboutDialog = ({
     getAdditionalComponents,
 }) => {
     const theme = useTheme();
-    const intl = useIntl();
 
     //TODO is useCallback in component or in caller?
     const logo = useMemo(() => {
@@ -130,7 +129,7 @@ const AboutDialog = ({
             aria-describedby="alert-dialog-description"
         >
             <DialogTitle id="alert-dialog-title">
-                {intl.formatMessage({ id: 'about-dialog/title' })}
+                <FormattedMessage id={'about-dialog/title'} />
             </DialogTitle>
             <DialogContent dividers id="alert-dialog-description">
                 <Box
@@ -281,11 +280,13 @@ const AboutDialog = ({
                                                         <CardContent>
                                                             {cmpnt.gitTag && (
                                                                 <Tooltip
-                                                                    title={intl.formatMessage(
-                                                                        {
-                                                                            id: 'about-dialog/git-version',
-                                                                        }
-                                                                    )}
+                                                                    title={
+                                                                        <FormattedMessage
+                                                                            id={
+                                                                                'about-dialog/git-version'
+                                                                            }
+                                                                        />
+                                                                    }
                                                                     arrow
                                                                 >
                                                                     <Chip
@@ -302,11 +303,13 @@ const AboutDialog = ({
                                                             )}
                                                             {cmpnt.license && (
                                                                 <Tooltip
-                                                                    title={intl.formatMessage(
-                                                                        {
-                                                                            id: 'about-dialog/license',
-                                                                        }
-                                                                    )}
+                                                                    title={
+                                                                        <FormattedMessage
+                                                                            id={
+                                                                                'about-dialog/license'
+                                                                            }
+                                                                        />
+                                                                    }
                                                                     arrow
                                                                 >
                                                                     <Chip

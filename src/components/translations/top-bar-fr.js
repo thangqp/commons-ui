@@ -10,7 +10,7 @@ const top_bar_fr = {
     'top-bar/logout': 'Se déconnecter',
     'top-bar/goFullScreen': 'Plein écran',
     'top-bar/exitFullScreen': 'Quitter mode plein écran',
-    'top-bar/about': 'A propos',
+    'top-bar/about': 'À propos',
     'top-bar/displayMode': "Mode d'affichage",
     'top-bar/equipmentLabel': 'Label des ouvrages',
     'top-bar/id': 'Id',
