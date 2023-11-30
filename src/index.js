@@ -68,10 +68,6 @@ export login_en from './components/translations/login-en';
 export login_fr from './components/translations/login-fr';
 export top_bar_en from './components/translations/top-bar-en';
 export top_bar_fr from './components/translations/top-bar-fr';
-export {
-    about_dialog_en,
-    about_dialog_fr,
-} from './components/translations/about-dialog';
 export table_en from './components/translations/table-en';
 export table_fr from './components/translations/table-fr';
 export treeview_finder_en from './components/translations/treeview-finder-en';

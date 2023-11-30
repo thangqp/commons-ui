@@ -64,8 +64,6 @@ import {
     table_fr,
     top_bar_en,
     top_bar_fr,
-    about_dialog_en,
-    about_dialog_fr,
     treeview_finder_en,
     treeview_finder_fr,
     card_error_boundary_en,
@@ -121,7 +119,6 @@ const messages = {
         ...flat_parameters_en,
         ...multiple_selection_dialog_en,
         ...inputs_en,
-        ...about_dialog_en,
     },
     fr: {
         ...report_viewer_fr,
@@ -135,7 +132,6 @@ const messages = {
         ...flat_parameters_fr,
         ...multiple_selection_dialog_fr,
         ...inputs_fr,
-        ...about_dialog_fr,
     },
 };
 

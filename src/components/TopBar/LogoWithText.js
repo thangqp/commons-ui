@@ -21,6 +21,9 @@ const styles = {
     title: {
         marginLeft: '18px',
     },
+    clickable: {
+        cursor: 'pointer',
+    },
 };
 
 const LogoWithText = ({ appLogo, appName, appColor, onClick }) => {

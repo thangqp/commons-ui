@@ -17,6 +17,14 @@ const top_bar_en = {
     'top-bar/name': 'Name',
     'top-bar/language': 'Language',
     'top-bar/customTheme': 'Custom theme',
+
+    'about-dialog/title': 'About',
+    'about-dialog/alert-running-old-version-title': 'Running old version',
+    'about-dialog/alert-running-old-version-content':
+        'A new environment version has been detected.\nRefresh the application to load the lastest version.',
+    'about-dialog/license': 'License',
+    'about-dialog/components-version': 'Components:',
+    'about-dialog/git-version': 'Tag',
 };
 
 export default top_bar_en;
