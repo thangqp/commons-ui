@@ -64,6 +64,8 @@ import {
     table_fr,
     top_bar_en,
     top_bar_fr,
+    about_dialog_en,
+    about_dialog_fr,
     treeview_finder_en,
     treeview_finder_fr,
     card_error_boundary_en,
@@ -75,13 +77,6 @@ import {
 } from '../../src/index';
 
 import PowsyblLogo from '-!@svgr/webpack!../images/powsybl_logo.svg';
-
-import AboutDialog from '../../src/components/AboutDialog';
-import {
-    about_dialog_en,
-    about_dialog_fr,
-} from '../../src/components/translations/about-dialog';
-import { LogoWithText } from '../../src/components/TopBar';
 import AppPackage from '../../package.json';
 
 import ReportViewerDialog from '../../src/components/ReportViewerDialog';
@@ -441,9 +436,46 @@ const AppContent = ({ language, onLanguageClick }) => {
         []
     );
 
-    const [isAboutDialogOpen, setAboutDialogOpen] = useState(false);
     const aboutTimerVersion = useRef();
     const aboutTimerCmpnt = useRef();
+    function simulateGetGlobalVersion(setter) {
+        console.log('getGlobalVersion() called');
+        aboutTimerVersion.current = window.setTimeout(
+            () => setter('1.0.0-demo'),
+            1250
+        );
+    }
+    function simulateGetAdditionalComponents(setComponents) {
+        console.log('getAdditionalComponents() called');
+        aboutTimerCmpnt.current = window.setTimeout(
+            () =>
+                setComponents([
+                    { name: 'Server1' },
+                    {
+                        name: 'Server2',
+                        version: '1.0.0',
+                    },
+                    {
+                        name: 'Server3',
+                        version: '1.0.0',
+                        gitTag: 'v1.0.0',
+                        license: 'MPL',
+                        type: 'server',
+                    },
+                    { name: 'Server10' },
+                    { name: 'Server11' },
+                    { name: 'Server12' },
+                    { name: 'Server13' },
+                    { name: 'Server14' },
+                    { name: 'Server15' },
+                    { name: 'Server16' },
+                    { name: 'Server17' },
+                    { name: 'Server18' },
+                    { name: 'Server19' },
+                ]),
+            3000
+        );
+    }
 
     const CustomTreeViewFinder =
         stylesProvider === 'emotion'
@@ -672,7 +704,12 @@ const AppContent = ({ language, onLanguageClick }) => {
                             onLogoClick={() => console.log('logo')}
                             onThemeClick={handleThemeClick}
                             theme={theme}
-                            onAboutClick={() => setAboutDialogOpen(true)}
+                            appVersion={AppPackage.version}
+                            appLicense={AppPackage.license}
+                            getGlobalVersion={simulateGetGlobalVersion}
+                            getAdditionalComponents={
+                                simulateGetAdditionalComponents
+                            }
                             onEquipmentLabellingClick={
                                 handleEquipmentLabellingClick
                             }
@@ -784,57 +821,6 @@ const AppContent = ({ language, onLanguageClick }) => {
                                 />
                             )}
                         </CardErrorBoundary>
-                        <AboutDialog
-                            open={isAboutDialogOpen}
-                            onClose={() => setAboutDialogOpen(false)}
-                            appVersion={AppPackage.version}
-                            appLicense={AppPackage.license}
-                            getGlobalVersion={(setter) => {
-                                console.log('getGlobalVersion() called');
-                                aboutTimerVersion.current = window.setTimeout(
-                                    () => setter('1.0.0-demo'),
-                                    1250
-                                );
-                            }}
-                            getLogoThemed={(mode) => (
-                                <LogoWithText
-                                    appName="Demo"
-                                    appColor="#808080"
-                                    appLogo={<PowsyblLogo />}
-                                />
-                            )}
-                            getAdditionalComponents={(setComponents) => {
-                                console.log('getAdditionalComponents() called');
-                                aboutTimerCmpnt.current = window.setTimeout(
-                                    () =>
-                                        setComponents([
-                                            { name: 'Server1' },
-                                            {
-                                                name: 'Server2',
-                                                version: '1.0.0',
-                                            },
-                                            {
-                                                name: 'Server3',
-                                                version: '1.0.0',
-                                                gitTag: 'v1.0.0',
-                                                license: 'MPL',
-                                                type: 'server',
-                                            },
-                                            { name: 'Server10' },
-                                            { name: 'Server11' },
-                                            { name: 'Server12' },
-                                            { name: 'Server13' },
-                                            { name: 'Server14' },
-                                            { name: 'Server15' },
-                                            { name: 'Server16' },
-                                            { name: 'Server17' },
-                                            { name: 'Server18' },
-                                            { name: 'Server19' },
-                                        ]),
-                                    3000
-                                );
-                            }}
-                        />
                     </CardErrorBoundary>
                 </SnackbarProvider>
             </ThemeProvider>

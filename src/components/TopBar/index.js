@@ -6,3 +6,4 @@
  */
 export { default } from './TopBar';
 export { default as LogoWithText } from './LogoWithText';
+export { default as AboutDialog } from './AboutDialog';

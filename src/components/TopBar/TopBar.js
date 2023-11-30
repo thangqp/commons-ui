@@ -48,6 +48,7 @@ import FullScreen, { fullScreenSupported } from 'react-request-fullscreen';
 
 import ElementSearchDialog from '../ElementSearchDialog';
 import LogoWithText from './LogoWithText';
+import AboutDialog from './AboutDialog';
 
 const styles = {
     grow: {
@@ -158,6 +159,8 @@ const TopBar = ({
     appName,
     appColor,
     appLogo,
+    appVersion,
+    appLicense,
     onParametersClick,
     onLogoutClick,
     onLogoClick,
@@ -165,6 +168,8 @@ const TopBar = ({
     children,
     appsAndUrls,
     onAboutClick,
+    getGlobalVersion,
+    getAdditionalComponents,
     onThemeClick,
     theme,
     onEquipmentLabellingClick,
@@ -252,10 +257,13 @@ const TopBar = ({
         }
     };
 
+    const [isAboutDialogOpen, setAboutDialogOpen] = useState(false);
     const onAboutClicked = () => {
         setAnchorElSettingsMenu(false);
         if (onAboutClick) {
             onAboutClick();
+        } else {
+            setAboutDialogOpen(true);
         }
     };
 
@@ -276,6 +284,15 @@ const TopBar = ({
         }
     }, [user, withElementsSearch, searchDisabled]);
 
+    const logo = (
+        <LogoWithText
+            onClick={onLogoClick}
+            appLogo={appLogo}
+            appName={appName}
+            appColor={appColor}
+        />
+    );
+
     return (
         <AppBar position="static" color="default" sx={styles.appBar}>
             <FullScreen
@@ -286,12 +303,7 @@ const TopBar = ({
                 }
             />
             <Toolbar>
-                <LogoWithText
-                    onClick={onLogoClick}
-                    appLogo={appLogo}
-                    appName={appName}
-                    appColor={appColor}
-                />
+                {logo}
                 <Box sx={styles.grow}>{children}</Box>
                 {user && withElementsSearch && (
                     <React.Fragment>
@@ -636,10 +648,9 @@ const TopBar = ({
                                         </StyledMenuItem>
 
                                         {/* About */}
-                                        {/*If the callback onAboutClicked is undefined, about component should be disabled*/}
+                                        {/*If the callback onAboutClick is undefined, we open default about dialog*/}
                                         <StyledMenuItem
                                             sx={styles.borderBottom}
-                                            disabled={!onAboutClick}
                                             style={{ opacity: '1' }}
                                             onClick={onAboutClicked}
                                         >
@@ -733,6 +744,15 @@ const TopBar = ({
                         </Popper>
                     </div>
                 )}
+                <AboutDialog
+                    open={isAboutDialogOpen}
+                    onClose={() => setAboutDialogOpen(false)}
+                    appVersion={appVersion}
+                    appLicense={appLicense}
+                    getGlobalVersion={getGlobalVersion}
+                    getLogoThemed={(mode) => logo}
+                    getAdditionalComponents={getAdditionalComponents}
+                />
             </Toolbar>
         </AppBar>
     );
@@ -745,12 +765,16 @@ TopBar.propTypes = {
     appName: PropTypes.string,
     appColor: PropTypes.string,
     appLogo: PropTypes.object,
+    appVersion: PropTypes.string,
+    appLicense: PropTypes.string,
     user: PropTypes.object,
     children: PropTypes.node,
     appsAndUrls: PropTypes.array,
     onThemeClick: PropTypes.func,
     theme: PropTypes.string,
     onAboutClick: PropTypes.func,
+    getGlobalVersion: PropTypes.func,
+    getAdditionalComponents: PropTypes.func,
     onEquipmentLabellingClick: PropTypes.func,
     equipmentLabelling: PropTypes.bool,
     withElementsSearch: PropTypes.bool,
