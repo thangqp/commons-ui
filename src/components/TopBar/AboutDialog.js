@@ -193,16 +193,17 @@ const AboutDialog = ({
                         <CircularProgress size="1rem" />
                     </Fade>
                 </Box>
-                {startingGlobalVersion !== actualGlobalVersion && (
-                    <Collapse in={open}>
-                        <Alert severity="warning" variant="outlined">
-                            <AlertTitle>
-                                <FormattedMessage id="about-dialog/alert-running-old-version-title" />
-                            </AlertTitle>
-                            <FormattedMessage id="about-dialog/alert-running-old-version-content" />
-                        </Alert>
-                    </Collapse>
-                )}
+                {actualGlobalVersion !== null &&
+                    startingGlobalVersion !== actualGlobalVersion && (
+                        <Collapse in={open}>
+                            <Alert severity="warning" variant="outlined">
+                                <AlertTitle>
+                                    <FormattedMessage id="about-dialog/alert-running-old-version-title" />
+                                </AlertTitle>
+                                <FormattedMessage id="about-dialog/alert-running-old-version-content" />
+                            </Alert>
+                        </Collapse>
+                    )}
                 {getAdditionalComponents && (
                     <Box
                         sx={{
