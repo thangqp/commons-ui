@@ -284,16 +284,6 @@ const TopBar = ({
         }
     }, [user, withElementsSearch, searchDisabled]);
 
-    const logo = useMemo(
-        () => (
-            <LogoWithText
-                appLogo={appLogo}
-                appName={appName}
-                appColor={appColor}
-            />
-        ),
-        [appLogo, appName, appColor]
-    );
     const logo_clickable = useMemo(
         () => (
             <LogoWithText
@@ -764,7 +754,6 @@ const TopBar = ({
                     appVersion={appVersion}
                     appLicense={appLicense}
                     getGlobalVersion={getGlobalVersion}
-                    logo={logo}
                     getAdditionalComponents={getAdditionalComponents}
                 />
             </Toolbar>

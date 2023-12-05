@@ -6,10 +6,11 @@
  */
 
 import React from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import { BrokenImage } from '@mui/icons-material';
 import { mergeSx } from '../../utils/styles';
 import PropTypes from 'prop-types';
+import LogoTextOnly from './LogoTextOnly';
 
 const styles = {
     logo: {
@@ -35,14 +36,12 @@ const LogoWithText = ({ appLogo, appName, appColor, onClick }) => {
             >
                 {appLogo || <BrokenImage />}
             </Box>
-            <Typography
-                variant="h4"
-                sx={mergeSx(styles.title, onClick && styles.clickable)}
+            <LogoTextOnly
+                appName={appName}
+                appColor={appColor}
                 onClick={onClick}
-            >
-                <span style={{ fontWeight: 'bold' }}>Grid</span>
-                <span style={{ color: appColor }}>{appName}</span>
-            </Typography>
+                style={styles.title}
+            />
         </>
     );
 };

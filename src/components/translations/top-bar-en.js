@@ -19,12 +19,12 @@ const top_bar_en = {
     'top-bar/customTheme': 'Custom theme',
 
     'about-dialog/title': 'About',
-    'about-dialog/deploy': 'GridSuite deploy ver. {version}',
-    'about-dialog/alert-running-old-version-title': 'Running old version',
-    'about-dialog/alert-running-old-version-content':
-        'A new environment version has been detected.\nRefresh the application to load the lastest version.',
+    'about-dialog/version': 'Version',
+    'about-dialog/alert-running-old-version-msg':
+        'Running old version.\nSave your work and refresh the application to load the latest version.',
     'about-dialog/license': 'License',
-    'about-dialog/components-version': 'Components:',
+    'about-dialog/details-list': 'Details',
+    'about-dialog/components-section': 'Modules:',
     'about-dialog/git-version': 'Tag',
 };
 

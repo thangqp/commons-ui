@@ -8,14 +8,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import {
     Alert,
-    AlertTitle,
-    Avatar,
     Box,
     Button,
-    Card,
-    CardContent,
-    CardHeader,
-    Chip,
     CircularProgress,
     Collapse,
     Dialog,
@@ -24,54 +18,54 @@ import {
     DialogTitle,
     Divider,
     Fade,
-    Grid,
+    List,
+    ListItem,
+    ListItemButton,
+    ListItemIcon,
+    ListItemText,
+    ListSubheader,
     Skeleton,
-    Tooltip,
     useMediaQuery,
     useTheme,
 } from '@mui/material';
 import {
-    Bookmark,
-    BrokenImage,
+    Apps,
     DnsOutlined,
-    Gavel,
+    ExpandLess,
+    ExpandMore,
     QuestionMark,
+    Refresh,
+    Sync,
     WidgetsOutlined,
 } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
+import LogoTextOnly from './LogoTextOnly';
+import { LoadingButton } from '@mui/lab';
 
 const ComponentsTypesAvatar = {
-    app: (
-        <Avatar
-            aria-label="component-type"
-            variant="rounded"
-            sx={{ bgcolor: 'primary.main' }}
-        >
-            <WidgetsOutlined />
-        </Avatar>
-    ),
-    server: (
-        <Avatar
-            aria-label="component-type"
-            variant="rounded"
-            sx={{ bgcolor: 'secondary.main' }}
-        >
-            <DnsOutlined />
-        </Avatar>
-    ),
-    other: (
-        <Avatar aria-label="component-type" variant="rounded">
-            <QuestionMark />
-        </Avatar>
-    ),
+    app: <WidgetsOutlined fontSize="small" color="primary" />,
+    server: <DnsOutlined fontSize="small" color="secondary" />,
+    other: <QuestionMark fontSize="small" />,
 };
+
+const typeSort = {
+    app: 1,
+    server: 10,
+    other: 20,
+};
+function compareAdditionalComponents(c1, c2) {
+    //sort by type then by name
+    return (
+        [typeSort[c1.type] || 100] - [typeSort[c2.type] || 100] ||
+        (c1.name || '').localeCompare(c2.name || '')
+    );
+}
 
 const AboutDialog = ({
     open,
     onClose,
     getGlobalVersion,
-    logo,
     appName,
     appVersion,
     appGitTag,
@@ -79,6 +73,8 @@ const AboutDialog = ({
     getAdditionalComponents,
 }) => {
     const theme = useTheme();
+
+    const [isRefreshing, setRefreshState] = useState(false);
 
     //TODO is useCallback in component or in caller?
     const handlerGetGlobalVersion = useCallback(getGlobalVersion, [
@@ -111,6 +107,8 @@ const AboutDialog = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [open, handlerGetGlobalVersion]);
 
+    const [openAdditionalComponents, setOpenAdditionalComponents] =
+        useState(true);
     const [loadingAdditionalComponents, setLoadingAdditionalComponents] =
         useState(false);
     const [additionalComponents, setAdditionalComponents] = useState(null);
@@ -167,6 +165,33 @@ const AboutDialog = ({
                 <FormattedMessage id={'about-dialog/title'} />
             </DialogTitle>
             <DialogContent dividers id="alert-dialog-description">
+                {actualGlobalVersion !== null &&
+                    startingGlobalVersion !== actualGlobalVersion && (
+                        <Collapse in={open}>
+                            <Alert
+                                severity="warning"
+                                variant="outlined"
+                                action={
+                                    <LoadingButton
+                                        color="inherit"
+                                        size="small"
+                                        startIcon={<Refresh fontSize="small" />}
+                                        loadingPosition="start"
+                                        loading={isRefreshing}
+                                        onClick={() => {
+                                            setRefreshState(true);
+                                            window.location.reload();
+                                        }}
+                                    >
+                                        <FormattedMessage id="refresh" />
+                                    </LoadingButton>
+                                }
+                                sx={{ marginBottom: 1 }}
+                            >
+                                <FormattedMessage id="about-dialog/alert-running-old-version-msg" />
+                            </Alert>
+                        </Collapse>
+                    )}
                 <Box
                     sx={{
                         display: 'flex',
@@ -174,17 +199,51 @@ const AboutDialog = ({
                         justifyContent: 'center',
                     }}
                 >
-                    {logo || <BrokenImage />}
-                </Box>
-                <Box component="p">
-                    <FormattedMessage
-                        id="about-dialog/deploy"
-                        values={{
-                            version: loadingGlobalVersion
-                                ? '…'
-                                : actualGlobalVersion || <i>unknown</i>,
-                        }}
+                    <LogoTextOnly
+                        appName="Suite"
+                        appColor={theme.palette.grey['500']}
                     />
+                </Box>
+                <Box
+                    component="dl"
+                    sx={{
+                        textAlign: 'center',
+                        marginTop: 0,
+                        'dt, dd': {
+                            display: 'inline',
+                            margin: 0,
+                        },
+                        dt: {
+                            marginRight: '0.5em',
+                            '&:after': {
+                                content: '" :"',
+                            },
+                            '&:before': {
+                                content: "'\\A'",
+                                whiteSpace: 'pre',
+                            },
+                            '&:first-child': {
+                                '&:before': {
+                                    content: "''",
+                                },
+                            },
+                        },
+                    }}
+                >
+                    <dt>
+                        <FormattedMessage id="about-dialog/version" />
+                    </dt>
+                    <dd>
+                        {loadingGlobalVersion ? (
+                            '…'
+                        ) : actualGlobalVersion ? (
+                            <b style={{ fontSize: '1.5em' }}>
+                                {actualGlobalVersion}
+                            </b>
+                        ) : (
+                            <i>unknown</i>
+                        )}
+                    </dd>
                     <Fade
                         in={loadingGlobalVersion}
                         style={{ transitionDelay: '500ms' }}
@@ -193,146 +252,132 @@ const AboutDialog = ({
                         <CircularProgress size="1rem" />
                     </Fade>
                 </Box>
-                {actualGlobalVersion !== null &&
-                    startingGlobalVersion !== actualGlobalVersion && (
-                        <Collapse in={open}>
-                            <Alert severity="warning" variant="outlined">
-                                <AlertTitle>
-                                    <FormattedMessage id="about-dialog/alert-running-old-version-title" />
-                                </AlertTitle>
-                                <FormattedMessage id="about-dialog/alert-running-old-version-content" />
-                            </Alert>
-                        </Collapse>
-                    )}
                 <Divider />
                 <Box
                     sx={{
-                        '.MuiPaper-root': {
-                            width: '100%',
-                        },
-                        '.MuiCard-root': {
-                            height: '100%',
-                            width: '100%',
-                        },
-                        '.MuiCardHeader-root': {
-                            padding: 1,
-                        },
-                        '.MuiCardContent-root': {
-                            padding: 1,
-                            paddingTop: 0,
-                            '&:last-child': {
-                                //it's something injected by mui by default
-                                paddingBottom: 1,
-                            },
-                            '.MuiChip-root': {
-                                marginRight: 1,
-                                '&:last-child': {
-                                    marginRight: 0,
-                                },
-                            },
+                        '.MuiListItemIcon-root': {
+                            minWidth: '2rem',
                         },
                     }}
                 >
-                    <Box component="p">
-                        <FormattedMessage id="about-dialog/components-version" />
-                    </Box>
-                    <Grid container spacing={{ xs: 1, sm: 2 }}>
-                        {loadingAdditionalComponents ? (
-                            <>
-                                {[...Array(3)].map((e, i) => (
-                                    <Grid
-                                        item
-                                        xs={12}
-                                        sm={6}
-                                        md={4}
-                                        key={`loader-${i}`}
-                                    >
-                                        <Skeleton
-                                            variant="rectangular"
-                                            height={80}
-                                        />
-                                    </Grid>
-                                ))}
-                            </>
-                        ) : (
-                            Array.isArray(additionalComponents) && (
-                                <>
-                                    {additionalComponents.map((cmpnt, idx) => (
-                                        <Grid
-                                            item
-                                            xs={12}
-                                            sm={6}
-                                            md={4}
-                                            key={`cmpnt-${idx}`}
-                                        >
-                                            <Card>
-                                                <CardHeader
-                                                    avatar={
-                                                        ComponentsTypesAvatar[
-                                                            cmpnt.type
-                                                        ] ||
-                                                        ComponentsTypesAvatar[
-                                                            'other'
-                                                        ]
-                                                    }
-                                                    title={cmpnt.name || '<?>'}
-                                                    subheader={
-                                                        cmpnt.version || ''
-                                                    }
-                                                />
-                                                <CardContent>
-                                                    {cmpnt.gitTag && (
-                                                        <Tooltip
-                                                            title={
-                                                                <FormattedMessage
-                                                                    id={
-                                                                        'about-dialog/git-version'
-                                                                    }
-                                                                />
+                    <List
+                        dense={true}
+                        subheader={
+                            <ListSubheader
+                                component="div"
+                                id="details-list-subheader"
+                            >
+                                <FormattedMessage id="about-dialog/details-list" />
+                            </ListSubheader>
+                        }
+                        aria-labelledby="details-list-subheader"
+                    >
+                        <ListItemButton
+                            onClick={() =>
+                                setOpenAdditionalComponents((prev) => !prev)
+                            }
+                        >
+                            <ListItemIcon>
+                                <Apps fontSize="small" />
+                            </ListItemIcon>
+                            <ListItemText>
+                                <FormattedMessage id="about-dialog/components-section" />
+                            </ListItemText>
+                            {openAdditionalComponents ? (
+                                <ExpandLess />
+                            ) : (
+                                <ExpandMore />
+                            )}
+                        </ListItemButton>
+                        <Collapse
+                            in={openAdditionalComponents}
+                            timeout="auto"
+                            unmountOnExit
+                        >
+                            <List
+                                dense={true}
+                                component="div"
+                                sx={{
+                                    maxHeight: '15em',
+                                    overflow: 'auto',
+                                    paddingTop: 0,
+                                    '.MuiListItemText-root': {
+                                        marginTop: 0,
+                                        marginBottom: 0,
+                                    },
+                                }}
+                            >
+                                {loadingAdditionalComponents ? (
+                                    <>
+                                        {[...Array(5)].map((e, i) => (
+                                            <ListItem
+                                                sx={{ pl: 4 }}
+                                                key={`loader-${i}`}
+                                            >
+                                                <ListItemIcon disableGutters>
+                                                    <Sync
+                                                        fontSize="small"
+                                                        titleAccess="Loading..."
+                                                    />
+                                                </ListItemIcon>
+                                                <ListItemText>
+                                                    <Skeleton
+                                                        variant="rectangular"
+                                                        height={15}
+                                                    />
+                                                </ListItemText>
+                                            </ListItem>
+                                        ))}
+                                    </>
+                                ) : (
+                                    Array.isArray(additionalComponents) && (
+                                        <>
+                                            {additionalComponents
+                                                .sort(
+                                                    compareAdditionalComponents
+                                                )
+                                                .map((cmpnt, idx) => (
+                                                    <ListItem
+                                                        disableGutters
+                                                        sx={{ pl: 4 }}
+                                                        key={`cmpnt-${idx}`}
+                                                    >
+                                                        <ListItemIcon>
+                                                            {ComponentsTypesAvatar[
+                                                                cmpnt.type
+                                                            ] ||
+                                                                ComponentsTypesAvatar[
+                                                                    'other'
+                                                                ]}
+                                                        </ListItemIcon>
+                                                        <ListItemText
+                                                            primary={
+                                                                cmpnt.name ||
+                                                                '<?>'
                                                             }
-                                                            arrow
-                                                        >
-                                                            <Chip
-                                                                icon={
-                                                                    <Bookmark />
-                                                                }
-                                                                variant="filled"
-                                                                size="small"
-                                                                label={
-                                                                    cmpnt.gitTag
-                                                                }
-                                                            />
-                                                        </Tooltip>
-                                                    )}
-                                                    {cmpnt.license && (
-                                                        <Tooltip
-                                                            title={
-                                                                <FormattedMessage
-                                                                    id={
-                                                                        'about-dialog/license'
-                                                                    }
-                                                                />
+                                                            secondary={
+                                                                cmpnt.gitTag ||
+                                                                cmpnt.version ||
+                                                                null
                                                             }
-                                                            arrow
-                                                        >
-                                                            <Chip
-                                                                icon={<Gavel />}
-                                                                variant="filled"
-                                                                size="small"
-                                                                label={
-                                                                    cmpnt.license
-                                                                }
-                                                            />
-                                                        </Tooltip>
-                                                    )}
-                                                </CardContent>
-                                            </Card>
-                                        </Grid>
-                                    ))}
-                                </>
-                            )
-                        )}
-                    </Grid>
+                                                            primaryTypographyProps={{
+                                                                display:
+                                                                    'inline-block',
+                                                            }}
+                                                            secondaryTypographyProps={{
+                                                                display:
+                                                                    'inline',
+                                                                marginLeft: 1,
+                                                            }}
+                                                        />
+                                                    </ListItem>
+                                                ))}
+                                        </>
+                                    )
+                                )}
+                            </List>
+                        </Collapse>
+                    </List>
                 </Box>
             </DialogContent>
             <DialogActions>
@@ -354,6 +399,5 @@ AboutDialog.propTypes = {
     appGitTag: PropTypes.string,
     appLicense: PropTypes.string,
     getGlobalVersion: PropTypes.func,
-    logo: PropTypes.element,
     getAdditionalComponents: PropTypes.func,
 };

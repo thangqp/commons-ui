@@ -19,13 +19,12 @@ const top_bar_fr = {
     'top-bar/customTheme': 'Choix de theme',
 
     'about-dialog/title': 'À propos',
-    'about-dialog/deploy': 'GridSuite déploiement ver. {version}',
-    'about-dialog/alert-running-old-version-title':
-        "Ancienne version de l'application",
-    'about-dialog/alert-running-old-version-content':
-        "Une nouvelle version de l'environnement a été détectée.\nVeuillez rafraîchir l'application pour charger la dernière version",
+    'about-dialog/version': 'Version',
+    'about-dialog/alert-running-old-version-msg':
+        "Ancienne version de l'application.\nVeuillez sauvegardez votre travail et rafraîchir l'application pour charger la dernière version",
     'about-dialog/license': 'Licence',
-    'about-dialog/components-version': 'Composants:',
+    'about-dialog/details-list': 'Détails',
+    'about-dialog/components-section': 'Modules :',
     'about-dialog/git-version': 'Tag',
 };
 

@@ -24,7 +24,6 @@ export const AboutDialog: FunctionComponent<{
     appGitTag?: string;
     appLicense?: string;
     getGlobalVersion?: (setVersion: React.SetStateAction<string>) => void;
-    logo?: React.ReactElement;
     getAdditionalComponents?: (setComponents: React.SetStateAction<AboutAdditionalComponent[]>) => void;
 }>;
 
