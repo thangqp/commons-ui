@@ -73,39 +73,31 @@ const AboutDialog = ({
     getAdditionalComponents,
 }) => {
     const theme = useTheme();
-
     const [isRefreshing, setRefreshState] = useState(false);
-
-    //TODO is useCallback in component or in caller?
-    const handlerGetGlobalVersion = useCallback(getGlobalVersion, [
-        getGlobalVersion,
-    ]);
     const [loadingGlobalVersion, setLoadingGlobalVersion] = useState(false);
 
     /* We want to get the initial version once at first render to detect later a new deploy */
-    const [startingGlobalVersion, setStartingGlobalVersion] = useState(null);
+    const [startingGlobalVersion, setStartingGlobalVersion] =
+        useState(undefined);
     useEffect(() => {
-        if (getGlobalVersion) {
-            handlerGetGlobalVersion((value) => {
-                setLoadingGlobalVersion(false);
+        if (startingGlobalVersion === undefined && getGlobalVersion) {
+            getGlobalVersion((value) => {
                 setStartingGlobalVersion(value);
                 setActualGlobalVersion(value);
             });
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [getGlobalVersion, startingGlobalVersion]);
 
     const [actualGlobalVersion, setActualGlobalVersion] = useState(null);
     useEffect(() => {
         if (open && getGlobalVersion) {
             setLoadingGlobalVersion(true);
-            handlerGetGlobalVersion((value) => {
+            getGlobalVersion((value) => {
                 setLoadingGlobalVersion(false);
-                setActualGlobalVersion(value);
+                setActualGlobalVersion(value || null);
             });
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [open, handlerGetGlobalVersion]);
+    }, [open, getGlobalVersion]);
 
     const [openAdditionalComponents, setOpenAdditionalComponents] =
         useState(true);
@@ -165,7 +157,9 @@ const AboutDialog = ({
                 <FormattedMessage id={'about-dialog/title'} />
             </DialogTitle>
             <DialogContent dividers id="alert-dialog-description">
-                {actualGlobalVersion !== null &&
+                {startingGlobalVersion !== undefined &&
+                    startingGlobalVersion !== null &&
+                    actualGlobalVersion !== null &&
                     startingGlobalVersion !== actualGlobalVersion && (
                         <Collapse in={open}>
                             <Alert
