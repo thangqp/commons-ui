@@ -571,7 +571,6 @@ const TopBar = ({
                                         {/*If the callback onParametersClicked is undefined, parameters component should be disabled*/}
                                         {onParametersClick && (
                                             <StyledMenuItem
-                                                disabled={!onParametersClick}
                                                 onClick={onParametersClicked}
                                                 sx={styles.borderTop}
                                             >
