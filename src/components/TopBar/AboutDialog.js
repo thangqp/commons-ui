@@ -246,7 +246,6 @@ const AboutDialog = ({
                         <CircularProgress size="1rem" />
                     </Fade>
                 </Box>
-                <Divider />
                 <Box
                     sx={{
                         '.MuiListItemIcon-root': {
@@ -254,18 +253,7 @@ const AboutDialog = ({
                         },
                     }}
                 >
-                    <List
-                        dense={true}
-                        subheader={
-                            <ListSubheader
-                                component="div"
-                                id="details-list-subheader"
-                            >
-                                <FormattedMessage id="about-dialog/details-list" />
-                            </ListSubheader>
-                        }
-                        aria-labelledby="details-list-subheader"
-                    >
+                    <List dense={true}>
                         <ListItemButton
                             onClick={() =>
                                 setOpenAdditionalComponents((prev) => !prev)
