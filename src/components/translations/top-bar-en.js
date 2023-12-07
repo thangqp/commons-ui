@@ -23,7 +23,7 @@ const top_bar_en = {
     'about-dialog/alert-running-old-version-msg':
         'Running old version.\nSave your work and refresh the application to load the latest version.',
     'about-dialog/license': 'License',
-    'about-dialog/components-section': 'Modules details',
+    'about-dialog/modules-section': 'Modules details',
     'about-dialog/git-version': 'Tag',
 };
 

@@ -21,9 +21,9 @@ const top_bar_fr = {
     'about-dialog/title': 'À propos',
     'about-dialog/version': 'Version',
     'about-dialog/alert-running-old-version-msg':
-        "Ancienne version de l'application.\nVeuillez sauvegardez votre travail et rafraîchir l'application pour charger la dernière version",
+        "Ancienne version de l'application.\nVeuillez sauvegarder votre travail et rafraîchir l'application pour charger la dernière version",
     'about-dialog/license': 'Licence',
-    'about-dialog/components-section': 'Détails des modules',
+    'about-dialog/modules-section': 'Détails des modules',
     'about-dialog/git-version': 'Tag',
 };
 

@@ -20,6 +20,7 @@ import {
     DialogContent,
     DialogTitle,
     Fade,
+    Grid,
     LinearProgress,
     Stack,
     Typography,
@@ -39,17 +40,16 @@ import {
 import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 import LogoTextOnly from './LogoTextOnly';
-import Grid from '@mui/material/Grid';
 
-const typeSort = {
+const moduleTypeSort = {
     app: 1,
     server: 10,
     other: 20,
 };
-function compareAdditionalComponents(c1, c2) {
+function compareModules(c1, c2) {
     //sort by type then by name
     return (
-        [typeSort[c1.type] || 100] - [typeSort[c2.type] || 100] ||
+        [moduleTypeSort[c1.type] || 100] - [moduleTypeSort[c2.type] || 100] ||
         (c1.name || '').localeCompare(c2.name || '')
     );
 }
@@ -62,7 +62,7 @@ const AboutDialog = ({
     appVersion,
     appGitTag,
     appLicense,
-    getAdditionalComponents,
+    getAdditionalModules,
 }) => {
     const theme = useTheme();
     const [isRefreshing, setRefreshState] = useState(false);
@@ -91,9 +91,9 @@ const AboutDialog = ({
         }
     }, [open, getGlobalVersion]);
 
-    const [loadingAdditionalComponents, setLoadingAdditionalComponents] =
+    const [loadingAdditionalModules, setLoadingAdditionalModules] =
         useState(false);
-    const [additionalComponents, setAdditionalComponents] = useState(null);
+    const [modules, setModules] = useState(null);
     useEffect(() => {
         if (open) {
             const currentApp = {
@@ -103,28 +103,34 @@ const AboutDialog = ({
                 gitTag: appGitTag,
                 license: appLicense,
             };
-            if (getAdditionalComponents) {
-                setLoadingAdditionalComponents(true);
-                getAdditionalComponents((values) => {
-                    setLoadingAdditionalComponents(false);
+            if (getAdditionalModules) {
+                setLoadingAdditionalModules(true);
+                getAdditionalModules((values) => {
+                    setLoadingAdditionalModules(false);
                     if (Array.isArray(values)) {
-                        setAdditionalComponents([currentApp, ...values]);
+                        setModules([currentApp, ...values]);
                     } else {
-                        setAdditionalComponents([currentApp]);
+                        setModules([currentApp]);
                     }
                 });
             } else {
-                setAdditionalComponents([currentApp]);
+                setModules([currentApp]);
             }
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [open, getAdditionalComponents]);
+    }, [
+        open,
+        getAdditionalModules,
+        appName,
+        appVersion,
+        appGitTag,
+        appLicense,
+    ]);
 
     const handleClose = useCallback(() => {
         if (onClose) {
             onClose();
         }
-        setAdditionalComponents(null);
+        setModules(null);
         setActualGlobalVersion(null);
     }, [onClose]);
 
@@ -281,31 +287,30 @@ const AboutDialog = ({
                             id="panel2-header"
                         >
                             <Apps fontSize="small" />
-                            <FormattedMessage id="about-dialog/components-section" />
+                            <FormattedMessage id="about-dialog/modules-section" />
                         </AccordionSummary>
                         <AccordionDetails>
                             <Grid container sx={{ pl: 2 }} spacing={1}>
-                                {loadingAdditionalComponents ? (
+                                {loadingAdditionalModules ? (
                                     <Grid item xs>
                                         <LinearProgress color="inherit" />
                                     </Grid>
                                 ) : (
-                                    (Array.isArray(additionalComponents) && (
+                                    (Array.isArray(modules) && (
                                         <>
-                                            {[...additionalComponents]
+                                            {[...modules]
                                                 //.toSorted(...) not found?
-                                                .sort(
-                                                    compareAdditionalComponents
-                                                )
-                                                .map((cmpnt, idx) => (
+                                                .sort(compareModules)
+                                                .map((module, idx) => (
                                                     <Module
-                                                        key={`cmpnt-${idx}`}
-                                                        type={cmpnt.type}
-                                                        name={cmpnt.name}
+                                                        key={`module-${idx}`}
+                                                        type={module.type}
+                                                        name={module.name}
                                                         version={
-                                                            cmpnt.gitTag ||
-                                                            cmpnt.version
+                                                            module.gitTag ||
+                                                            module.version
                                                         }
+                                                        license={module.license}
                                                     />
                                                 ))}
                                         </>
@@ -343,16 +348,16 @@ AboutDialog.propTypes = {
     appGitTag: PropTypes.string,
     appLicense: PropTypes.string,
     getGlobalVersion: PropTypes.func,
-    getAdditionalComponents: PropTypes.func,
+    getAdditionalModules: PropTypes.func,
 };
 
-const ComponentTypesAvatar = {
+const ModuleTypesIcons = {
     app: <WidgetsOutlined fontSize="small" color="primary" />,
     server: <DnsOutlined fontSize="small" color="secondary" />,
     other: <QuestionMark fontSize="small" />,
 };
 
-const Module = ({ type, name, version }) => {
+const Module = ({ type, name, version, license }) => {
     return (
         <Grid
             item
@@ -371,7 +376,7 @@ const Module = ({ type, name, version }) => {
                 alignItems="flex-start"
                 spacing={1}
             >
-                {ComponentTypesAvatar[type] || ComponentTypesAvatar['other']}
+                {ModuleTypesIcons[type] || ModuleTypesIcons['other']}
                 <Typography display="inline-block" noWrap>
                     {name || '<?>'}
                 </Typography>
@@ -392,4 +397,5 @@ Module.propTypes = {
     type: PropTypes.string,
     name: PropTypes.string,
     version: PropTypes.string,
+    license: PropTypes.string,
 };
