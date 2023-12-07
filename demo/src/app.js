@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { useCallback, useEffect, useState, useRef } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import TopBar from '../../src/components/TopBar';
 import SnackbarProvider from '../../src/components/SnackbarProvider';
@@ -40,9 +40,12 @@ import {
     FormControl,
     FormControlLabel,
     FormGroup,
+    Grid,
     InputLabel,
     MenuItem,
     Select,
+    Tab,
+    Tabs,
     TextField,
     Typography,
 } from '@mui/material';
@@ -52,12 +55,18 @@ import { IntlProvider, useIntl } from 'react-intl';
 import { BrowserRouter, useLocation, useNavigate } from 'react-router-dom';
 
 import {
+    card_error_boundary_en,
+    card_error_boundary_fr,
     element_search_en,
     element_search_fr,
     equipment_search_en,
     equipment_search_fr,
+    flat_parameters_en,
+    flat_parameters_fr,
     login_en,
     login_fr,
+    multiple_selection_dialog_en,
+    multiple_selection_dialog_fr,
     report_viewer_en,
     report_viewer_fr,
     table_en,
@@ -66,12 +75,6 @@ import {
     top_bar_fr,
     treeview_finder_en,
     treeview_finder_fr,
-    card_error_boundary_en,
-    card_error_boundary_fr,
-    flat_parameters_en,
-    flat_parameters_fr,
-    multiple_selection_dialog_en,
-    multiple_selection_dialog_fr,
 } from '../../src/index';
 
 import PowsyblLogo from '-!@svgr/webpack!../images/powsybl_logo.svg';
@@ -93,7 +96,6 @@ import {
 import { LOGS_JSON } from '../data/ReportViewer';
 
 import { searchEquipments } from '../data/EquipmentSearchBar';
-import { Grid, Tab, Tabs } from '@mui/material';
 import { EquipmentItem } from '../../src/components/ElementSearchDialog/equipment-item';
 import OverflowableText from '../../src/components/OverflowableText';
 
@@ -445,30 +447,40 @@ const AppContent = ({ language, onLanguageClick }) => {
         console.log('getAdditionalComponents() called');
         aboutTimerCmpnt.current = window.setTimeout(
             () =>
-                setComponents([
-                    { name: 'Server1' },
-                    {
-                        name: 'Server2',
-                        version: '1.0.0',
-                    },
-                    {
-                        name: 'Server3',
-                        version: '1.0.0',
-                        gitTag: 'v1.0.0',
-                        license: 'MPL',
-                        type: 'server',
-                    },
-                    { name: 'Server10' },
-                    { name: 'Server11' },
-                    { name: 'Server12' },
-                    { name: 'Server13' },
-                    { name: 'Server14' },
-                    { name: 'Server15' },
-                    { name: 'Server16' },
-                    { name: 'Server17' },
-                    { name: 'Server18' },
-                    { name: 'Server19' },
-                ]),
+                setComponents(
+                    [
+                        { type: 'server', name: 'Server 1', version: '1.0.0' },
+                        { type: 'server', name: 'Server 2', version: '1.0.0' },
+                        {
+                            type: 'server',
+                            name: 'Server 3',
+                            version: '1.0.0',
+                            gitTag: 'v1.0.0',
+                            license: 'MPL',
+                        },
+                        { type: 'server', name: 'Server 4', version: '1.0.0' },
+                        { type: 'server', name: 'Server 5', version: '1.0.0' },
+                        { type: 'server', name: 'Server 6', version: '1.0.0' },
+                        { type: 'server', name: 'Server 7', version: '1.0.0' },
+                        { type: 'server', name: 'Server 8', version: '1.0.0' },
+                        { type: 'server', name: 'Server 9', version: '1.0.0' },
+                        { type: 'app', name: 'My App 1', version: 'demo' },
+                        {
+                            type: 'app',
+                            name: 'My application with a long name',
+                            version: 'v0.0.1',
+                        },
+                        { type: 'other', name: 'Something', version: 'none' },
+                        {
+                            name: 'Component with a very long name without version',
+                        },
+                    ].concat(
+                        [...new Array(30)].map(() => ({
+                            name: 'Filling for demo',
+                            version: '???',
+                        }))
+                    )
+                ),
             3000
         );
     }
