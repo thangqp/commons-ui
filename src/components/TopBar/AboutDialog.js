@@ -240,10 +240,12 @@ const AboutDialog = ({
                         </Fade>
                     </Box>
                 </Box>
+
+                {/* TODO found how to scroll only in this box, to keep logo and global version always visible */}
                 <Box
                     sx={{
                         '.MuiAccordion-root': {
-                            //dunno why the have the background as black in dark mode
+                            //dunno why the theme has the background as black in dark mode
                             bgcolor: 'unset',
                         },
                         '.MuiAccordionSummary-content > .MuiSvgIcon-root': {
@@ -251,14 +253,13 @@ const AboutDialog = ({
                         },
                     }}
                 >
-                    {/* TODO found how to scroll only in this section, to keep logo and global version always visible */}
-
                     <Accordion
                         disableGutters
                         variant="outlined"
                         disabled
                         sx={{ display: 'none' }}
                     >
+                        {/* disabled, todo for future update */}
                         <AccordionSummary
                             expandIcon={<ExpandMore />}
                             aria-controls="panel1-content"
@@ -273,7 +274,7 @@ const AboutDialog = ({
                             </Typography>
                         </AccordionSummary>
                         <AccordionDetails>
-                            {/* TODO license app summary text */}
+                            license app summary text
                         </AccordionDetails>
                     </Accordion>
 
