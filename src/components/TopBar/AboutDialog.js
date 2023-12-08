@@ -307,7 +307,6 @@ const AboutDialog = ({
                                     (Array.isArray(modules) && (
                                         <>
                                             {[...modules]
-                                                //.toSorted(...) not found?
                                                 .sort(compareModules)
                                                 .map((module, idx) => (
                                                     <Module
