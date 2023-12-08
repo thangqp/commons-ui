@@ -21,7 +21,6 @@ import {
     DialogTitle,
     Fade,
     Grid,
-    LinearProgress,
     Stack,
     Typography,
     useMediaQuery,
@@ -293,7 +292,7 @@ const AboutDialog = ({
                             <Grid container sx={{ pl: 2 }} spacing={1}>
                                 {loadingAdditionalModules ? (
                                     <Grid item xs>
-                                        <LinearProgress color="inherit" />
+                                        <CircularProgress color="inherit" />
                                     </Grid>
                                 ) : (
                                     (Array.isArray(modules) && (
