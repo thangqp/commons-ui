@@ -6,11 +6,10 @@
  */
 
 import React from 'react';
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { BrokenImage } from '@mui/icons-material';
 import { mergeSx } from '../../utils/styles';
 import PropTypes from 'prop-types';
-import LogoTextOnly from './LogoTextOnly';
 
 const styles = {
     logo: {
@@ -27,7 +26,7 @@ const styles = {
     },
 };
 
-const LogoWithText = ({ appLogo, appName, appColor, onClick }) => {
+const GridLogo = ({ appLogo, appName, appColor, onClick }) => {
     return (
         <>
             <Box
@@ -36,7 +35,7 @@ const LogoWithText = ({ appLogo, appName, appColor, onClick }) => {
             >
                 {appLogo || <BrokenImage />}
             </Box>
-            <LogoTextOnly
+            <LogoText
                 appName={appName}
                 appColor={appColor}
                 onClick={onClick}
@@ -46,11 +45,31 @@ const LogoWithText = ({ appLogo, appName, appColor, onClick }) => {
     );
 };
 
-export default LogoWithText;
+export default GridLogo;
 
-LogoWithText.propTypes = {
+GridLogo.propTypes = {
     appLogo: PropTypes.element,
     appName: PropTypes.string.isRequired,
     appColor: PropTypes.string.isRequired,
+    onClick: PropTypes.func,
+};
+
+export const LogoText = ({ appName, appColor, style, onClick }) => {
+    return (
+        <Typography
+            variant="h4"
+            sx={mergeSx(style, onClick && styles.clickable)}
+            onClick={onClick}
+        >
+            <span style={{ fontWeight: 'bold' }}>Grid</span>
+            <span style={{ color: appColor }}>{appName}</span>
+        </Typography>
+    );
+};
+
+LogoText.propTypes = {
+    appName: PropTypes.string.isRequired,
+    appColor: PropTypes.string.isRequired,
+    style: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
     onClick: PropTypes.func,
 };

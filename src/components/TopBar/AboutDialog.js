@@ -38,7 +38,7 @@ import {
 } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
-import LogoTextOnly from './LogoTextOnly';
+import { LogoText } from './GridLogo';
 
 const moduleTypeSort = {
     app: 1,
@@ -186,7 +186,7 @@ const AboutDialog = ({
                             justifyContent: 'center',
                         }}
                     >
-                        <LogoTextOnly
+                        <LogoText
                             appName="Suite"
                             appColor={theme.palette.grey['500']}
                         />
@@ -380,7 +380,7 @@ const Module = ({ type, name, version, license }) => {
             <Stack
                 direction="row"
                 justifyContent="flex-start"
-                alignItems="flex-start"
+                alignItems="baseline"
                 spacing={1}
             >
                 {ModuleTypesIcons[type] || ModuleTypesIcons['other']}

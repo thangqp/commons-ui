@@ -47,7 +47,7 @@ import PropTypes from 'prop-types';
 import FullScreen, { fullScreenSupported } from 'react-request-fullscreen';
 
 import ElementSearchDialog from '../ElementSearchDialog';
-import LogoWithText from './LogoWithText';
+import GridLogo from './GridLogo';
 import AboutDialog from './AboutDialog';
 
 const styles = {
@@ -286,7 +286,7 @@ const TopBar = ({
 
     const logo_clickable = useMemo(
         () => (
-            <LogoWithText
+            <GridLogo
                 onClick={onLogoClick}
                 appLogo={appLogo}
                 appName={appName}
