@@ -715,7 +715,7 @@ const AppContent = ({ language, onLanguageClick }) => {
                             appVersion={AppPackage.version}
                             appLicense={AppPackage.license}
                             getGlobalVersion={simulateGetGlobalVersion}
-                            getAdditionalComponents={
+                            getAdditionalModules={
                                 simulateGetAdditionalComponents
                             }
                             onEquipmentLabellingClick={

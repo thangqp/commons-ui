@@ -246,6 +246,9 @@ const AboutDialog = ({
                             //dunno why the have the background as black in dark mode
                             bgcolor: 'unset',
                         },
+                        '.MuiAccordionSummary-content > .MuiSvgIcon-root': {
+                            marginRight: '0.5rem',
+                        },
                     }}
                 >
                     {/* TODO found how to scroll only in this section, to keep logo and global version always visible */}
@@ -291,7 +294,12 @@ const AboutDialog = ({
                         <AccordionDetails>
                             <Grid container sx={{ pl: 2 }} spacing={1}>
                                 {loadingAdditionalModules ? (
-                                    <Grid item xs>
+                                    <Grid
+                                        item
+                                        xs
+                                        display="inline-flex"
+                                        justifyContent="center"
+                                    >
                                         <CircularProgress color="inherit" />
                                     </Grid>
                                 ) : (
