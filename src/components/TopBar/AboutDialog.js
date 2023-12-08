@@ -22,6 +22,7 @@ import {
     Fade,
     Grid,
     Stack,
+    Tooltip,
     Typography,
     useMediaQuery,
     useTheme,
@@ -377,26 +378,44 @@ const Module = ({ type, name, version, license }) => {
                 },
             }}
         >
-            <Stack
-                direction="row"
-                justifyContent="flex-start"
-                alignItems="baseline"
-                spacing={1}
-            >
-                {ModuleTypesIcons[type] || ModuleTypesIcons['other']}
-                <Typography display="inline-block" noWrap>
-                    {name || '<?>'}
-                </Typography>
-                <Typography
-                    variant="caption"
-                    color={(theme) => theme.palette.text.secondary}
-                    display="inline"
-                    marginLeft={1}
-                    noWrap
+            <Tooltip title={(name || '<?>') + ' ' + (version || '')}>
+                <Stack
+                    direction="row"
+                    justifyContent="flex-start"
+                    alignItems="baseline"
+                    spacing={1}
                 >
-                    {version || null}
-                </Typography>
-            </Stack>
+                    <Box
+                        sx={{
+                            flexGrow: 0,
+                            position: 'relative',
+                            top: '4px',
+                            flexShrink: 0,
+                        }}
+                    >
+                        {ModuleTypesIcons[type] || ModuleTypesIcons['other']}
+                    </Box>
+                    <Typography display="inline" noWrap>
+                        {name || '<?>'}
+                    </Typography>
+                    <Box
+                        sx={{
+                            flexGrow: 0,
+                            alignSelf: 'flex-end',
+                            flexShrink: 0,
+                        }}
+                    >
+                        <Typography
+                            variant="caption"
+                            color={(theme) => theme.palette.text.secondary}
+                            display="inline"
+                            noWrap
+                        >
+                            {version || null}
+                        </Typography>
+                    </Box>
+                </Stack>
+            </Tooltip>
         </Grid>
     );
 };
