@@ -359,10 +359,24 @@ AboutDialog.propTypes = {
     getAdditionalModules: PropTypes.func,
 };
 
+const style = {
+    icons: {
+        flexGrow: 0,
+        position: 'relative',
+        top: '4px',
+        flexShrink: 0,
+    },
+    version: {
+        flexGrow: 0,
+        alignSelf: 'flex-end',
+        flexShrink: 0,
+    },
+};
+
 const ModuleTypesIcons = {
-    app: <WidgetsOutlined fontSize="small" color="primary" />,
-    server: <DnsOutlined fontSize="small" color="secondary" />,
-    other: <QuestionMark fontSize="small" />,
+    app: <WidgetsOutlined sx={style.icons} fontSize="small" color="primary" />,
+    server: <DnsOutlined sx={style.icons} fontSize="small" color="secondary" />,
+    other: <QuestionMark sx={style.icons} fontSize="small" />,
 };
 
 const Module = ({ type, name, version, license }) => {
@@ -385,35 +399,19 @@ const Module = ({ type, name, version, license }) => {
                     alignItems="baseline"
                     spacing={1}
                 >
-                    <Box
-                        sx={{
-                            flexGrow: 0,
-                            position: 'relative',
-                            top: '4px',
-                            flexShrink: 0,
-                        }}
-                    >
-                        {ModuleTypesIcons[type] || ModuleTypesIcons['other']}
-                    </Box>
+                    {ModuleTypesIcons[type] || ModuleTypesIcons['other']}
                     <Typography display="inline" noWrap>
                         {name || '<?>'}
                     </Typography>
-                    <Box
-                        sx={{
-                            flexGrow: 0,
-                            alignSelf: 'flex-end',
-                            flexShrink: 0,
-                        }}
+                    <Typography
+                        variant="caption"
+                        color={(theme) => theme.palette.text.secondary}
+                        display="inline"
+                        noWrap
+                        sx={style.version}
                     >
-                        <Typography
-                            variant="caption"
-                            color={(theme) => theme.palette.text.secondary}
-                            display="inline"
-                            noWrap
-                        >
-                            {version || null}
-                        </Typography>
-                    </Box>
+                        {version || null}
+                    </Typography>
                 </Stack>
             </Tooltip>
         </Grid>
