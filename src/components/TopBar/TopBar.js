@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { useEffect, useRef, useState, useMemo } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import {
@@ -13,6 +13,7 @@ import {
     Box,
     Button,
     ClickAwayListener,
+    IconButton,
     ListItemIcon,
     ListItemText,
     Menu,
@@ -32,11 +33,10 @@ import {
     Brightness3 as Brightness3Icon,
     Computer as ComputerIcon,
     ExitToApp as ExitToAppIcon,
-    FullscreenExit as FullscreenExitIcon,
     Fullscreen as FullscreenIcon,
+    FullscreenExit as FullscreenExitIcon,
     HelpOutline as HelpOutlineIcon,
     Person as PersonIcon,
-    Search as SearchIcon,
     Settings as SettingsIcon,
     WbSunny as WbSunnyIcon,
 } from '@mui/icons-material';
@@ -46,7 +46,6 @@ import { styled } from '@mui/system';
 import PropTypes from 'prop-types';
 import FullScreen, { fullScreenSupported } from 'react-request-fullscreen';
 
-import ElementSearchDialog from '../ElementSearchDialog';
 import GridLogo from './GridLogo';
 import AboutDialog from './AboutDialog';
 
@@ -56,9 +55,8 @@ const styles = {
         display: 'flex',
         overflow: 'hidden',
     },
-    menuIcon: {
-        width: 24,
-        height: 24,
+    menuContainer: {
+        marginLeft: 1,
     },
     link: {
         textDecoration: 'none',
@@ -174,28 +172,14 @@ const TopBar = ({
     theme,
     onEquipmentLabellingClick,
     equipmentLabelling,
-    withElementsSearch,
-    searchDisabled,
-    searchingLabel,
-    onSearchTermChange,
-    onSelectionChange,
-    elementsFound,
-    renderElement,
     onLanguageClick,
     language,
-    searchTermDisabled,
-    searchTermDisableReason,
 }) => {
     const [anchorElSettingsMenu, setAnchorElSettingsMenu] =
         React.useState(null);
     const [anchorElAppsMenu, setAnchorElAppsMenu] = React.useState(null);
     const fullScreenRef = useRef(null);
     const [isFullScreen, setIsFullScreen] = useState(false);
-    const [isDialogSearchOpen, setDialogSearchOpen] = useState(false);
-
-    const handleClickElementSearch = () => {
-        setDialogSearchOpen(true);
-    };
 
     const handleToggleSettingsMenu = (event) => {
         setAnchorElSettingsMenu(event.currentTarget);
@@ -267,23 +251,6 @@ const TopBar = ({
         }
     };
 
-    useEffect(() => {
-        if (user && withElementsSearch && !searchDisabled) {
-            const openSearch = (e) => {
-                if (
-                    e.ctrlKey &&
-                    e.shiftKey &&
-                    (e.key === 'F' || e.key === 'f')
-                ) {
-                    e.preventDefault();
-                    setDialogSearchOpen(true);
-                }
-            };
-            document.addEventListener('keydown', openSearch);
-            return () => document.removeEventListener('keydown', openSearch);
-        }
-    }, [user, withElementsSearch, searchDisabled]);
-
     const logo_clickable = useMemo(
         () => (
             <GridLogo
@@ -308,43 +275,17 @@ const TopBar = ({
             <Toolbar>
                 {logo_clickable}
                 <Box sx={styles.grow}>{children}</Box>
-                {user && withElementsSearch && (
-                    <React.Fragment>
-                        <ElementSearchDialog
-                            open={isDialogSearchOpen}
-                            onClose={() => setDialogSearchOpen(false)}
-                            searchingLabel={searchingLabel}
-                            onSearchTermChange={onSearchTermChange}
-                            onSelectionChange={(element) => {
-                                setDialogSearchOpen(false);
-                                onSelectionChange(element);
-                            }}
-                            elementsFound={elementsFound}
-                            renderElement={renderElement}
-                            searchTermDisabled={searchTermDisabled}
-                            searchTermDisableReason={searchTermDisableReason}
-                        />
-                        <div>
-                            <Button
-                                color="inherit"
-                                onClick={handleClickElementSearch}
-                                disabled={searchDisabled}
-                            >
-                                <SearchIcon />
-                            </Button>
-                        </div>
-                    </React.Fragment>
-                )}
                 {user && (
-                    <div>
-                        <Button
+                    <Box>
+                        <IconButton
+                            aria-label="apps"
                             aria-controls="apps-menu"
                             aria-haspopup="true"
                             onClick={handleClickAppsMenu}
                             color="inherit"
                         >
                             <AppsIcon />
-                        </Button>
+                        </IconButton>
 
                         <StyledMenu
                             id="apps-menu"
@@ -393,10 +334,10 @@ const TopBar = ({
                                         </Box>
                                     ))}
                         </StyledMenu>
-                    </div>
+                    </Box>
                 )}
                 {user && (
-                    <div>
+                    <Box sx={styles.menuContainerg}>
                         {/* Button width abbreviation and arrow icon */}
                         <Button
                             aria-controls="settings-menu"
@@ -745,7 +686,7 @@ const TopBar = ({
                                 </ClickAwayListener>
                             </Paper>
                         </Popper>
-                    </div>
+                    </Box>
                 )}
                 <AboutDialog
                     open={isAboutDialogOpen}
@@ -780,17 +721,8 @@ TopBar.propTypes = {
     getAdditionalModules: PropTypes.func,
     onEquipmentLabellingClick: PropTypes.func,
     equipmentLabelling: PropTypes.bool,
-    withElementsSearch: PropTypes.bool,
-    searchDisabled: PropTypes.bool,
-    searchingLabel: PropTypes.string,
-    onSearchTermChange: PropTypes.func,
-    onSelectionChange: PropTypes.func,
-    elementsFound: PropTypes.array,
-    renderElement: PropTypes.func.isRequired,
     onLanguageClick: PropTypes.func.isRequired,
     language: PropTypes.string.isRequired,
-    searchTermDisabled: PropTypes.bool,
-    searchTermDisableReason: PropTypes.string,
 };
 
 export default TopBar;
