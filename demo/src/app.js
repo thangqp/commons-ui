@@ -468,7 +468,7 @@ const AppContent = ({ language, onLanguageClick }) => {
                         {
                             type: 'app',
                             name: 'My application with a long name',
-                            version: 'v0.0.1',
+                            version: 'v0.0.1-long-tag',
                         },
                         { type: 'other', name: 'Something', version: 'none' },
                         {
