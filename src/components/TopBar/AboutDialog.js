@@ -147,7 +147,7 @@ const AboutDialog = ({
             <DialogTitle id="alert-dialog-title">
                 <FormattedMessage id={'about-dialog/title'} />
             </DialogTitle>
-            <DialogContent dividers id="alert-dialog-description">
+            <DialogContent id="alert-dialog-description">
                 <Box>
                     {startingGlobalVersion !== undefined &&
                         startingGlobalVersion !== null &&
