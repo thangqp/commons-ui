@@ -25,6 +25,10 @@ const top_bar_en = {
     'about-dialog/license': 'License',
     'about-dialog/modules-section': 'Modules details',
     'about-dialog/git-version': 'Tag',
+    'about-dialog/label-type': 'Type',
+    'about-dialog/module-tooltip-app': 'application',
+    'about-dialog/module-tooltip-server': 'server',
+    'about-dialog/module-tooltip-other': 'other',
 };
 
 export default top_bar_en;

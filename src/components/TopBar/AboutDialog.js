@@ -23,9 +23,11 @@ import {
     Grid,
     Stack,
     Tooltip,
+    tooltipClasses,
     Typography,
     useMediaQuery,
     useTheme,
+    Zoom,
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import {
@@ -323,10 +325,8 @@ const AboutDialog = ({
                                                         key={`module-${idx}`}
                                                         type={module.type}
                                                         name={module.name}
-                                                        version={
-                                                            module.gitTag ||
-                                                            module.version
-                                                        }
+                                                        version={module.version}
+                                                        gitTag={module.gitTag}
                                                         license={module.license}
                                                     />
                                                 ))}
@@ -380,6 +380,27 @@ const style = {
         alignSelf: 'flex-end',
         flexShrink: 0,
     },
+    tooltip: (theme) => ({
+        [`& .${tooltipClasses.tooltip}`]: {
+            border: '1px solid #dadde9',
+            boxShadow: theme.shadows[1],
+        },
+    }),
+    tooltipDetails: {
+        display: 'grid',
+        gridTemplateColumns: 'max-content auto',
+        margin: 0,
+        dt: {
+            gridColumnStart: 1,
+            '&:after': {
+                content: '" :"',
+            },
+        },
+        dd: {
+            gridColumnStart: 2,
+            paddingLeft: '0.5em',
+        },
+    },
 };
 
 const ModuleTypesIcons = {
@@ -388,7 +409,7 @@ const ModuleTypesIcons = {
     other: <QuestionMark sx={style.icons} fontSize="small" />,
 };
 
-const Module = ({ type, name, version, license }) => {
+const Module = ({ type, name, version, gitTag, license }) => {
     return (
         <Grid
             item
@@ -401,7 +422,62 @@ const Module = ({ type, name, version, license }) => {
                 },
             }}
         >
-            <Tooltip title={(name || '<?>') + ' ' + (version || '')}>
+            <Tooltip
+                TransitionComponent={Zoom}
+                enterDelay={3500}
+                enterNextDelay={350}
+                leaveDelay={200}
+                placement="bottom-start"
+                arrow
+                sx={style.tooltip}
+                title={
+                    <>
+                        <Typography variant="body1">{name || '<?>'}</Typography>
+                        <Box component="dl" sx={style.tooltipDetails}>
+                            <Typography variant="body2" component="dt">
+                                <FormattedMessage id="about-dialog/label-type" />
+                            </Typography>
+                            <Typography variant="body2" component="dd">
+                                <FormattedMessage
+                                    id={`about-dialog/module-tooltip-${
+                                        'app'.localeCompare(type, undefined, {
+                                            sensitivity: 'base',
+                                        }) === 0
+                                            ? 'app'
+                                            : 'server'.localeCompare(
+                                                  type,
+                                                  undefined,
+                                                  { sensitivity: 'base' }
+                                              ) === 0
+                                            ? 'server'
+                                            : 'other'
+                                    }`}
+                                />
+                            </Typography>
+                            {version && (
+                                <>
+                                    <Typography variant="body2" component="dt">
+                                        <FormattedMessage id="about-dialog/version" />
+                                    </Typography>
+                                    <Typography variant="body2" component="dd">
+                                        {version}
+                                    </Typography>
+                                </>
+                            )}
+                            {gitTag && (
+                                <>
+                                    <Typography variant="body2" component="dt">
+                                        <FormattedMessage id="about-dialog/git-version" />
+                                    </Typography>
+                                    <Typography variant="body2" component="dd">
+                                        {gitTag}
+                                    </Typography>
+                                </>
+                            )}
+                        </Box>
+                    </>
+                }
+            >
                 <Stack
                     direction="row"
                     justifyContent="flex-start"
@@ -419,7 +495,7 @@ const Module = ({ type, name, version, license }) => {
                         noWrap
                         sx={style.version}
                     >
-                        {version || null}
+                        {gitTag || version || null}
                     </Typography>
                 </Stack>
             </Tooltip>
@@ -430,5 +506,6 @@ Module.propTypes = {
     type: PropTypes.string,
     name: PropTypes.string,
     version: PropTypes.string,
+    gitTag: PropTypes.string,
     license: PropTypes.string,
 };
