@@ -204,17 +204,23 @@ const AboutDialog = ({
                             appColor={theme.palette.grey['500']}
                         />
                     </Box>
-                    <Box
+                    <Grid
+                        container
                         component="dl"
+                        columnSpacing={1}
+                        justifyContent="center"
+                        alignItems="center"
                         sx={{
                             textAlign: 'center',
                             marginTop: 0,
                             'dt, dd': {
-                                display: 'inline',
                                 margin: 0,
+                                height: '2em',
+                            },
+                            '.MuiGrid-item': {
+                                height: '100%',
                             },
                             dt: {
-                                marginRight: '0.5em',
                                 '&:after': {
                                     content: '" :"',
                                 },
@@ -227,31 +233,49 @@ const AboutDialog = ({
                                         content: "''",
                                     },
                                 },
+                                textAlign: 'right',
+                            },
+                            dd: {
+                                //paddingLeft: '0.5em',
+                                textAlign: 'left',
                             },
                         }}
                     >
-                        <dt>
+                        <Grid item component="dt" xs={6}>
                             <FormattedMessage id="about-dialog/version" />
-                        </dt>
-                        <dd>
-                            {loadingGlobalVersion ? (
-                                '…'
-                            ) : actualGlobalVersion ? (
-                                <b style={{ fontSize: '1.5em' }}>
-                                    {actualGlobalVersion}
-                                </b>
-                            ) : (
-                                <i>unknown</i>
-                            )}
-                        </dd>
-                        <Fade
-                            in={loadingGlobalVersion}
-                            style={{ transitionDelay: '500ms' }}
-                            unmountOnExit
+                        </Grid>
+                        <Grid
+                            item
+                            component="dd"
+                            xs={6}
+                            fontSize={
+                                !loadingGlobalVersion &&
+                                actualGlobalVersion &&
+                                '1.5em'
+                            }
+                            fontWeight={
+                                !loadingGlobalVersion &&
+                                actualGlobalVersion &&
+                                'bold'
+                            }
+                            fontStyle={
+                                !loadingGlobalVersion &&
+                                !actualGlobalVersion &&
+                                'italic'
+                            }
                         >
-                            <CircularProgress size="1rem" />
-                        </Fade>
-                    </Box>
+                            {loadingGlobalVersion
+                                ? '…'
+                                : actualGlobalVersion || 'unknown'}
+                            <Fade
+                                in={loadingGlobalVersion}
+                                style={{ transitionDelay: '100ms' }}
+                                unmountOnExit
+                            >
+                                <CircularProgress size="1rem" />
+                            </Fade>
+                        </Grid>
+                    </Grid>
                 </Box>
 
                 {/* TODO found how to scroll only in this box, to keep logo and global version always visible */}
