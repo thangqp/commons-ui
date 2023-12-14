@@ -282,7 +282,6 @@ const AboutDialog = ({
                     <Accordion
                         disableGutters
                         variant="outlined"
-                        defaultExpanded
                         TransitionProps={{ unmountOnExit: true }}
                     >
                         <AccordionSummary
