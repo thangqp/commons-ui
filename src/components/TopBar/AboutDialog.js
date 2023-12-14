@@ -392,7 +392,7 @@ AboutDialog.propTypes = {
     getAdditionalModules: PropTypes.func,
 };
 
-const style = {
+const styles = {
     icons: {
         flexGrow: 0,
         position: 'relative',
@@ -428,9 +428,9 @@ const style = {
 };
 
 const ModuleTypesIcons = {
-    app: <WidgetsOutlined sx={style.icons} fontSize="small" color="primary" />,
-    server: <DnsOutlined sx={style.icons} fontSize="small" color="secondary" />,
-    other: <QuestionMark sx={style.icons} fontSize="small" />,
+    app: <WidgetsOutlined sx={styles.icons} fontSize="small" color="primary" />,
+    server: <DnsOutlined sx={styles.icons} fontSize="small" color="secondary" />,
+    other: <QuestionMark sx={styles.icons} fontSize="small" />,
 };
 
 const Module = ({ type, name, version, gitTag, license }) => {
@@ -453,11 +453,11 @@ const Module = ({ type, name, version, gitTag, license }) => {
                 leaveDelay={200}
                 placement="bottom-start"
                 arrow
-                sx={style.tooltip}
+                sx={styles.tooltip}
                 title={
                     <>
                         <Typography variant="body1">{name || '<?>'}</Typography>
-                        <Box component="dl" sx={style.tooltipDetails}>
+                        <Box component="dl" sx={styles.tooltipDetails}>
                             <Typography variant="body2" component="dt">
                                 <FormattedMessage id="about-dialog/label-type" />
                             </Typography>
@@ -517,7 +517,7 @@ const Module = ({ type, name, version, gitTag, license }) => {
                         color={(theme) => theme.palette.text.secondary}
                         display="inline"
                         noWrap
-                        sx={style.version}
+                        sx={styles.version}
                     >
                         {gitTag || version || null}
                     </Typography>
