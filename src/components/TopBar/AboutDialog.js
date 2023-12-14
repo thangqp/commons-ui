@@ -116,6 +116,17 @@ const AboutDialog = ({
             } else {
                 setModules([currentApp]);
             }
+        } else {
+            // we wait the end of the fade animation of the dialog before reset content
+            setTimeout(
+                (setModules, setActualGlobalVersion) => {
+                    setModules(null);
+                    setActualGlobalVersion(null);
+                },
+                195 + 5,
+                setModules,
+                setActualGlobalVersion
+            );
         }
     }, [
         open,
@@ -130,8 +141,6 @@ const AboutDialog = ({
         if (onClose) {
             onClose();
         }
-        setModules(null);
-        setActualGlobalVersion(null);
     }, [onClose]);
 
     return (
@@ -143,6 +152,7 @@ const AboutDialog = ({
             fullScreen={useMediaQuery(theme.breakpoints.down('md'))}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
+            transitionDuration={{ exit: 195 }}
         >
             <DialogTitle id="alert-dialog-title">
                 <FormattedMessage id={'about-dialog/title'} />
