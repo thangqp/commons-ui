@@ -43,6 +43,8 @@ import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 import { LogoText } from './GridLogo';
 
+const dialogExitTransitionDurationMs = 195;
+
 const moduleTypeSort = {
     app: 1,
     server: 10,
@@ -125,7 +127,7 @@ const AboutDialog = ({
                     setModules(null);
                     setActualGlobalVersion(null);
                 },
-                195 + 5,
+                dialogExitTransitionDurationMs + 5,
                 setModules,
                 setActualGlobalVersion
             );
@@ -154,7 +156,7 @@ const AboutDialog = ({
             fullScreen={useMediaQuery(theme.breakpoints.down('md'))}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
-            transitionDuration={{ exit: 195 }}
+            transitionDuration={{ exit: dialogExitTransitionDurationMs }}
         >
             <DialogTitle id="alert-dialog-title">
                 <FormattedMessage id={'about-dialog/title'} />
@@ -429,9 +431,26 @@ const styles = {
 
 const ModuleTypesIcons = {
     app: <WidgetsOutlined sx={styles.icons} fontSize="small" color="primary" />,
-    server: <DnsOutlined sx={styles.icons} fontSize="small" color="secondary" />,
+    server: (
+        <DnsOutlined sx={styles.icons} fontSize="small" color="secondary" />
+    ),
     other: <QuestionMark sx={styles.icons} fontSize="small" />,
 };
+
+function insensitiveCaseCompare(str, obj) {
+    return str.localeCompare(obj, undefined, {
+        sensitivity: 'base',
+    });
+}
+function tooltipTypeLabel(type) {
+    if (insensitiveCaseCompare('app', type) === 0) {
+        return 'about-dialog/module-tooltip-app';
+    } else if (insensitiveCaseCompare('server', type) === 0) {
+        return 'about-dialog/module-tooltip-server';
+    } else {
+        return 'about-dialog/module-tooltip-other';
+    }
+}
 
 const Module = ({ type, name, version, gitTag, license }) => {
     return (
@@ -462,21 +481,7 @@ const Module = ({ type, name, version, gitTag, license }) => {
                                 <FormattedMessage id="about-dialog/label-type" />
                             </Typography>
                             <Typography variant="body2" component="dd">
-                                <FormattedMessage
-                                    id={`about-dialog/module-tooltip-${
-                                        'app'.localeCompare(type, undefined, {
-                                            sensitivity: 'base',
-                                        }) === 0
-                                            ? 'app'
-                                            : 'server'.localeCompare(
-                                                  type,
-                                                  undefined,
-                                                  { sensitivity: 'base' }
-                                              ) === 0
-                                            ? 'server'
-                                            : 'other'
-                                    }`}
-                                />
+                                <FormattedMessage id={tooltipTypeLabel(type)} />
                             </Typography>
                             {version && (
                                 <>
