@@ -44,11 +44,18 @@ function handleSigninSilent(dispatch, userManager) {
     });
 }
 
-function initializeAuthenticationDev(dispatch, isSilentRenew, validateUser) {
+function initializeAuthenticationDev(
+    dispatch,
+    isSilentRenew,
+    validateUser,
+    isSigninCallback
+) {
     let userManager = new UserManagerMock({});
     if (!isSilentRenew) {
         handleUser(dispatch, userManager, validateUser);
-        handleSigninSilent(dispatch, userManager);
+        if (!isSigninCallback) {
+            handleSigninSilent(dispatch, userManager);
+        }
     }
     return Promise.resolve(userManager);
 }
@@ -60,7 +67,8 @@ function initializeAuthenticationProd(
     isSilentRenew,
     idpSettings,
     validateUser,
-    authorizationCodeFlowEnabled
+    authorizationCodeFlowEnabled,
+    isSigninCallback
 ) {
     return idpSettings
         .then((r) => r.json())
@@ -179,7 +187,9 @@ function initializeAuthenticationProd(
             userManager.idpSettings = idpSettings; //store our settings in there as well to use it later
             if (!isSilentRenew) {
                 handleUser(dispatch, userManager, validateUser);
-                handleSigninSilent(dispatch, userManager);
+                if (!isSigninCallback) {
+                    handleSigninSilent(dispatch, userManager);
+                }
             }
             return userManager;
         })
