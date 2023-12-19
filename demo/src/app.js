@@ -76,7 +76,7 @@ import {
     treeview_finder_en,
     treeview_finder_fr,
 } from '../../src/index';
-import translations from "./demo_intl";
+import translations from './demo_intl';
 
 import PowsyblLogo from '-!@svgr/webpack!../images/powsybl_logo.svg';
 import AppPackage from '../../package.json';

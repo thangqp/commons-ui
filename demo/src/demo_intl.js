@@ -7,10 +7,10 @@
 
 const translations = {
     fr: {
-        'close': 'Fermer',
+        close: 'Fermer',
     },
     en: {
-        'close': 'Close',
+        close: 'Close',
     },
 };
 export default translations;
