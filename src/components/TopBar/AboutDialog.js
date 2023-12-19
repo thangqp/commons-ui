@@ -261,7 +261,7 @@ const AboutDialog = ({
                                     content: "'\\A'",
                                     whiteSpace: 'pre',
                                 },
-                                '&:first-child': {
+                                '&:first-of-type': {
                                     '&:before': {
                                         content: "''",
                                     },
