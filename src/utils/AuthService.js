@@ -24,8 +24,6 @@ const hackauthoritykey = 'oidc.hack.authority';
 
 const pathKey = 'powsybl-gridsuite-current-path';
 
-let tokenRenewalTimeout;
-
 function handleSigninSilent(dispatch, userManager, navigate) {
     userManager.getUser().then((user) => {
         if (user == null || getIdTokenExpiresIn(user) < 0) {
@@ -254,14 +252,16 @@ function getIdTokenExpiresIn(user) {
 }
 
 function tokenRenewal(dispatch, userManagerInstance, validateUser, id_token) {
-    clearTimeout(tokenRenewalTimeout);
+    if (userManagerInstance.tokenRenewalTimeout) {
+        clearTimeout(userManagerInstance.tokenRenewalTimeout);
+    }
     const timeMs =
         getExpiresIn(
             id_token,
             parseInt(userManagerInstance.idpSettings.maxExpiresIn)
         ) * 1000;
     console.debug(`setting timeoutMs ${timeMs}`);
-    tokenRenewalTimeout = setTimeout(async () => {
+    userManagerInstance.tokenRenewalTimeout = setTimeout(async () => {
         console.debug('renewing tokens...');
         userManagerInstance.signinSilent().catch((error) => {
             console.error(`token renewal failed ${error.message}`);
