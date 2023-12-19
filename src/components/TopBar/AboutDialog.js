@@ -43,6 +43,62 @@ import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 import { LogoText } from './GridLogo';
 
+const styles = {
+    general: {
+        '.MuiAccordion-root': {
+            //dunno why the theme has the background as black in dark mode
+            bgcolor: 'unset',
+        },
+    },
+    mainSection: { height: '5em' },
+    logoSection: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    mainInfos: {
+        //dl section contains dt (key) + dd (value) tuples
+        textAlign: 'center',
+        marginTop: 0,
+        'dt, dd': {
+            display: 'inline',
+            margin: 0,
+        },
+        dt: {
+            //we want keys formatted as "key: " shown
+            marginRight: '0.5em',
+            '&:after': {
+                content: '" :"',
+            },
+            '&:before': {
+                //return line before each key...
+                content: "'\\A'",
+                whiteSpace: 'pre',
+            },
+            '&:first-of-type': {
+                //...but not for the first line
+                '&:before': {
+                    content: "''",
+                },
+            },
+        },
+    },
+    versionField: (isUnknown) =>
+        isUnknown
+            ? {
+                  fontSize: '1.5em',
+                  fontWeight: 'bold',
+              }
+            : {
+                  fontStyle: 'italic',
+              },
+    detailsSection: {
+        '.MuiAccordionSummary-content > .MuiSvgIcon-root': {
+            marginRight: '0.5rem',
+        },
+    },
+};
+
 function getGlobalVersion(fnPromise, type, setData, setLoader) {
     if (fnPromise) {
         console.debug('Getting', type, 'globale version...');
@@ -184,6 +240,7 @@ const AboutDialog = ({
             fullWidth={true}
             maxWidth="md"
             fullScreen={useMediaQuery(theme.breakpoints.down('md'))}
+            sx={styles.general}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
             TransitionProps={{
@@ -197,6 +254,8 @@ const AboutDialog = ({
         >
             <DialogTitle id="alert-dialog-title">
                 <FormattedMessage id={'about-dialog/title'} />
+
+                {/* we insert content in the title as a trick to have the main content not in the dialog's scrollable section */}
                 {startingGlobalVersion !== undefined &&
                     startingGlobalVersion !== null &&
                     actualGlobalVersion !== null &&
@@ -226,45 +285,14 @@ const AboutDialog = ({
                             </Alert>
                         </Collapse>
                     )}
-                <Box sx={{ height: '5em' }}>
-                    <Box
-                        sx={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                        }}
-                    >
+                <Box sx={styles.mainSection}>
+                    <Box sx={styles.logoSection}>
                         <LogoText
                             appName="Suite"
                             appColor={theme.palette.grey['500']}
                         />
                     </Box>
-                    <Box
-                        component="dl"
-                        sx={{
-                            textAlign: 'center',
-                            marginTop: 0,
-                            'dt, dd': {
-                                display: 'inline',
-                                margin: 0,
-                            },
-                            dt: {
-                                marginRight: '0.5em',
-                                '&:after': {
-                                    content: '" :"',
-                                },
-                                '&:before': {
-                                    content: "'\\A'",
-                                    whiteSpace: 'pre',
-                                },
-                                '&:first-of-type': {
-                                    '&:before': {
-                                        content: "''",
-                                    },
-                                },
-                            },
-                        }}
-                    >
+                    <Box component="dl" sx={styles.mainInfos}>
                         <Fade
                             in={loadingGlobalVersion}
                             appear
@@ -284,21 +312,10 @@ const AboutDialog = ({
                                 </Box>
                                 <Box
                                     component="dd"
-                                    fontSize={
+                                    sx={styles.versionField(
                                         !loadingGlobalVersion &&
-                                        actualGlobalVersion &&
-                                        '1.5em'
-                                    }
-                                    fontWeight={
-                                        !loadingGlobalVersion &&
-                                        actualGlobalVersion &&
-                                        'bold'
-                                    }
-                                    fontStyle={
-                                        !loadingGlobalVersion &&
-                                        !actualGlobalVersion &&
-                                        'italic'
-                                    }
+                                            actualGlobalVersion
+                                    )}
                                 >
                                     {actualGlobalVersion || 'unknown'}
                                 </Box>
@@ -308,17 +325,7 @@ const AboutDialog = ({
                 </Box>
             </DialogTitle>
             <DialogContent id="alert-dialog-description">
-                <Box
-                    sx={{
-                        '.MuiAccordion-root': {
-                            //dunno why the theme has the background as black in dark mode
-                            bgcolor: 'unset',
-                        },
-                        '.MuiAccordionSummary-content > .MuiSvgIcon-root': {
-                            marginRight: '0.5rem',
-                        },
-                    }}
-                >
+                <Box sx={styles.detailsSection}>
                     <Accordion
                         disableGutters
                         variant="outlined"
@@ -421,7 +428,7 @@ AboutDialog.propTypes = {
     additionalModulesPromise: PropTypes.func,
 };
 
-const styles = {
+const ModuleStyles = {
     icons: {
         flexGrow: 0,
         position: 'relative',
@@ -457,11 +464,21 @@ const styles = {
 };
 
 const ModuleTypesIcons = {
-    app: <WidgetsOutlined sx={styles.icons} fontSize="small" color="primary" />,
-    server: (
-        <DnsOutlined sx={styles.icons} fontSize="small" color="secondary" />
+    app: (
+        <WidgetsOutlined
+            sx={ModuleStyles.icons}
+            fontSize="small"
+            color="primary"
+        />
     ),
-    other: <QuestionMark sx={styles.icons} fontSize="small" />,
+    server: (
+        <DnsOutlined
+            sx={ModuleStyles.icons}
+            fontSize="small"
+            color="secondary"
+        />
+    ),
+    other: <QuestionMark sx={ModuleStyles.icons} fontSize="small" />,
 };
 
 function insensitiveCaseCompare(str, obj) {
@@ -499,11 +516,11 @@ const Module = ({ type, name, version, gitTag, license }) => {
                 leaveDelay={200}
                 placement="bottom-start"
                 arrow
-                sx={styles.tooltip}
+                sx={ModuleStyles.tooltip}
                 title={
                     <>
                         <Typography variant="body1">{name || '<?>'}</Typography>
-                        <Box component="dl" sx={styles.tooltipDetails}>
+                        <Box component="dl" sx={ModuleStyles.tooltipDetails}>
                             <Typography variant="body2" component="dt">
                                 <FormattedMessage id="about-dialog/label-type" />
                             </Typography>
@@ -549,7 +566,7 @@ const Module = ({ type, name, version, gitTag, license }) => {
                         color={(theme) => theme.palette.text.secondary}
                         display="inline"
                         noWrap
-                        sx={styles.version}
+                        sx={ModuleStyles.version}
                     >
                         {gitTag || version || null}
                     </Typography>
