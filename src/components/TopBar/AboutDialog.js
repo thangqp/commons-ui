@@ -19,7 +19,6 @@ import {
     DialogActions,
     DialogContent,
     DialogTitle,
-    Fade,
     Grid,
     Stack,
     Tooltip,
@@ -245,62 +244,44 @@ const AboutDialog = ({
                             appColor={theme.palette.grey['500']}
                         />
                     </Box>
-                    <Box
+                    <Grid
+                        container
                         component="dl"
-                        sx={{
-                            textAlign: 'center',
-                            marginTop: 0,
-                            'dt, dd': {
-                                display: 'inline',
-                                margin: 0,
-                            },
-                            dt: {
-                                marginRight: '0.5em',
-                                '&:after': {
-                                    content: '" :"',
-                                },
-                                '&:before': {
-                                    content: "'\\A'",
-                                    whiteSpace: 'pre',
-                                },
-                                '&:first-child': {
-                                    '&:before': {
-                                        content: "''",
-                                    },
-                                },
-                            },
-                        }}
+                        columnSpacing={1}
+                        justifyContent="center"
+                        alignItems="center"
                     >
-                        {loadingGlobalVersion ? (
-                            <CircularProgress />
+                        {!actualGlobalVersion ? (
+                            <CircularProgress size="1.2rem" />
                         ) : (
-                            <>
-                                <Box component="dt">
-                                    <FormattedMessage id="about-dialog/version" />
-                                </Box>
+                            <Grid
+                                item
+                                sx={{
+                                    display: 'flex',
+                                    alignItems: 'baseline',
+                                }}
+                            >
+                                <FormattedMessage
+                                    id="about-dialog/version"
+                                    sx={{
+                                        display: 'inline-block',
+                                        lineHeight: '1',
+                                        fontSize: '1em',
+                                    }}
+                                />
                                 <Box
-                                    component="dd"
-                                    fontSize={
-                                        !loadingGlobalVersion &&
-                                        actualGlobalVersion &&
-                                        '1.5em'
-                                    }
-                                    fontWeight={
-                                        !loadingGlobalVersion &&
-                                        actualGlobalVersion &&
-                                        'bold'
-                                    }
-                                    fontStyle={
-                                        !loadingGlobalVersion &&
-                                        !actualGlobalVersion &&
-                                        'italic'
-                                    }
+                                    sx={{
+                                        display: 'inline-block',
+                                        lineHeight: '1',
+                                        fontSize: '1.3em',
+                                        fontWeight: 'bold',
+                                    }}
                                 >
-                                    {actualGlobalVersion || 'unknown'}
+                                    &nbsp;{actualGlobalVersion}
                                 </Box>
-                            </>
+                            </Grid>
                         )}
-                    </Box>
+                    </Grid>
                 </Box>
             </DialogTitle>
             <DialogContent id="alert-dialog-description">
