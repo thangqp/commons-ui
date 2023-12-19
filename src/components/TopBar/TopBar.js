@@ -168,8 +168,8 @@ const TopBar = ({
     children,
     appsAndUrls,
     onAboutClick,
-    getGlobalVersion,
-    getAdditionalModules,
+    globalVersionPromise,
+    additionalModulesPromise,
     onThemeClick,
     theme,
     onEquipmentLabellingClick,
@@ -753,8 +753,8 @@ const TopBar = ({
                     appName={appName}
                     appVersion={appVersion}
                     appLicense={appLicense}
-                    getGlobalVersion={getGlobalVersion}
-                    getAdditionalModules={getAdditionalModules}
+                    globalVersionPromise={globalVersionPromise}
+                    additionalModulesPromise={additionalModulesPromise}
                 />
             </Toolbar>
         </AppBar>
@@ -776,8 +776,8 @@ TopBar.propTypes = {
     onThemeClick: PropTypes.func,
     theme: PropTypes.string,
     onAboutClick: PropTypes.func,
-    getGlobalVersion: PropTypes.func,
-    getAdditionalModules: PropTypes.func,
+    globalVersionPromise: PropTypes.func,
+    additionalModulesPromise: PropTypes.func,
     onEquipmentLabellingClick: PropTypes.func,
     equipmentLabelling: PropTypes.bool,
     withElementsSearch: PropTypes.bool,

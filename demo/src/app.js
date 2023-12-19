@@ -436,52 +436,98 @@ const AppContent = ({ language, onLanguageClick }) => {
 
     const aboutTimerVersion = useRef();
     const aboutTimerCmpnt = useRef();
-    function simulateGetGlobalVersion(setter) {
+    function simulateGetGlobalVersion() {
         console.log('getGlobalVersion() called');
-        aboutTimerVersion.current = window.setTimeout(
-            () => setter('1.0.0-demo'),
-            1250
+        return new Promise(
+            (resolve, reject) =>
+                (aboutTimerVersion.current = window.setTimeout(
+                    () => resolve('1.0.0-demo'),
+                    1250
+                ))
         );
     }
-    function simulateGetAdditionalComponents(setComponents) {
+    function simulateGetAdditionalComponents() {
         console.log('getAdditionalComponents() called');
-        aboutTimerCmpnt.current = window.setTimeout(
-            () =>
-                setComponents(
-                    [
-                        { type: 'server', name: 'Server 1', version: '1.0.0' },
-                        { type: 'server', name: 'Server 2', version: '1.0.0' },
-                        {
-                            type: 'server',
-                            name: 'Server 3',
-                            version: '1.0.0',
-                            gitTag: 'v1.0.0',
-                            license: 'MPL',
-                        },
-                        { type: 'server', name: 'Server 4', version: '1.0.0' },
-                        { type: 'server', name: 'Server 5', version: '1.0.0' },
-                        { type: 'server', name: 'Server 6', version: '1.0.0' },
-                        { type: 'server', name: 'Server 7', version: '1.0.0' },
-                        { type: 'server', name: 'Server 8', version: '1.0.0' },
-                        { type: 'server', name: 'Server 9', version: '1.0.0' },
-                        { type: 'app', name: 'My App 1', version: 'demo' },
-                        {
-                            type: 'app',
-                            name: 'My application with a long name',
-                            version: 'v0.0.1-long-tag',
-                        },
-                        { type: 'other', name: 'Something', version: 'none' },
-                        {
-                            name: 'Component with a very long name without version',
-                        },
-                    ].concat(
-                        [...new Array(30)].map(() => ({
-                            name: 'Filling for demo',
-                            version: '???',
-                        }))
-                    )
-                ),
-            3000
+        return new Promise(
+            (resolve, reject) =>
+                (aboutTimerCmpnt.current = window.setTimeout(
+                    () =>
+                        resolve(
+                            [
+                                {
+                                    type: 'server',
+                                    name: 'Server 1',
+                                    version: '1.0.0',
+                                },
+                                {
+                                    type: 'server',
+                                    name: 'Server 2',
+                                    version: '1.0.0',
+                                },
+                                {
+                                    type: 'server',
+                                    name: 'Server 3',
+                                    version: '1.0.0',
+                                    gitTag: 'v1.0.0',
+                                    license: 'MPL',
+                                },
+                                {
+                                    type: 'server',
+                                    name: 'Server 4',
+                                    version: '1.0.0',
+                                },
+                                {
+                                    type: 'server',
+                                    name: 'Server 5',
+                                    version: '1.0.0',
+                                },
+                                {
+                                    type: 'server',
+                                    name: 'Server 6',
+                                    version: '1.0.0',
+                                },
+                                {
+                                    type: 'server',
+                                    name: 'Server 7',
+                                    version: '1.0.0',
+                                },
+                                {
+                                    type: 'server',
+                                    name: 'Server 8',
+                                    version: '1.0.0',
+                                },
+                                {
+                                    type: 'server',
+                                    name: 'Server 9',
+                                    version: '1.0.0',
+                                },
+                                {
+                                    type: 'app',
+                                    name: 'My App 1',
+                                    version: 'demo',
+                                },
+                                {
+                                    type: 'app',
+                                    name: 'My application with a long name',
+                                    version: 'v0.0.1-long-tag',
+                                },
+                                {
+                                    type: 'other',
+                                    name: 'Something',
+                                    version: 'none',
+                                },
+                                {
+                                    name: 'Component with a very long name without version',
+                                },
+                            ].concat(
+                                [...new Array(30)].map(() => ({
+                                    name: 'Filling for demo',
+                                    version: '???',
+                                }))
+                            )
+                        ),
+                    3000
+                ))
         );
     }
 
@@ -714,8 +760,8 @@ const AppContent = ({ language, onLanguageClick }) => {
                             theme={theme}
                             appVersion={AppPackage.version}
                             appLicense={AppPackage.license}
-                            getGlobalVersion={simulateGetGlobalVersion}
-                            getAdditionalModules={
+                            globalVersionPromise={simulateGetGlobalVersion}
+                            additionalModulesPromise={
                                 simulateGetAdditionalComponents
                             }
                             onEquipmentLabellingClick={

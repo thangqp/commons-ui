@@ -43,6 +43,41 @@ import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 import { LogoText } from './GridLogo';
 
+function getGlobalVersion(fnPromise, type, setData, setLoader) {
+    if (fnPromise) {
+        console.debug('Getting', type, 'globale version...');
+        return new Promise((resolve, reject) => {
+            if (setLoader) {
+                setLoader(true);
+            }
+            resolve();
+        })
+            .then(() => fnPromise())
+            .then(
+                (value) => {
+                    console.debug(type, 'global version is', value);
+                    setData(value ?? null);
+                },
+                (reason) => {
+                    console.debug(
+                        type,
+                        "global version isn't available",
+                        reason
+                    );
+                    setData(null);
+                }
+            )
+            .finally(() => {
+                if (setLoader) {
+                    setLoader(false);
+                }
+            });
+    } else {
+        console.debug('No getter for global version');
+        setData(null);
+    }
+}
+
 const dialogExitTransitionDurationMs = 195;
 
 const moduleTypeSort = {
@@ -61,12 +96,12 @@ function compareModules(c1, c2) {
 const AboutDialog = ({
     open,
     onClose,
-    getGlobalVersion,
+    globalVersionPromise,
     appName,
     appVersion,
     appGitTag,
     appLicense,
-    getAdditionalModules,
+    additionalModulesPromise,
 }) => {
     const theme = useTheme();
     const [isRefreshing, setRefreshState] = useState(false);
@@ -76,24 +111,27 @@ const AboutDialog = ({
     const [startingGlobalVersion, setStartingGlobalVersion] =
         useState(undefined);
     useEffect(() => {
-        if (startingGlobalVersion === undefined && getGlobalVersion) {
-            getGlobalVersion((value) => {
-                setStartingGlobalVersion(value);
-                setActualGlobalVersion(value);
-            });
+        if (startingGlobalVersion === undefined && globalVersionPromise) {
+            getGlobalVersion(
+                globalVersionPromise,
+                'global',
+                setStartingGlobalVersion,
+                undefined
+            );
         }
-    }, [getGlobalVersion, startingGlobalVersion]);
+    }, [globalVersionPromise, startingGlobalVersion]);
 
     const [actualGlobalVersion, setActualGlobalVersion] = useState(null);
     useEffect(() => {
-        if (open && getGlobalVersion) {
-            setLoadingGlobalVersion(true);
-            getGlobalVersion((value) => {
-                setLoadingGlobalVersion(false);
-                setActualGlobalVersion(value || null);
-            });
+        if (open && globalVersionPromise) {
+            getGlobalVersion(
+                globalVersionPromise,
+                'actual',
+                setActualGlobalVersion,
+                setLoadingGlobalVersion
+            );
         }
-    }, [open, getGlobalVersion]);
+    }, [open, globalVersionPromise]);
 
     const [loadingAdditionalModules, setLoadingAdditionalModules] =
         useState(false);
@@ -107,20 +145,32 @@ const AboutDialog = ({
                 gitTag: appGitTag,
                 license: appLicense,
             };
-            if (getAdditionalModules) {
-                setLoadingAdditionalModules(true);
-                getAdditionalModules((values) => {
-                    setLoadingAdditionalModules(false);
-                    if (Array.isArray(values)) {
-                        setModules([currentApp, ...values]);
-                    } else {
-                        setModules([currentApp]);
-                    }
-                });
-            } else {
-                setModules([currentApp]);
-            }
-        } else {
+            (additionalModulesPromise
+                ? new Promise((resolve) =>
+                      resolve(setLoadingAdditionalModules(true))
+                  ).then(() => additionalModulesPromise())
+                : Promise.reject('no getter')
+            )
+                .then(
+                    (values) => (Array.isArray(values) ? values : []),
+                    (reason) => []
+                )
+                .then((values) => {
+                    setModules([currentApp, ...values]);
+                })
+                .finally(() => setLoadingAdditionalModules(false));
+        }
+    }, [
+        open,
+        additionalModulesPromise,
+        appName,
+        appVersion,
+        appGitTag,
+        appLicense,
+    ]);
+
+    useEffect(() => {
+        if (!open) {
             // we wait the end of the fade animation of the dialog before reset content
             setTimeout(
                 (setModules, setActualGlobalVersion) => {
@@ -132,14 +182,7 @@ const AboutDialog = ({
                 setActualGlobalVersion
             );
         }
-    }, [
-        open,
-        getAdditionalModules,
-        appName,
-        appVersion,
-        appGitTag,
-        appLicense,
-    ]);
+    }, [open]);
 
     const handleClose = useCallback(() => {
         if (onClose) {
@@ -370,8 +413,8 @@ AboutDialog.propTypes = {
     appVersion: PropTypes.string,
     appGitTag: PropTypes.string,
     appLicense: PropTypes.string,
-    getGlobalVersion: PropTypes.func,
-    getAdditionalModules: PropTypes.func,
+    globalVersionPromise: PropTypes.func,
+    additionalModulesPromise: PropTypes.func,
 };
 
 const styles = {
