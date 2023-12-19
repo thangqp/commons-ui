@@ -169,8 +169,12 @@ const AboutDialog = ({
         appLicense,
     ]);
 
-    useEffect(() => {
-        if (!open) {
+    const handleClose = useCallback(() => {
+        try {
+            if (onClose) {
+                onClose();
+            }
+        } finally {
             // we wait the end of the fade animation of the dialog before reset content
             setTimeout(
                 (setModules, setActualGlobalVersion) => {
@@ -181,12 +185,6 @@ const AboutDialog = ({
                 setModules,
                 setActualGlobalVersion
             );
-        }
-    }, [open]);
-
-    const handleClose = useCallback(() => {
-        if (onClose) {
-            onClose();
         }
     }, [onClose]);
 
