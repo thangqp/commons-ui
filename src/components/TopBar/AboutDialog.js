@@ -78,8 +78,6 @@ function getGlobalVersion(fnPromise, type, setData, setLoader) {
     }
 }
 
-const dialogExitTransitionDurationMs = 195;
-
 const moduleTypeSort = {
     app: 1,
     server: 10,
@@ -106,6 +104,7 @@ const AboutDialog = ({
     const theme = useTheme();
     const [isRefreshing, setRefreshState] = useState(false);
     const [loadingGlobalVersion, setLoadingGlobalVersion] = useState(false);
+    const [showGlobalVersion, setShowGlobalVersion] = useState(false);
 
     /* We want to get the initial version once at first render to detect later a new deploy */
     const [startingGlobalVersion, setStartingGlobalVersion] =
@@ -114,7 +113,7 @@ const AboutDialog = ({
         if (startingGlobalVersion === undefined && globalVersionPromise) {
             getGlobalVersion(
                 globalVersionPromise,
-                'global',
+                'Initial',
                 setStartingGlobalVersion,
                 undefined
             );
@@ -126,9 +125,12 @@ const AboutDialog = ({
         if (open && globalVersionPromise) {
             getGlobalVersion(
                 globalVersionPromise,
-                'actual',
+                'Actual',
                 setActualGlobalVersion,
-                setLoadingGlobalVersion
+                (value) => {
+                    setLoadingGlobalVersion(value);
+                    setShowGlobalVersion(false);
+                }
             );
         }
     }, [open, globalVersionPromise]);
@@ -170,21 +172,8 @@ const AboutDialog = ({
     ]);
 
     const handleClose = useCallback(() => {
-        try {
-            if (onClose) {
-                onClose();
-            }
-        } finally {
-            // we wait the end of the fade animation of the dialog before reset content
-            setTimeout(
-                (setModules, setActualGlobalVersion) => {
-                    setModules(null);
-                    setActualGlobalVersion(null);
-                },
-                dialogExitTransitionDurationMs + 5,
-                setModules,
-                setActualGlobalVersion
-            );
+        if (onClose) {
+            onClose();
         }
     }, [onClose]);
 
@@ -197,7 +186,14 @@ const AboutDialog = ({
             fullScreen={useMediaQuery(theme.breakpoints.down('md'))}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
-            transitionDuration={{ exit: dialogExitTransitionDurationMs }}
+            TransitionProps={{
+                onExited: (node) => {
+                    if (!open) {
+                        setModules(null);
+                        setActualGlobalVersion(null);
+                    }
+                },
+            }}
         >
             <DialogTitle id="alert-dialog-title">
                 <FormattedMessage id={'about-dialog/title'} />
@@ -269,9 +265,19 @@ const AboutDialog = ({
                             },
                         }}
                     >
-                        {loadingGlobalVersion ? (
+                        <Fade
+                            in={loadingGlobalVersion}
+                            appear
+                            unmountOnExit
+                            onExited={(node) => {
+                                if (open && !loadingGlobalVersion) {
+                                    setShowGlobalVersion(true);
+                                }
+                            }}
+                        >
                             <CircularProgress />
-                        ) : (
+                        </Fade>
+                        {showGlobalVersion && (
                             <>
                                 <Box component="dt">
                                     <FormattedMessage id="about-dialog/version" />
