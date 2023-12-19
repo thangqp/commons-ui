@@ -569,27 +569,28 @@ const TopBar = ({
 
                                         {/* Settings */}
                                         {/*If the callback onParametersClicked is undefined, parameters component should be disabled*/}
-                                        <StyledMenuItem
-                                            disabled={!onParametersClick}
-                                            onClick={onParametersClicked}
-                                            sx={styles.borderTop}
-                                        >
-                                            <CustomListItemIcon>
-                                                <SettingsIcon fontSize="small" />
-                                            </CustomListItemIcon>
-                                            <ListItemText>
-                                                <Typography
-                                                    sx={styles.sizeLabel}
-                                                >
-                                                    <FormattedMessage
-                                                        id="top-bar/settings"
-                                                        defaultMessage={
-                                                            'Settings'
-                                                        }
-                                                    />
-                                                </Typography>
-                                            </ListItemText>
-                                        </StyledMenuItem>
+                                        {onParametersClick && (
+                                            <StyledMenuItem
+                                                onClick={onParametersClicked}
+                                                sx={styles.borderTop}
+                                            >
+                                                <CustomListItemIcon>
+                                                    <SettingsIcon fontSize="small" />
+                                                </CustomListItemIcon>
+                                                <ListItemText>
+                                                    <Typography
+                                                        sx={styles.sizeLabel}
+                                                    >
+                                                        <FormattedMessage
+                                                            id="top-bar/settings"
+                                                            defaultMessage={
+                                                                'Settings'
+                                                            }
+                                                        />
+                                                    </Typography>
+                                                </ListItemText>
+                                            </StyledMenuItem>
+                                        )}
 
                                         {/* About */}
                                         {/*If the callback onAboutClick is undefined, we open default about dialog*/}
