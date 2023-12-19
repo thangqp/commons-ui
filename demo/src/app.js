@@ -76,6 +76,7 @@ import {
     treeview_finder_en,
     treeview_finder_fr,
 } from '../../src/index';
+import translations from "./demo_intl";
 
 import PowsyblLogo from '-!@svgr/webpack!../images/powsybl_logo.svg';
 import AppPackage from '../../package.json';
@@ -121,6 +122,7 @@ const messages = {
         ...flat_parameters_en,
         ...multiple_selection_dialog_en,
         ...inputs_en,
+        ...translations.en,
     },
     fr: {
         ...report_viewer_fr,
@@ -134,6 +136,7 @@ const messages = {
         ...flat_parameters_fr,
         ...multiple_selection_dialog_fr,
         ...inputs_fr,
+        ...translations.fr,
     },
 };
 
