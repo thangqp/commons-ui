@@ -24,20 +24,26 @@ const hackauthoritykey = 'oidc.hack.authority';
 
 const pathKey = 'powsybl-gridsuite-current-path';
 
-function handleSigninSilent(dispatch, userManager) {
+let tokenRenewalTimeout;
+
+function handleSigninSilent(dispatch, userManager, navigate) {
     userManager.getUser().then((user) => {
         if (user == null || getIdTokenExpiresIn(user) < 0) {
             return userManager.signinSilent().catch((error) => {
-                dispatch(setShowAuthenticationRouterLogin(true));
-                const oidcHackReloaded = 'gridsuite-oidc-hack-reloaded';
-                if (
-                    !sessionStorage.getItem(oidcHackReloaded) &&
-                    error.message ===
+                if (error.message.includes('Invalid issuer in token')) {
+                    handleIssuerErrorForCodeFlow(error, navigate);
+                } else {
+                    dispatch(setShowAuthenticationRouterLogin(true));
+                    const oidcHackReloaded = 'gridsuite-oidc-hack-reloaded';
+                    if (
+                        !sessionStorage.getItem(oidcHackReloaded) &&
+                        error.message ===
                         'authority mismatch on settings vs. signin state'
-                ) {
-                    sessionStorage.setItem(oidcHackReloaded, true);
-                    console.log('Hack oidc, reload page to make login work');
-                    window.location.reload();
+                    ) {
+                        sessionStorage.setItem(oidcHackReloaded, true);
+                        console.log('Hack oidc, reload page to make login work');
+                        window.location.reload();
+                    }
                 }
             });
         }
@@ -48,13 +54,14 @@ function initializeAuthenticationDev(
     dispatch,
     isSilentRenew,
     validateUser,
-    isSigninCallback
+    isSigninCallback,
+    navigate
 ) {
     let userManager = new UserManagerMock({});
     if (!isSilentRenew) {
         handleUser(dispatch, userManager, validateUser);
         if (!isSigninCallback) {
-            handleSigninSilent(dispatch, userManager);
+            handleSigninSilent(dispatch, userManager, navigate);
         }
     }
     return Promise.resolve(userManager);
@@ -68,7 +75,8 @@ function initializeAuthenticationProd(
     idpSettings,
     validateUser,
     authorizationCodeFlowEnabled,
-    isSigninCallback
+    isSigninCallback,
+    navigate
 ) {
     return idpSettings
         .then((r) => r.json())
@@ -185,10 +193,11 @@ function initializeAuthenticationProd(
             };
             let userManager = new UserManager(settings);
             userManager.idpSettings = idpSettings; //store our settings in there as well to use it later
+            userManager.authorizationCodeFlowEnabled = authorizationCodeFlowEnabled;
             if (!isSilentRenew) {
                 handleUser(dispatch, userManager, validateUser);
                 if (!isSigninCallback) {
-                    handleSigninSilent(dispatch, userManager);
+                    handleSigninSilent(dispatch, userManager, navigate);
                 }
             }
             return userManager;
@@ -241,6 +250,21 @@ function getIdTokenExpiresIn(user) {
     return exp - now;
 }
 
+function tokenRenewal(dispatch, userManagerInstance, validateUser, id_token) {
+    clearTimeout(tokenRenewalTimeout);
+    const timeMs = getExpiresIn(id_token, parseInt(userManagerInstance.idpSettings.maxExpiresIn)) * 1000;
+    console.debug(`setting timeoutMs ${timeMs}`);
+    tokenRenewalTimeout = setTimeout(async () => {
+        console.debug('renewing tokens...');
+        userManagerInstance
+            .signinSilent()
+            .catch((error) => {
+                console.error(`token renewal failed ${error.message}`);
+                logout(dispatch, userManagerInstance);
+            });
+    }, timeMs);
+}
+
 function dispatchUser(dispatch, userManagerInstance, validateUser) {
     return userManagerInstance.getUser().then((user) => {
         if (user) {
@@ -269,6 +293,9 @@ function dispatchUser(dispatch, userManagerInstance, validateUser) {
                     console.debug(
                         'User has been successfully loaded from store.'
                     );
+                    if (userManagerInstance.authorizationCodeFlowEnabled) {
+                        tokenRenewal(dispatch, userManagerInstance, validateUser, user.id_token);
+                    }
                     return dispatch(setLoggedUser(user));
                 })
                 .catch((e) => {
@@ -299,11 +326,7 @@ function handleSigninCallback(dispatch, navigate, userManagerInstance) {
         })
         .catch(function (e) {
             if (e.message.includes('Invalid issuer in token')) {
-                const issuer = e.message.split(' ').pop();
-                sessionStorage.setItem(hackauthoritykey, issuer);
-                const previousPath = getPreLoginPath();
-                navigate(previousPath);
-                window.location.reload();
+                handleIssuerErrorForCodeFlow(e, navigate);
             } else {
                 dispatch(setSignInCallbackError(e));
                 console.error(e);
@@ -401,6 +424,24 @@ function handleUser(dispatch, userManager, validateUser) {
 
     console.debug('dispatch user');
     dispatchUser(dispatch, userManager, validateUser);
+}
+
+function getExpiresIn(idToken, maxTokenTtl) {
+    const decodedIdToken = jwtDecode(idToken);
+    const now = Date.now() / 1000;
+    const expiresIn = decodedIdToken.exp - now;
+    if (!maxTokenTtl) {
+        return expiresIn;
+    }
+    return Math.min(maxTokenTtl, expiresIn);
+}
+
+function handleIssuerErrorForCodeFlow(error, navigate) {
+    const issuer = error.message.split(' ').pop();
+    sessionStorage.setItem(hackauthoritykey, issuer);
+    const previousPath = getPreLoginPath();
+    navigate(previousPath);
+    window.location.reload();
 }
 
 export {
