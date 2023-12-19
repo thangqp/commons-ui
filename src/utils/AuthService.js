@@ -38,10 +38,12 @@ function handleSigninSilent(dispatch, userManager, navigate) {
                     if (
                         !sessionStorage.getItem(oidcHackReloaded) &&
                         error.message ===
-                        'authority mismatch on settings vs. signin state'
+                            'authority mismatch on settings vs. signin state'
                     ) {
                         sessionStorage.setItem(oidcHackReloaded, true);
-                        console.log('Hack oidc, reload page to make login work');
+                        console.log(
+                            'Hack oidc, reload page to make login work'
+                        );
                         window.location.reload();
                     }
                 }
@@ -193,7 +195,8 @@ function initializeAuthenticationProd(
             };
             let userManager = new UserManager(settings);
             userManager.idpSettings = idpSettings; //store our settings in there as well to use it later
-            userManager.authorizationCodeFlowEnabled = authorizationCodeFlowEnabled;
+            userManager.authorizationCodeFlowEnabled =
+                authorizationCodeFlowEnabled;
             if (!isSilentRenew) {
                 handleUser(dispatch, userManager, validateUser);
                 if (!isSigninCallback) {
@@ -252,16 +255,18 @@ function getIdTokenExpiresIn(user) {
 
 function tokenRenewal(dispatch, userManagerInstance, validateUser, id_token) {
     clearTimeout(tokenRenewalTimeout);
-    const timeMs = getExpiresIn(id_token, parseInt(userManagerInstance.idpSettings.maxExpiresIn)) * 1000;
+    const timeMs =
+        getExpiresIn(
+            id_token,
+            parseInt(userManagerInstance.idpSettings.maxExpiresIn)
+        ) * 1000;
     console.debug(`setting timeoutMs ${timeMs}`);
     tokenRenewalTimeout = setTimeout(async () => {
         console.debug('renewing tokens...');
-        userManagerInstance
-            .signinSilent()
-            .catch((error) => {
-                console.error(`token renewal failed ${error.message}`);
-                logout(dispatch, userManagerInstance);
-            });
+        userManagerInstance.signinSilent().catch((error) => {
+            console.error(`token renewal failed ${error.message}`);
+            logout(dispatch, userManagerInstance);
+        });
     }, timeMs);
 }
 
@@ -294,7 +299,12 @@ function dispatchUser(dispatch, userManagerInstance, validateUser) {
                         'User has been successfully loaded from store.'
                     );
                     if (userManagerInstance.authorizationCodeFlowEnabled) {
-                        tokenRenewal(dispatch, userManagerInstance, validateUser, user.id_token);
+                        tokenRenewal(
+                            dispatch,
+                            userManagerInstance,
+                            validateUser,
+                            user.id_token
+                        );
                     }
                     return dispatch(setLoggedUser(user));
                 })
