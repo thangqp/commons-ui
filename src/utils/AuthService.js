@@ -54,8 +54,7 @@ function initializeAuthenticationDev(
     dispatch,
     isSilentRenew,
     validateUser,
-    isSigninCallback,
-    navigate
+    isSigninCallback
 ) {
     let userManager = new UserManagerMock({});
     if (!isSilentRenew) {
@@ -251,25 +250,6 @@ function getIdTokenExpiresIn(user) {
     return exp - now;
 }
 
-function tokenRenewal(dispatch, userManagerInstance, validateUser, id_token) {
-    if (userManagerInstance.tokenRenewalTimeout) {
-        clearTimeout(userManagerInstance.tokenRenewalTimeout);
-    }
-    const timeMs =
-        getExpiresIn(
-            id_token,
-            parseInt(userManagerInstance.idpSettings.maxExpiresIn)
-        ) * 1000;
-    console.debug(`setting timeoutMs ${timeMs}`);
-    userManagerInstance.tokenRenewalTimeout = setTimeout(async () => {
-        console.debug('renewing tokens...');
-        userManagerInstance.signinSilent().catch((error) => {
-            console.debug('Token renewal failed', error);
-            handleRetryTokenRenewal(userManagerInstance, dispatch, error);
-        });
-    }, timeMs);
-}
-
 function handleRetryTokenRenewal(userManagerInstance, dispatch, error) {
     userManagerInstance.getUser().then((user) => {
         if (!user) {
@@ -309,9 +289,6 @@ function handleRetryTokenRenewal(userManagerInstance, dispatch, error) {
                     error
                 );
                 user.expires_in = idTokenExpiresIn;
-                userManagerInstance.storeUser(user).then(() => {
-                    userManagerInstance.getUser();
-                });
             } else {
                 console.log(
                     'Error in silent renew, but idtoken NOT expiring (expiring in' +
@@ -321,10 +298,12 @@ function handleRetryTokenRenewal(userManagerInstance, dispatch, error) {
                     error
                 );
                 user.expires_in = userManagerInstance.idpSettings.maxExpiresIn;
-                userManagerInstance.storeUser(user).then(() => {
-                    userManagerInstance.getUser();
-                });
             }
+            // It reloads events timers without triggering userLoaded event
+            // So we don't re-dispatch the user, but it reloads timers based on hacked value
+            userManagerInstance.storeUser(user).then(() => {
+                userManagerInstance.getUser();
+            });
         } else {
             console.log(
                 'Error in silent renew, unsupported configuration: token still valid for ' +
@@ -365,13 +344,11 @@ function dispatchUser(dispatch, userManagerInstance, validateUser) {
                     console.debug(
                         'User has been successfully loaded from store.'
                     );
+
+                    // In authorization code flow we have to initiate the token renewal process
+                    // because it is not hacked at page loading on the fragment
                     if (userManagerInstance.authorizationCodeFlowEnabled) {
-                        tokenRenewal(
-                            dispatch,
-                            userManagerInstance,
-                            validateUser,
-                            user.id_token
-                        );
+                        handleRetryTokenRenewal(userManagerInstance, dispatch);
                     }
                     return dispatch(setLoggedUser(user));
                 })
@@ -428,16 +405,6 @@ function handleUser(dispatch, userManager, validateUser) {
 
     console.debug('dispatch user');
     dispatchUser(dispatch, userManager, validateUser);
-}
-
-function getExpiresIn(idToken, maxTokenTtl) {
-    const decodedIdToken = jwtDecode(idToken);
-    const now = Date.now() / 1000;
-    const expiresIn = decodedIdToken.exp - now;
-    if (!maxTokenTtl) {
-        return expiresIn;
-    }
-    return Math.min(maxTokenTtl, expiresIn);
 }
 
 function handleIssuerErrorForCodeFlow(error, navigate) {
