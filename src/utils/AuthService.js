@@ -24,12 +24,12 @@ const hackauthoritykey = 'oidc.hack.authority';
 
 const pathKey = 'powsybl-gridsuite-current-path';
 
-function handleSigninSilent(dispatch, userManager, navigate) {
+function handleSigninSilent(dispatch, userManager) {
     userManager.getUser().then((user) => {
         if (user == null || getIdTokenExpiresIn(user) < 0) {
             return userManager.signinSilent().catch((error) => {
                 if (error.message.includes('Invalid issuer in token')) {
-                    handleIssuerErrorForCodeFlow(error, navigate);
+                    handleIssuerErrorForCodeFlow(error);
                 } else {
                     dispatch(setShowAuthenticationRouterLogin(true));
                     const oidcHackReloaded = 'gridsuite-oidc-hack-reloaded';
@@ -61,7 +61,7 @@ function initializeAuthenticationDev(
     if (!isSilentRenew) {
         handleUser(dispatch, userManager, validateUser);
         if (!isSigninCallback) {
-            handleSigninSilent(dispatch, userManager, navigate);
+            handleSigninSilent(dispatch, userManager);
         }
     }
     return Promise.resolve(userManager);
@@ -198,7 +198,7 @@ function initializeAuthenticationProd(
             if (!isSilentRenew) {
                 handleUser(dispatch, userManager, validateUser);
                 if (!isSigninCallback) {
-                    handleSigninSilent(dispatch, userManager, navigate);
+                    handleSigninSilent(dispatch, userManager);
                 }
             }
             return userManager;
@@ -264,10 +264,77 @@ function tokenRenewal(dispatch, userManagerInstance, validateUser, id_token) {
     userManagerInstance.tokenRenewalTimeout = setTimeout(async () => {
         console.debug('renewing tokens...');
         userManagerInstance.signinSilent().catch((error) => {
-            console.error(`token renewal failed ${error.message}`);
-            logout(dispatch, userManagerInstance);
+            console.debug('Token renewal failed', error);
+            handleRetryTokenRenewal(userManagerInstance, dispatch, error);
         });
     }, timeMs);
+}
+
+function handleRetryTokenRenewal(userManagerInstance, dispatch, error) {
+    userManagerInstance.getUser().then((user) => {
+        if (!user) {
+            console.error(
+                "user is null at silent renew error, it shouldn't happen."
+            );
+        }
+        const idTokenExpiresIn = getIdTokenExpiresIn(user);
+        if (idTokenExpiresIn < 0) {
+            console.log(
+                'Error in silent renew, idtoken expired: ' +
+                    idTokenExpiresIn +
+                    ' => Logging out.',
+                error
+            );
+            // remove the user from our app, but don't sso logout on all other apps
+            dispatch(setShowAuthenticationRouterLogin(true));
+            // logout during token expiration, show login without errors
+            dispatch(resetAuthenticationRouterError());
+            return dispatch(setLoggedUser(null));
+        } else if (userManagerInstance.idpSettings.maxExpiresIn) {
+            if (
+                idTokenExpiresIn < userManagerInstance.idpSettings.maxExpiresIn
+            ) {
+                // TODO here attempt last chance login ? snackbar to notify the user ? Popup ?
+                // for now we do the same thing as in the else block
+                console.log(
+                    'Error in silent renew, but idtoken ALMOST expiring (expiring in' +
+                        idTokenExpiresIn +
+                        ') => last chance, next error will logout',
+                    'maxExpiresIn = ' +
+                        userManagerInstance.idpSettings.maxExpiresIn,
+                    'last renew attempt in ' +
+                        idTokenExpiresIn -
+                        accessTokenExpiringNotificationTime +
+                        'seconds',
+                    error
+                );
+                user.expires_in = idTokenExpiresIn;
+                userManagerInstance.storeUser(user).then(() => {
+                    userManagerInstance.getUser();
+                });
+            } else {
+                console.log(
+                    'Error in silent renew, but idtoken NOT expiring (expiring in' +
+                        idTokenExpiresIn +
+                        ') => postponing expiration to' +
+                        userManagerInstance.idpSettings.maxExpiresIn,
+                    error
+                );
+                user.expires_in = userManagerInstance.idpSettings.maxExpiresIn;
+                userManagerInstance.storeUser(user).then(() => {
+                    userManagerInstance.getUser();
+                });
+            }
+        } else {
+            console.log(
+                'Error in silent renew, unsupported configuration: token still valid for ' +
+                    idTokenExpiresIn +
+                    ' but maxExpiresIn is not configured:' +
+                    userManagerInstance.idpSettings.maxExpiresIn,
+                error
+            );
+        }
+    });
 }
 
 function dispatchUser(dispatch, userManagerInstance, validateUser) {
@@ -351,85 +418,12 @@ function handleSilentRenewCallback(userManagerInstance) {
 function handleUser(dispatch, userManager, validateUser) {
     userManager.events.addUserLoaded((user) => {
         console.debug('user loaded', user);
-
         dispatchUser(dispatch, userManager, validateUser);
     });
 
     userManager.events.addSilentRenewError((error) => {
         console.debug(error);
-        // wait for accessTokenExpiringNotificationTime so that the user is expired
-        // otherwise the library tries to signin immediately when we do getUser()
-        window.setTimeout(() => {
-            userManager.getUser().then((user) => {
-                if (!user) {
-                    console.error(
-                        "user is null at silent renew error, it shouldn't happen."
-                    );
-                }
-                const idTokenExpiresIn = getIdTokenExpiresIn(user);
-                if (idTokenExpiresIn < 0) {
-                    console.log(
-                        'Error in silent renew, idtoken expired: ' +
-                            idTokenExpiresIn +
-                            ' => Logging out.',
-                        error
-                    );
-                    // remove the user from our app, but don't sso logout on all other apps
-                    dispatch(setShowAuthenticationRouterLogin(true));
-                    // logout during token expiration, show login without errors
-                    dispatch(resetAuthenticationRouterError());
-                    return dispatch(setLoggedUser(null));
-                } else if (userManager.idpSettings.maxExpiresIn) {
-                    if (
-                        idTokenExpiresIn < userManager.idpSettings.maxExpiresIn
-                    ) {
-                        // TODO here attempt last chance login ? snackbar to notify the user ? Popup ?
-                        // for now we do the same thing as in the else block
-                        console.log(
-                            'Error in silent renew, but idtoken ALMOST expiring (expiring in' +
-                                idTokenExpiresIn +
-                                ') => last chance, next error will logout',
-                            'maxExpiresIn = ' +
-                                userManager.idpSettings.maxExpiresIn,
-                            'last renew attempt in ' +
-                                idTokenExpiresIn -
-                                accessTokenExpiringNotificationTime +
-                                'seconds',
-                            error
-                        );
-                        user.expires_in = idTokenExpiresIn;
-                        userManager.storeUser(user).then(() => {
-                            userManager.getUser();
-                        });
-                    } else {
-                        console.log(
-                            'Error in silent renew, but idtoken NOT expiring (expiring in' +
-                                idTokenExpiresIn +
-                                ') => postponing expiration to' +
-                                userManager.idpSettings.maxExpiresIn,
-                            error
-                        );
-                        user.expires_in = userManager.idpSettings.maxExpiresIn;
-                        userManager.storeUser(user).then(() => {
-                            userManager.getUser();
-                        });
-                    }
-                } else {
-                    console.log(
-                        'Error in silent renew, unsupported configuration: token still valid for ' +
-                            idTokenExpiresIn +
-                            ' but maxExpiresIn is not configured:' +
-                            userManager.idpSettings.maxExpiresIn,
-                        error
-                    );
-                }
-            });
-        }, accessTokenExpiringNotificationTime * 1000);
-        // Should be min(accessTokenExpiringNotificationTime * 1000, idTokenExpiresIn) to avoid rare case
-        // when user connection is dying and you refresh the page between expiring and expired.
-        // but gateway has a DEFAULT_MAX_CLOCK_SKEW = 60s then the token is still valid for this time
-        // even if expired
-        // We accept to not manage this case further
+        handleRetryTokenRenewal(userManager, dispatch, error);
     });
 
     console.debug('dispatch user');
@@ -449,8 +443,12 @@ function getExpiresIn(idToken, maxTokenTtl) {
 function handleIssuerErrorForCodeFlow(error, navigate) {
     const issuer = error.message.split(' ').pop();
     sessionStorage.setItem(hackauthoritykey, issuer);
-    const previousPath = getPreLoginPath();
-    navigate(previousPath);
+    if (navigate) {
+        const previousPath = getPreLoginPath();
+        navigate(previousPath);
+    }
+    // To work, location has to be out of a redirection route (sign-in-silent or sign-in-callback)
+    // So that it reloads user manager based on hacked authority and tries a signin silent at initialization with the new authority
     window.location.reload();
 }
 
