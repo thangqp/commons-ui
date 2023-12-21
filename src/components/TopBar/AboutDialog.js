@@ -271,11 +271,7 @@ const AboutDialog = ({
                             in={loadingGlobalVersion}
                             appear
                             unmountOnExit
-                            onExited={(node) => {
-                                if (open && !loadingGlobalVersion) {
-                                    setShowGlobalVersion(true);
-                                }
-                            }}
+                            onExited={(node) => setShowGlobalVersion(true)}
                         >
                             <CircularProgress />
                         </Fade>
