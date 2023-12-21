@@ -19,12 +19,13 @@ const top_bar_fr = {
     'top-bar/customTheme': 'Choix de theme',
 
     'about-dialog/title': 'À propos',
-    'about-dialog/version': 'Version',
+    'about-dialog/version': 'Version {version}',
     'about-dialog/alert-running-old-version-msg':
         "Ancienne version de l'application.\nVeuillez sauvegarder votre travail et rafraîchir l'application pour charger la dernière version",
     'about-dialog/license': 'Licence',
     'about-dialog/modules-section': 'Détails des modules',
-    'about-dialog/git-version': 'Tag',
+    'about-dialog/label-version': 'Version',
+    'about-dialog/label-git-version': 'Tag',
     'about-dialog/label-type': 'Type',
     'about-dialog/module-tooltip-app': 'application',
     'about-dialog/module-tooltip-server': 'serveur',

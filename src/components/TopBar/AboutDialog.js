@@ -57,31 +57,8 @@ const styles = {
         justifyContent: 'center',
     },
     mainInfos: {
-        //dl section contains dt (key) + dd (value) tuples
         textAlign: 'center',
         marginTop: 0,
-        'dt, dd': {
-            display: 'inline',
-            margin: 0,
-        },
-        dt: {
-            //we want keys formatted as "key: " shown
-            marginRight: '0.5em',
-            '&:after': {
-                content: '" :"',
-            },
-            '&:before': {
-                //return line before each key...
-                content: "'\\A'",
-                whiteSpace: 'pre',
-            },
-            '&:first-of-type': {
-                //...but not for the first line
-                '&:before': {
-                    content: "''",
-                },
-            },
-        },
     },
     versionField: (isUnknown) =>
         isUnknown
@@ -289,7 +266,7 @@ const AboutDialog = ({
                             appColor={theme.palette.grey['500']}
                         />
                     </Box>
-                    <Box component="dl" sx={styles.mainInfos}>
+                    <Box sx={styles.mainInfos}>
                         <Fade
                             in={loadingGlobalVersion}
                             appear
@@ -303,20 +280,26 @@ const AboutDialog = ({
                             <CircularProgress />
                         </Fade>
                         {showGlobalVersion && (
-                            <>
-                                <Box component="dt">
-                                    <FormattedMessage id="about-dialog/version" />
-                                </Box>
-                                <Box
-                                    component="dd"
-                                    sx={styles.versionField(
-                                        !loadingGlobalVersion &&
-                                            actualGlobalVersion
-                                    )}
-                                >
-                                    {actualGlobalVersion || 'unknown'}
-                                </Box>
-                            </>
+                            <Typography>
+                                <FormattedMessage
+                                    id="about-dialog/version"
+                                    defaultMessage="Version {version}"
+                                    values={{
+                                        version: (
+                                            <Typography
+                                                component="span"
+                                                sx={styles.versionField(
+                                                    !loadingGlobalVersion &&
+                                                        actualGlobalVersion
+                                                )}
+                                            >
+                                                {actualGlobalVersion ||
+                                                    'unknown'}
+                                            </Typography>
+                                        ),
+                                    }}
+                                />
+                            </Typography>
                         )}
                     </Box>
                 </Box>
@@ -527,7 +510,7 @@ const Module = ({ type, name, version, gitTag, license }) => {
                             {version && (
                                 <>
                                     <Typography variant="body2" component="dt">
-                                        <FormattedMessage id="about-dialog/version" />
+                                        <FormattedMessage id="about-dialog/label-version" />
                                     </Typography>
                                     <Typography variant="body2" component="dd">
                                         {version}
@@ -537,7 +520,7 @@ const Module = ({ type, name, version, gitTag, license }) => {
                             {gitTag && (
                                 <>
                                     <Typography variant="body2" component="dt">
-                                        <FormattedMessage id="about-dialog/git-version" />
+                                        <FormattedMessage id="about-dialog/label-git-version" />
                                     </Typography>
                                     <Typography variant="body2" component="dd">
                                         {gitTag}
