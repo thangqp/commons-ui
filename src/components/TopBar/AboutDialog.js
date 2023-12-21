@@ -101,7 +101,7 @@ const styles = {
 
 function getGlobalVersion(fnPromise, type, setData, setLoader) {
     if (fnPromise) {
-        console.debug('Getting', type, 'globale version...');
+        console.debug('Getting', type, 'global version...');
         return new Promise((resolve, reject) => {
             if (setLoader) {
                 setLoader(true);
@@ -163,28 +163,27 @@ const AboutDialog = ({
     const [showGlobalVersion, setShowGlobalVersion] = useState(false);
 
     /* We want to get the initial version once at first render to detect later a new deploy */
-    const [startingGlobalVersion, setStartingGlobalVersion] =
-        useState(undefined);
+    const [initialGlobalVersion, setInitialGlobalVersion] = useState(undefined);
     useEffect(() => {
-        if (startingGlobalVersion === undefined && globalVersionPromise) {
+        if (initialGlobalVersion === undefined) {
             getGlobalVersion(
                 globalVersionPromise,
                 'Initial',
-                setStartingGlobalVersion,
+                setInitialGlobalVersion,
                 undefined
             );
         }
-    }, [globalVersionPromise, startingGlobalVersion]);
+    }, [globalVersionPromise, initialGlobalVersion]);
 
     const [actualGlobalVersion, setActualGlobalVersion] = useState(null);
     useEffect(() => {
-        if (open && globalVersionPromise) {
+        if (open) {
             getGlobalVersion(
                 globalVersionPromise,
                 'Actual',
                 setActualGlobalVersion,
-                (value) => {
-                    setLoadingGlobalVersion(value);
+                (loading) => {
+                    setLoadingGlobalVersion(loading);
                     setShowGlobalVersion(false);
                 }
             );
@@ -204,10 +203,10 @@ const AboutDialog = ({
                 license: appLicense,
             };
             (additionalModulesPromise
-                ? new Promise((resolve) =>
-                      resolve(setLoadingAdditionalModules(true))
-                  ).then(() => additionalModulesPromise())
-                : Promise.reject('no getter')
+                ? Promise.resolve(setLoadingAdditionalModules(true)).then(() =>
+                      additionalModulesPromise()
+                  )
+                : Promise.reject(new Error('no getter'))
             )
                 .then(
                     (values) => (Array.isArray(values) ? values : []),
@@ -245,10 +244,8 @@ const AboutDialog = ({
             aria-describedby="alert-dialog-description"
             TransitionProps={{
                 onExited: (node) => {
-                    if (!open) {
-                        setModules(null);
-                        setActualGlobalVersion(null);
-                    }
+                    setModules(null);
+                    setActualGlobalVersion(null);
                 },
             }}
         >
@@ -256,10 +253,10 @@ const AboutDialog = ({
                 <FormattedMessage id={'about-dialog/title'} />
 
                 {/* we insert content in the title as a trick to have the main content not in the dialog's scrollable section */}
-                {startingGlobalVersion !== undefined &&
-                    startingGlobalVersion !== null &&
+                {initialGlobalVersion !== undefined &&
+                    initialGlobalVersion !== null &&
                     actualGlobalVersion !== null &&
-                    startingGlobalVersion !== actualGlobalVersion && (
+                    initialGlobalVersion !== actualGlobalVersion && (
                         <Collapse in={open}>
                             <Alert
                                 severity="warning"
@@ -428,7 +425,7 @@ AboutDialog.propTypes = {
     additionalModulesPromise: PropTypes.func,
 };
 
-const ModuleStyles = {
+const moduleStyles = {
     icons: {
         flexGrow: 0,
         position: 'relative',
@@ -466,19 +463,19 @@ const ModuleStyles = {
 const ModuleTypesIcons = {
     app: (
         <WidgetsOutlined
-            sx={ModuleStyles.icons}
+            sx={moduleStyles.icons}
             fontSize="small"
             color="primary"
         />
     ),
     server: (
         <DnsOutlined
-            sx={ModuleStyles.icons}
+            sx={moduleStyles.icons}
             fontSize="small"
             color="secondary"
         />
     ),
-    other: <QuestionMark sx={ModuleStyles.icons} fontSize="small" />,
+    other: <QuestionMark sx={moduleStyles.icons} fontSize="small" />,
 };
 
 function insensitiveCaseCompare(str, obj) {
@@ -516,11 +513,11 @@ const Module = ({ type, name, version, gitTag, license }) => {
                 leaveDelay={200}
                 placement="bottom-start"
                 arrow
-                sx={ModuleStyles.tooltip}
+                sx={moduleStyles.tooltip}
                 title={
                     <>
                         <Typography variant="body1">{name || '<?>'}</Typography>
-                        <Box component="dl" sx={ModuleStyles.tooltipDetails}>
+                        <Box component="dl" sx={moduleStyles.tooltipDetails}>
                             <Typography variant="body2" component="dt">
                                 <FormattedMessage id="about-dialog/label-type" />
                             </Typography>
@@ -566,7 +563,7 @@ const Module = ({ type, name, version, gitTag, license }) => {
                         color={(theme) => theme.palette.text.secondary}
                         display="inline"
                         noWrap
-                        sx={ModuleStyles.version}
+                        sx={moduleStyles.version}
                     >
                         {gitTag || version || null}
                     </Typography>
