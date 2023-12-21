@@ -74,8 +74,7 @@ function initializeAuthenticationProd(
     idpSettings,
     validateUser,
     authorizationCodeFlowEnabled,
-    isSigninCallback,
-    navigate
+    isSigninCallback
 ) {
     return idpSettings
         .then((r) => r.json())
@@ -114,55 +113,15 @@ function initializeAuthenticationProd(
                             const expires_in = parseInt(
                                 matched_expires[0].split('=')[1]
                             );
-                            const now = parseInt(Date.now() / 1000);
-                            const exp = decoded.exp;
-                            const idTokenExpiresIn = exp - now;
-                            let minAccesstokenOrIdtokenOrIdpSettingsExpiresIn =
-                                expires_in;
-                            let newExpireReplaceReason;
-                            if (
-                                idTokenExpiresIn <
-                                minAccesstokenOrIdtokenOrIdpSettingsExpiresIn
-                            ) {
-                                minAccesstokenOrIdtokenOrIdpSettingsExpiresIn =
-                                    idTokenExpiresIn;
-                                newExpireReplaceReason =
-                                    'idtoken.exp is earlier';
-                            }
-                            if (
-                                idpSettings.maxExpiresIn &&
-                                idpSettings.maxExpiresIn <
-                                    minAccesstokenOrIdtokenOrIdpSettingsExpiresIn
-                            ) {
-                                minAccesstokenOrIdtokenOrIdpSettingsExpiresIn =
-                                    idpSettings.maxExpiresIn;
-                                newExpireReplaceReason =
-                                    'idpSettings.maxExpiresIn is smaller';
-                            }
-                            if (newExpireReplaceReason) {
-                                const newhash = window.location.hash.replace(
-                                    matched_expires[0],
-                                    'expires_in=' +
-                                        minAccesstokenOrIdtokenOrIdpSettingsExpiresIn
-                                );
-                                console.debug(
-                                    'Replacing expires_in in window.location.hash to ' +
-                                        minAccesstokenOrIdtokenOrIdpSettingsExpiresIn +
-                                        ' because ' +
-                                        newExpireReplaceReason +
-                                        '. ',
-                                    'debug:',
-                                    'original expires_in: ' + expires_in + ', ',
-                                    'idTokenExpiresIn: ' +
-                                        idTokenExpiresIn +
-                                        '(idtoken exp: ' +
-                                        exp +
-                                        '), ',
-                                    'idpSettings maxExpiresIn: ' +
+                            window.location.hash = window.location.hash.replace(
+                                matched_expires[0],
+                                'expires_in=' +
+                                    computeMinExpiresIn(
+                                        expires_in,
+                                        id_token,
                                         idpSettings.maxExpiresIn
-                                );
-                                window.location.hash = newhash;
-                            }
+                                    )
+                            );
                         }
                     }
                 }
@@ -209,6 +168,38 @@ function initializeAuthenticationProd(
         });
 }
 
+function computeMinExpiresIn(expiresIn, idToken, maxExpiresIn) {
+    const now = parseInt(Date.now() / 1000);
+    const exp = jwtDecode(idToken).exp;
+    const idTokenExpiresIn = exp - now;
+    let newExpiresIn = expiresIn;
+    let newExpiresInReplaceReason;
+    if (expiresIn === undefined || idTokenExpiresIn < newExpiresIn) {
+        newExpiresIn = idTokenExpiresIn;
+        newExpiresInReplaceReason = 'idtoken.exp is earlier';
+    }
+    if (maxExpiresIn && maxExpiresIn < newExpiresIn) {
+        newExpiresIn = maxExpiresIn;
+        newExpiresInReplaceReason = 'idpSettings.maxExpiresIn is smaller';
+    }
+    if (newExpiresInReplaceReason) {
+        console.debug(
+            'Replacing expiresIn in user to ' +
+                newExpiresIn +
+                ' because ' +
+                newExpiresInReplaceReason +
+                '. ',
+            'debug:',
+            'original expires_in: ' + expiresIn + ', ',
+            'idTokenExpiresIn: ' +
+                idTokenExpiresIn +
+                ', idpSettings maxExpiresIn: ' +
+                maxExpiresIn
+        );
+    }
+    return newExpiresIn;
+}
+
 function login(location, userManagerInstance) {
     sessionStorage.setItem(pathKey, location.pathname + location.search);
     return userManagerInstance
@@ -250,72 +241,6 @@ function getIdTokenExpiresIn(user) {
     return exp - now;
 }
 
-function handleRetryTokenRenewal(userManagerInstance, dispatch, error) {
-    userManagerInstance.getUser().then((user) => {
-        if (!user) {
-            console.error(
-                "user is null at silent renew error, it shouldn't happen."
-            );
-        }
-        const idTokenExpiresIn = getIdTokenExpiresIn(user);
-        if (idTokenExpiresIn < 0) {
-            console.log(
-                'Error in silent renew, idtoken expired: ' +
-                    idTokenExpiresIn +
-                    ' => Logging out.',
-                error
-            );
-            // remove the user from our app, but don't sso logout on all other apps
-            dispatch(setShowAuthenticationRouterLogin(true));
-            // logout during token expiration, show login without errors
-            dispatch(resetAuthenticationRouterError());
-            return dispatch(setLoggedUser(null));
-        } else if (userManagerInstance.idpSettings.maxExpiresIn) {
-            if (
-                idTokenExpiresIn < userManagerInstance.idpSettings.maxExpiresIn
-            ) {
-                // TODO here attempt last chance login ? snackbar to notify the user ? Popup ?
-                // for now we do the same thing as in the else block
-                console.log(
-                    'Error in silent renew, but idtoken ALMOST expiring (expiring in' +
-                        idTokenExpiresIn +
-                        ') => last chance, next error will logout',
-                    'maxExpiresIn = ' +
-                        userManagerInstance.idpSettings.maxExpiresIn,
-                    'last renew attempt in ' +
-                        idTokenExpiresIn -
-                        accessTokenExpiringNotificationTime +
-                        'seconds',
-                    error
-                );
-                user.expires_in = idTokenExpiresIn;
-            } else {
-                console.log(
-                    'Error in silent renew, but idtoken NOT expiring (expiring in' +
-                        idTokenExpiresIn +
-                        ') => postponing expiration to' +
-                        userManagerInstance.idpSettings.maxExpiresIn,
-                    error
-                );
-                user.expires_in = userManagerInstance.idpSettings.maxExpiresIn;
-            }
-            // It reloads events timers without triggering userLoaded event
-            // So we don't re-dispatch the user, but it reloads timers based on hacked value
-            userManagerInstance.storeUser(user).then(() => {
-                userManagerInstance.getUser();
-            });
-        } else {
-            console.log(
-                'Error in silent renew, unsupported configuration: token still valid for ' +
-                    idTokenExpiresIn +
-                    ' but maxExpiresIn is not configured:' +
-                    userManagerInstance.idpSettings.maxExpiresIn,
-                error
-            );
-        }
-    });
-}
-
 function dispatchUser(dispatch, userManagerInstance, validateUser) {
     return userManagerInstance.getUser().then((user) => {
         if (user) {
@@ -348,7 +273,14 @@ function dispatchUser(dispatch, userManagerInstance, validateUser) {
                     // In authorization code flow we have to initiate the token renewal process
                     // because it is not hacked at page loading on the fragment
                     if (userManagerInstance.authorizationCodeFlowEnabled) {
-                        handleRetryTokenRenewal(userManagerInstance, dispatch);
+                        user.expires_in = computeMinExpiresIn(
+                            user.expires_in,
+                            user.id_token,
+                            userManagerInstance.idpSettings.maxExpiresIn
+                        );
+                        userManagerInstance.storeUser(user).then(() => {
+                            userManagerInstance.getUser();
+                        });
                     }
                     return dispatch(setLoggedUser(user));
                 })
@@ -400,7 +332,80 @@ function handleUser(dispatch, userManager, validateUser) {
 
     userManager.events.addSilentRenewError((error) => {
         console.debug(error);
-        handleRetryTokenRenewal(userManager, dispatch, error);
+        // Wait for accessTokenExpiringNotificationTime so that the user is expired and not between expiring and expired
+        // otherwise the library will fire AccessTokenExpiring everytime we do getUser()
+        // Indeed, getUSer() => loadUser() => load() on events => if it's already expiring it will be init and triggerred again
+        window.setTimeout(() => {
+            userManager.getUser().then((user) => {
+                if (!user) {
+                    console.error(
+                        "user is null at silent renew error, it shouldn't happen."
+                    );
+                }
+                const idTokenExpiresIn = getIdTokenExpiresIn(user);
+                if (idTokenExpiresIn < 0) {
+                    console.log(
+                        'Error in silent renew, idtoken expired: ' +
+                            idTokenExpiresIn +
+                            ' => Logging out.',
+                        error
+                    );
+                    // remove the user from our app, but don't sso logout on all other apps
+                    dispatch(setShowAuthenticationRouterLogin(true));
+                    // logout during token expiration, show login without errors
+                    dispatch(resetAuthenticationRouterError());
+                    return dispatch(setLoggedUser(null));
+                } else if (userManager.idpSettings.maxExpiresIn) {
+                    if (
+                        idTokenExpiresIn < userManager.idpSettings.maxExpiresIn
+                    ) {
+                        // TODO here attempt last chance login ? snackbar to notify the user ? Popup ?
+                        // for now we do the same thing as in the else block
+                        console.log(
+                            'Error in silent renew, but idtoken ALMOST expiring (expiring in' +
+                                idTokenExpiresIn +
+                                ') => last chance, next error will logout',
+                            'maxExpiresIn = ' +
+                                userManager.idpSettings.maxExpiresIn,
+                            'last renew attempt in ' +
+                                idTokenExpiresIn -
+                                accessTokenExpiringNotificationTime +
+                                'seconds',
+                            error
+                        );
+                        user.expires_in = idTokenExpiresIn;
+                        userManager.storeUser(user).then(() => {
+                            userManager.getUser();
+                        });
+                    } else {
+                        console.log(
+                            'Error in silent renew, but idtoken NOT expiring (expiring in' +
+                                idTokenExpiresIn +
+                                ') => postponing expiration to' +
+                                userManager.idpSettings.maxExpiresIn,
+                            error
+                        );
+                        user.expires_in = userManager.idpSettings.maxExpiresIn;
+                        userManager.storeUser(user).then(() => {
+                            userManager.getUser();
+                        });
+                    }
+                } else {
+                    console.log(
+                        'Error in silent renew, unsupported configuration: token still valid for ' +
+                            idTokenExpiresIn +
+                            ' but maxExpiresIn is not configured:' +
+                            userManager.idpSettings.maxExpiresIn,
+                        error
+                    );
+                }
+            });
+        }, accessTokenExpiringNotificationTime * 1000);
+        // Should be min(accessTokenExpiringNotificationTime * 1000, idTokenExpiresIn) to avoid rare case
+        // when user connection is dying and you refresh the page between expiring and expired.
+        // but gateway has a DEFAULT_MAX_CLOCK_SKEW = 60s then the token is still valid for this time
+        // even if expired
+        // We accept to not manage this case further
     });
 
     console.debug('dispatch user');
