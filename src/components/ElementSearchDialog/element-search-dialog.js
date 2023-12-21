@@ -6,9 +6,9 @@
  */
 
 import React, { useCallback, useEffect, useState } from 'react';
-import { Dialog, DialogContent, TextField, Autocomplete } from '@mui/material';
+import { Autocomplete, Dialog, DialogContent, TextField } from '@mui/material';
 import PropTypes from 'prop-types';
-import SearchIcon from '@mui/icons-material/Search';
+import { Search, SearchOff } from '@mui/icons-material';
 import { useIntl } from 'react-intl';
 
 const ElementSearchDialog = (props) => {
@@ -134,7 +134,11 @@ const ElementSearchDialog = (props) => {
                                 ...params.InputProps,
                                 startAdornment: (
                                     <React.Fragment>
-                                        <SearchIcon color="disabled" />
+                                        {searchTermDisabled ? (
+                                            <SearchOff color="disabled" />
+                                        ) : (
+                                            <Search color="disabled" />
+                                        )}
                                         {params.InputProps.startAdornment}
                                     </React.Fragment>
                                 ),
