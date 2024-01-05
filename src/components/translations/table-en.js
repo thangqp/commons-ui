@@ -6,7 +6,7 @@
  */
 
 const table_en = {
-    'MuiVirtualizedTable/exportCSV': 'Export to CSV File',
+    'MuiVirtualizedTable/exportCSV': 'Download CSV',
 };
 
 export default table_en;
