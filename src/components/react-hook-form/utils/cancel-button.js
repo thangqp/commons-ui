@@ -10,9 +10,15 @@ import { Button } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 
+const styles = {
+    cancelButton: (theme) => ({
+        color: theme.palette.text.secondary,
+    }),
+};
+
 const CancelButton = ({ ...buttonProps }) => {
     return (
-        <Button {...buttonProps}>
+        <Button sx={styles.cancelButton} {...buttonProps}>
             <FormattedMessage id="cancel" />
         </Button>
     );
