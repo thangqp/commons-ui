@@ -9,16 +9,12 @@ import React from 'react';
 import { Button } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
+import { useThemeProps } from '@mui/material/styles';
 
-const styles = {
-    cancelButton: (theme) => ({
-        color: theme.palette.text.secondary,
-    }),
-};
-
-const CancelButton = ({ ...buttonProps }) => {
+const CancelButton = ({ ...inProps }) => {
+    const props = useThemeProps({ props: inProps, name: 'CancelButton' });
     return (
-        <Button sx={styles.cancelButton} {...buttonProps}>
+        <Button {...props}>
             <FormattedMessage id="cancel" />
         </Button>
     );
