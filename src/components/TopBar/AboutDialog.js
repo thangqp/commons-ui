@@ -23,9 +23,11 @@ import {
     Grid,
     Stack,
     Tooltip,
+    tooltipClasses,
     Typography,
     useMediaQuery,
     useTheme,
+    Zoom,
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import {
@@ -40,6 +42,74 @@ import {
 import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 import { LogoText } from './GridLogo';
+
+const styles = {
+    general: {
+        '.MuiAccordion-root': {
+            //dunno why the theme has the background as black in dark mode
+            bgcolor: 'unset',
+        },
+    },
+    mainSection: { height: '5em' },
+    logoSection: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    mainInfos: {
+        textAlign: 'center',
+        marginTop: 0,
+    },
+    versionField: (isUnknown) =>
+        isUnknown
+            ? {
+                  fontSize: '1.5em',
+                  fontWeight: 'bold',
+              }
+            : {
+                  fontStyle: 'italic',
+              },
+    detailsSection: {
+        '.MuiAccordionSummary-content > .MuiSvgIcon-root': {
+            marginRight: '0.5rem',
+        },
+    },
+};
+
+function getGlobalVersion(fnPromise, type, setData, setLoader) {
+    if (fnPromise) {
+        console.debug('Getting', type, 'global version...');
+        return new Promise((resolve, reject) => {
+            if (setLoader) {
+                setLoader(true);
+            }
+            resolve();
+        })
+            .then(() => fnPromise())
+            .then(
+                (value) => {
+                    console.debug(type, 'global version is', value);
+                    setData(value ?? null);
+                },
+                (reason) => {
+                    console.debug(
+                        type,
+                        "global version isn't available",
+                        reason
+                    );
+                    setData(null);
+                }
+            )
+            .finally(() => {
+                if (setLoader) {
+                    setLoader(false);
+                }
+            });
+    } else {
+        console.debug('No getter for global version');
+        setData(null);
+    }
+}
 
 const moduleTypeSort = {
     app: 1,
@@ -57,39 +127,45 @@ function compareModules(c1, c2) {
 const AboutDialog = ({
     open,
     onClose,
-    getGlobalVersion,
+    globalVersionPromise,
     appName,
     appVersion,
     appGitTag,
     appLicense,
-    getAdditionalModules,
+    additionalModulesPromise,
 }) => {
     const theme = useTheme();
     const [isRefreshing, setRefreshState] = useState(false);
     const [loadingGlobalVersion, setLoadingGlobalVersion] = useState(false);
+    const [showGlobalVersion, setShowGlobalVersion] = useState(false);
 
     /* We want to get the initial version once at first render to detect later a new deploy */
-    const [startingGlobalVersion, setStartingGlobalVersion] =
-        useState(undefined);
+    const [initialGlobalVersion, setInitialGlobalVersion] = useState(undefined);
     useEffect(() => {
-        if (startingGlobalVersion === undefined && getGlobalVersion) {
-            getGlobalVersion((value) => {
-                setStartingGlobalVersion(value);
-                setActualGlobalVersion(value);
-            });
+        if (initialGlobalVersion === undefined) {
+            getGlobalVersion(
+                globalVersionPromise,
+                'Initial',
+                setInitialGlobalVersion,
+                undefined
+            );
         }
-    }, [getGlobalVersion, startingGlobalVersion]);
+    }, [globalVersionPromise, initialGlobalVersion]);
 
     const [actualGlobalVersion, setActualGlobalVersion] = useState(null);
     useEffect(() => {
-        if (open && getGlobalVersion) {
-            setLoadingGlobalVersion(true);
-            getGlobalVersion((value) => {
-                setLoadingGlobalVersion(false);
-                setActualGlobalVersion(value || null);
-            });
+        if (open) {
+            getGlobalVersion(
+                globalVersionPromise,
+                'Actual',
+                setActualGlobalVersion,
+                (loading) => {
+                    setLoadingGlobalVersion(loading);
+                    setShowGlobalVersion(false);
+                }
+            );
         }
-    }, [open, getGlobalVersion]);
+    }, [open, globalVersionPromise]);
 
     const [loadingAdditionalModules, setLoadingAdditionalModules] =
         useState(false);
@@ -103,23 +179,24 @@ const AboutDialog = ({
                 gitTag: appGitTag,
                 license: appLicense,
             };
-            if (getAdditionalModules) {
-                setLoadingAdditionalModules(true);
-                getAdditionalModules((values) => {
-                    setLoadingAdditionalModules(false);
-                    if (Array.isArray(values)) {
-                        setModules([currentApp, ...values]);
-                    } else {
-                        setModules([currentApp]);
-                    }
-                });
-            } else {
-                setModules([currentApp]);
-            }
+            (additionalModulesPromise
+                ? Promise.resolve(setLoadingAdditionalModules(true)).then(() =>
+                      additionalModulesPromise()
+                  )
+                : Promise.reject(new Error('no getter'))
+            )
+                .then(
+                    (values) => (Array.isArray(values) ? values : []),
+                    (reason) => []
+                )
+                .then((values) => {
+                    setModules([currentApp, ...values]);
+                })
+                .finally(() => setLoadingAdditionalModules(false));
         }
     }, [
         open,
-        getAdditionalModules,
+        additionalModulesPromise,
         appName,
         appVersion,
         appGitTag,
@@ -130,8 +207,6 @@ const AboutDialog = ({
         if (onClose) {
             onClose();
         }
-        setModules(null);
-        setActualGlobalVersion(null);
     }, [onClose]);
 
     return (
@@ -141,119 +216,92 @@ const AboutDialog = ({
             fullWidth={true}
             maxWidth="md"
             fullScreen={useMediaQuery(theme.breakpoints.down('md'))}
+            sx={styles.general}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
+            TransitionProps={{
+                onExited: (node) => {
+                    setModules(null);
+                    setActualGlobalVersion(null);
+                },
+            }}
         >
             <DialogTitle id="alert-dialog-title">
                 <FormattedMessage id={'about-dialog/title'} />
-            </DialogTitle>
-            <DialogContent dividers id="alert-dialog-description">
-                <Box>
-                    {startingGlobalVersion !== undefined &&
-                        startingGlobalVersion !== null &&
-                        actualGlobalVersion !== null &&
-                        startingGlobalVersion !== actualGlobalVersion && (
-                            <Collapse in={open}>
-                                <Alert
-                                    severity="warning"
-                                    variant="outlined"
-                                    action={
-                                        <LoadingButton
-                                            color="inherit"
-                                            size="small"
-                                            startIcon={
-                                                <Refresh fontSize="small" />
-                                            }
-                                            loadingPosition="start"
-                                            loading={isRefreshing}
-                                            onClick={() => {
-                                                setRefreshState(true);
-                                                window.location.reload();
-                                            }}
-                                        >
-                                            <FormattedMessage id="refresh" />
-                                        </LoadingButton>
-                                    }
-                                    sx={{ marginBottom: 1 }}
-                                >
-                                    <FormattedMessage id="about-dialog/alert-running-old-version-msg" />
-                                </Alert>
-                            </Collapse>
-                        )}
-                    <Box
-                        sx={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                        }}
-                    >
+
+                {/* we insert content in the title as a trick to have the main content not in the dialog's scrollable section */}
+                {initialGlobalVersion !== undefined &&
+                    initialGlobalVersion !== null &&
+                    actualGlobalVersion !== null &&
+                    initialGlobalVersion !== actualGlobalVersion && (
+                        <Collapse in={open}>
+                            <Alert
+                                severity="warning"
+                                variant="outlined"
+                                action={
+                                    <LoadingButton
+                                        color="inherit"
+                                        size="small"
+                                        startIcon={<Refresh fontSize="small" />}
+                                        loadingPosition="start"
+                                        loading={isRefreshing}
+                                        onClick={() => {
+                                            setRefreshState(true);
+                                            window.location.reload();
+                                        }}
+                                    >
+                                        <FormattedMessage id="refresh" />
+                                    </LoadingButton>
+                                }
+                                sx={{ marginBottom: 2 }}
+                            >
+                                <FormattedMessage id="about-dialog/alert-running-old-version-msg" />
+                            </Alert>
+                        </Collapse>
+                    )}
+                <Box sx={styles.mainSection}>
+                    <Box sx={styles.logoSection}>
                         <LogoText
                             appName="Suite"
                             appColor={theme.palette.grey['500']}
                         />
                     </Box>
-                    <Box
-                        component="dl"
-                        sx={{
-                            textAlign: 'center',
-                            marginTop: 0,
-                            'dt, dd': {
-                                display: 'inline',
-                                margin: 0,
-                            },
-                            dt: {
-                                marginRight: '0.5em',
-                                '&:after': {
-                                    content: '" :"',
-                                },
-                                '&:before': {
-                                    content: "'\\A'",
-                                    whiteSpace: 'pre',
-                                },
-                                '&:first-child': {
-                                    '&:before': {
-                                        content: "''",
-                                    },
-                                },
-                            },
-                        }}
-                    >
-                        <dt>
-                            <FormattedMessage id="about-dialog/version" />
-                        </dt>
-                        <dd>
-                            {loadingGlobalVersion ? (
-                                '…'
-                            ) : actualGlobalVersion ? (
-                                <b style={{ fontSize: '1.5em' }}>
-                                    {actualGlobalVersion}
-                                </b>
-                            ) : (
-                                <i>unknown</i>
-                            )}
-                        </dd>
+                    <Box sx={styles.mainInfos}>
                         <Fade
                             in={loadingGlobalVersion}
-                            style={{ transitionDelay: '500ms' }}
+                            appear
                             unmountOnExit
+                            onExited={(node) => setShowGlobalVersion(true)}
                         >
-                            <CircularProgress size="1rem" />
+                            <CircularProgress />
                         </Fade>
+                        {showGlobalVersion && (
+                            <Typography>
+                                <FormattedMessage
+                                    id="about-dialog/version"
+                                    defaultMessage="Version {version}"
+                                    values={{
+                                        version: (
+                                            <Typography
+                                                component="span"
+                                                sx={styles.versionField(
+                                                    !loadingGlobalVersion &&
+                                                        actualGlobalVersion
+                                                )}
+                                            >
+                                                {actualGlobalVersion ||
+                                                    'unknown'}
+                                            </Typography>
+                                        ),
+                                    }}
+                                />
+                            </Typography>
+                        )}
                     </Box>
                 </Box>
-
-                {/* TODO found how to scroll only in this box, to keep logo and global version always visible */}
-                <Box
-                    sx={{
-                        '.MuiAccordion-root': {
-                            //dunno why the theme has the background as black in dark mode
-                            bgcolor: 'unset',
-                        },
-                        '.MuiAccordionSummary-content > .MuiSvgIcon-root': {
-                            marginRight: '0.5rem',
-                        },
-                    }}
-                >
+            </DialogTitle>
+            <DialogContent id="alert-dialog-description">
+                <Box sx={styles.detailsSection}>
                     <Accordion
                         disableGutters
                         variant="outlined"
@@ -282,7 +330,6 @@ const AboutDialog = ({
                     <Accordion
                         disableGutters
                         variant="outlined"
-                        defaultExpanded
                         TransitionProps={{ unmountOnExit: true }}
                     >
                         <AccordionSummary
@@ -314,10 +361,8 @@ const AboutDialog = ({
                                                         key={`module-${idx}`}
                                                         type={module.type}
                                                         name={module.name}
-                                                        version={
-                                                            module.gitTag ||
-                                                            module.version
-                                                        }
+                                                        version={module.version}
+                                                        gitTag={module.gitTag}
                                                         license={module.license}
                                                     />
                                                 ))}
@@ -355,11 +400,11 @@ AboutDialog.propTypes = {
     appVersion: PropTypes.string,
     appGitTag: PropTypes.string,
     appLicense: PropTypes.string,
-    getGlobalVersion: PropTypes.func,
-    getAdditionalModules: PropTypes.func,
+    globalVersionPromise: PropTypes.func,
+    additionalModulesPromise: PropTypes.func,
 };
 
-const style = {
+const moduleStyles = {
     icons: {
         flexGrow: 0,
         position: 'relative',
@@ -371,15 +416,63 @@ const style = {
         alignSelf: 'flex-end',
         flexShrink: 0,
     },
+    tooltip: (theme) => ({
+        [`& .${tooltipClasses.tooltip}`]: {
+            border: '1px solid #dadde9',
+            boxShadow: theme.shadows[1],
+        },
+    }),
+    tooltipDetails: {
+        display: 'grid',
+        gridTemplateColumns: 'max-content auto',
+        margin: 0,
+        dt: {
+            gridColumnStart: 1,
+            '&:after': {
+                content: '" :"',
+            },
+        },
+        dd: {
+            gridColumnStart: 2,
+            paddingLeft: '0.5em',
+        },
+    },
 };
 
 const ModuleTypesIcons = {
-    app: <WidgetsOutlined sx={style.icons} fontSize="small" color="primary" />,
-    server: <DnsOutlined sx={style.icons} fontSize="small" color="secondary" />,
-    other: <QuestionMark sx={style.icons} fontSize="small" />,
+    app: (
+        <WidgetsOutlined
+            sx={moduleStyles.icons}
+            fontSize="small"
+            color="primary"
+        />
+    ),
+    server: (
+        <DnsOutlined
+            sx={moduleStyles.icons}
+            fontSize="small"
+            color="secondary"
+        />
+    ),
+    other: <QuestionMark sx={moduleStyles.icons} fontSize="small" />,
 };
 
-const Module = ({ type, name, version, license }) => {
+function insensitiveCaseCompare(str, obj) {
+    return str.localeCompare(obj, undefined, {
+        sensitivity: 'base',
+    });
+}
+function tooltipTypeLabel(type) {
+    if (insensitiveCaseCompare('app', type) === 0) {
+        return 'about-dialog/module-tooltip-app';
+    } else if (insensitiveCaseCompare('server', type) === 0) {
+        return 'about-dialog/module-tooltip-server';
+    } else {
+        return 'about-dialog/module-tooltip-other';
+    }
+}
+
+const Module = ({ type, name, version, gitTag, license }) => {
     return (
         <Grid
             item
@@ -392,7 +485,48 @@ const Module = ({ type, name, version, license }) => {
                 },
             }}
         >
-            <Tooltip title={(name || '<?>') + ' ' + (version || '')}>
+            <Tooltip
+                TransitionComponent={Zoom}
+                enterDelay={2500}
+                enterNextDelay={350}
+                leaveDelay={200}
+                placement="bottom-start"
+                arrow
+                sx={moduleStyles.tooltip}
+                title={
+                    <>
+                        <Typography variant="body1">{name || '<?>'}</Typography>
+                        <Box component="dl" sx={moduleStyles.tooltipDetails}>
+                            <Typography variant="body2" component="dt">
+                                <FormattedMessage id="about-dialog/label-type" />
+                            </Typography>
+                            <Typography variant="body2" component="dd">
+                                <FormattedMessage id={tooltipTypeLabel(type)} />
+                            </Typography>
+                            {version && (
+                                <>
+                                    <Typography variant="body2" component="dt">
+                                        <FormattedMessage id="about-dialog/label-version" />
+                                    </Typography>
+                                    <Typography variant="body2" component="dd">
+                                        {version}
+                                    </Typography>
+                                </>
+                            )}
+                            {gitTag && (
+                                <>
+                                    <Typography variant="body2" component="dt">
+                                        <FormattedMessage id="about-dialog/label-git-version" />
+                                    </Typography>
+                                    <Typography variant="body2" component="dd">
+                                        {gitTag}
+                                    </Typography>
+                                </>
+                            )}
+                        </Box>
+                    </>
+                }
+            >
                 <Stack
                     direction="row"
                     justifyContent="flex-start"
@@ -408,9 +542,9 @@ const Module = ({ type, name, version, license }) => {
                         color={(theme) => theme.palette.text.secondary}
                         display="inline"
                         noWrap
-                        sx={style.version}
+                        sx={moduleStyles.version}
                     >
-                        {version || null}
+                        {gitTag || version || null}
                     </Typography>
                 </Stack>
             </Tooltip>
@@ -421,5 +555,6 @@ Module.propTypes = {
     type: PropTypes.string,
     name: PropTypes.string,
     version: PropTypes.string,
+    gitTag: PropTypes.string,
     license: PropTypes.string,
 };

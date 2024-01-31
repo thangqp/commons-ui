@@ -19,12 +19,17 @@ const top_bar_en = {
     'top-bar/customTheme': 'Custom theme',
 
     'about-dialog/title': 'About',
-    'about-dialog/version': 'Version',
+    'about-dialog/version': 'Version {version}',
     'about-dialog/alert-running-old-version-msg':
         'Running old version.\nSave your work and refresh the application to load the latest version.',
     'about-dialog/license': 'License',
     'about-dialog/modules-section': 'Modules details',
-    'about-dialog/git-version': 'Tag',
+    'about-dialog/label-version': 'Version',
+    'about-dialog/label-git-version': 'Tag',
+    'about-dialog/label-type': 'Type',
+    'about-dialog/module-tooltip-app': 'application',
+    'about-dialog/module-tooltip-server': 'server',
+    'about-dialog/module-tooltip-other': 'other',
 };
 
 export default top_bar_en;
