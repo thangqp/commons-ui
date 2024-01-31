@@ -20,30 +20,51 @@ import jwtDecode from 'jwt-decode';
 // set as a global variable to allow log level configuration at runtime
 window.OIDCLog = Log;
 
-const hackauthoritykey = 'oidc.hack.authority';
-
+const hackAuthorityKey = 'oidc.hack.authority';
+const oidcHackReloadedKey = 'gridsuite-oidc-hack-reloaded';
 const pathKey = 'powsybl-gridsuite-current-path';
+
+function isIssuerErrorForCodeFlow(error) {
+    return error.message.includes('Invalid issuer in token');
+}
+
+function extractIssuerToSessionStorage(error) {
+    const issuer = error.message.split(' ').pop();
+    sessionStorage.setItem(hackAuthorityKey, issuer);
+}
+
+function reload() {
+    if (!sessionStorage.getItem(oidcHackReloadedKey)) {
+        sessionStorage.setItem(oidcHackReloadedKey, true);
+        console.log('Hack oidc, reload page to make login work');
+        window.location.reload();
+    }
+}
+
+function reloadTimerOnExpiresIn(user, userManager, expiresIn) {
+    // TODO: Can we stop doing it in the hash for implicit flow ? To make it common for both flows
+    user.expires_in = expiresIn;
+    userManager.storeUser(user).then(() => {
+        userManager.getUser();
+    });
+}
 
 function handleSigninSilent(dispatch, userManager) {
     userManager.getUser().then((user) => {
         if (user == null || getIdTokenExpiresIn(user) < 0) {
             return userManager.signinSilent().catch((error) => {
-                if (error.message.includes('Invalid issuer in token')) {
-                    handleIssuerErrorForCodeFlow(error);
-                } else {
-                    dispatch(setShowAuthenticationRouterLogin(true));
-                    const oidcHackReloaded = 'gridsuite-oidc-hack-reloaded';
-                    if (
-                        !sessionStorage.getItem(oidcHackReloaded) &&
-                        error.message ===
-                            'authority mismatch on settings vs. signin state'
-                    ) {
-                        sessionStorage.setItem(oidcHackReloaded, true);
-                        console.log(
-                            'Hack oidc, reload page to make login work'
-                        );
-                        window.location.reload();
-                    }
+                dispatch(setShowAuthenticationRouterLogin(true));
+                const errorIssuerCodeFlow = isIssuerErrorForCodeFlow(error);
+                const errorIssuerImplicitFlow =
+                    error.message ===
+                    'authority mismatch on settings vs. signin state';
+                if (errorIssuerCodeFlow) {
+                    // Replacing authority for code flow only because it's done in the hash for implicit flow
+                    // TODO: Can we stop doing it in the hash for implicit flow ? To make it common here for both flows
+                    extractIssuerToSessionStorage(error);
+                }
+                if (errorIssuerCodeFlow || errorIssuerImplicitFlow) {
+                    reload();
                 }
             });
         }
@@ -106,7 +127,7 @@ function initializeAuthenticationProd(
                             'oidc.' + state,
                             JSON.stringify(storedState)
                         );
-                        sessionStorage.setItem(hackauthoritykey, authority);
+                        sessionStorage.setItem(hackAuthorityKey, authority);
                         const matched_expires =
                             window.location.hash.match(regexexpires);
                         if (matched_expires != null) {
@@ -128,7 +149,7 @@ function initializeAuthenticationProd(
             }
             authority =
                 authority ||
-                sessionStorage.getItem(hackauthoritykey) ||
+                sessionStorage.getItem(hackAuthorityKey) ||
                 idpSettings.authority;
 
             const responseSettings = authorizationCodeFlowEnabled
@@ -208,7 +229,7 @@ function login(location, userManagerInstance) {
 }
 
 function logout(dispatch, userManagerInstance) {
-    sessionStorage.removeItem(hackauthoritykey); //To remove when hack is removed
+    sessionStorage.removeItem(hackAuthorityKey); //To remove when hack is removed
     return userManagerInstance.getUser().then((user) => {
         if (user) {
             // We don't need to check if token is valid at this point
@@ -270,17 +291,18 @@ function dispatchUser(dispatch, userManagerInstance, validateUser) {
                         'User has been successfully loaded from store.'
                     );
 
-                    // In authorization code flow we have to initiate the token renewal process
-                    // because it is not hacked at page loading on the fragment
+                    // In authorization code flow we have to make the oidc-client lib re-evaluate the date of the token renewal timers
+                    // because it is not hacked at page loading on the fragment before oidc-client lib initialization
                     if (userManagerInstance.authorizationCodeFlowEnabled) {
-                        user.expires_in = computeMinExpiresIn(
-                            user.expires_in,
-                            user.id_token,
-                            userManagerInstance.idpSettings.maxExpiresIn
+                        reloadTimerOnExpiresIn(
+                            user,
+                            userManagerInstance,
+                            computeMinExpiresIn(
+                                user.expires_in,
+                                user.id_token,
+                                userManagerInstance.idpSettings.maxExpiresIn
+                            )
                         );
-                        userManagerInstance.storeUser(user).then(() => {
-                            userManagerInstance.getUser();
-                        });
                     }
                     return dispatch(setLoggedUser(user));
                 })
@@ -302,21 +324,39 @@ function getPreLoginPath() {
     return sessionStorage.getItem(pathKey);
 }
 
+function navigateToPreLoginPath(navigate) {
+    const previousPath = getPreLoginPath();
+    navigate(previousPath);
+}
+
 function handleSigninCallback(dispatch, navigate, userManagerInstance) {
+    let reloadAfterNavigate = false;
     userManagerInstance
         .signinRedirectCallback()
+        .catch(function (e) {
+            if (isIssuerErrorForCodeFlow(e)) {
+                // Replacing authority for code flow only because it's done in the hash for implicit flow
+                // TODO: Can we also do it here for the implicit flow ? To make it common here for both flows
+                extractIssuerToSessionStorage(e);
+                // After navigate, location will be out of a redirection route (sign-in-silent or sign-in-callback) so reloading the page will attempt a silent signin
+                // It will reload the user manager based on hacked authority at initialization with the new authority
+                // We do this because on Azure we only get to know the issuer of the user in the idtoken and so signingredirectcallback will always fail
+                // We could restart the whole login process from signin redirect with the correct issuer, but instead we just rely on the silent login after the reload which will work
+                reloadAfterNavigate = true;
+            } else {
+                throw e;
+            }
+        })
         .then(function () {
             dispatch(setSignInCallbackError(null));
-            const previousPath = getPreLoginPath();
-            navigate(previousPath);
+            navigateToPreLoginPath(navigate);
+            if (reloadAfterNavigate) {
+                reload();
+            }
         })
         .catch(function (e) {
-            if (e.message.includes('Invalid issuer in token')) {
-                handleIssuerErrorForCodeFlow(e, navigate);
-            } else {
-                dispatch(setSignInCallbackError(e));
-                console.error(e);
-            }
+            dispatch(setSignInCallbackError(e));
+            console.error(e);
         });
 }
 
@@ -373,10 +413,7 @@ function handleUser(dispatch, userManager, validateUser) {
                                 'seconds',
                             error
                         );
-                        user.expires_in = idTokenExpiresIn;
-                        userManager.storeUser(user).then(() => {
-                            userManager.getUser();
-                        });
+                        reloadTimerOnExpiresIn(idTokenExpiresIn);
                     } else {
                         console.log(
                             'Error in silent renew, but idtoken NOT expiring (expiring in' +
@@ -385,10 +422,9 @@ function handleUser(dispatch, userManager, validateUser) {
                                 userManager.idpSettings.maxExpiresIn,
                             error
                         );
-                        user.expires_in = userManager.idpSettings.maxExpiresIn;
-                        userManager.storeUser(user).then(() => {
-                            userManager.getUser();
-                        });
+                        reloadTimerOnExpiresIn(
+                            userManager.idpSettings.maxExpiresIn
+                        );
                     }
                 } else {
                     console.log(
@@ -410,18 +446,6 @@ function handleUser(dispatch, userManager, validateUser) {
 
     console.debug('dispatch user');
     dispatchUser(dispatch, userManager, validateUser);
-}
-
-function handleIssuerErrorForCodeFlow(error, navigate) {
-    const issuer = error.message.split(' ').pop();
-    sessionStorage.setItem(hackauthoritykey, issuer);
-    if (navigate) {
-        const previousPath = getPreLoginPath();
-        navigate(previousPath);
-    }
-    // To work, location has to be out of a redirection route (sign-in-silent or sign-in-callback)
-    // So that it reloads user manager based on hacked authority and tries a signin silent at initialization with the new authority
-    window.location.reload();
 }
 
 export {
