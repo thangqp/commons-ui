@@ -413,7 +413,11 @@ function handleUser(dispatch, userManager, validateUser) {
                                 'seconds',
                             error
                         );
-                        reloadTimerOnExpiresIn(idTokenExpiresIn);
+                        reloadTimerOnExpiresIn(
+                            user,
+                            userManager,
+                            idTokenExpiresIn
+                        );
                     } else {
                         console.log(
                             'Error in silent renew, but idtoken NOT expiring (expiring in' +
@@ -423,6 +427,8 @@ function handleUser(dispatch, userManager, validateUser) {
                             error
                         );
                         reloadTimerOnExpiresIn(
+                            user,
+                            userManager,
                             userManager.idpSettings.maxExpiresIn
                         );
                     }
