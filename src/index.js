@@ -85,7 +85,7 @@ export { default as multiple_selection_dialog_fr } from './components/translatio
 export { default as common_button_en } from './components/translations/common-button-en';
 export { default as common_button_fr } from './components/translations/common-button-fr';
 
-export { default as TagRenderer } from './components/ElementSearchDialog';
+export { TagRenderer } from './components/ElementSearchDialog';
 export { EquipmentItem } from './components/ElementSearchDialog/equipment-item';
 export { default as CardErrorBoundary } from './components/CardErrorBoundary';
 export { useIntlRef } from './hooks/useIntlRef';
