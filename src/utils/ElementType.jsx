@@ -10,7 +10,7 @@ import {
     LibraryBooksOutlined as LibraryBooksOutlinedIcon,
     OfflineBolt as OfflineBoltIcon,
     Settings as SettingsIcon,
-    NoteAlt as NoteAltIcon
+    NoteAlt as NoteAltIcon,
 } from '@mui/icons-material';
 
 export const elementType = {
