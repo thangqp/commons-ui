@@ -8,38 +8,37 @@
 import react from '@vitejs/plugin-react';
 import type { PluginOption } from 'vite';
 import { defineConfig } from 'vite';
-import * as path from 'path';
-import { resolve } from 'path';
 import eslint from 'vite-plugin-eslint';
-import dts from 'vite-plugin-dts';
-import * as fs from 'fs/promises';
-import * as url from 'url';
-import { createRequire } from 'node:module';
 import svgr from 'vite-plugin-svgr';
-import { externalizeDeps } from 'vite-plugin-externalize-deps'
+import { externalizeDeps } from 'vite-plugin-externalize-deps';
+import * as path from 'node:path';
+import * as fs from 'node:fs/promises';
+import * as url from 'node:url';
+import { createRequire } from 'node:module';
 
 export default defineConfig({
     plugins: [
         react(),
         eslint(),
-        dts(),
         svgr({ include: '**/*.svg' }), // default is { include: "**/*.svg?react" }
         reactVirtualized(),
-        externalizeDeps(),
+        externalizeDeps({
+            include: [/^react-is(?:\/.*)?$/, /^@mui(?:\/.*)?$/],
+        }),
     ],
-
     build: {
         lib: {
-            entry: resolve(__dirname, 'src/index.js'),
+            entry: path.resolve(__dirname, 'src/index.js'),
             name: 'Commons ui',
-            fileName: () => {
-                // from https://github.com/vitejs/vite/discussions/1736#discussioncomment-4997467
-                // in this way, we can have a .js output file without having to add 'type: module' in the package.json which introduce breaking changes
-                return `commons-ui.js`;
-            },
             formats: ['es'],
         },
-        minify: false // easier to debug on the apps using this lib
+        rollupOptions: {
+            output: {
+                preserveModules: true,
+                entryFileNames: '[name].js', // override vite and allow to keep the original tree and .js extension even in ESM
+            },
+        },
+        minify: false, // easier to debug on the apps using this lib
     },
 });
 

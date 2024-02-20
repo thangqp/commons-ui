@@ -20,35 +20,69 @@ import jwtDecode from 'jwt-decode';
 // set as a global variable to allow log level configuration at runtime
 window.OIDCLog = Log;
 
-const hackauthoritykey = 'oidc.hack.authority';
-
+const hackAuthorityKey = 'oidc.hack.authority';
+const oidcHackReloadedKey = 'gridsuite-oidc-hack-reloaded';
 const pathKey = 'powsybl-gridsuite-current-path';
+
+function isIssuerErrorForCodeFlow(error) {
+    return error.message.includes('Invalid issuer in token');
+}
+
+function extractIssuerToSessionStorage(error) {
+    const issuer = error.message.split(' ').pop();
+    sessionStorage.setItem(hackAuthorityKey, issuer);
+}
+
+function reload() {
+    if (!sessionStorage.getItem(oidcHackReloadedKey)) {
+        sessionStorage.setItem(oidcHackReloadedKey, true);
+        console.log('Hack oidc, reload page to make login work');
+        window.location.reload();
+    }
+}
+
+function reloadTimerOnExpiresIn(user, userManager, expiresIn) {
+    // TODO: Can we stop doing it in the hash for implicit flow ? To make it common for both flows
+    user.expires_in = expiresIn;
+    userManager.storeUser(user).then(() => {
+        userManager.getUser();
+    });
+}
 
 function handleSigninSilent(dispatch, userManager) {
     userManager.getUser().then((user) => {
         if (user == null || getIdTokenExpiresIn(user) < 0) {
             return userManager.signinSilent().catch((error) => {
                 dispatch(setShowAuthenticationRouterLogin(true));
-                const oidcHackReloaded = 'gridsuite-oidc-hack-reloaded';
-                if (
-                    !sessionStorage.getItem(oidcHackReloaded) &&
+                const errorIssuerCodeFlow = isIssuerErrorForCodeFlow(error);
+                const errorIssuerImplicitFlow =
                     error.message ===
-                        'authority mismatch on settings vs. signin state'
-                ) {
-                    sessionStorage.setItem(oidcHackReloaded, true);
-                    console.log('Hack oidc, reload page to make login work');
-                    window.location.reload();
+                    'authority mismatch on settings vs. signin state';
+                if (errorIssuerCodeFlow) {
+                    // Replacing authority for code flow only because it's done in the hash for implicit flow
+                    // TODO: Can we stop doing it in the hash for implicit flow ? To make it common here for both flows
+                    extractIssuerToSessionStorage(error);
+                }
+                if (errorIssuerCodeFlow || errorIssuerImplicitFlow) {
+                    reload();
                 }
             });
         }
     });
 }
 
-function initializeAuthenticationDev(dispatch, isSilentRenew, validateUser) {
+function initializeAuthenticationDev(
+    dispatch,
+    isSilentRenew,
+    validateUser,
+    isSigninCallback
+) {
     let userManager = new UserManagerMock({});
     if (!isSilentRenew) {
         handleUser(dispatch, userManager, validateUser);
-        handleSigninSilent(dispatch, userManager);
+        if (!isSigninCallback) {
+            handleSigninSilent(dispatch, userManager);
+        }
     }
     return Promise.resolve(userManager);
 }
@@ -60,7 +94,8 @@ function initializeAuthenticationProd(
     isSilentRenew,
     idpSettings,
     validateUser,
-    authorizationCodeFlowEnabled
+    authorizationCodeFlowEnabled,
+    isSigninCallback
 ) {
     return idpSettings
         .then((r) => r.json())
@@ -92,69 +127,29 @@ function initializeAuthenticationProd(
                             'oidc.' + state,
                             JSON.stringify(storedState)
                         );
-                        sessionStorage.setItem(hackauthoritykey, authority);
+                        sessionStorage.setItem(hackAuthorityKey, authority);
                         const matched_expires =
                             window.location.hash.match(regexexpires);
                         if (matched_expires != null) {
                             const expires_in = parseInt(
                                 matched_expires[0].split('=')[1]
                             );
-                            const now = parseInt(Date.now() / 1000);
-                            const exp = decoded.exp;
-                            const idTokenExpiresIn = exp - now;
-                            let minAccesstokenOrIdtokenOrIdpSettingsExpiresIn =
-                                expires_in;
-                            let newExpireReplaceReason;
-                            if (
-                                idTokenExpiresIn <
-                                minAccesstokenOrIdtokenOrIdpSettingsExpiresIn
-                            ) {
-                                minAccesstokenOrIdtokenOrIdpSettingsExpiresIn =
-                                    idTokenExpiresIn;
-                                newExpireReplaceReason =
-                                    'idtoken.exp is earlier';
-                            }
-                            if (
-                                idpSettings.maxExpiresIn &&
-                                idpSettings.maxExpiresIn <
-                                    minAccesstokenOrIdtokenOrIdpSettingsExpiresIn
-                            ) {
-                                minAccesstokenOrIdtokenOrIdpSettingsExpiresIn =
-                                    idpSettings.maxExpiresIn;
-                                newExpireReplaceReason =
-                                    'idpSettings.maxExpiresIn is smaller';
-                            }
-                            if (newExpireReplaceReason) {
-                                const newhash = window.location.hash.replace(
-                                    matched_expires[0],
-                                    'expires_in=' +
-                                        minAccesstokenOrIdtokenOrIdpSettingsExpiresIn
-                                );
-                                console.debug(
-                                    'Replacing expires_in in window.location.hash to ' +
-                                        minAccesstokenOrIdtokenOrIdpSettingsExpiresIn +
-                                        ' because ' +
-                                        newExpireReplaceReason +
-                                        '. ',
-                                    'debug:',
-                                    'original expires_in: ' + expires_in + ', ',
-                                    'idTokenExpiresIn: ' +
-                                        idTokenExpiresIn +
-                                        '(idtoken exp: ' +
-                                        exp +
-                                        '), ',
-                                    'idpSettings maxExpiresIn: ' +
+                            window.location.hash = window.location.hash.replace(
+                                matched_expires[0],
+                                'expires_in=' +
+                                    computeMinExpiresIn(
+                                        expires_in,
+                                        id_token,
                                         idpSettings.maxExpiresIn
-                                );
-                                window.location.hash = newhash;
-                            }
+                                    )
+                            );
                         }
                     }
                 }
             }
             authority =
                 authority ||
-                sessionStorage.getItem(hackauthoritykey) ||
+                sessionStorage.getItem(hackAuthorityKey) ||
                 idpSettings.authority;
 
             const responseSettings = authorizationCodeFlowEnabled
@@ -177,9 +172,13 @@ function initializeAuthenticationProd(
             };
             let userManager = new UserManager(settings);
             userManager.idpSettings = idpSettings; //store our settings in there as well to use it later
+            userManager.authorizationCodeFlowEnabled =
+                authorizationCodeFlowEnabled;
             if (!isSilentRenew) {
                 handleUser(dispatch, userManager, validateUser);
-                handleSigninSilent(dispatch, userManager);
+                if (!isSigninCallback) {
+                    handleSigninSilent(dispatch, userManager);
+                }
             }
             return userManager;
         })
@@ -190,6 +189,38 @@ function initializeAuthenticationProd(
         });
 }
 
+function computeMinExpiresIn(expiresIn, idToken, maxExpiresIn) {
+    const now = parseInt(Date.now() / 1000);
+    const exp = jwtDecode(idToken).exp;
+    const idTokenExpiresIn = exp - now;
+    let newExpiresIn = expiresIn;
+    let newExpiresInReplaceReason;
+    if (expiresIn === undefined || idTokenExpiresIn < newExpiresIn) {
+        newExpiresIn = idTokenExpiresIn;
+        newExpiresInReplaceReason = 'idtoken.exp is earlier';
+    }
+    if (maxExpiresIn && maxExpiresIn < newExpiresIn) {
+        newExpiresIn = maxExpiresIn;
+        newExpiresInReplaceReason = 'idpSettings.maxExpiresIn is smaller';
+    }
+    if (newExpiresInReplaceReason) {
+        console.debug(
+            'Replacing expiresIn in user to ' +
+                newExpiresIn +
+                ' because ' +
+                newExpiresInReplaceReason +
+                '. ',
+            'debug:',
+            'original expires_in: ' + expiresIn + ', ',
+            'idTokenExpiresIn: ' +
+                idTokenExpiresIn +
+                ', idpSettings maxExpiresIn: ' +
+                maxExpiresIn
+        );
+    }
+    return newExpiresIn;
+}
+
 function login(location, userManagerInstance) {
     sessionStorage.setItem(pathKey, location.pathname + location.search);
     return userManagerInstance
@@ -198,7 +229,7 @@ function login(location, userManagerInstance) {
 }
 
 function logout(dispatch, userManagerInstance) {
-    sessionStorage.removeItem(hackauthoritykey); //To remove when hack is removed
+    sessionStorage.removeItem(hackAuthorityKey); //To remove when hack is removed
     return userManagerInstance.getUser().then((user) => {
         if (user) {
             // We don't need to check if token is valid at this point
@@ -259,6 +290,20 @@ function dispatchUser(dispatch, userManagerInstance, validateUser) {
                     console.debug(
                         'User has been successfully loaded from store.'
                     );
+
+                    // In authorization code flow we have to make the oidc-client lib re-evaluate the date of the token renewal timers
+                    // because it is not hacked at page loading on the fragment before oidc-client lib initialization
+                    if (userManagerInstance.authorizationCodeFlowEnabled) {
+                        reloadTimerOnExpiresIn(
+                            user,
+                            userManagerInstance,
+                            computeMinExpiresIn(
+                                user.expires_in,
+                                user.id_token,
+                                userManagerInstance.idpSettings.maxExpiresIn
+                            )
+                        );
+                    }
                     return dispatch(setLoggedUser(user));
                 })
                 .catch((e) => {
@@ -279,13 +324,35 @@ function getPreLoginPath() {
     return sessionStorage.getItem(pathKey);
 }
 
+function navigateToPreLoginPath(navigate) {
+    const previousPath = getPreLoginPath();
+    navigate(previousPath);
+}
+
 function handleSigninCallback(dispatch, navigate, userManagerInstance) {
+    let reloadAfterNavigate = false;
     userManagerInstance
         .signinRedirectCallback()
+        .catch(function (e) {
+            if (isIssuerErrorForCodeFlow(e)) {
+                // Replacing authority for code flow only because it's done in the hash for implicit flow
+                // TODO: Can we also do it here for the implicit flow ? To make it common here for both flows
+                extractIssuerToSessionStorage(e);
+                // After navigate, location will be out of a redirection route (sign-in-silent or sign-in-callback) so reloading the page will attempt a silent signin
+                // It will reload the user manager based on hacked authority at initialization with the new authority
+                // We do this because on Azure we only get to know the issuer of the user in the idtoken and so signingredirectcallback will always fail
+                // We could restart the whole login process from signin redirect with the correct issuer, but instead we just rely on the silent login after the reload which will work
+                reloadAfterNavigate = true;
+            } else {
+                throw e;
+            }
+        })
         .then(function () {
             dispatch(setSignInCallbackError(null));
-            const previousPath = getPreLoginPath();
-            navigate(previousPath);
+            navigateToPreLoginPath(navigate);
+            if (reloadAfterNavigate) {
+                reload();
+            }
         })
         .catch(function (e) {
             dispatch(setSignInCallbackError(e));
@@ -300,14 +367,14 @@ function handleSilentRenewCallback(userManagerInstance) {
 function handleUser(dispatch, userManager, validateUser) {
     userManager.events.addUserLoaded((user) => {
         console.debug('user loaded', user);
-
         dispatchUser(dispatch, userManager, validateUser);
     });
 
     userManager.events.addSilentRenewError((error) => {
         console.debug(error);
-        // wait for accessTokenExpiringNotificationTime so that the user is expired
-        // otherwise the library tries to signin immediately when we do getUser()
+        // Wait for accessTokenExpiringNotificationTime so that the user is expired and not between expiring and expired
+        // otherwise the library will fire AccessTokenExpiring everytime we do getUser()
+        // Indeed, getUSer() => loadUser() => load() on events => if it's already expiring it will be init and triggerred again
         window.setTimeout(() => {
             userManager.getUser().then((user) => {
                 if (!user) {
@@ -346,10 +413,11 @@ function handleUser(dispatch, userManager, validateUser) {
                                 'seconds',
                             error
                         );
-                        user.expires_in = idTokenExpiresIn;
-                        userManager.storeUser(user).then(() => {
-                            userManager.getUser();
-                        });
+                        reloadTimerOnExpiresIn(
+                            user,
+                            userManager,
+                            idTokenExpiresIn
+                        );
                     } else {
                         console.log(
                             'Error in silent renew, but idtoken NOT expiring (expiring in' +
@@ -358,10 +426,11 @@ function handleUser(dispatch, userManager, validateUser) {
                                 userManager.idpSettings.maxExpiresIn,
                             error
                         );
-                        user.expires_in = userManager.idpSettings.maxExpiresIn;
-                        userManager.storeUser(user).then(() => {
-                            userManager.getUser();
-                        });
+                        reloadTimerOnExpiresIn(
+                            user,
+                            userManager,
+                            userManager.idpSettings.maxExpiresIn
+                        );
                     }
                 } else {
                     console.log(
