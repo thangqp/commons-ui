@@ -10,13 +10,8 @@ import {
     LibraryBooksOutlined as LibraryBooksOutlinedIcon,
     OfflineBolt as OfflineBoltIcon,
     Settings as SettingsIcon,
+    NoteAlt as NoteAltIcon
 } from '@mui/icons-material';
-//TODO FM
-import LibraryBooksOutlinedIcon from '@mui/icons-material/LibraryBooksOutlined';
-import OfflineBoltIcon from '@mui/icons-material/OfflineBolt';
-import NoteAltIcon from '@mui/icons-material/NoteAlt';
-import ArticleIcon from '@mui/icons-material/Article';
-import SettingsIcon from '@mui/icons-material/Settings';
 
 export const elementType = {
     DIRECTORY: 'DIRECTORY',
