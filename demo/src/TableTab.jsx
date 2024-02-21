@@ -6,7 +6,6 @@
  */
 
 import React, { useCallback, useMemo, useState } from 'react';
-import { withStyles } from '@mui/styles';
 import {
     Box,
     Button,
@@ -15,7 +14,7 @@ import {
     Switch,
     TextField,
 } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { styled, withStyles } from '@mui/material/styles';
 import { DEFAULT_CELL_PADDING, KeyedColumnsRowIndexer } from '../../src';
 import MuiVirtualizedTable, {
     generateMuiVirtualizedTableClass,
