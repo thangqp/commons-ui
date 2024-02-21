@@ -11,7 +11,7 @@ import { ResizableBox } from 'react-resizable';
 import { useWindowWidth } from '@react-hook/window-size';
 import PropTypes from 'prop-types';
 import { Box } from '@mui/material';
-import { styled } from '@mui/system';
+import { styled } from '@mui/material/styles';
 import { mergeSx } from '../../src/utils/styles';
 
 const styles = {

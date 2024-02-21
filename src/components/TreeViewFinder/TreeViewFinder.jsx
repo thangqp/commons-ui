@@ -12,9 +12,6 @@ import {
     makeComposeClasses,
     toNestedGlobalSelectors,
 } from '../../utils/styles';
-
-import { styled } from '@mui/system';
-
 import {
     Button,
     Dialog,
@@ -24,7 +21,7 @@ import {
     DialogTitle,
     Typography,
 } from '@mui/material';
-
+import { styled } from '@mui/material/styles';
 import { TreeItem, TreeView } from '@mui/lab';
 import {
     Check as CheckIcon,

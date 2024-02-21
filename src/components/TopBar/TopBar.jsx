@@ -27,6 +27,7 @@ import {
     Toolbar,
     Typography,
 } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import {
     Apps as AppsIcon,
     ArrowDropDown as ArrowDropDownIcon,
@@ -41,7 +42,6 @@ import {
     Settings as SettingsIcon,
     WbSunny as WbSunnyIcon,
 } from '@mui/icons-material';
-import { styled } from '@mui/system';
 import PropTypes from 'prop-types';
 import FullScreen, { fullScreenSupported } from 'react-request-fullscreen';
 

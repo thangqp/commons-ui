@@ -21,7 +21,7 @@ import {
     TableCell,
     TextField,
 } from '@mui/material';
-import { styled } from '@mui/system';
+import { styled } from '@mui/material/styles';
 import { GetApp as GetAppIcon } from '@mui/icons-material';
 import { AutoSizer, Column, Table } from 'react-virtualized';
 import CsvDownloader from 'react-csv-downloader';

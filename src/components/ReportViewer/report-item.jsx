@@ -7,7 +7,7 @@
 
 import React, { useContext } from 'react';
 import { Box, Typography } from '@mui/material';
-import { alpha, styled } from '@mui/system';
+import { alpha, styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import { TreeItem } from '@mui/lab';
 import { Label } from '@mui/icons-material';

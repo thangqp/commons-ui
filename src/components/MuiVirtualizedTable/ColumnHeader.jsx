@@ -13,8 +13,8 @@ import {
     FilterAltOutlined as FilterAltOutlinedIcon,
 } from '@mui/icons-material';
 
-import { styled } from '@mui/system';
 import { Box } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import { mergeSx } from '../../utils/styles';
 
 const styles = {

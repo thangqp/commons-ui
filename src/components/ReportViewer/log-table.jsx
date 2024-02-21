@@ -7,7 +7,7 @@
 import React, { memo, useCallback, useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { TableCell, useTheme } from '@mui/material';
-import { styled } from '@mui/system';
+import { styled } from '@mui/material/styles';
 import MuiVirtualizedTable from '../MuiVirtualizedTable';
 import { FilterButton } from './filter-button';
 

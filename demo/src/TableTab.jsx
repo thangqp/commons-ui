@@ -6,10 +6,7 @@
  */
 
 import React, { useCallback, useMemo, useState } from 'react';
-import { DEFAULT_CELL_PADDING, KeyedColumnsRowIndexer } from '../../src';
-import { styled } from '@mui/system';
 import { withStyles } from '@mui/styles';
-
 import {
     Box,
     Button,
@@ -18,11 +15,12 @@ import {
     Switch,
     TextField,
 } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import { DEFAULT_CELL_PADDING, KeyedColumnsRowIndexer } from '../../src';
 import MuiVirtualizedTable, {
     generateMuiVirtualizedTableClass,
 } from '../../src/components/MuiVirtualizedTable';
 import { CHANGE_WAYS } from '../../src/components/MuiVirtualizedTable/KeyedColumnsRowIndexer';
-
 import { toNestedGlobalSelectors } from '../../src/utils/styles';
 
 // For demo and fun.. all even numbers first, then all ascending odd numbers, only postive numbers..
