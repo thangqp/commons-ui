@@ -22,7 +22,7 @@ import MuiVirtualizedTable, {
 import { CHANGE_WAYS } from '../../src/components/MuiVirtualizedTable/KeyedColumnsRowIndexer';
 import { toNestedGlobalSelectors } from '../../src/utils/styles';
 
-// For demo and fun.. all even numbers first, then all ascending odd numbers, only postive numbers..
+// For demo and fun... all even numbers first, then all ascending odd numbers, only positive numbers...
 const evenThenOddOrderingKey = (n) => {
     const remainder = Math.abs(n % 2);
     if (n <= 0 && remainder < 1) {
@@ -40,8 +40,11 @@ const evenThenOddOrderingKey = (n) => {
     }
 };
 
-const styles = (theme) => ({
-    table: {
+/**
+ * @param {import('@mui/material/styles').Theme} theme Theme from ThemeProvider
+ */
+const stylesVirtualizedTable = (theme) => ({
+    '& .table': {
         // temporary right-to-left patch, waiting for
         // https://github.com/bvaughn/react-virtualized/issues/454
         '& .ReactVirtualized__Table__headerRow': {
@@ -50,41 +53,45 @@ const styles = (theme) => ({
                 theme.direction === 'rtl' ? '0 !important' : undefined,
         },
     },
-    tableRow: {
+    '& .tableRow': {
         cursor: 'pointer',
     },
-    tableRowHover: {
+    '& .tableRowHover': {
         '&:hover': {
             backgroundColor: theme.palette.info.light,
         },
     },
-    tableCell: {
+    '& .tableCell': {
         flex: 1,
         padding: DEFAULT_CELL_PADDING + 'px',
     },
-    noClick: {
+    '& .noClick': {
         cursor: 'initial',
     },
-    tableCellColor: {
+    '& .tableCellColor': {
         color: theme.palette.primary.contrastText,
     },
-    header: {
+    '& .header': {
         backgroundColor: theme.palette.info.light,
         color: theme.palette.primary.contrastText,
         fontWeight: 'bold',
     },
-    rowBackgroundDark: {
+    '& .rowBackgroundDark': {
         backgroundColor: theme.palette.info.dark,
     },
-    rowBackgroundLight: {
+    '& .rowBackgroundLight': {
         backgroundColor: theme.palette.info.main,
     },
 });
-
-const StyledVirtualizedTableJss = withStyles(styles)(MuiVirtualizedTable);
+const StyledVirtualizedTableJss = styled(MuiVirtualizedTable)(
+    stylesVirtualizedTable
+);
 
 const stylesEmotion = ({ theme }) =>
-    toNestedGlobalSelectors(styles(theme), generateMuiVirtualizedTableClass);
+    toNestedGlobalSelectors(
+        stylesVirtualizedTable(theme),
+        generateMuiVirtualizedTableClass
+    );
 const StyledVirtualizedTableEmotion =
     styled(MuiVirtualizedTable)(stylesEmotion);
 

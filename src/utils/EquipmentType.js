@@ -24,7 +24,11 @@ export const equipmentStyles = {
         padding: '4px',
         fontSize: 'x-small',
         textAlign: 'center',
-        color: theme === LIGHT_THEME ? 'inherit' : 'black',
+        color:
+            //TODO remove first condition when gridstudy is updated
+            theme === LIGHT_THEME || theme?.palette?.mode === 'light'
+                ? 'inherit'
+                : 'black',
     }),
     equipmentTypeTag: {
         minWidth: TYPE_TAG_MAX_SIZE,
