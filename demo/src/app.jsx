@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import TopBar from '../../src/components/TopBar';
 import SnackbarProvider from '../../src/components/SnackbarProvider';
@@ -280,13 +280,13 @@ const AppContent = ({ language, onLanguageClick }) => {
 
     const [equipmentLabelling, setEquipmentLabelling] = useState(false);
 
-    const [openReportViewer, setOpenReportViewer] = React.useState(false);
+    const [openReportViewer, setOpenReportViewer] = useState(false);
     const [openTreeViewFinderDialog, setOpenTreeViewFinderDialog] =
-        React.useState(false);
+        useState(false);
     const [
         openTreeViewFinderDialogCustomDialog,
         setOpenTreeViewFinderDialogCustomDialog,
-    ] = React.useState(false);
+    ] = useState(false);
 
     // Can't use lazy initializer because useMatch is a hook
     const [initialMatchSilentRenewCallbackUrl] = useState(

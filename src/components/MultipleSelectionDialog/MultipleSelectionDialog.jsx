@@ -17,7 +17,7 @@ import {
     List,
 } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import React, { useState } from 'react';
+import { Fragment, useState } from 'react';
 
 const MultipleSelectionDialog = ({
     options,
@@ -78,7 +78,7 @@ const MultipleSelectionDialog = ({
                                 const optionId = option?.id ?? option;
                                 const label = getOptionLabel(option);
                                 return (
-                                    <React.Fragment key={optionId}>
+                                    <Fragment key={optionId}>
                                         <Grid item>
                                             <FormControlLabel
                                                 label={label}
@@ -96,7 +96,7 @@ const MultipleSelectionDialog = ({
                                                 }
                                             />
                                         </Grid>
-                                    </React.Fragment>
+                                    </Fragment>
                                 );
                             })}
                         </List>

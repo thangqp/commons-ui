@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import SignInCallbackHandler from '../SignInCallbackHandler';
 import {

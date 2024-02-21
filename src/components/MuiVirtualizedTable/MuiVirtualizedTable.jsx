@@ -8,7 +8,7 @@
 /**
  * This class has been taken from 'Virtualized Table' example at https://material-ui.com/components/tables/
  */
-import React, { createRef } from 'react';
+import { createRef, PureComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
@@ -251,7 +251,7 @@ const reorderIndex = memoize(
     }
 );
 
-class MuiVirtualizedTable extends React.PureComponent {
+class MuiVirtualizedTable extends PureComponent {
     static defaultProps = {
         headerHeight: DEFAULT_HEADER_HEIGHT,
         rowHeight: DEFAULT_ROW_HEIGHT,
