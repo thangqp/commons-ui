@@ -7,11 +7,6 @@ import type {
     TextFieldProps,
 } from '@mui/material';
 
-// Don't do that (it's imported from gridexplore)
-// @ts-ignore
-import { default as RawTopBar } from './components/TopBar';
-import type { InferProps } from 'prop-types';
-
 /**
  * Section to export generated type declarations of .ts or .tsx files
  */
@@ -24,7 +19,7 @@ export { Test } from './utils/Test';
  * Section to export manual type declarations of .js and .jsx files
  */
 
-export const TopBar: FunctionComponent<InferProps<typeof RawTopBar.propTypes>>;
+export const TopBar: FunctionComponent;
 
 export function logout(dispatch: any, userManagerInstance: any): Promise<any | undefined>;
 
