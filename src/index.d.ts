@@ -15,6 +15,8 @@ import type {
 export { useTest } from './hooks/useTest';
 export { Test } from './utils/Test';
 
+export { useIntlRef } from './hooks/useIntlRef';
+
 /**
  * Section to export manual type declarations of .js and .jsx files
  */
