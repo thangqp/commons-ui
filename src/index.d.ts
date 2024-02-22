@@ -26,6 +26,8 @@ export { Test } from './utils/Test';
 
 export const TopBar: FunctionComponent<InferProps<typeof RawTopBar.propTypes>>;
 
+export function logout(dispatch: any, userManagerInstance: any): Promise<any | undefined>;
+
 export const DARK_THEME: String, LIGHT_THEME: String;
 
 interface SnackInputs {
