@@ -8,17 +8,19 @@
     },
     "exports": "./dist/index.js",
     "module": "./dist/index.js",
+    "types": "./dist/index.d.ts",
     "files": [
         "dist"
     ],
     "scripts": {
         "start": "vite demo/ --config vite.config.mts",
-        "build": "npm install; vite build; npm prune --production",
-        "build:only": "vite build",
+        "build": "npm install; tsc --p ./tsconfig-build.json && vite build; npm prune --production",
+        "build:only": "tsc --p ./tsconfig-build.json && vite build",
         "prepublishOnly": "npm run build",
         "test": "jest",
         "test:coverage": "jest --coverage",
-        "test:watch": "jest --watch"
+        "test:watch": "jest --watch",
+        "lint": "eslint . --ext js,mjs,jsx,ts,mts,tsx"
     },
     "dependencies": {
         "autosuggest-highlight": "^3.2.0",
@@ -58,6 +60,8 @@
         "@mui/styles": "^5.5.0",
         "@hookform/resolvers": "^3.0.0",
         "@babel/helper-builder-react-jsx": "7.15.4",
+        "@typescript-eslint/eslint-plugin": "5.62.0",
+        "@typescript-eslint/parser": "5.62.0",
         "@vitejs/plugin-react": "^4.2.1",
         "babel-eslint": "^10.1.0",
         "bufferutil": "^4.0.1",
@@ -82,7 +86,7 @@
         "react-router-dom": "^6.0.0",
         "ts-node": "^10.9.2",
         "type-fest": "^2.0.0",
-        "typescript": "^5.3.3",
+        "typescript": "5.1.6",
         "utf-8-validate": "^5.0.2",
         "@react-hook/window-size": "^3.1.1",
         "react-resizable": "^3.0.4",
@@ -90,12 +94,16 @@
         "vite-plugin-eslint": "^1.8.1",
         "vite-plugin-externalize-deps": "^0.8.0",
         "vite-plugin-svgr": "^4.2.0",
+        "vite-plugin-dts": "^2.3.0",
         "yup": "^1.0.0"
     },
     "eslintConfig": {
         "extends": [
             "react-app",
             "plugin:prettier/recommended"
+        ],
+        "ignorePatterns": [
+            "dist"
         ],
         "rules": {
             "prettier/prettier": "warn",
