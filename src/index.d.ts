@@ -23,7 +23,10 @@ export { useIntlRef } from './hooks/useIntlRef';
 
 export const TopBar: FunctionComponent;
 
-export function logout(dispatch: any, userManagerInstance: any): Promise<any | undefined>;
+export function logout(
+    dispatch: any,
+    userManagerInstance: any
+): Promise<any | undefined>;
 
 export const DARK_THEME: String, LIGHT_THEME: String;
 
