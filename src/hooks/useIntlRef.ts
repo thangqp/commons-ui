@@ -17,7 +17,7 @@ export function useIntlRef() {
     const intlRef = useRef(intl);
 
     useEffect(() => {
-        intlRef.current = intl;
+        intlRef.current = intl
     }, [intl]);
 
     return intlRef;
