@@ -103,13 +103,13 @@ export const MidFormError: FunctionComponent;
 
 export const FieldErrorAlert: FunctionComponent;
 
-type TextFieldWithAdornmentProps = TextFieldProps & {
+interface TextFieldWithAdornmentProps extends TextFieldProps {
     // variant already included in TextFieldProps
     value: Input; // we override the default type of TextFieldProps which is unknown
     adornmentPosition: string;
     adornmentText: string;
     handleClearValue?: () => void;
-};
+}
 
 interface TextInputProps {
     name: string;
