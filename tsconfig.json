@@ -9,7 +9,6 @@
         "target": "es6",
         "lib": ["dom", "dom.iterable", "esnext"],
 //        "allowJs": true, // it works without and if activated, tsc read the node_modules...
-        "declaration": true,
         "strict": true,
         "forceConsistentCasingInFileNames": true,
         "noFallthroughCasesInSwitch": true,
