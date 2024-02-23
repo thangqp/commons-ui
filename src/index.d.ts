@@ -2,6 +2,8 @@ import type { FunctionComponent, ReactElement } from 'react';
 import type { AutocompleteProps } from '@mui/material/Autocomplete/Autocomplete';
 import type {
     ButtonProps,
+    SwitchProps,
+    CheckboxProps,
     RadioGroupProps,
     SxProps,
     TextFieldProps,
@@ -23,14 +25,17 @@ export { useIntlRef } from './hooks/useIntlRef';
 
 export const TopBar: FunctionComponent;
 
-export function logout(dispatch: any, userManagerInstance: any): Promise<any | undefined>;
+export function logout(
+    dispatch: any,
+    userManagerInstance: any
+): Promise<any | undefined>;
 
 export const DARK_THEME: string, LIGHT_THEME: string;
 
 interface SnackInputs {
     messageTxt?: string;
     messageId?: string;
-    messageValues?: { [key: string]: string };
+    messageValues?: Record<string, string>;
     headerTxt?: string;
     headerId?: string;
     headerValues?: Record<string, string>;
@@ -49,11 +54,12 @@ type Options = Array<{
     id: string;
     label: string;
 }>;
+type Label = string | { id: string; label: string };
 
 interface AutocompleteInputProps
     extends Omit<
         AutocompleteProps<
-            string | { id: string; label: string },
+            Label,
             boolean | undefined,
             boolean | undefined,
             boolean | undefined
@@ -62,14 +68,10 @@ interface AutocompleteInputProps
         'value' | 'onChange' | 'renderInput'
     > {
     name: string;
-    options: ({ id: string; label: string } | string)[];
+    options: Label[];
     label?: string;
-    outputTransform?: (
-        value: { id: string; label: string } | string
-    ) => { id: string; label: string } | string;
-    inputTransform?: (
-        value: { id: string; label: string } | string
-    ) => { id: string; label: string } | string;
+    outputTransform?: (value: Label) => Label;
+    inputTransform?: (value: Label) => Label;
     readOnly?: boolean;
     previousValue?: string;
     allowNewValue?: boolean;
@@ -158,10 +160,18 @@ export const RadioInput: FunctionComponent<RadioInputProps>;
 interface SwitchInputProps {
     name: string;
     label?: string;
-    formProps?: Omit<SwitchInputProps, 'disabled'>;
+    formProps?: Omit<SwitchProps, 'disabled'>;
 }
 
 export const SwitchInput: FunctionComponent<SwitchInputProps>;
+
+interface CheckboxInputProps {
+    name: string;
+    label?: string;
+    formProps?: Omit<CheckboxProps, 'disabled'>;
+}
+
+export const CheckboxInput: FunctionComponent<CheckboxInputProps>;
 
 export const SubmitButton: FunctionComponent<ButtonProps>;
 
@@ -205,25 +215,15 @@ interface OverflowableTextProps {
     text?: string | ReactElement;
 }
 
-// Don't do that (imported from gridstudy)
-// @ts-ignore
-export const elementType = {
-    DIRECTORY: 'DIRECTORY',
-    STUDY: 'STUDY',
-    FILTER: 'FILTER',
-    MODIFICATION: 'MODIFICATION',
-    CONTINGENCY_LIST: 'CONTINGENCY_LIST',
-    VOLTAGE_INIT_PARAMETERS: 'VOLTAGE_INIT_PARAMETERS',
-    SECURITY_ANALYSIS_PARAMETERS: 'SECURITY_ANALYSIS_PARAMETERS',
-    LOADFLOW_PARAMETERS: 'LOADFLOW_PARAMETERS',
-};
-
 export const OverflowableText: FunctionComponent<OverflowableTextProps>;
 
-interface CheckboxInputProps {
-    name: string;
-    label?: string;
-    formProps?: Omit<CheckboxInputProps, 'disabled'>;
+export enum elementType {
+    DIRECTORY = 'DIRECTORY',
+    STUDY = 'STUDY',
+    FILTER = 'FILTER',
+    MODIFICATION = 'MODIFICATION',
+    CONTINGENCY_LIST = 'CONTINGENCY_LIST',
+    VOLTAGE_INIT_PARAMETERS = 'VOLTAGE_INIT_PARAMETERS',
+    SECURITY_ANALYSIS_PARAMETERS = 'SECURITY_ANALYSIS_PARAMETERS',
+    LOADFLOW_PARAMETERS = 'LOADFLOW_PARAMETERS',
 }
-
-export const CheckboxInput: FunctionComponent<CheckboxInputProps>;
