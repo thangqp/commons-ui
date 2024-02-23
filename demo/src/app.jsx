@@ -211,7 +211,7 @@ function SnackErrorButton() {
 }
 
 function SnackWarningButton() {
-    const { snackWarning } = useSnackMessage()
+    const { snackWarning } = useSnackMessage();
     return (
         <Button
             variant="contained"
