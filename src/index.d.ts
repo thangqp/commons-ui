@@ -13,10 +13,6 @@ import type {
  * Section to export generated type declarations of .ts or .tsx files
  */
 
-//TODO FM to remove (for the review)
-export { useTest } from './hooks/useTest';
-export { Test } from './utils/Test';
-
 export { useIntlRef } from './hooks/useIntlRef';
 
 /**
