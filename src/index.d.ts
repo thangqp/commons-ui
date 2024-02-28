@@ -46,16 +46,12 @@ interface UseSnackMessageReturn {
 export function useSnackMessage(): UseSnackMessageReturn;
 
 type Input = string | number;
-type Options = Array<{
-    id: string;
-    label: string;
-}>;
-type Label = string | { id: string; label: string };
+type Option = string | { id: string; label: string };
 
 interface AutocompleteInputProps
     extends Omit<
         AutocompleteProps<
-            Label,
+            Option,
             boolean | undefined,
             boolean | undefined,
             boolean | undefined
@@ -64,10 +60,10 @@ interface AutocompleteInputProps
         'value' | 'onChange' | 'renderInput'
     > {
     name: string;
-    options: Label[];
+    options: Option[];
     label?: string;
-    outputTransform?: (value: Label) => Label;
-    inputTransform?: (value: Label) => Label;
+    outputTransform?: (value: Option) => Option;
+    inputTransform?: (value: Option) => Option;
     readOnly?: boolean;
     previousValue?: string;
     allowNewValue?: boolean;
@@ -147,7 +143,10 @@ interface RadioInputProps {
     name: string;
     label?: string;
     id?: string;
-    options: Options;
+    options: Array<{
+        id: string;
+        label: string;
+    }>;
     formProps?: Omit<RadioGroupProps, 'value' | 'onChange'>;
 }
 
