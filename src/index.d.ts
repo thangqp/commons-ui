@@ -134,6 +134,18 @@ interface TextInputProps {
 
 export const TextInput: FunctionComponent<TextInputProps>;
 
+interface ExpandingTextFieldProps {
+    maxCharactersNumber?: number;
+    rows?: number;
+    minRows?: number;
+    maxRows?: number;
+    sx?: SxProps;
+    label?: boolean;
+}
+
+
+export const ExpandingTextField: FunctionComponent<ExpandingTextFieldProps>;
+
 export const FloatInput: FunctionComponent<
     Omit<
         TextInputProps,
