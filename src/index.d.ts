@@ -8,6 +8,7 @@ import type {
     SxProps,
     TextFieldProps,
 } from '@mui/material';
+import { UUID } from 'crypto';
 
 /**
  * Section to export generated type declarations of .ts or .tsx files
@@ -223,3 +224,46 @@ export enum elementType {
     LOADFLOW_PARAMETERS = 'LOADFLOW_PARAMETERS',
     SENSITIVITY_PARAMETERS = 'SENSITIVITY_PARAMETERS',
 }
+
+interface DirectoryItemsInputProps {
+    label: string | undefined;
+    name: string;
+    elementType: string;
+    equipmentTypes?: string[];
+    itemFilter?: any;
+    titleId?: string;
+    hideErrorMessage?: boolean;
+    onRowChanged?: (a: boolean) => void;
+    onChange?: (e: any) => void;
+    disable?: boolean;
+    fetchDirectoryContent: (
+        directoryUuid: UUID,
+        elementTypes: string[]
+    ) => Promise<any>;
+    fetchRootFolders: (types: string[]) => Promise<any>;
+    fetchElementsInfos: (ids: UUID[], elementTypes: string[]) => Promise<any>;
+    labelRequiredFromContext?: boolean;
+}
+
+export const DirectoryItemsInput: FunctionComponent<DirectoryItemsInputProps>;
+
+interface DirectoryItemSelectorProps {
+    open: boolean;
+    onClose: any;
+    types: string[];
+    equipmentTypes?: string[];
+    title: string;
+    itemFilter?: any;
+    fetchDirectoryContent: (
+        directoryUuid: UUID,
+        elementTypes: string[]
+    ) => Promise<any>;
+    fetchRootFolders: (types: string[]) => Promise<any>;
+    fetchElementsInfos: (
+        ids: UUID[],
+        elementTypes: string[],
+        equipmentTypes?: string[]
+    ) => Promise<any>;
+}
+
+export const DirectoryItemSelector: FunctionComponent<DirectoryItemSelectorProps>;
