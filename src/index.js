@@ -91,6 +91,9 @@ export { default as CardErrorBoundary } from './components/CardErrorBoundary';
 export { useIntlRef } from './hooks/useIntlRef';
 export { useSnackMessage } from './hooks/useSnackMessage';
 export { useDebounce } from './hooks/useDebounce';
+//TODO FM to remove (for the review)
+export { useTest } from './hooks/useTest';
+export { Test } from './utils/Test';
 export { default as AutocompleteInput } from './components/react-hook-form/autocomplete-input';
 export { default as TextInput } from './components/react-hook-form/text-input';
 export { default as RadioInput } from './components/react-hook-form/radio-input';

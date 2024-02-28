@@ -14,13 +14,13 @@
     ],
     "scripts": {
         "start": "vite demo/ --config vite.config.mts",
-        "build": "npm install && tsc --p ./tsconfig-build.json && vite build && npm prune --production",
-        "build:only": "tsc --p ./tsconfig-build.json && vite build",
+        "build": "npm install && tsc && vite build && npm prune --production",
+        "build:only": "vite build",
         "prepublishOnly": "npm run build",
         "test": "jest",
         "test:coverage": "jest --coverage",
         "test:watch": "jest --watch",
-        "lint": "eslint . --ext js,mjs,jsx,ts,mts,tsx"
+        "lint": "eslint . --ext js,mjs,jsx,ts,mts,tsx --max-warnings 0"
     },
     "dependencies": {
         "autosuggest-highlight": "^3.2.0",
@@ -61,6 +61,8 @@
         "@mui/styles": "^5.5.0",
         "@hookform/resolvers": "^3.0.0",
         "@babel/helper-builder-react-jsx": "7.15.4",
+        "@types/react": "^18.2.56",
+        "@types/react-dom": "^18.2.19",
         "@typescript-eslint/eslint-plugin": "5.62.0",
         "@typescript-eslint/parser": "5.62.0",
         "@vitejs/plugin-react": "^4.2.1",

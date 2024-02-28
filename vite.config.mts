@@ -20,7 +20,9 @@ import { createRequire } from 'node:module';
 export default defineConfig({
     plugins: [
         react(),
-        eslint(),
+        eslint({
+            failOnWarning: true,
+        }),
         svgr({ include: '**/*.svg' }), // default is { include: "**/*.svg?react" }
         reactVirtualized(),
         dts({

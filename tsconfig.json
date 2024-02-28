@@ -8,8 +8,6 @@
         "moduleResolution": "bundler",
         "target": "es6",
         "lib": ["dom", "dom.iterable", "esnext"],
-//        "allowJs": true, // it works without and if activated, tsc read the node_modules...
-        "declaration": true,
         "strict": true,
         "forceConsistentCasingInFileNames": true,
         "noFallthroughCasesInSwitch": true,
@@ -19,5 +17,5 @@
         "noEmit": true,
         "jsx": "react-jsx"
     },
-    "include": ["src", "demo"]
+    "include": ["src", "demo"] // we can let demo because the file generation is managed my vite and we have noEmit anyway
 }
