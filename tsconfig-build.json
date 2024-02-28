@@ -1,5 +1,0 @@
-{
-    // When we build, we only include the ./src and not the ./demo folder
-    "extends": "./tsconfig.json",
-    "include": ["src"]
-}
