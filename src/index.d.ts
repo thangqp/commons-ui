@@ -147,7 +147,7 @@ interface RadioInputProps {
         id: string;
         label: string;
     }>;
-    formProps?: Omit<RadioGroupProps, 'value' | 'onChange'>;
+    formProps?: Omit<RadioGroupProps, 'value'>;
 }
 
 export const RadioInput: FunctionComponent<RadioInputProps>;
