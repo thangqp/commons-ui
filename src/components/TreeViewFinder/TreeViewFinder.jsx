@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import {
@@ -129,6 +129,8 @@ const TreeViewFinder = (props) => {
     // Controlled selected for TreeView
     const [selected, setSelected] = useState(defaultSelected);
 
+    const scrollRef = useRef([]);
+
     /* Utilities */
     const isSelectable = (node) => {
         return onlyLeaves ? isLeaf(node) : true; // otherwise everything is selectable
@@ -187,6 +189,45 @@ const TreeViewFinder = (props) => {
         // will proc onNodeSelect then ...
     };
 
+    useEffect(() => {
+        if (defaultSelected?.length > 0) {
+            setSelected((oldSelectedNodes) => [
+                ...oldSelectedNodes,
+                ...defaultSelected,
+            ]);
+        }
+    }, [defaultSelected]);
+
+    useEffect(() => {
+        if (defaultExpanded?.length > 0) {
+            setExpanded((oldExpandedNodes) => [
+                ...oldExpandedNodes,
+                ...defaultExpanded,
+            ]);
+        }
+    }, [defaultExpanded]);
+
+    useEffect(() => {
+        // if we have selected elements by default, we scroll to it
+        if (defaultSelected?.length > 0) {
+            // we check if all expanded nodes by default all already expanded first
+            const isNodeExpanded = defaultExpanded.every((nodeId) =>
+                expanded.includes(nodeId)
+            );
+
+            // we got the last element that we suppose to scroll to
+            const lastScrollRef =
+                scrollRef.current[scrollRef.current.length - 1];
+            if (isNodeExpanded && lastScrollRef) {
+                lastScrollRef.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center',
+                    inline: 'center',
+                });
+            }
+        }
+    }, [expanded, defaultSelected, defaultExpanded, data]);
+
     /* User Interaction management */
     const handleNodeSelect = (e, values) => {
         // Default management
@@ -211,8 +252,12 @@ const TreeViewFinder = (props) => {
         if (validationButtonText) {
             return validationButtonText;
         } else {
+            const buttonLabelId =
+                defaultSelected?.length > 0
+                    ? 'treeview_finder/replaceElementsValidation'
+                    : 'treeview_finder/addElementsValidation';
             return intl.formatMessage(
-                { id: 'treeview_finder/addElementsValidation' },
+                { id: buttonLabelId },
                 {
                     nbElements: selected.length,
                 }
@@ -286,6 +331,11 @@ const TreeViewFinder = (props) => {
                         />
                     ) : null
                 }
+                ref={(element) => {
+                    if (defaultSelected.includes(node.id)) {
+                        scrollRef.current.push(element);
+                    }
+                }}
             >
                 {Array.isArray(node.children)
                     ? node.children.length
