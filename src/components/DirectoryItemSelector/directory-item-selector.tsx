@@ -12,9 +12,9 @@ import {
     useRef,
     useState,
 } from 'react';
-import { getFileIcon, elementType } from '../../utils/ElementType';
-import { useSnackMessage } from '../../hooks/useSnackMessage';
-import TreeViewFinder from '../../components/TreeViewFinder';
+import { getFileIcon, elementType } from '../../utils/ElementType.jsx';
+import { useSnackMessage } from '../../hooks/useSnackMessage.js';
+import TreeViewFinder from '../TreeViewFinder';
 import { Theme } from '@mui/material';
 import { UUID } from 'crypto';
 

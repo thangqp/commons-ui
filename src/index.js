@@ -114,4 +114,4 @@ export {
     isFieldRequired,
 } from './components/react-hook-form/utils/functions';
 export { default as DirectoryItemsInput } from './components/react-hook-form/directory-items-input';
-export { default as DirectoryItemSelector } from './components/react-hook-form/directory-item-selector';
+export { default as DirectoryItemSelector } from './components/DirectoryItemSelector/directory-item-selector';
