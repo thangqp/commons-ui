@@ -7,7 +7,7 @@
 import React from 'react';
 import {
     Article as ArticleIcon,
-    LibraryBooksOutlined as LibraryBooksOutlinedIcon,
+    PhotoLibrary as PhotoLibraryIcon,
     OfflineBolt as OfflineBoltIcon,
     Settings as SettingsIcon,
     NoteAlt as NoteAltIcon,
@@ -28,7 +28,7 @@ export const elementType = {
 export function getFileIcon(type, style) {
     switch (type) {
         case elementType.STUDY:
-            return <LibraryBooksOutlinedIcon sx={style} />;
+            return <PhotoLibraryIcon sx={style} />;
         case elementType.CONTINGENCY_LIST:
             return <OfflineBoltIcon sx={style} />;
         case elementType.MODIFICATION:
