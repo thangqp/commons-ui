@@ -8,6 +8,7 @@ import React from 'react';
 import {
     Article as ArticleIcon,
     PhotoLibrary as PhotoLibraryIcon,
+    Photo as PhotoIcon,
     OfflineBolt as OfflineBoltIcon,
     Settings as SettingsIcon,
     NoteAlt as NoteAltIcon,
@@ -16,6 +17,7 @@ import {
 export const elementType = {
     DIRECTORY: 'DIRECTORY',
     STUDY: 'STUDY',
+    CASE: 'CASE',
     FILTER: 'FILTER',
     MODIFICATION: 'MODIFICATION',
     CONTINGENCY_LIST: 'CONTINGENCY_LIST',
@@ -29,6 +31,8 @@ export function getFileIcon(type, style) {
     switch (type) {
         case elementType.STUDY:
             return <PhotoLibraryIcon sx={style} />;
+        case elementType.CASE:
+            return <PhotoIcon sx={style} />;
         case elementType.CONTINGENCY_LIST:
             return <OfflineBoltIcon sx={style} />;
         case elementType.MODIFICATION:
