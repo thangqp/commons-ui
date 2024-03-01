@@ -20,7 +20,7 @@ import { useController, useFieldArray, useFormContext } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 import ErrorInput from '../react-hook-form/error-management/error-input.jsx';
 import MidFormError from '../react-hook-form/error-management/mid-form-error.jsx';
-import { RawReadOnlyInput } from './raw-read-only-input.js';
+import { RawReadOnlyInput } from './raw-read-only-input';
 import { Tooltip } from '@mui/material';
 import { mergeSx } from '../../utils/styles.js';
 import DirectoryItemSelector from '../DirectoryItemSelector/directory-item-selector.tsx';
