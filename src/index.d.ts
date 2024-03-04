@@ -14,6 +14,15 @@ import type {
  */
 
 export { useIntlRef } from './hooks/useIntlRef';
+export { RawReadOnlyInput } from './components/react-hook-form/raw-read-only-input';
+export {
+    DirectoryItemsInputProps,
+    DirectoryItemsInput,
+} from './components/react-hook-form/directory-items-input';
+export {
+    DirectoryItemSelectorProps,
+    DirectoryItemSelector,
+} from './components/DirectoryItemSelector/directory-item-selector';
 
 /**
  * Section to export manual type declarations of .js and .jsx files
