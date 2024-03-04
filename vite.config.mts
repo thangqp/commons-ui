@@ -10,6 +10,7 @@ import type { PluginOption } from 'vite';
 import { defineConfig } from 'vite';
 import eslint from 'vite-plugin-eslint';
 import svgr from 'vite-plugin-svgr';
+import dts from 'vite-plugin-dts';
 import { externalizeDeps } from 'vite-plugin-externalize-deps';
 import * as path from 'node:path';
 import * as fs from 'node:fs/promises';
@@ -19,9 +20,14 @@ import { createRequire } from 'node:module';
 export default defineConfig({
     plugins: [
         react(),
-        eslint(),
+        eslint({
+            failOnWarning: true,
+        }),
         svgr({ include: '**/*.svg' }), // default is { include: "**/*.svg?react" }
         reactVirtualized(),
+        dts({
+            include: ['src'],
+        }),
         externalizeDeps({
             include: [/^react-is(?:\/.*)?$/, /^@mui(?:\/.*)?$/],
         }),
