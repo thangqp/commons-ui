@@ -7,12 +7,20 @@
 
 import { useState } from 'react';
 import { InputAdornment } from '@mui/material';
-import { useMemo } from 'react';
+import { useMemo, FunctionComponent } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { TextInput } from '../..';
-import PropTypes from "prop-types";
 
-const ExpandingTextField = ({
+interface ExpandingTextFieldProps {
+    name: string;
+    maxCharactersNumber?: number;
+    rows?: number;
+    minRows?: number;
+    maxRows?: number;
+    sx?: any;
+    label?: string;
+}
+const ExpandingTextField: FunctionComponent<ExpandingTextFieldProps> = ({
     name,
     maxCharactersNumber,
     rows,
@@ -84,15 +92,4 @@ const ExpandingTextField = ({
     return <TextInput name={name} label={label} formProps={formProps} />;
 };
 
-
-ExpandingTextField.propTypes = {
-    maxCharactersNumber: PropTypes.number,
-    rows: PropTypes.number,
-    minRows: PropTypes.number,
-    maxRows: PropTypes.number,
-    sx: PropTypes.object,
-    name: PropTypes.string.isRequired,
-    label: PropTypes.string,
-
-};
 export default ExpandingTextField;

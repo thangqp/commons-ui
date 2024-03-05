@@ -24,6 +24,10 @@ export {
     DirectoryItemSelector,
 } from './components/DirectoryItemSelector/directory-item-selector';
 
+export {
+    ExpandingTextFieldProps,
+    ExpandingTextField,
+} from './components/react-hook-form/expanding-text-field';
 /**
  * Section to export manual type declarations of .js and .jsx files
  */
@@ -134,18 +138,7 @@ interface TextInputProps {
 
 export const TextInput: FunctionComponent<TextInputProps>;
 
-interface ExpandingTextFieldProps {
-    name: string;
-    maxCharactersNumber?: number;
-    rows?: number;
-    minRows?: number;
-    maxRows?: number;
-    sx?: SxProps;
-    label?: string;
-}
 
-
-export const ExpandingTextField: FunctionComponent<ExpandingTextFieldProps>;
 
 export const FloatInput: FunctionComponent<
     Omit<
