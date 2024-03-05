@@ -84,6 +84,8 @@ export { default as multiple_selection_dialog_en } from './components/translatio
 export { default as multiple_selection_dialog_fr } from './components/translations/multiple-selection-dialog-fr';
 export { default as common_button_en } from './components/translations/common-button-en';
 export { default as common_button_fr } from './components/translations/common-button-fr';
+export { default as directory_items_input_en } from './components/translations/directory-items-input-en';
+export { default as directory_items_input_fr } from './components/translations/directory-items-input-fr';
 
 export { TagRenderer } from './components/ElementSearchDialog';
 export { EquipmentItem } from './components/ElementSearchDialog/equipment-item';
@@ -115,3 +117,4 @@ export {
 } from './components/react-hook-form/utils/functions';
 export { default as DirectoryItemsInput } from './components/react-hook-form/directory-items-input';
 export { default as DirectoryItemSelector } from './components/DirectoryItemSelector/directory-item-selector';
+export { RawReadOnlyInput } from './components/react-hook-form/raw-read-only-input';
