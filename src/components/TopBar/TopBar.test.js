@@ -14,7 +14,7 @@ import { IntlProvider } from 'react-intl';
 import TopBar from './TopBar';
 import { top_bar_en } from '../../';
 
-import PowsyblLogo from '../images/powsybl_logo.svg';
+import PowsyblLogo from '../images/powsybl_logo.svg?react';
 
 import { red } from '@mui/material/colors';
 import { createTheme, ThemeProvider } from '@mui/material';
