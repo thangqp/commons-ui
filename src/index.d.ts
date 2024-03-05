@@ -138,7 +138,6 @@ interface TextInputProps {
 
 export const TextInput: FunctionComponent<TextInputProps>;
 
-
 export const FloatInput: FunctionComponent<
     Omit<
         TextInputProps,
