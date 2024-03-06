@@ -7,7 +7,7 @@
 
 import { useState } from 'react';
 import { InputAdornment } from '@mui/material';
-import { useMemo, FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { TextInput } from '../..';
 
@@ -19,6 +19,7 @@ interface ExpandingTextFieldProps {
     maxRows?: number;
     sx?: any;
     label?: string;
+    textFieldFormProps: any;
 }
 const ExpandingTextField: FunctionComponent<ExpandingTextFieldProps> = ({
     name,
@@ -28,6 +29,7 @@ const ExpandingTextField: FunctionComponent<ExpandingTextFieldProps> = ({
     maxRows,
     sx,
     label,
+    textFieldFormProps,
 }) => {
     const [isFocused, setIsFocused] = useState(false);
     const { control } = useFormContext();
@@ -45,10 +47,8 @@ const ExpandingTextField: FunctionComponent<ExpandingTextFieldProps> = ({
 
     const maxCounter = maxCharactersNumber ?? 500;
     const isOverTheLimit = descriptionWatch?.length > maxCounter;
-    const descriptionCounter = useMemo(() => {
-        const descriptionLength = descriptionWatch?.length ?? 0;
-        return descriptionLength + '/' + maxCounter;
-    }, [descriptionWatch, maxCounter]);
+    const descriptionLength = descriptionWatch?.length ?? 0;
+    const descriptionCounter = descriptionLength + '/' + maxCounter;
 
     const rowsToDisplay = isFocused ? rows : minRows;
 
@@ -88,6 +88,7 @@ const ExpandingTextField: FunctionComponent<ExpandingTextFieldProps> = ({
         ...(rowsToDisplay && { rows: rowsToDisplay }),
         ...(maxRows && { maxRows: maxRows }),
         ...(sx && { sx: sx }),
+        ...textFieldFormProps,
     };
     return <TextInput name={name} label={label} formProps={formProps} />;
 };
