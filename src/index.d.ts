@@ -1,5 +1,4 @@
 import type { FunctionComponent, ReactElement } from 'react';
-import type { AutocompleteProps } from '@mui/material/Autocomplete/Autocomplete';
 import type {
     ButtonProps,
     SwitchProps,
@@ -37,71 +36,9 @@ export function logout(
 
 export const DARK_THEME: string, LIGHT_THEME: string;
 
-interface SnackInputs {
-    messageTxt?: string;
-    messageId?: string;
-    messageValues?: Record<string, string>;
-    headerTxt?: string;
-    headerId?: string;
-    headerValues?: Record<string, string>;
-}
-
-interface UseSnackMessageReturn {
-    snackError: (snackInputs: SnackInputs) => void;
-    snackWarning: (snackInputs: SnackInputs) => void;
-    snackInfo: (snackInputs: SnackInputs) => void;
-}
-
-export function useSnackMessage(): UseSnackMessageReturn;
-
 type Input = string | number;
-type Option = string | { id: string; label: string };
-
-interface AutocompleteInputProps
-    extends Omit<
-        AutocompleteProps<
-            Option,
-            boolean | undefined,
-            boolean | undefined,
-            boolean | undefined
-        >,
-        // we already defined them in our custom Autocomplete
-        'value' | 'onChange' | 'renderInput'
-    > {
-    name: string;
-    options: Option[];
-    label?: string;
-    outputTransform?: (value: Option) => Option;
-    inputTransform?: (value: Option) => Option;
-    readOnly?: boolean;
-    previousValue?: string;
-    allowNewValue?: boolean;
-    onChangeCallback?: () => void;
-    formProps?: Omit<
-        TextFieldProps,
-        'value' | 'onChange' | 'inputRef' | 'inputProps' | 'InputProps'
-    >;
-}
-
-export const AutocompleteInput: FunctionComponent<AutocompleteInputProps>;
-
-interface ErrorInputProps {
-    name: string;
-    InputField?: FunctionComponent;
-}
-
-export const ErrorInput: FunctionComponent<ErrorInputProps>;
-
-export const SelectInput: FunctionComponent<
-    Omit<
-        AutocompleteInputProps,
-        'outputTransform' | 'inputTransform' | 'readOnly' | 'getOptionLabel' // already defined in SelectInput
-    >
->;
 
 export const MidFormError: FunctionComponent;
-
-export const FieldErrorAlert: FunctionComponent;
 
 type TextFieldWithAdornmentProps = TextFieldProps & {
     // variant already included in TextFieldProps
@@ -131,8 +68,6 @@ interface TextInputProps {
         'value' | 'onChange' | 'inputRef' | 'inputProps' | 'InputProps'
     >;
 }
-
-export const TextInput: FunctionComponent<TextInputProps>;
 
 export const FloatInput: FunctionComponent<
     Omit<
