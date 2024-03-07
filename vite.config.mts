@@ -23,7 +23,7 @@ export default defineConfig({
         eslint({
             failOnWarning: true,
         }),
-        svgr({ include: '**/*.svg' }), // default is { include: "**/*.svg?react" }
+        svgr(), // works on every import with the pattern "**/*.svg?react"
         reactVirtualized(),
         dts({
             include: ['src'],
