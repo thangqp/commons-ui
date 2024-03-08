@@ -190,7 +190,6 @@ const TreeViewFinder = (props) => {
     };
 
     useEffect(() => {
-        console.log('common defaultSelected', defaultSelected);
         if (defaultSelected?.length > 0) {
             setSelected((oldSelectedNodes) => [
                 ...oldSelectedNodes,
@@ -200,7 +199,6 @@ const TreeViewFinder = (props) => {
     }, [defaultSelected]);
 
     useEffect(() => {
-        console.log('common defaultExpanded', defaultExpanded);
         if (defaultExpanded?.length > 0) {
             setExpanded((oldExpandedNodes) => [
                 ...oldExpandedNodes,
