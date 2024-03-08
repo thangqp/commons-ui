@@ -76,7 +76,7 @@ import {
 } from '../../src/index';
 import translations from './demo_intl';
 
-import PowsyblLogo from '../images/powsybl_logo.svg';
+import PowsyblLogo from '../images/powsybl_logo.svg?react';
 import AppPackage from '../../package.json';
 
 import ReportViewerDialog from '../../src/components/ReportViewerDialog';

@@ -9,7 +9,8 @@ const login_en = {
     'login/login': 'Login',
     'login/connection': 'Connection',
     'login/unauthorizedAccess': 'Unauthorized access',
-    'login/unauthorizedAccessMessage': "The user {userName} isn't granted yet",
+    'login/unauthorizedAccessMessage':
+        'The user {userName} does not have permission to access GridSuite yet.',
     'login/errorInUserValidation': 'Error during user validation',
     'login/errorInUserValidationMessage':
         'An unexpected error occured during user validation for {userName}.',

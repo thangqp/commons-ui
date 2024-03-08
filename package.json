@@ -14,8 +14,9 @@
     ],
     "scripts": {
         "start": "vite demo/ --config vite.config.mts",
-        "build": "npm install && tsc && vite build && npm prune --production",
-        "build:only": "vite build",
+        "start:open": "vite demo/ --config vite.config.mts --open",
+        "build": "tsc && vite build",
+        "build:prune": "npm install && tsc && vite build && npm prune --production",
         "prepublishOnly": "npm run build",
         "test": "jest",
         "test:coverage": "jest --coverage",
