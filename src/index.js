@@ -22,6 +22,8 @@ export { default as ElementSearchDialog } from './components/ElementSearchDialog
 export { default as FlatParameters } from './components/FlatParameters';
 export { default as MultipleSelectionDialog } from './components/MultipleSelectionDialog';
 
+export { ElementType } from './utils/ElementType';
+
 export {
     EQUIPMENT_TYPE,
     getEquipmentsInfosForSearchBar,
@@ -36,7 +38,7 @@ export {
     getPreLoginPath,
 } from './utils/AuthService';
 
-export { elementType, getFileIcon } from './utils/ElementType';
+export { getFileIcon } from './utils/ElementIcon';
 
 export {
     DEFAULT_CELL_PADDING,

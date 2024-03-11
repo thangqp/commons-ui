@@ -221,14 +221,4 @@ interface OverflowableTextProps {
 
 export const OverflowableText: FunctionComponent<OverflowableTextProps>;
 
-export enum elementType {
-    DIRECTORY = 'DIRECTORY',
-    STUDY = 'STUDY',
-    FILTER = 'FILTER',
-    MODIFICATION = 'MODIFICATION',
-    CONTINGENCY_LIST = 'CONTINGENCY_LIST',
-    VOLTAGE_INIT_PARAMETERS = 'VOLTAGE_INIT_PARAMETERS',
-    SECURITY_ANALYSIS_PARAMETERS = 'SECURITY_ANALYSIS_PARAMETERS',
-    LOADFLOW_PARAMETERS = 'LOADFLOW_PARAMETERS',
-    SENSITIVITY_PARAMETERS = 'SENSITIVITY_PARAMETERS',
-}
+export { ElementType } from './utils/ElementType';
