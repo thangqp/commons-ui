@@ -24,6 +24,8 @@ export {
     DirectoryItemSelector,
 } from './components/DirectoryItemSelector/directory-item-selector';
 
+export { ElementType } from './utils/ElementType';
+
 /**
  * Section to export manual type declarations of .js and .jsx files
  */
@@ -220,5 +222,3 @@ interface OverflowableTextProps {
 }
 
 export const OverflowableText: FunctionComponent<OverflowableTextProps>;
-
-export { ElementType } from './utils/ElementType';
