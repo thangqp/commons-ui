@@ -47,7 +47,6 @@ export enum FieldConstants {
     BETWEEN_RULE = 'betweenRule',
 }
 
-
 export enum ElementType {
     DIRECTORY = 'DIRECTORY',
     STUDY = 'STUDY',
@@ -75,4 +74,3 @@ export const ContingencyListType = {
     },
     SCRIPT: { id: 'SCRIPT', label: 'contingencyList.script' },
 };
-

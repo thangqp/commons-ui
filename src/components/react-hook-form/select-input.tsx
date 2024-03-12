@@ -14,13 +14,12 @@ interface OwnProps {
     options: { id: string; label: string }[];
 }
 
-type SelectInputProps = OwnProps &
-    Omit<
-        AutocompleteInputProps,
-        'outputTransform' | 'inputTransform' | 'readOnly' | 'getOptionLabel' // already defined in SelectInput
-    >;
+export type SelectInputProps = Omit<
+    AutocompleteInputProps,
+    'outputTransform' | 'inputTransform' | 'readOnly' | 'getOptionLabel' // already defined in SelectInput
+>;
 
-const SelectInput = (props: SelectInputProps) => {
+const SelectInput = (props: OwnProps & SelectInputProps) => {
     const intl = useIntl();
 
     const inputTransform = (value: { id: string; label: string } | string) => {

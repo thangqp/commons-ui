@@ -38,12 +38,15 @@ const ValueEditor = (props: ValueEditorProps) => {
             props.field as FieldType
         )
     ) {
-        return <CountryValueEditor 
-                paramGlobalState={undefined} 
+        return (
+            <CountryValueEditor
+                paramGlobalState={undefined}
                 updateParam={function (param: unknown): Promise<unknown> {
-                throw new Error('Function not implemented.');
-            } } {...props} 
-        />;
+                    throw new Error('Function not implemented.');
+                }}
+                {...props}
+            />
+        );
     }
     if (
         props.field === FieldType.ENERGY_SOURCE ||

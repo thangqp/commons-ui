@@ -24,7 +24,7 @@ export const criteriaBasedFilterEmptyFormData = getCriteriaBasedFormData(null, {
 });
 
 interface OwnProps {
-    fetchAppsAndUrls: () => Promise<any>,
+    fetchAppsAndUrls: () => Promise<any>;
 }
 
 function CriteriaBasedFilterForm({ fetchAppsAndUrls }: OwnProps) {
@@ -32,9 +32,13 @@ function CriteriaBasedFilterForm({ fetchAppsAndUrls }: OwnProps) {
         <Grid container item spacing={1}>
             <CriteriaBasedForm
                 equipments={FILTER_EQUIPMENTS}
-                defaultValues={criteriaBasedFilterEmptyFormData[FieldConstants.CRITERIA_BASED]}
+                defaultValues={
+                    criteriaBasedFilterEmptyFormData[
+                        FieldConstants.CRITERIA_BASED
+                    ]
+                }
             />
-            <FilterProperties fetchAppsAndUrls={fetchAppsAndUrls}/>
+            <FilterProperties fetchAppsAndUrls={fetchAppsAndUrls} />
         </Grid>
     );
 }

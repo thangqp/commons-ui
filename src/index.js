@@ -110,6 +110,8 @@ export { default as TextFieldWithAdornment } from './components/react-hook-form/
 export { default as FieldLabel } from './components/react-hook-form/utils/field-label';
 export { default as SubmitButton } from './components/react-hook-form/utils/submit-button';
 export { default as CancelButton } from './components/react-hook-form/utils/cancel-button';
+export { default as FilterCreationDialog } from './components/filter/filter-creation-dialog';
+export { default as ExpertFilterEditionDialog } from './components/filter/expert/expert-filter-edition-dialog';
 export {
     genHelperPreviousValue,
     genHelperError,

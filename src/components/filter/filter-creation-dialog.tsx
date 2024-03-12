@@ -6,7 +6,6 @@
  */
 
 import { useCallback } from 'react';
-import PropTypes from 'prop-types';
 import {
     saveCriteriaBasedFilter,
     saveExpertFilter,
@@ -49,7 +48,9 @@ const formSchema = yup
     .object()
     .shape({
         [FieldConstants.NAME]: yup.string().trim().required('nameEmpty'),
-        [FieldConstants.DESCRIPTION]: yup.string().max(500, 'descriptionLimitError'),
+        [FieldConstants.DESCRIPTION]: yup
+            .string()
+            .max(500, 'descriptionLimitError'),
         [FieldConstants.FILTER_TYPE]: yup.string().required(),
         [FieldConstants.EQUIPMENT_TYPE]: yup.string().required(),
         ...criteriaBasedFilterSchema,
@@ -62,18 +63,26 @@ interface OwnProps {
     open: boolean;
     onClose: () => void;
     activeDirectory: any;
-    createFilter: (filter: any,
+    createFilter: (
+        filter: any,
         name: string,
         description: string,
-        activeDirectory: any) => Promise<any>;
-    saveFilter: (filter: any,
-        name: string) => Promise<any>;
+        activeDirectory: any
+    ) => Promise<any>;
+    saveFilter: (filter: any, name: string) => Promise<any>;
     fetchAppsAndUrls: () => Promise<any>;
 }
 
-const FilterCreationDialog = ({ open, onClose, activeDirectory, createFilter, saveFilter, fetchAppsAndUrls }: OwnProps) => {
+const FilterCreationDialog = ({
+    open,
+    onClose,
+    activeDirectory,
+    createFilter,
+    saveFilter,
+    fetchAppsAndUrls,
+}: OwnProps) => {
     const { snackError } = useSnackMessage();
-    
+
     const formMethods = useForm({
         defaultValues: emptyFormData,
         resolver: yupResolver(formSchema) as unknown as Resolver,
@@ -88,7 +97,10 @@ const FilterCreationDialog = ({ open, onClose, activeDirectory, createFilter, sa
 
     const onSubmit = useCallback(
         (filterForm: any) => {
-            if (filterForm[FieldConstants.FILTER_TYPE] === FilterType.EXPLICIT_NAMING.id) {
+            if (
+                filterForm[FieldConstants.FILTER_TYPE] ===
+                FilterType.EXPLICIT_NAMING.id
+            ) {
                 saveExplicitNamingFilter(
                     filterForm[FILTER_EQUIPMENTS_ATTRIBUTES],
                     true,
@@ -107,7 +119,8 @@ const FilterCreationDialog = ({ open, onClose, activeDirectory, createFilter, sa
                     saveFilter
                 );
             } else if (
-                filterForm[FieldConstants.FILTER_TYPE] === FilterType.CRITERIA_BASED.id
+                filterForm[FieldConstants.FILTER_TYPE] ===
+                FilterType.CRITERIA_BASED.id
             ) {
                 saveCriteriaBasedFilter(
                     filterForm,
@@ -120,7 +133,9 @@ const FilterCreationDialog = ({ open, onClose, activeDirectory, createFilter, sa
                     },
                     createFilter
                 );
-            } else if (filterForm[FieldConstants.FILTER_TYPE] === FilterType.EXPERT.id) {
+            } else if (
+                filterForm[FieldConstants.FILTER_TYPE] === FilterType.EXPERT.id
+            ) {
                 saveExpertFilter(
                     null,
                     filterForm[EXPERT_FILTER_QUERY],
@@ -140,7 +155,7 @@ const FilterCreationDialog = ({ open, onClose, activeDirectory, createFilter, sa
                 );
             }
         },
-        [activeDirectory, snackError, onClose]
+        [activeDirectory, snackError, onClose, createFilter, saveFilter]
     );
 
     return (
@@ -154,17 +169,9 @@ const FilterCreationDialog = ({ open, onClose, activeDirectory, createFilter, sa
             removeOptional={true}
             disabledSave={!!nameError || !!isValidating}
         >
-            <FilterForm 
-                creation 
-                fetchAppsAndUrls={fetchAppsAndUrls} 
-            />
+            <FilterForm creation fetchAppsAndUrls={fetchAppsAndUrls} />
         </CustomMuiDialog>
     );
-};
-
-FilterCreationDialog.propTypes = {
-    open: PropTypes.bool.isRequired,
-    onClose: PropTypes.func.isRequired,
 };
 
 export default FilterCreationDialog;

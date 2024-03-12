@@ -21,12 +21,13 @@ export const saveExplicitNamingFilter = (
     setCreateFilterErr: (value: any) => void,
     activeDirectory: any,
     handleClose: () => void,
-    createFilter: (filter: any,
+    createFilter: (
+        filter: any,
         name: string,
         description: string,
-        activeDirectory: any) => Promise<any>,
-    saveFilter: (filter: any,
-        name: string) => Promise<any>
+        activeDirectory: any
+    ) => Promise<any>,
+    saveFilter: (filter: any, name: string) => Promise<any>
 ) => {
     // we remove unnecessary fields from the table
     let cleanedTableValues;
@@ -83,10 +84,12 @@ export const saveCriteriaBasedFilter = (
     activeDirectory: any,
     onClose: () => void,
     onError: (message: string) => void,
-    createFilter: (filter: any,
+    createFilter: (
+        filter: any,
         name: string,
         description: string,
-        activeDirectory: any) => Promise<any>,
+        activeDirectory: any
+    ) => Promise<any>
 ) => {
     const filterForBack = frontToBackTweak(undefined, filter); // no need ID for creation
     createFilter(
@@ -113,12 +116,13 @@ export const saveExpertFilter = (
     activeDirectory: any,
     onClose: () => void,
     onError: (message: string) => void,
-    createFilter: (filter: any,
+    createFilter: (
+        filter: any,
         name: string,
         description: string,
-        activeDirectory: any) => Promise<any>,
-    saveFilter: (filter: any,
-        name: string) => Promise<any>
+        activeDirectory: any
+    ) => Promise<any>,
+    saveFilter: (filter: any, name: string) => Promise<any>
 ) => {
     if (isFilterCreation) {
         createFilter(

@@ -10,7 +10,10 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useController } from 'react-hook-form';
 import { EXPERT_FILTER_QUERY } from '../../components/filter/expert/expert-filter-form';
-import { getNumberOfSiblings, recursiveRemove } from '../../components/filter/expert/expert-filter-utils';
+import {
+    getNumberOfSiblings,
+    recursiveRemove,
+} from '../../components/filter/expert/expert-filter-utils';
 
 const RemoveButton = (props: ActionWithRulesProps) => {
     const {

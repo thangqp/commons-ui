@@ -16,7 +16,10 @@ import {
     RuleType,
     ValidationMap,
 } from 'react-querybuilder';
-import { FIELDS_OPTIONS, OPERATOR_OPTIONS } from '../constants/expert-filter-constants';
+import {
+    FIELDS_OPTIONS,
+    OPERATOR_OPTIONS,
+} from '../constants/expert-filter-constants';
 import { IntlShape } from 'react-intl';
 import { FieldConstants } from '../constants/field-constants';
 import {
@@ -27,7 +30,10 @@ import {
     RuleGroupTypeExport,
     RuleTypeExport,
 } from './expert-filter.type';
-import { microUnitToUnit, unitToMicroUnit } from '../../../utils/conversion-utils';
+import {
+    microUnitToUnit,
+    unitToMicroUnit,
+} from '../../../utils/conversion-utils';
 
 type CustomRuleType = RuleType & { dataType: DataType };
 type CustomRuleGroupType = RuleGroupType & { dataType: DataType };

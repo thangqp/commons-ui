@@ -42,15 +42,16 @@ interface ExpertFilterEditionDialogProps {
     getFilterById: (id: string) => Promise<{ [prop: string]: any }>;
     fetchAppsAndUrls: () => Promise<any>;
     setSelectionForCopy: (selection: any) => void;
-    createFilter: (filter: any,
+    createFilter: (
+        filter: any,
         name: string,
         description: string,
-        activeDirectory: any) => Promise<any>;
-    saveFilter: (filter: any,
-        name: string) => Promise<any>;
+        activeDirectory: any
+    ) => Promise<any>;
+    saveFilter: (filter: any, name: string) => Promise<any>;
 }
 
-const ExpertFilterEditionDialog = ({
+export const ExpertFilterEditionDialog = ({
     id,
     name,
     titleId,
@@ -90,13 +91,14 @@ const ExpertFilterEditionDialog = ({
                     reset({
                         [FieldConstants.NAME]: name,
                         [FieldConstants.FILTER_TYPE]: FilterType.EXPERT.id,
-                        [FieldConstants.EQUIPMENT_TYPE]: response[FieldConstants.EQUIPMENT_TYPE],
+                        [FieldConstants.EQUIPMENT_TYPE]:
+                            response[FieldConstants.EQUIPMENT_TYPE],
                         [EXPERT_FILTER_QUERY]: importExpertRules(
                             response[EXPERT_FILTER_QUERY]
                         ),
                     });
                 })
-                .catch((error: { message: any; }) => {
+                .catch((error: { message: any }) => {
                     setDataFetchStatus(FetchStatus.FETCH_ERROR);
                     snackError({
                         messageTxt: error.message,
@@ -104,7 +106,7 @@ const ExpertFilterEditionDialog = ({
                     });
                 });
         }
-    }, [id, name, open, reset, snackError]);
+    }, [id, name, open, reset, snackError, getFilterById]);
 
     const onSubmit = useCallback(
         (filterForm: { [prop: string]: any }) => {
@@ -138,6 +140,9 @@ const ExpertFilterEditionDialog = ({
             onClose,
             selectionForCopy.sourceItemUuid,
             snackError,
+            setSelectionForCopy,
+            saveFilter,
+            createFilter,
         ]
     );
 
@@ -155,9 +160,7 @@ const ExpertFilterEditionDialog = ({
             disabledSave={!!nameError || !!isValidating}
             isDataFetching={dataFetchStatus === FetchStatus.FETCHING}
         >
-            {isDataReady && <FilterForm 
-                fetchAppsAndUrls={fetchAppsAndUrls} 
-            />}
+            {isDataReady && <FilterForm fetchAppsAndUrls={fetchAppsAndUrls} />}
         </CustomMuiDialog>
     );
 };

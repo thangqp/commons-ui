@@ -28,7 +28,11 @@ import { useCallback, useMemo } from 'react';
 import { COMBINATOR_OPTIONS } from '../../components/filter/constants/expert-filter-constants';
 import ErrorInput from '../../components/react-hook-form/error-management/error-input';
 import FieldErrorAlert from '../../components/react-hook-form/error-management/field-error-alert';
-import { countRules, getOperators, queryValidator } from '../../components/filter/expert/expert-filter-utils';
+import {
+    countRules,
+    getOperators,
+    queryValidator,
+} from '../../components/filter/expert/expert-filter-utils';
 
 interface CustomReactQueryBuilderProps {
     name: string;

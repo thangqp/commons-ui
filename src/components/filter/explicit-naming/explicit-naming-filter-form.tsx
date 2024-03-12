@@ -30,39 +30,46 @@ export const explicitNamingFilterSchema = {
             })
         )
         // we remove empty lines
-        .compact((row) => !row[DISTRIBUTION_KEY] && !row[FieldConstants.EQUIPMENT_ID])
+        .compact(
+            (row) => !row[DISTRIBUTION_KEY] && !row[FieldConstants.EQUIPMENT_ID]
+        )
         .when([FieldConstants.FILTER_TYPE], {
             is: FilterType.EXPLICIT_NAMING.id,
             then: (schema) =>
-                schema.min(1, 'emptyFilterError').when([FieldConstants.EQUIPMENT_TYPE], {
-                    is: (equipmentType: string) =>
-                        isGeneratorOrLoad(equipmentType),
-                    then: (schema) =>
-                        schema
-                            .test(
-                                'noKeyWithoutId',
-                                'distributionKeyWithMissingIdError',
-                                (array) => {
-                                    return !array!.some(
-                                        (row) => !row[FieldConstants.EQUIPMENT_ID]
-                                    );
-                                }
-                            )
-                            .test(
-                                'ifOneKeyThenKeyEverywhere',
-                                'missingDistributionKeyError',
-                                (array) => {
-                                    return !(
-                                        array!.some(
-                                            (row) => row[DISTRIBUTION_KEY]
-                                        ) &&
-                                        array!.some(
-                                            (row) => !row[DISTRIBUTION_KEY]
-                                        )
-                                    );
-                                }
-                            ),
-                }),
+                schema
+                    .min(1, 'emptyFilterError')
+                    .when([FieldConstants.EQUIPMENT_TYPE], {
+                        is: (equipmentType: string) =>
+                            isGeneratorOrLoad(equipmentType),
+                        then: (schema) =>
+                            schema
+                                .test(
+                                    'noKeyWithoutId',
+                                    'distributionKeyWithMissingIdError',
+                                    (array) => {
+                                        return !array!.some(
+                                            (row) =>
+                                                !row[
+                                                    FieldConstants.EQUIPMENT_ID
+                                                ]
+                                        );
+                                    }
+                                )
+                                .test(
+                                    'ifOneKeyThenKeyEverywhere',
+                                    'missingDistributionKeyError',
+                                    (array) => {
+                                        return !(
+                                            array!.some(
+                                                (row) => row[DISTRIBUTION_KEY]
+                                            ) &&
+                                            array!.some(
+                                                (row) => !row[DISTRIBUTION_KEY]
+                                            )
+                                        );
+                                    }
+                                ),
+                    }),
         }),
 };
 
@@ -109,7 +116,9 @@ function ExplicitNamingFilterForm() {
         const columnDefs: any[] = [
             ...ROW_DRAGGING_SELECTION_COLUMN_DEF,
             {
-                headerName: intl.formatMessage({ id: FieldConstants.EQUIPMENT_ID }),
+                headerName: intl.formatMessage({
+                    id: FieldConstants.EQUIPMENT_ID,
+                }),
                 field: FieldConstants.EQUIPMENT_ID,
                 editable: true,
                 singleClickEdit: true,
@@ -138,7 +147,9 @@ function ExplicitNamingFilterForm() {
     );
 
     const csvFileHeaders = useMemo(() => {
-        const csvFileHeaders = [intl.formatMessage({ id: FieldConstants.EQUIPMENT_ID })];
+        const csvFileHeaders = [
+            intl.formatMessage({ id: FieldConstants.EQUIPMENT_ID }),
+        ];
         if (forGeneratorOrLoad) {
             csvFileHeaders.push(intl.formatMessage({ id: DISTRIBUTION_KEY }));
         }
@@ -161,7 +172,8 @@ function ExplicitNamingFilterForm() {
 
     const openConfirmationPopup = () => {
         return getValues(FILTER_EQUIPMENTS_ATTRIBUTES).some(
-            (row: FilterTableRow) => row[DISTRIBUTION_KEY] || row[FieldConstants.EQUIPMENT_ID]
+            (row: FilterTableRow) =>
+                row[DISTRIBUTION_KEY] || row[FieldConstants.EQUIPMENT_ID]
         );
     };
 

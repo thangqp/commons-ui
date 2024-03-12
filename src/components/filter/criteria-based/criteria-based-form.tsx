@@ -9,12 +9,12 @@ import { FieldConstants } from '../constants/field-constants';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { gridItem } from '../../../utils/dialog-utils';
 import { Grid } from '@mui/material';
-import SelectInput from '../../react-hook-form/select-input'
+import SelectInput from '../../react-hook-form/select-input';
 import InputWithPopupConfirmation from '../../../utils/rhf-inputs/select-inputs/input-with-popup-confirmation';
 
 interface OwnProps {
-    equipments: any,
-    defaultValues: Record<string, any>
+    equipments: any;
+    defaultValues: Record<string, any>;
 }
 
 const CriteriaBasedForm = ({ equipments, defaultValues }: OwnProps) => {
@@ -33,7 +33,10 @@ const CriteriaBasedForm = ({ equipments, defaultValues }: OwnProps) => {
 
     const handleResetOnConfirmation = () => {
         Object.keys(defaultValues).forEach((field) =>
-            setValue(`${FieldConstants.CRITERIA_BASED}.${field}`, defaultValues[field])
+            setValue(
+                `${FieldConstants.CRITERIA_BASED}.${field}`,
+                defaultValues[field]
+            )
         );
     };
 

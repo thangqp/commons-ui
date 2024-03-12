@@ -42,7 +42,7 @@ export const FilterForm: FunctionComponent<FilterFormProps> = (props) => {
                     name={FieldConstants.NAME}
                     label={'nameProperty'}
                     elementType={ElementType.FILTER}
-                    autoFocus={props.creation}               
+                    autoFocus={props.creation}
                 />
             </Grid>
             {props.creation && (
@@ -60,7 +60,9 @@ export const FilterForm: FunctionComponent<FilterFormProps> = (props) => {
                 </>
             )}
             {filterType === FilterType.CRITERIA_BASED.id && (
-                <CriteriaBasedFilterForm fetchAppsAndUrls={props.fetchAppsAndUrls}/>
+                <CriteriaBasedFilterForm
+                    fetchAppsAndUrls={props.fetchAppsAndUrls}
+                />
             )}
             {filterType === FilterType.EXPLICIT_NAMING.id && (
                 <ExplicitNamingFilterForm />

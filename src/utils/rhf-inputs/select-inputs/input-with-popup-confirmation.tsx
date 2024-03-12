@@ -11,7 +11,7 @@ const InputWithPopupConfirmation = ({
     validateButtonLabel,
     ...props
 }: any) => {
-    const [newValue, setNewValue] = useState<string| null>(null);
+    const [newValue, setNewValue] = useState<string | null>(null);
     const [openPopup, setOpenPopup] = useState(false);
     const {
         field: { onChange },
@@ -39,7 +39,7 @@ const InputWithPopupConfirmation = ({
             <Input
                 name={name}
                 {...props}
-                onChange={(e: unknown, value: {id: string}) => {
+                onChange={(e: unknown, value: { id: string }) => {
                     handleOnChange(e, value?.id ?? value);
                 }}
             />

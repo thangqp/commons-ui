@@ -68,16 +68,13 @@ const TextInput = ({
     clearable,
     formProps,
 }: TextInputProps) => {
-    const { getValues } = useFormContext();
-
-    console.log(useFormContext());
+    const { validationSchema, getValues, removeOptional } =
+        useFormContext() as any;
 
     const {
         field: { onChange, value, ref },
         fieldState: { error },
     } = useController({ name });
-
-    const Field = adornment ? TextFieldWithAdornment : TextField;
 
     const handleClearValue = () => {
         onChange(outputTransform(''));
@@ -97,12 +94,13 @@ const TextInput = ({
               label,
               values: labelValues,
               optional:
-                  !isFieldRequired(name, undefined, getValues()) &&
-                  !formProps?.disabled,
+                  !isFieldRequired(name, validationSchema, getValues()) &&
+                  !formProps?.disabled &&
+                  !removeOptional,
           });
 
     return adornment ? (
-        <Field
+        <TextFieldWithAdornment
             key={id ? id : label}
             size="small"
             fullWidth

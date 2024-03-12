@@ -12,7 +12,10 @@ import { useParameterState } from '../../hooks/useParameterState';
 import { Autocomplete, TextField } from '@mui/material';
 import useConvertValue from './use-convert-value';
 import useValid from './use-valid';
-import { PARAM_LANGUAGE, getComputedLanguage } from '../rhf-inputs/select-inputs/countries-input';
+import {
+    PARAM_LANGUAGE,
+    getComputedLanguage,
+} from '../rhf-inputs/select-inputs/countries-input';
 
 interface OwnProps {
     paramGlobalState: unknown;
@@ -20,7 +23,11 @@ interface OwnProps {
 }
 
 const CountryValueEditor = (props: ValueEditorProps & OwnProps) => {
-    const [languageLocal] = useParameterState(PARAM_LANGUAGE, props.paramGlobalState, props.updateParam);
+    const [languageLocal] = useParameterState(
+        PARAM_LANGUAGE,
+        props.paramGlobalState,
+        props.updateParam
+    );
     const countriesListCB = useCallback(() => {
         try {
             return require('localized-countries')(

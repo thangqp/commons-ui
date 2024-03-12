@@ -87,7 +87,13 @@ const energySource = {
     },
 };
 
-export const CONTINGENCY_LIST_EQUIPMENTS = {
+interface Equipment {
+    id: string;
+    label: string;
+    fields: unknown[];
+}
+
+export const CONTINGENCY_LIST_EQUIPMENTS: Record<string, Equipment> = {
     LINE: {
         id: 'LINE',
         label: 'Lines',
@@ -125,7 +131,7 @@ export const CONTINGENCY_LIST_EQUIPMENTS = {
     },
 };
 
-export const FILTER_EQUIPMENTS = {
+export const FILTER_EQUIPMENTS: Record<string, Equipment> = {
     ...CONTINGENCY_LIST_EQUIPMENTS,
     THREE_WINDINGS_TRANSFORMER: {
         id: 'THREE_WINDINGS_TRANSFORMER',
@@ -182,26 +188,36 @@ export const getCriteriaBasedSchema = (extraFields: any) => ({
     }),
 });
 
-export const getCriteriaBasedFormData = (criteriaValues: any, extraFields: any) => ({
+export const getCriteriaBasedFormData = (
+    criteriaValues: any,
+    extraFields: any
+) => ({
     [FieldConstants.CRITERIA_BASED]: {
-        [FieldConstants.COUNTRIES]: criteriaValues?.[FieldConstants.COUNTRIES] ?? [],
-        [FieldConstants.COUNTRIES_1]: criteriaValues?.[FieldConstants.COUNTRIES_1] ?? [],
-        [FieldConstants.COUNTRIES_2]: criteriaValues?.[FieldConstants.COUNTRIES_2] ?? [],
+        [FieldConstants.COUNTRIES]:
+            criteriaValues?.[FieldConstants.COUNTRIES] ?? [],
+        [FieldConstants.COUNTRIES_1]:
+            criteriaValues?.[FieldConstants.COUNTRIES_1] ?? [],
+        [FieldConstants.COUNTRIES_2]:
+            criteriaValues?.[FieldConstants.COUNTRIES_2] ?? [],
         ...getRangeInputDataForm(
             FieldConstants.NOMINAL_VOLTAGE,
-            criteriaValues?.[FieldConstants.NOMINAL_VOLTAGE] ?? DEFAULT_RANGE_VALUE
+            criteriaValues?.[FieldConstants.NOMINAL_VOLTAGE] ??
+                DEFAULT_RANGE_VALUE
         ),
         ...getRangeInputDataForm(
             FieldConstants.NOMINAL_VOLTAGE_1,
-            criteriaValues?.[FieldConstants.NOMINAL_VOLTAGE_1] ?? DEFAULT_RANGE_VALUE
+            criteriaValues?.[FieldConstants.NOMINAL_VOLTAGE_1] ??
+                DEFAULT_RANGE_VALUE
         ),
         ...getRangeInputDataForm(
             FieldConstants.NOMINAL_VOLTAGE_2,
-            criteriaValues?.[FieldConstants.NOMINAL_VOLTAGE_2] ?? DEFAULT_RANGE_VALUE
+            criteriaValues?.[FieldConstants.NOMINAL_VOLTAGE_2] ??
+                DEFAULT_RANGE_VALUE
         ),
         ...getRangeInputDataForm(
             FieldConstants.NOMINAL_VOLTAGE_3,
-            criteriaValues?.[FieldConstants.NOMINAL_VOLTAGE_3] ?? DEFAULT_RANGE_VALUE
+            criteriaValues?.[FieldConstants.NOMINAL_VOLTAGE_3] ??
+                DEFAULT_RANGE_VALUE
         ),
         ...extraFields,
     },

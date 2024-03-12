@@ -7,6 +7,9 @@ import type {
     SxProps,
     TextFieldProps,
 } from '@mui/material';
+import { UseSnackMessageReturn } from './hooks/useSnackMessage';
+import { AutocompleteInputProps } from './components/react-hook-form/autocomplete-input';
+import { ErrorInputProps } from './components/react-hook-form/error-management/error-input';
 
 /**
  * Section to export generated type declarations of .ts or .tsx files
@@ -38,7 +41,17 @@ export const DARK_THEME: string, LIGHT_THEME: string;
 
 type Input = string | number;
 
+export function useSnackMessage(): UseSnackMessageReturn;
+
+export const AutocompleteInput: FunctionComponent<AutocompleteInputProps>;
+
+export const ErrorInput: FunctionComponent<ErrorInputProps>;
+
+export const SelectInput: FunctionComponent<SelectInputProps>;
+
 export const MidFormError: FunctionComponent;
+
+export const FieldErrorAlert: FunctionComponent;
 
 type TextFieldWithAdornmentProps = TextFieldProps & {
     // variant already included in TextFieldProps
@@ -68,6 +81,8 @@ interface TextInputProps {
         'value' | 'onChange' | 'inputRef' | 'inputProps' | 'InputProps'
     >;
 }
+
+export const TextInput: FunctionComponent<TextInputProps>;
 
 export const FloatInput: FunctionComponent<
     Omit<
@@ -167,3 +182,7 @@ export enum elementType {
     LOADFLOW_PARAMETERS = 'LOADFLOW_PARAMETERS',
     SENSITIVITY_PARAMETERS = 'SENSITIVITY_PARAMETERS',
 }
+
+export const FilterCreationDialog: FunctionComponent;
+
+export const ExpertFilterEditionDialog: FunctionComponent;

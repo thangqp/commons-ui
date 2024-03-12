@@ -74,9 +74,11 @@ export const backToFrontTweak = (response: any) => {
     });
 
     const ret = {
-        [FieldConstants.EQUIPMENT_TYPE]: response[FieldConstants.EQUIPMENT_TYPE],
+        [FieldConstants.EQUIPMENT_TYPE]:
+            response[FieldConstants.EQUIPMENT_TYPE],
         ...getCriteriaBasedFormData(response.equipmentFilterForm, {
-            [FieldConstants.ENERGY_SOURCE]: response.equipmentFilterForm[FieldConstants.ENERGY_SOURCE],
+            [FieldConstants.ENERGY_SOURCE]:
+                response.equipmentFilterForm[FieldConstants.ENERGY_SOURCE],
             [FreePropertiesTypes.SUBSTATION_FILTER_PROPERTIES]:
                 filterSubstationProperties,
             [FreePropertiesTypes.FREE_FILTER_PROPERTIES]: filterFreeProperties,
@@ -101,7 +103,11 @@ export const frontToBackTweak = (id?: string, filter?: any) => {
         filter[FieldConstants.CRITERIA_BASED][
             FreePropertiesTypes.SUBSTATION_FILTER_PROPERTIES
         ];
-    const ret = { id, type: FilterType.CRITERIA_BASED.id, equipmentFilterForm: undefined };
+    const ret = {
+        id,
+        type: FilterType.CRITERIA_BASED.id,
+        equipmentFilterForm: undefined,
+    };
     const eff = {
         [FieldConstants.EQUIPMENT_TYPE]: filter[FieldConstants.EQUIPMENT_TYPE],
         ...cleanNominalVoltages(filter[FieldConstants.CRITERIA_BASED]),
@@ -131,7 +137,9 @@ export const frontToBackTweak = (id?: string, filter?: any) => {
     eff.freeProperties2 = props2;
 
     const filterFreeProperties =
-        filter[FieldConstants.CRITERIA_BASED][FreePropertiesTypes.FREE_FILTER_PROPERTIES];
+        filter[FieldConstants.CRITERIA_BASED][
+            FreePropertiesTypes.FREE_FILTER_PROPERTIES
+        ];
     // in the back end we store everything in a field called equipmentFilterForm
     delete eff[FreePropertiesTypes.FREE_FILTER_PROPERTIES];
     const freeProps: any = {};
@@ -162,6 +170,11 @@ function cleanNominalVoltages(formValues: any) {
     return formValues;
 }
 
-function isNominalVoltageEmpty(nominalVoltage: Record<string, unknown>): boolean {
-    return nominalVoltage[FieldConstants.VALUE_1] === null && nominalVoltage[FieldConstants.VALUE_2] === null;
+function isNominalVoltageEmpty(
+    nominalVoltage: Record<string, unknown>
+): boolean {
+    return (
+        nominalVoltage[FieldConstants.VALUE_1] === null &&
+        nominalVoltage[FieldConstants.VALUE_2] === null
+    );
 }

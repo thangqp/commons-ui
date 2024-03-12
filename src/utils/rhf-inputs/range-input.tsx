@@ -9,7 +9,6 @@ import FormControl from '@mui/material/FormControl';
 import MuiSelectInput from './select-inputs/mui-select-input';
 import { FieldConstants } from '../../components/filter/constants/field-constants';
 
-
 const style = {
     inputLegend: (theme: any) => ({
         backgroundImage:
@@ -41,24 +40,28 @@ export const getRangeInputSchema = (name: string) => ({
     [name]: yup.object().shape(
         {
             [FieldConstants.OPERATION_TYPE]: yup.string(),
-            [FieldConstants.VALUE_1]: yup.number().when([FieldConstants.OPERATION_TYPE, FieldConstants.VALUE_2], {
-                is: (operationType: string, value2: unknown) =>
-                    operationType === RangeType.RANGE.id && value2 !== null,
-                then: (schema) => schema.required(),
-                otherwise: (schema) => schema.nullable(),
-            }),
-            [FieldConstants.VALUE_2]: yup.number().when([FieldConstants.OPERATION_TYPE, FieldConstants.VALUE_1], {
-                is: (operationType: string, value1: unknown) =>
-                    operationType === RangeType.RANGE.id && value1 !== null,
-                then: (schema) => schema.required(),
-                otherwise: (schema) => schema.nullable(),
-            }),
+            [FieldConstants.VALUE_1]: yup
+                .number()
+                .when([FieldConstants.OPERATION_TYPE, FieldConstants.VALUE_2], {
+                    is: (operationType: string, value2: unknown) =>
+                        operationType === RangeType.RANGE.id && value2 !== null,
+                    then: (schema) => schema.required(),
+                    otherwise: (schema) => schema.nullable(),
+                }),
+            [FieldConstants.VALUE_2]: yup
+                .number()
+                .when([FieldConstants.OPERATION_TYPE, FieldConstants.VALUE_1], {
+                    is: (operationType: string, value1: unknown) =>
+                        operationType === RangeType.RANGE.id && value1 !== null,
+                    then: (schema) => schema.required(),
+                    otherwise: (schema) => schema.nullable(),
+                }),
         },
         [[FieldConstants.VALUE_1, FieldConstants.VALUE_2]]
     ),
 });
 
-const RangeInput = ({ name, label }: { name: string, label: string }) => {
+const RangeInput = ({ name, label }: { name: string; label: string }) => {
     const watchOperationType = useWatch({
         name: `${name}.${FieldConstants.OPERATION_TYPE}`,
     });
@@ -100,6 +103,7 @@ const RangeInput = ({ name, label }: { name: string, label: string }) => {
             style={{
                 borderRadius: '4px 0 0 4px',
             }}
+            variant="filled"
         />
     );
 

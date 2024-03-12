@@ -9,7 +9,7 @@ import { MutableRefObject, ReactElement, useEffect, useRef } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useController } from 'react-hook-form';
 
-interface ErrorInputProps {
+export interface ErrorInputProps {
     name: string;
     InputField?: ({
         message,

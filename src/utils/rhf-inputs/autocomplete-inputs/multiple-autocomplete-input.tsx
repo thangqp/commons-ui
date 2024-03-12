@@ -36,12 +36,15 @@ const MultipleAutocompleteInput = ({ name, ...props }: any) => {
             clearOnBlur
             disableClearable={true}
             outputTransform={outputTransform}
-            onInputChange={(_, val) => setUnsavedInput(val.trim() ?? '')}
+            onInputChange={(_: unknown, val: string) =>
+                setUnsavedInput(val.trim() ?? '')
+            }
             onBlur={handleOnBlur}
             blurOnSelect={false}
             multiple
             ChipProps={{ size: 'small' }}
             {...props}
+            u
         />
     );
 };

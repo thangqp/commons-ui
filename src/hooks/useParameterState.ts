@@ -1,12 +1,15 @@
-import { useSnackMessage } from "./useSnackMessage";
-import { useCallback, useEffect, useState } from "react";
+import { useSnackMessage } from './useSnackMessage';
+import { useCallback, useEffect, useState } from 'react';
 
-export function useParameterState(paramName: string,
-        paramGlobalState: unknown,
-        updateConfigParameter: (param: string, value: unknown) => Promise<unknown>) {
+export function useParameterState(
+    paramName: string,
+    paramGlobalState: unknown,
+    updateConfigParameter: (param: string, value: unknown) => Promise<unknown>
+) {
     const { snackError } = useSnackMessage();
 
-    const [paramLocalState, setParamLocalState] = useState<unknown>(paramGlobalState);
+    const [paramLocalState, setParamLocalState] =
+        useState<unknown>(paramGlobalState);
 
     useEffect(() => {
         setParamLocalState(paramGlobalState);
@@ -23,7 +26,13 @@ export function useParameterState(paramName: string,
                 });
             });
         },
-        [paramName, snackError, setParamLocalState, paramGlobalState]
+        [
+            paramName,
+            snackError,
+            setParamLocalState,
+            paramGlobalState,
+            updateConfigParameter,
+        ]
     );
 
     return [paramLocalState, handleChangeParamLocalState];

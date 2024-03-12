@@ -18,7 +18,7 @@ interface SnackInputs {
     headerValues?: Record<string, string>;
 }
 
-interface UseSnackMessageReturn {
+export interface UseSnackMessageReturn {
     snackError: (snackInputs: SnackInputs) => void;
     snackWarning: (snackInputs: SnackInputs) => void;
     snackInfo: (snackInputs: SnackInputs) => void;

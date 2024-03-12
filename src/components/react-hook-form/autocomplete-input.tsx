@@ -5,7 +5,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import PropTypes from 'prop-types';
 import {
     Autocomplete,
     AutocompleteProps,
@@ -63,8 +62,9 @@ const AutocompleteInput = ({
     onChangeCallback, // method called when input value is changing
     formProps,
     ...props
-}: AutocompleteInputProps) => {
-    const { getValues } = useFormContext();
+}: AutocompleteInputProps & any) => {
+    const { validationSchema, getValues, removeOptional } =
+        useFormContext() as any;
     const {
         field: { onChange, value, ref },
         fieldState: { error },
@@ -94,7 +94,7 @@ const AutocompleteInput = ({
 
     return (
         <Autocomplete
-            value={inputTransform(value)}
+            value={inputTransform(value || '')}
             onChange={(_, data) => handleChange(data)}
             {...(allowNewValue && {
                 freeSolo: true,
@@ -114,9 +114,11 @@ const AutocompleteInput = ({
                             optional:
                                 !isFieldRequired(
                                     name,
-                                    undefined,
+                                    validationSchema,
                                     getValues()
-                                ) && !props?.disabled,
+                                ) &&
+                                !props?.disabled &&
+                                !removeOptional,
                         }),
                     })}
                     inputRef={ref}
@@ -130,19 +132,6 @@ const AutocompleteInput = ({
             {...props}
         />
     );
-};
-
-AutocompleteInput.propTypes = {
-    name: PropTypes.string.isRequired,
-    label: PropTypes.string,
-    options: PropTypes.array.isRequired,
-    outputTransform: PropTypes.func,
-    inputTransform: PropTypes.func,
-    readOnly: PropTypes.bool,
-    previousValue: PropTypes.any,
-    allowNewValue: PropTypes.bool,
-    onChangeCallback: PropTypes.func,
-    formProps: PropTypes.object,
 };
 
 export default AutocompleteInput;

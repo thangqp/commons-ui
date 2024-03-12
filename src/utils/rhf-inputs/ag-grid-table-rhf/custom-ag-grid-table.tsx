@@ -131,12 +131,16 @@ export const CustomAgGridTable = ({
 
     const isFirstSelected =
         rowData?.length &&
-        gridApi?.api.getRowNode(rowData[0][FieldConstants.AG_GRID_ROW_UUID])?.isSelected();
+        gridApi?.api
+            .getRowNode(rowData[0][FieldConstants.AG_GRID_ROW_UUID])
+            ?.isSelected();
 
     const isLastSelected =
         rowData?.length &&
         gridApi?.api
-            .getRowNode(rowData[rowData.length - 1][FieldConstants.AG_GRID_ROW_UUID])
+            .getRowNode(
+                rowData[rowData.length - 1][FieldConstants.AG_GRID_ROW_UUID]
+            )
             ?.isSelected();
 
     const noRowSelected = selectedRows.length === 0;
@@ -186,7 +190,9 @@ export const CustomAgGridTable = ({
 
     const getIndex = (val: any) => {
         return getValues(name).findIndex(
-            (row: any) => row[FieldConstants.AG_GRID_ROW_UUID] === val[FieldConstants.AG_GRID_ROW_UUID]
+            (row: any) =>
+                row[FieldConstants.AG_GRID_ROW_UUID] ===
+                val[FieldConstants.AG_GRID_ROW_UUID]
         );
     };
 
@@ -251,7 +257,9 @@ export const CustomAgGridTable = ({
                     onCellEditingStopped={(event) => {
                         update(event.rowIndex!, event.data);
                     }}
-                    getRowId={(row) => row.data[FieldConstants.AG_GRID_ROW_UUID]}
+                    getRowId={(row) =>
+                        row.data[FieldConstants.AG_GRID_ROW_UUID]
+                    }
                     {...props}
                 ></AgGridReact>
             </Grid>

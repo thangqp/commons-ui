@@ -5,12 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import {
-    ChangeEvent,
-    FunctionComponent,
-    useCallback,
-    useEffect,
-} from 'react';
+import { ChangeEvent, FunctionComponent, useCallback, useEffect } from 'react';
 import { useDebounce } from '../../hooks/useDebounce';
 import { FormattedMessage } from 'react-intl';
 import { InputAdornment, TextFieldProps } from '@mui/material';
@@ -18,7 +13,10 @@ import CheckIcon from '@mui/icons-material/Check';
 import { useController, useFormContext } from 'react-hook-form';
 import CircularProgress from '@mui/material/CircularProgress';
 import TextField from '@mui/material/TextField';
-import { ElementType, FieldConstants } from '../filter/constants/field-constants';
+import {
+    ElementType,
+    FieldConstants,
+} from '../filter/constants/field-constants';
 
 interface UniqueNameInputProps {
     name: string;
@@ -37,7 +35,11 @@ interface UniqueNameInputProps {
         | 'InputProps'
     >;
     activeDirectory?: any;
-    elementExists?: (directory: any, value: string, elementType: ElementType) => Promise<any>;
+    elementExists?: (
+        directory: any,
+        value: string,
+        elementType: ElementType
+    ) => Promise<any>;
 }
 
 /**
@@ -73,28 +75,30 @@ export const UniqueNameInput: FunctionComponent<UniqueNameInputProps> = (
     const handleCheckName = useCallback(
         (value: string) => {
             if (value) {
-                props.elementExists && props.elementExists(directory, value, props.elementType)
-                    .then((alreadyExist) => {
-                        if (alreadyExist) {
+                props.elementExists &&
+                    props
+                        .elementExists(directory, value, props.elementType)
+                        .then((alreadyExist) => {
+                            if (alreadyExist) {
+                                setError(props.name, {
+                                    type: 'validate',
+                                    message: 'nameAlreadyUsed',
+                                });
+                            }
+                        })
+                        .catch((error) => {
                             setError(props.name, {
                                 type: 'validate',
-                                message: 'nameAlreadyUsed',
+                                message: 'nameValidityCheckErrorMsg',
                             });
-                        }
-                    })
-                    .catch((error) => {
-                        setError(props.name, {
-                            type: 'validate',
-                            message: 'nameValidityCheckErrorMsg',
+                            console.error(error?.message);
+                        })
+                        .finally(() => {
+                            clearErrors('root.isValidating');
                         });
-                        console.error(error?.message);
-                    })
-                    .finally(() => {
-                        clearErrors('root.isValidating');
-                    });
             }
         },
-        [setError, clearErrors, props.name, props.elementType, directory]
+        [setError, clearErrors, props, directory]
     );
 
     const debouncedHandleCheckName = useDebounce(handleCheckName, 700);

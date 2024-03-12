@@ -1,8 +1,12 @@
 import { useParameterState } from '../../../hooks/useParameterState';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, FunctionComponent } from 'react';
 import { Chip } from '@mui/material';
 import AutocompleteInput from '../../../components/react-hook-form/autocomplete-input';
-import { LANG_ENGLISH, LANG_FRENCH, LANG_SYSTEM } from '../../../components/TopBar/topBarConstants';
+import {
+    LANG_ENGLISH,
+    LANG_FRENCH,
+    LANG_SYSTEM,
+} from '../../../components/TopBar/topBarConstants';
 
 const supportedLanguages = [LANG_FRENCH, LANG_ENGLISH];
 
@@ -19,15 +23,24 @@ export const getComputedLanguage = (language: string) => {
     return language === LANG_SYSTEM ? getSystemLanguage() : language;
 };
 
-interface OwnProps {
+interface CountryInputProps {
     name: string;
     label: string;
     paramGlobalState: unknown;
     updateParam: (param: unknown) => Promise<unknown>;
 }
 
-export const CountriesInput = ({ name, label, paramGlobalState, updateParam }: OwnProps) => {
-    const [languageLocal] = useParameterState(PARAM_LANGUAGE, paramGlobalState, updateParam);
+export const CountriesInput: FunctionComponent<CountryInputProps> = ({
+    name,
+    label,
+    paramGlobalState,
+    updateParam,
+}) => {
+    const [languageLocal] = useParameterState(
+        PARAM_LANGUAGE,
+        paramGlobalState,
+        updateParam
+    );
     const countriesListCB = useCallback(() => {
         try {
             return require('localized-countries')(
@@ -44,7 +57,7 @@ export const CountriesInput = ({ name, label, paramGlobalState, updateParam }: O
 
     const countriesList = useMemo(() => countriesListCB(), [countriesListCB]);
 
-    const getLabel = (code: string | {id: string, label: string}) => {
+    const getLabel = (code: string | { id: string; label: string }) => {
         return countriesList.get(code);
     };
 

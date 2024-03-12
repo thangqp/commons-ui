@@ -9,8 +9,7 @@ import { useIntl } from 'react-intl';
 import { styled } from '@mui/material/styles';
 import ErrorInput from '../../../components/react-hook-form/error-management/error-input';
 import FieldErrorAlert from '../../../components/react-hook-form/error-management/field-error-alert';
-import { FieldValue, FieldValues, UseFieldArrayReturn } from 'react-hook-form';
-
+import { FieldValues, UseFieldArrayReturn } from 'react-hook-form';
 
 const InnerColoredButton = styled(IconButton)(({ theme }) => {
     return {
@@ -27,7 +26,7 @@ interface OwnProps {
     handleDeleteRows: () => void;
     handleMoveRowUp: () => void;
     handleMoveRowDown: () => void;
-    useFieldArrayOutput: UseFieldArrayReturn<FieldValues, string, "id">;
+    useFieldArrayOutput: UseFieldArrayReturn<FieldValues, string, 'id'>;
     csvProps: any;
 }
 

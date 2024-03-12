@@ -49,7 +49,7 @@ interface OwnProps {
     saveFilter: (value: any, t: Record<string, any>) => Promise<void>;
     selectionForCopy: any;
     fetchAppsAndUrls: () => Promise<any>;
-    setSelelectionForCopy: (selection: any) => void
+    setSelelectionForCopy: (selection: any) => void;
 }
 
 export const CriteriaBasedFilterEditionDialog = ({
@@ -63,7 +63,7 @@ export const CriteriaBasedFilterEditionDialog = ({
     saveFilter,
     selectionForCopy,
     fetchAppsAndUrls,
-    setSelelectionForCopy
+    setSelelectionForCopy,
 }: OwnProps) => {
     const { snackError } = useSnackMessage();
     const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
@@ -90,7 +90,8 @@ export const CriteriaBasedFilterEditionDialog = ({
                     setDataFetchStatus(FetchStatus.FETCH_SUCCESS);
                     reset({
                         [FieldConstants.NAME]: name,
-                        [FieldConstants.FILTER_TYPE]: FilterType.CRITERIA_BASED.id,
+                        [FieldConstants.FILTER_TYPE]:
+                            FilterType.CRITERIA_BASED.id,
                         ...backToFrontTweak(response),
                     });
                 })
@@ -106,7 +107,10 @@ export const CriteriaBasedFilterEditionDialog = ({
 
     const onSubmit = useCallback(
         (filterForm: any) => {
-            saveFilter(frontToBackTweak(id, filterForm), filterForm[FieldConstants.NAME])
+            saveFilter(
+                frontToBackTweak(id, filterForm),
+                filterForm[FieldConstants.NAME]
+            )
                 .then(() => {
                     if (selectionForCopy.sourceItemUuid === id) {
                         setSelelectionForCopy(noSelectionForCopy);
@@ -121,12 +125,7 @@ export const CriteriaBasedFilterEditionDialog = ({
                     });
                 });
         },
-        [
-            broadcastChannel,
-            id,
-            selectionForCopy.sourceItemUuid,
-            snackError,
-        ]
+        [broadcastChannel, id, selectionForCopy.sourceItemUuid, snackError]
     );
 
     const isDataReady = dataFetchStatus === FetchStatus.FETCH_SUCCESS;
@@ -143,9 +142,7 @@ export const CriteriaBasedFilterEditionDialog = ({
             disabledSave={!!nameError || !!isValidating}
             isDataFetching={dataFetchStatus === FetchStatus.FETCHING}
         >
-            {isDataReady && <FilterForm 
-                fetchAppsAndUrls={fetchAppsAndUrls} 
-            />}
+            {isDataReady && <FilterForm fetchAppsAndUrls={fetchAppsAndUrls} />}
         </CustomMuiDialog>
     );
 };

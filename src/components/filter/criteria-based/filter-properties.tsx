@@ -4,12 +4,7 @@ import { useEffect, useState } from 'react';
 import { useWatch } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 import { FilterType } from '../constants/field-constants';
-import {
-    Hvdc,
-    Line,
-    Load,
-    Substation,
-} from '../constants/equipment-types';
+import { Hvdc, Line, Load, Substation } from '../constants/equipment-types';
 import { areArrayElementsUnique } from '../../../utils/functions';
 import { FieldConstants } from '../constants/field-constants';
 import yup from '../../../utils/yup-config';
@@ -104,7 +99,8 @@ export const filterPropertiesYupSchema = {
             (properties, context) => {
                 // with context.from[length - 1], we can access to the root fields of the form
                 const rootLevelForm = context.from![context.from!.length - 1];
-                const filterType = rootLevelForm.value[FieldConstants.FILTER_TYPE];
+                const filterType =
+                    rootLevelForm.value[FieldConstants.FILTER_TYPE];
                 if (filterType !== FilterType.CRITERIA_BASED.id) {
                     // we don't test if we are not in a criteria based form
                     return true;
@@ -137,7 +133,8 @@ export const filterPropertiesYupSchema = {
             (properties, context) => {
                 // with context.from[length - 1], we can access to the root fields of the form
                 const rootLevelForm = context.from![context.from!.length - 1];
-                const filterType = rootLevelForm.value[FieldConstants.FILTER_TYPE];
+                const filterType =
+                    rootLevelForm.value[FieldConstants.FILTER_TYPE];
                 if (filterType !== FilterType.CRITERIA_BASED.id) {
                     // we don't test if we are not in a criteria based form
                     return true;
@@ -151,7 +148,7 @@ export const filterPropertiesYupSchema = {
 };
 
 interface OwnProps {
-    fetchAppsAndUrls: () => Promise<any>,
+    fetchAppsAndUrls: () => Promise<any>;
 }
 
 function FilterProperties({ fetchAppsAndUrls }: OwnProps) {
@@ -172,7 +169,7 @@ function FilterProperties({ fetchAppsAndUrls }: OwnProps) {
                     messageTxt: error.message ?? error,
                 });
             });
-    }, [snackError]);
+    }, [snackError, fetchAppsAndUrls]);
 
     return (
         watchEquipmentType && (

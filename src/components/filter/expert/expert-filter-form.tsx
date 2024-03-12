@@ -53,30 +53,46 @@ export const expertFilterSchema = {
                     isSupportedEquipmentType(equipmentType),
                 then: (schema: any) =>
                     schema
-                        .test(FieldConstants.EMPTY_GROUP, FieldConstants.EMPTY_GROUP, (query: any) => {
-                            return testQuery(
-                                FieldConstants.EMPTY_GROUP,
-                                query as RuleGroupTypeAny
-                            );
-                        })
-                        .test(FieldConstants.EMPTY_RULE, FieldConstants.EMPTY_RULE, (query: any) => {
-                            return testQuery(
-                                FieldConstants.EMPTY_RULE,
-                                query as RuleGroupTypeAny
-                            );
-                        })
-                        .test(FieldConstants.INCORRECT_RULE, FieldConstants.INCORRECT_RULE, (query: any) => {
-                            return testQuery(
-                                FieldConstants.INCORRECT_RULE,
-                                query as RuleGroupTypeAny
-                            );
-                        })
-                        .test(FieldConstants.BETWEEN_RULE, FieldConstants.BETWEEN_RULE, (query: any) => {
-                            return testQuery(
-                                FieldConstants.BETWEEN_RULE,
-                                query as RuleGroupTypeAny
-                            );
-                        }),
+                        .test(
+                            FieldConstants.EMPTY_GROUP,
+                            FieldConstants.EMPTY_GROUP,
+                            (query: any) => {
+                                return testQuery(
+                                    FieldConstants.EMPTY_GROUP,
+                                    query as RuleGroupTypeAny
+                                );
+                            }
+                        )
+                        .test(
+                            FieldConstants.EMPTY_RULE,
+                            FieldConstants.EMPTY_RULE,
+                            (query: any) => {
+                                return testQuery(
+                                    FieldConstants.EMPTY_RULE,
+                                    query as RuleGroupTypeAny
+                                );
+                            }
+                        )
+                        .test(
+                            FieldConstants.INCORRECT_RULE,
+                            FieldConstants.INCORRECT_RULE,
+                            (query: any) => {
+                                return testQuery(
+                                    FieldConstants.INCORRECT_RULE,
+                                    query as RuleGroupTypeAny
+                                );
+                            }
+                        )
+                        .test(
+                            FieldConstants.BETWEEN_RULE,
+                            FieldConstants.BETWEEN_RULE,
+                            (query: any) => {
+                                return testQuery(
+                                    FieldConstants.BETWEEN_RULE,
+                                    query as RuleGroupTypeAny
+                                );
+                            }
+                        ),
             }),
     }),
 };
