@@ -30,7 +30,7 @@ const formSchema = yup
     })
     .required();
 
-interface ExpertFilterEditionDialogProps {
+export interface ExpertFilterEditionDialogProps {
     id: string;
     name: string;
     titleId: string;

@@ -59,7 +59,7 @@ const formSchema = yup
     })
     .required();
 
-interface OwnProps {
+export interface FilterCreationDialogProps {
     open: boolean;
     onClose: () => void;
     activeDirectory: any;
@@ -80,7 +80,7 @@ const FilterCreationDialog = ({
     createFilter,
     saveFilter,
     fetchAppsAndUrls,
-}: OwnProps) => {
+}: FilterCreationDialogProps) => {
     const { snackError } = useSnackMessage();
 
     const formMethods = useForm({

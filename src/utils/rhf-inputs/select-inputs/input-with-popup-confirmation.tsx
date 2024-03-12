@@ -54,8 +54,4 @@ const InputWithPopupConfirmation = ({
     );
 };
 
-InputWithPopupConfirmation.defaultProps = {
-    validateButtonLabel: undefined,
-};
-
 export default InputWithPopupConfirmation;

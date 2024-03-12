@@ -16,7 +16,6 @@ import Grid from '@mui/material/Grid';
 import { FormattedMessage, useIntl } from 'react-intl';
 import CsvDownloader from 'react-csv-downloader';
 import Alert from '@mui/material/Alert';
-import PropTypes from 'prop-types';
 import { DialogContentText } from '@mui/material';
 import { useWatch } from 'react-hook-form';
 import { CancelButton } from '../../../..';
@@ -43,7 +42,7 @@ const CsvUploader = ({
     fileHeaders,
     fileName,
     csvData,
-    validateData = (rows) => true,
+    validateData = (_rows) => true,
     getDataFromCsv,
     useFieldArrayOutput,
 }: OwnProps) => {
@@ -263,13 +262,6 @@ const CsvUploader = ({
             {renderConfirmationCsvData()}
         </>
     );
-};
-
-CsvUploader.prototype = {
-    onClose: PropTypes.func,
-    open: PropTypes.bool,
-    title: PropTypes.string,
-    equipmentType: PropTypes.any,
 };
 
 export default CsvUploader;

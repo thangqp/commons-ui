@@ -25,6 +25,8 @@ export {
     DirectoryItemSelectorProps,
     DirectoryItemSelector,
 } from './components/DirectoryItemSelector/directory-item-selector';
+export { FilterCreationDialog } from './components/filter/filter-creation-dialog';
+export { ExpertFilterEditionDialog } from './components/filter/expert/expert-filter-edition-dialog';
 
 /**
  * Section to export manual type declarations of .js and .jsx files
@@ -182,7 +184,3 @@ export enum elementType {
     LOADFLOW_PARAMETERS = 'LOADFLOW_PARAMETERS',
     SENSITIVITY_PARAMETERS = 'SENSITIVITY_PARAMETERS',
 }
-
-export const FilterCreationDialog: FunctionComponent;
-
-export const ExpertFilterEditionDialog: FunctionComponent;
