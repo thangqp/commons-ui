@@ -43,6 +43,8 @@ interface DirectoryItemSelectorProps {
         elementTypes: string[],
         equipmentTypes?: string[]
     ) => Promise<any>;
+    defaultSelected?: UUID[];
+    defaultExpanded?: UUID[];
 }
 
 const DirectoryItemSelector: FunctionComponent<DirectoryItemSelectorProps> = ({
@@ -55,6 +57,8 @@ const DirectoryItemSelector: FunctionComponent<DirectoryItemSelectorProps> = ({
     fetchDirectoryContent,
     fetchRootFolders,
     fetchElementsInfos,
+    defaultSelected,
+    defaultExpanded,
 }) => {
     const [data, setData] = useState<any[]>([]);
     const [rootDirectories, setRootDirectories] = useState<any[]>([]);
@@ -150,12 +154,6 @@ const DirectoryItemSelector: FunctionComponent<DirectoryItemSelectorProps> = ({
             });
     }, [convertRoots, types, snackError, fetchRootFolders]);
 
-    useEffect(() => {
-        if (open) {
-            updateRootDirectories();
-        }
-    }, [open, updateRootDirectories]);
-
     const fetchDirectory = useCallback(
         (nodeId: UUID): void => {
             fetchDirectoryContent(nodeId, types)
@@ -209,6 +207,17 @@ const DirectoryItemSelector: FunctionComponent<DirectoryItemSelectorProps> = ({
         ]
     );
 
+    useEffect(() => {
+        if (open) {
+            updateRootDirectories();
+            if (defaultExpanded) {
+                defaultExpanded.forEach((nodeId) => {
+                    fetchDirectory(nodeId);
+                });
+            }
+        }
+    }, [open, updateRootDirectories, defaultExpanded, fetchDirectory]);
+
     function sortHandlingDirectories(a: any, b: any): number {
         //If children property is set it means it's a directory, they are handled differently in order to keep them at the top of the list
         if (a.children && !b.children) {
@@ -230,6 +239,8 @@ const DirectoryItemSelector: FunctionComponent<DirectoryItemSelectorProps> = ({
                 title={title}
                 onClose={onClose}
                 open={open}
+                defaultExpanded={defaultExpanded}
+                defaultSelected={defaultSelected}
             />
         </>
     );

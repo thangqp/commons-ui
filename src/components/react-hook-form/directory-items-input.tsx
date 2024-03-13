@@ -57,7 +57,7 @@ const styles = {
     },
 };
 
-interface DirectoryItemsInputProps {
+export interface DirectoryItemsInputProps {
     label: string | undefined;
     name: string;
     elementType: string;
@@ -75,6 +75,7 @@ interface DirectoryItemsInputProps {
     fetchRootFolders: (types: string[]) => Promise<any>;
     fetchElementsInfos: (ids: UUID[], elementTypes: string[]) => Promise<any>;
     labelRequiredFromContext?: boolean;
+    fetchDirectoryElementPath?: (id: UUID) => Promise<any[]>;
 }
 
 const DirectoryItemsInput: FunctionComponent<DirectoryItemsInputProps> = ({
@@ -92,9 +93,12 @@ const DirectoryItemsInput: FunctionComponent<DirectoryItemsInputProps> = ({
     fetchRootFolders,
     fetchElementsInfos,
     labelRequiredFromContext = true,
+    fetchDirectoryElementPath,
 }) => {
     const { snackError } = useSnackMessage();
     const intl = useIntl();
+    const [selectedChip, setSelectedChip] = useState<UUID[]>([]);
+    const [expandedNodes, setExpandedNodes] = useState<UUID[]>([]);
     const types = useMemo(() => [elementType], [elementType]);
     const [directoryItemSelectorOpen, setDirectoryItemSelectorOpen] =
         useState(false);
@@ -116,6 +120,16 @@ const DirectoryItemsInput: FunctionComponent<DirectoryItemsInputProps> = ({
 
     const addElements = useCallback(
         (values: any[]) => {
+            // if we select a chip and return a new values, we remove it to be replaced
+            if (selectedChip && selectedChip?.length > 0 && values.length > 0) {
+                selectedChip.forEach((chip) => {
+                    remove(
+                        getValues(name).findIndex(
+                            (item: any) => item.id === chip
+                        )
+                    );
+                });
+            }
             values.forEach((value) => {
                 const { icon, children, ...otherElementAttributes } = value;
 
@@ -136,8 +150,19 @@ const DirectoryItemsInput: FunctionComponent<DirectoryItemsInputProps> = ({
                 }
             });
             setDirectoryItemSelectorOpen(false);
+            setSelectedChip([]);
+            setExpandedNodes([]);
         },
-        [append, getValues, snackError, name, onRowChanged, onChange]
+        [
+            append,
+            getValues,
+            snackError,
+            name,
+            onRowChanged,
+            onChange,
+            selectedChip,
+            remove,
+        ]
     );
 
     const removeElements = useCallback(
@@ -147,6 +172,26 @@ const DirectoryItemsInput: FunctionComponent<DirectoryItemsInputProps> = ({
             onChange && onChange(getValues(name));
         },
         [onRowChanged, remove, getValues, name, onChange]
+    );
+
+    const handleChipClick = useCallback(
+        (index: number) => {
+            const chips = getValues(name) as any[];
+            const chip = chips.at(index)?.id;
+            if (chip && fetchDirectoryElementPath) {
+                fetchDirectoryElementPath(chip).then((response: any[]) => {
+                    const path = response
+                        .reverse() // we reverse the order so the root parent is first in the list
+                        .filter((e) => e.elementUuid !== chip)
+                        .map((e) => e.elementUuid);
+
+                    setExpandedNodes(path);
+                    setSelectedChip([chip]);
+                    setDirectoryItemSelectorOpen(true);
+                });
+            }
+        },
+        [getValues, name, fetchDirectoryElementPath]
     );
 
     return (
@@ -178,6 +223,7 @@ const DirectoryItemsInput: FunctionComponent<DirectoryItemsInputProps> = ({
                                 key={item.id}
                                 size="small"
                                 onDelete={() => removeElements(index)}
+                                onClick={() => handleChipClick(index)}
                                 label={
                                     <OverflowableText
                                         text={
@@ -222,6 +268,8 @@ const DirectoryItemsInput: FunctionComponent<DirectoryItemsInputProps> = ({
                 fetchDirectoryContent={fetchDirectoryContent}
                 fetchRootFolders={fetchRootFolders}
                 fetchElementsInfos={fetchElementsInfos}
+                defaultSelected={selectedChip}
+                defaultExpanded={expandedNodes}
             />
         </>
     );
