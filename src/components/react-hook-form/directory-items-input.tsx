@@ -141,7 +141,7 @@ const DirectoryItemsInput: FunctionComponent<DirectoryItemsInputProps> = ({
                 ) {
                     snackError({
                         messageTxt: '',
-                        headerId: 'ElementAlreadyUsed',
+                        headerId: 'directory_items_input/ElementAlreadyUsed',
                     });
                 } else {
                     append(otherElementAttributes);

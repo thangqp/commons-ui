@@ -34,7 +34,7 @@ interface DirectoryItemSelectorProps {
     title: string;
     itemFilter?: any;
     fetchDirectoryContent: (
-        directoryUuid: UUID,
+        directoryUuid: UUID | string,
         elementTypes: string[]
     ) => Promise<any>;
     fetchRootFolders: (types: string[]) => Promise<any>;
@@ -43,8 +43,15 @@ interface DirectoryItemSelectorProps {
         elementTypes: string[],
         equipmentTypes?: string[]
     ) => Promise<any>;
-    defaultSelected?: UUID[];
-    defaultExpanded?: UUID[];
+    classes?: any;
+    contentText?: string;
+    defaultExpanded?: string[];
+    defaultSelected?: string[];
+    validationButtonText?: string;
+    className?: string;
+    cancelButtonProps?: any;
+    onlyLeaves?: boolean;
+    multiselect?: boolean;
 }
 
 const DirectoryItemSelector: FunctionComponent<DirectoryItemSelectorProps> = ({
@@ -57,8 +64,15 @@ const DirectoryItemSelector: FunctionComponent<DirectoryItemSelectorProps> = ({
     fetchDirectoryContent,
     fetchRootFolders,
     fetchElementsInfos,
-    defaultSelected,
+    classes,
+    contentText,
     defaultExpanded,
+    defaultSelected,
+    validationButtonText,
+    className,
+    cancelButtonProps,
+    onlyLeaves = true,
+    multiselect = true,
 }) => {
     const [data, setData] = useState<any[]>([]);
     const [rootDirectories, setRootDirectories] = useState<any[]>([]);
@@ -119,7 +133,7 @@ const DirectoryItemSelector: FunctionComponent<DirectoryItemSelectorProps> = ({
     );
 
     const addToDirectory = useCallback(
-        (nodeId: UUID, content: any[]) => {
+        (nodeId: UUID | string, content: any[]) => {
             let [nrs, mdr] = updatedTree(
                 rootsRef.current,
                 nodeMap.current,
@@ -155,7 +169,7 @@ const DirectoryItemSelector: FunctionComponent<DirectoryItemSelectorProps> = ({
     }, [convertRoots, types, snackError, fetchRootFolders]);
 
     const fetchDirectory = useCallback(
-        (nodeId: UUID): void => {
+        (nodeId: UUID | string): void => {
             fetchDirectoryContent(nodeId, types)
                 .then((children) => {
                     const childrenMatchedTypes = children.filter((item: any) =>
@@ -231,16 +245,21 @@ const DirectoryItemSelector: FunctionComponent<DirectoryItemSelectorProps> = ({
     return (
         <>
             <TreeViewFinder
-                multiselect={true}
+                multiselect={multiselect}
                 onTreeBrowse={fetchDirectory}
                 data={data}
-                onlyLeaves={true}
+                onlyLeaves={onlyLeaves}
                 sortMethod={sortHandlingDirectories}
                 title={title}
                 onClose={onClose}
                 open={open}
+                classes={classes}
+                contentText={contentText}
                 defaultExpanded={defaultExpanded}
                 defaultSelected={defaultSelected}
+                validationButtonText={validationButtonText}
+                className={className}
+                cancelButtonProps={cancelButtonProps}
             />
         </>
     );
@@ -258,7 +277,7 @@ export default DirectoryItemSelector;
 function updatedTree(
     prevRoots: any[],
     prevMap: any,
-    nodeId: UUID | null,
+    nodeId: UUID | string | null,
     children: any[]
 ) {
     const nextChildren = children
