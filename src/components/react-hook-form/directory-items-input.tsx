@@ -69,7 +69,7 @@ export interface DirectoryItemsInputProps {
     onChange?: (e: any) => void;
     disable?: boolean;
     fetchDirectoryContent: (
-        directoryUuid: UUID,
+        directoryUuid: UUID | string,
         elementTypes: string[]
     ) => Promise<any>;
     fetchRootFolders: (types: string[]) => Promise<any>;
@@ -178,6 +178,7 @@ const DirectoryItemsInput: FunctionComponent<DirectoryItemsInputProps> = ({
         (index: number) => {
             const chips = getValues(name) as any[];
             const chip = chips.at(index)?.id;
+            console.log('test chip : ', chip, fetchDirectoryElementPath);
             if (chip && fetchDirectoryElementPath) {
                 fetchDirectoryElementPath(chip).then((response: any[]) => {
                     const path = response
