@@ -12,6 +12,9 @@
     "files": [
         "dist"
     ],
+    "sideEffects": [
+        "**/*.css"
+    ],
     "scripts": {
         "start": "vite demo/ --config vite.config.mts",
         "start:open": "vite demo/ --config vite.config.mts --open",
@@ -99,6 +102,7 @@
         "vite-plugin-externalize-deps": "^0.8.0",
         "vite-plugin-svgr": "^4.2.0",
         "vite-plugin-dts": "^2.3.0",
+        "vite-plugin-lib-inject-css": "^2.0.0",
         "yup": "^1.0.0"
     },
     "eslintConfig": {
