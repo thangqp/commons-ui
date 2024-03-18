@@ -20,6 +20,7 @@ interface ExpandingTextFieldProps {
     sx?: any;
     label?: string;
     textFieldFormProps: any;
+    otherTexFieldProps?: any;
 }
 const ExpandingTextField: FunctionComponent<ExpandingTextFieldProps> = ({
     name,
@@ -30,6 +31,7 @@ const ExpandingTextField: FunctionComponent<ExpandingTextFieldProps> = ({
     sx,
     label,
     textFieldFormProps,
+    otherTexFieldProps,
 }) => {
     const [isFocused, setIsFocused] = useState(false);
     const { control } = useFormContext();
@@ -90,7 +92,14 @@ const ExpandingTextField: FunctionComponent<ExpandingTextFieldProps> = ({
         ...(sx && { sx: sx }),
         ...textFieldFormProps,
     };
-    return <TextInput name={name} label={label} formProps={formProps} />;
+    return (
+        <TextInput
+            name={name}
+            label={label}
+            formProps={formProps}
+            {...otherTexFieldProps}
+        />
+    );
 };
 
 export default ExpandingTextField;
