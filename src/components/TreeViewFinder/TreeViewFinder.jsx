@@ -397,6 +397,7 @@ TreeViewFinder.propTypes = {
     multiselect: PropTypes.bool,
     sortMethod: PropTypes.func,
     cancelButtonProps: PropTypes.object,
+    className: PropTypes.string,
 };
 
 /* TreeViewFinder props default values */

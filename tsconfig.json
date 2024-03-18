@@ -1,16 +1,23 @@
 {
+    // Inspired by TSConfig base for Vite React and what is recommended for bundler and library
+    // https://www.typescriptlang.org/docs/handbook/tsconfig-json.html#tsconfig-bases
+    // https://www.npmjs.com/package/@tsconfig/vite-react
+    // https://www.typescriptlang.org/docs/handbook/modules/guides/choosing-compiler-options.html
     "compilerOptions": {
         "module": "esnext",
+        "moduleResolution": "bundler",
         "target": "es6",
-        "declaration": true,
-        "outDir": "./dist",
+        "lib": ["dom", "dom.iterable", "esnext"],
+        "allowJs": true,
+        "skipLibCheck": true, // otherwise it checks .d.ts files we import from node_modules and react-request-fullscreen contains an error
         "strict": true,
-        "skipLibCheck": true,
-        "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
-        "allowSyntheticDefaultImports": true,
         "noFallthroughCasesInSwitch": true,
-        "moduleResolution": "node"
+        "allowImportingTsExtensions": true,
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "noEmit": true,
+        "jsx": "react-jsx"
     },
-    "include": ["src"]
+    "include": ["src", "demo"] // we can let demo because the file generation is managed my vite and we have noEmit anyway
 }
