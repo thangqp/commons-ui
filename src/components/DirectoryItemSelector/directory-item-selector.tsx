@@ -43,6 +43,15 @@ interface DirectoryItemSelectorProps {
         elementTypes: string[],
         equipmentTypes?: string[]
     ) => Promise<any>;
+    classes?: any;
+    contentText?: string;
+    defaultExpanded?: string[];
+    defaultSelected?: string[];
+    validationButtonText?: string;
+    className?: string;
+    cancelButtonProps?: any;
+    onlyLeaves?: boolean;
+    multiselect?: boolean;
 }
 
 const DirectoryItemSelector: FunctionComponent<DirectoryItemSelectorProps> = ({
@@ -55,6 +64,15 @@ const DirectoryItemSelector: FunctionComponent<DirectoryItemSelectorProps> = ({
     fetchDirectoryContent,
     fetchRootFolders,
     fetchElementsInfos,
+    classes,
+    contentText,
+    defaultExpanded,
+    defaultSelected,
+    validationButtonText,
+    className,
+    cancelButtonProps,
+    onlyLeaves = true,
+    multiselect = true,
 }) => {
     const [data, setData] = useState<any[]>([]);
     const [rootDirectories, setRootDirectories] = useState<any[]>([]);
@@ -222,14 +240,21 @@ const DirectoryItemSelector: FunctionComponent<DirectoryItemSelectorProps> = ({
     return (
         <>
             <TreeViewFinder
-                multiselect={true}
+                multiselect={multiselect}
                 onTreeBrowse={fetchDirectory}
                 data={data}
-                onlyLeaves={true}
+                onlyLeaves={onlyLeaves}
                 sortMethod={sortHandlingDirectories}
                 title={title}
                 onClose={onClose}
                 open={open}
+                classes={classes}
+                contentText={contentText}
+                defaultExpanded={defaultExpanded}
+                defaultSelected={defaultSelected}
+                validationButtonText={validationButtonText}
+                className={className}
+                cancelButtonProps={cancelButtonProps}
             />
         </>
     );
