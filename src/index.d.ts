@@ -51,6 +51,7 @@ export {
 } from './utils/rhf-inputs/select-inputs/countries-input';
 export { MultipleAutocompleteInput } from './utils/rhf-inputs/autocomplete-inputs/multiple-autocomplete-input';
 export { CsvUploader } from './utils/rhf-inputs/ag-grid-table-rhf/csv-uploader/csv-uploader';
+export { UniqueNameInput } from './components/commons/unique-name-input';
 /**
  * Section to export manual type declarations of .js and .jsx files
  */
