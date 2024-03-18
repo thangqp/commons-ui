@@ -14,7 +14,7 @@ import { useIntl } from 'react-intl';
 //Can we avoid this overhead ?
 export function useIntlRef() {
     const intl = useIntl();
-    const intlRef = useRef();
+    const intlRef = useRef(intl);
 
     useEffect(() => {
         intlRef.current = intl;

@@ -5,16 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import type { Config } from 'jest';
-
-const config: Config = {
-    testEnvironment: 'jsdom',
-    moduleNameMapper: {
-        '^.+\\.svg\\?react$': 'jest-svg-transformer',
-    },
-    globals: {
-        IS_REACT_ACT_ENVIRONMENT: true,
-    },
+const directory_items_input_en = {
+    'directory_items_input/ElementAlreadyUsed': 'This element is already used',
 };
 
-export default config;
+export default directory_items_input_en;

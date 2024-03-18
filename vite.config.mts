@@ -10,6 +10,8 @@ import type { PluginOption } from 'vite';
 import { defineConfig } from 'vite';
 import eslint from 'vite-plugin-eslint';
 import svgr from 'vite-plugin-svgr';
+import { libInjectCss } from 'vite-plugin-lib-inject-css';
+import dts from 'vite-plugin-dts';
 import { externalizeDeps } from 'vite-plugin-externalize-deps';
 import * as path from 'node:path';
 import * as fs from 'node:fs/promises';
@@ -19,9 +21,15 @@ import { createRequire } from 'node:module';
 export default defineConfig({
     plugins: [
         react(),
-        eslint(),
-        svgr({ include: '**/*.svg' }), // default is { include: "**/*.svg?react" }
+        eslint({
+            failOnWarning: true,
+        }),
+        svgr(), // works on every import with the pattern "**/*.svg?react"
         reactVirtualized(),
+        libInjectCss(),
+        dts({
+            include: ['src'],
+        }),
         externalizeDeps({
             include: [/^react-is(?:\/.*)?$/, /^@mui(?:\/.*)?$/],
         }),
@@ -29,13 +37,12 @@ export default defineConfig({
     build: {
         lib: {
             entry: path.resolve(__dirname, 'src/index.js'),
-            name: 'Commons ui',
             formats: ['es'],
         },
         rollupOptions: {
             output: {
-                preserveModules: true,
-                entryFileNames: '[name].js', // override vite and allow to keep the original tree and .js extension even in ESM
+                assetFileNames: 'assets/[name][extname]',
+                entryFileNames: '[name].js', // override vite and allow to keep .js extension even in ESM
             },
         },
         minify: false, // easier to debug on the apps using this lib
