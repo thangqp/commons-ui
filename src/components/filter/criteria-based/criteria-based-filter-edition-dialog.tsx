@@ -17,9 +17,9 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { criteriaBasedFilterSchema } from './criteria-based-filter-form';
 import yup from '../../../utils/yup-config';
-import PropTypes from 'prop-types';
 import { FetchStatus } from '../../../hooks/customHooks';
 import { FilterForm } from '../filter-form';
+import { ElementType } from '../../..';
 
 export const noSelectionForCopy = {
     sourceCaseUuid: null,
@@ -50,6 +50,12 @@ interface OwnProps {
     selectionForCopy: any;
     fetchAppsAndUrls: () => Promise<any>;
     setSelelectionForCopy: (selection: any) => void;
+    activeDirectory?: any;
+    elementExists?: (
+        directory: any,
+        value: string,
+        elementType: ElementType
+    ) => Promise<any>;
 }
 
 export const CriteriaBasedFilterEditionDialog = ({
@@ -64,6 +70,8 @@ export const CriteriaBasedFilterEditionDialog = ({
     selectionForCopy,
     fetchAppsAndUrls,
     setSelelectionForCopy,
+    activeDirectory,
+    elementExists,
 }: OwnProps) => {
     const { snackError } = useSnackMessage();
     const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
@@ -103,7 +111,7 @@ export const CriteriaBasedFilterEditionDialog = ({
                     });
                 });
         }
-    }, [id, name, open, reset, snackError]);
+    }, [id, name, open, reset, snackError, getFilterById]);
 
     const onSubmit = useCallback(
         (filterForm: any) => {
@@ -125,7 +133,14 @@ export const CriteriaBasedFilterEditionDialog = ({
                     });
                 });
         },
-        [broadcastChannel, id, selectionForCopy.sourceItemUuid, snackError]
+        [
+            broadcastChannel,
+            id,
+            selectionForCopy.sourceItemUuid,
+            snackError,
+            saveFilter,
+            setSelelectionForCopy,
+        ]
     );
 
     const isDataReady = dataFetchStatus === FetchStatus.FETCH_SUCCESS;
@@ -142,17 +157,15 @@ export const CriteriaBasedFilterEditionDialog = ({
             disabledSave={!!nameError || !!isValidating}
             isDataFetching={dataFetchStatus === FetchStatus.FETCHING}
         >
-            {isDataReady && <FilterForm fetchAppsAndUrls={fetchAppsAndUrls} />}
+            {isDataReady && (
+                <FilterForm
+                    fetchAppsAndUrls={fetchAppsAndUrls}
+                    activeDirectory={activeDirectory}
+                    elementExists={elementExists}
+                />
+            )}
         </CustomMuiDialog>
     );
-};
-
-CriteriaBasedFilterEditionDialog.prototype = {
-    id: PropTypes.string,
-    name: PropTypes.string,
-    titleId: PropTypes.string.isRequired,
-    open: PropTypes.bool,
-    onClose: PropTypes.func.isRequired,
 };
 
 export default CriteriaBasedFilterEditionDialog;

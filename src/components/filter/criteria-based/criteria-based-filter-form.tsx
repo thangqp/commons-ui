@@ -6,7 +6,6 @@ import { FieldConstants } from '../constants/field-constants';
 import yup from '../../../utils/yup-config';
 import CriteriaBasedForm from './criteria-based-form';
 import {
-    FILTER_EQUIPMENTS,
     getCriteriaBasedFormData,
     getCriteriaBasedSchema,
 } from '../constants/criteria-based-utils';
@@ -31,7 +30,6 @@ function CriteriaBasedFilterForm({ fetchAppsAndUrls }: OwnProps) {
     return (
         <Grid container item spacing={1}>
             <CriteriaBasedForm
-                equipments={FILTER_EQUIPMENTS}
                 defaultValues={
                     criteriaBasedFilterEmptyFormData[
                         FieldConstants.CRITERIA_BASED

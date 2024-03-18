@@ -7,17 +7,16 @@
 
 import { FieldConstants } from '../constants/field-constants';
 import { useFormContext, useWatch } from 'react-hook-form';
-import { gridItem } from '../../../utils/dialog-utils';
 import { Grid } from '@mui/material';
 import SelectInput from '../../react-hook-form/select-input';
 import InputWithPopupConfirmation from '../../../utils/rhf-inputs/select-inputs/input-with-popup-confirmation';
+import { FILTER_EQUIPMENTS } from '../constants/criteria-based-utils';
 
 interface OwnProps {
-    equipments: any;
     defaultValues: Record<string, any>;
 }
 
-const CriteriaBasedForm = ({ equipments, defaultValues }: OwnProps) => {
+const CriteriaBasedForm = ({ defaultValues }: OwnProps) => {
     const { getValues, setValue } = useFormContext();
 
     const watchEquipmentType = useWatch({
@@ -40,24 +39,22 @@ const CriteriaBasedForm = ({ equipments, defaultValues }: OwnProps) => {
         );
     };
 
-    const equipmentTypeSelectionField = (
-        <InputWithPopupConfirmation
-            Input={SelectInput}
-            name={FieldConstants.EQUIPMENT_TYPE}
-            options={Object.values(equipments)}
-            label={'equipmentType'}
-            shouldOpenPopup={openConfirmationPopup}
-            resetOnConfirmation={handleResetOnConfirmation}
-            message={'changeTypeMessage'}
-            validateButtonLabel={'button.changeType'}
-        />
-    );
-
     return (
         <Grid container item spacing={2}>
-            {gridItem(equipmentTypeSelectionField, 12)}
+            <Grid item xs={12}>
+                <InputWithPopupConfirmation
+                    Input={SelectInput}
+                    name={FieldConstants.EQUIPMENT_TYPE}
+                    options={Object.values(FILTER_EQUIPMENTS)}
+                    label={'equipmentType'}
+                    shouldOpenPopup={openConfirmationPopup}
+                    resetOnConfirmation={handleResetOnConfirmation}
+                    message={'changeTypeMessage'}
+                    validateButtonLabel={'button.changeType'}
+                />
+            </Grid>
             {watchEquipmentType &&
-                equipments[watchEquipmentType].fields.map(
+                FILTER_EQUIPMENTS[watchEquipmentType].fields.map(
                     (equipment: any, index: number) => {
                         const EquipmentForm = equipment.renderer;
                         return (

@@ -27,7 +27,30 @@ export {
 } from './components/DirectoryItemSelector/directory-item-selector';
 export { FilterCreationDialog } from './components/filter/filter-creation-dialog';
 export { ExpertFilterEditionDialog } from './components/filter/expert/expert-filter-edition-dialog';
-
+export { ExplicitNamingFilterEditionDialog } from './components/filter/explicit-naming/explicit-naming-filter-edition-dialog';
+export { CriteriaBasedFilterEditionDialog } from './components/filter/criteria-based/criteria-based-filter-edition-dialog';
+export { ElementType, getFileIcon } from './utils/ElementType';
+export {
+    saveExplicitNamingFilter,
+    saveCriteriaBasedFilter,
+    saveExpertFilter,
+} from './components/filter/filters-utils';
+export {
+    RangeInput,
+    DEFAULT_RANGE_VALUE,
+    getRangeInputDataForm,
+    getRangeInputSchema,
+} from './utils/rhf-inputs/range-input';
+export { InputWithPopupConfirmation } from './utils/rhf-inputs/select-inputs/input-with-popup-confirmation';
+export { MuiSelectInput } from './utils/rhf-inputs/select-inputs/mui-select-input';
+export {
+    CountriesInput,
+    PARAM_LANGUAGE,
+    getSystemLanguage,
+    getComputedLanguage,
+} from './utils/rhf-inputs/select-inputs/countries-input';
+export { MultipleAutocompleteInput } from './utils/rhf-inputs/autocomplete-inputs/multiple-autocomplete-input';
+export { CsvUploader } from './utils/rhf-inputs/ag-grid-table-rhf/csv-uploader/csv-uploader';
 /**
  * Section to export manual type declarations of .js and .jsx files
  */
@@ -172,15 +195,3 @@ interface OverflowableTextProps {
 }
 
 export const OverflowableText: FunctionComponent<OverflowableTextProps>;
-
-export enum elementType {
-    DIRECTORY = 'DIRECTORY',
-    STUDY = 'STUDY',
-    FILTER = 'FILTER',
-    MODIFICATION = 'MODIFICATION',
-    CONTINGENCY_LIST = 'CONTINGENCY_LIST',
-    VOLTAGE_INIT_PARAMETERS = 'VOLTAGE_INIT_PARAMETERS',
-    SECURITY_ANALYSIS_PARAMETERS = 'SECURITY_ANALYSIS_PARAMETERS',
-    LOADFLOW_PARAMETERS = 'LOADFLOW_PARAMETERS',
-    SENSITIVITY_PARAMETERS = 'SENSITIVITY_PARAMETERS',
-}

@@ -19,6 +19,7 @@ import { FilterForm } from '../filter-form';
 import { EXPERT_FILTER_QUERY, expertFilterSchema } from './expert-filter-form';
 import { saveExpertFilter } from '../filters-utils';
 import { importExpertRules } from './expert-filter-utils';
+import { ElementType } from '../../..';
 
 const formSchema = yup
     .object()
@@ -49,6 +50,12 @@ export interface ExpertFilterEditionDialogProps {
         activeDirectory: any
     ) => Promise<any>;
     saveFilter: (filter: any, name: string) => Promise<any>;
+    activeDirectory?: any;
+    elementExists?: (
+        directory: any,
+        value: string,
+        elementType: ElementType
+    ) => Promise<any>;
 }
 
 export const ExpertFilterEditionDialog = ({
@@ -64,6 +71,8 @@ export const ExpertFilterEditionDialog = ({
     setSelectionForCopy,
     createFilter,
     saveFilter,
+    activeDirectory,
+    elementExists,
 }: ExpertFilterEditionDialogProps) => {
     const { snackError } = useSnackMessage();
     const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
@@ -160,7 +169,13 @@ export const ExpertFilterEditionDialog = ({
             disabledSave={!!nameError || !!isValidating}
             isDataFetching={dataFetchStatus === FetchStatus.FETCHING}
         >
-            {isDataReady && <FilterForm fetchAppsAndUrls={fetchAppsAndUrls} />}
+            {isDataReady && (
+                <FilterForm
+                    fetchAppsAndUrls={fetchAppsAndUrls}
+                    activeDirectory={activeDirectory}
+                    elementExists={elementExists}
+                />
+            )}
         </CustomMuiDialog>
     );
 };

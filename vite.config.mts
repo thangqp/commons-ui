@@ -10,8 +10,10 @@ import type { PluginOption } from 'vite';
 import { defineConfig } from 'vite';
 import eslint from 'vite-plugin-eslint';
 import svgr from 'vite-plugin-svgr';
+import { libInjectCss } from 'vite-plugin-lib-inject-css'
 import dts from 'vite-plugin-dts';
 import { externalizeDeps } from 'vite-plugin-externalize-deps';
+import { globSync } from 'glob'
 import * as path from 'node:path';
 import * as fs from 'node:fs/promises';
 import * as url from 'node:url';
@@ -25,6 +27,7 @@ export default defineConfig({
         }),
         svgr(), // works on every import with the pattern "**/*.svg?react"
         reactVirtualized(),
+        libInjectCss(),
         dts({
             include: ['src'],
         }),
@@ -39,8 +42,23 @@ export default defineConfig({
             formats: ['es'],
         },
         rollupOptions: {
+            // from https://rollupjs.org/configuration-options/#input
+            // input: Object.fromEntries(
+            //     globSync('src/**/*.{ts,tsx}').map(file => [
+            //         // This remove `src/` as well as the file extension from each
+            //         // file, so e.g. src/nested/foo.js becomes nested/foo
+            //         path.relative(
+            //             'src',
+            //             file.slice(0, file.length - path.extname(file).length)
+            //         ),
+            //         // This expands the relative paths to absolute paths, so e.g.
+            //         // src/nested/foo becomes /project/src/nested/foo.js
+            //         url.fileURLToPath(new URL(file, import.meta.url))
+            //     ])
+            // ),
             output: {
-                preserveModules: true,
+                // chunkFileNames: 'chunks/[name].[hash].js',
+                assetFileNames: 'assets/[name][extname]',
                 entryFileNames: '[name].js', // override vite and allow to keep the original tree and .js extension even in ESM
             },
         },

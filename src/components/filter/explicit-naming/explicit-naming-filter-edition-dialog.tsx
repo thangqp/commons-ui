@@ -24,6 +24,7 @@ import { v4 as uuid4 } from 'uuid';
 import { noSelectionForCopy } from '../constants/equipment-types';
 import { FilterType } from '../constants/field-constants';
 import { FetchStatus } from '../../../hooks/customHooks';
+import { ElementType } from '../../..';
 
 const formSchema = yup
     .object()
@@ -46,12 +47,19 @@ interface OwnProps {
     setSelectionForCopy: (selection: any) => void;
     getFilterById: (id: string) => Promise<any>;
     fetchAppsAndUrls: () => Promise<any>;
-    createFilter: (filter: any,
+    createFilter: (
+        filter: any,
         name: string,
         description: string,
-        activeDirectory: any) => Promise<any>;
-    saveFilter: (filter: any,
-        name: string) => Promise<any>;
+        activeDirectory: any
+    ) => Promise<any>;
+    saveFilter: (filter: any, name: string) => Promise<any>;
+    activeDirectory?: any;
+    elementExists?: (
+        directory: any,
+        value: string,
+        elementType: ElementType
+    ) => Promise<any>;
 }
 
 const ExplicitNamingFilterEditionDialog = ({
@@ -66,7 +74,9 @@ const ExplicitNamingFilterEditionDialog = ({
     getFilterById,
     fetchAppsAndUrls,
     createFilter,
-    saveFilter
+    saveFilter,
+    activeDirectory,
+    elementExists,
 }: OwnProps) => {
     const { snackError } = useSnackMessage();
     const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
@@ -92,8 +102,10 @@ const ExplicitNamingFilterEditionDialog = ({
                     setDataFetchStatus(FetchStatus.FETCH_SUCCESS);
                     reset({
                         [FieldConstants.NAME]: name,
-                        [FieldConstants.FILTER_TYPE]: FilterType.EXPLICIT_NAMING.id,
-                        [FieldConstants.EQUIPMENT_TYPE]: response[FieldConstants.EQUIPMENT_TYPE],
+                        [FieldConstants.FILTER_TYPE]:
+                            FilterType.EXPLICIT_NAMING.id,
+                        [FieldConstants.EQUIPMENT_TYPE]:
+                            response[FieldConstants.EQUIPMENT_TYPE],
                         [FILTER_EQUIPMENTS_ATTRIBUTES]: response[
                             FILTER_EQUIPMENTS_ATTRIBUTES
                         ].map((row: any) => ({
@@ -110,7 +122,7 @@ const ExplicitNamingFilterEditionDialog = ({
                     });
                 });
         }
-    }, [id, name, open, reset, snackError]);
+    }, [id, name, open, reset, snackError, getFilterById]);
 
     const onSubmit = useCallback(
         (filterForm: any) => {
@@ -138,7 +150,16 @@ const ExplicitNamingFilterEditionDialog = ({
                 });
             }
         },
-        [broadcastChannel, id, selectionForCopy, onClose, snackError]
+        [
+            broadcastChannel,
+            id,
+            selectionForCopy,
+            onClose,
+            snackError,
+            createFilter,
+            saveFilter,
+            setSelectionForCopy,
+        ]
     );
 
     const isDataReady = dataFetchStatus === FetchStatus.FETCH_SUCCESS;
@@ -155,9 +176,13 @@ const ExplicitNamingFilterEditionDialog = ({
             disabledSave={!!nameError || !!isValidating}
             isDataFetching={dataFetchStatus === FetchStatus.FETCHING}
         >
-            {isDataReady && <FilterForm 
-                fetchAppsAndUrls={fetchAppsAndUrls} 
-            />}
+            {isDataReady && (
+                <FilterForm
+                    fetchAppsAndUrls={fetchAppsAndUrls}
+                    activeDirectory={activeDirectory}
+                    elementExists={elementExists}
+                />
+            )}
         </CustomMuiDialog>
     );
 };

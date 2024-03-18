@@ -12,10 +12,10 @@ import {
     useRef,
     useState,
 } from 'react';
-import { getFileIcon, elementType } from '../../utils/ElementType.jsx';
+import { getFileIcon, ElementType } from '../../utils/ElementType.jsx';
 import { useSnackMessage } from '../../hooks/useSnackMessage.js';
 import TreeViewFinder from '../TreeViewFinder';
-import { Theme } from '@mui/material';
+import { SxProps, Theme } from '@mui/material';
 import { UUID } from 'crypto';
 
 const styles = {
@@ -86,7 +86,7 @@ const DirectoryItemSelector: FunctionComponent<DirectoryItemSelectorProps> = ({
     const openRef = useRef<boolean>();
     openRef.current = open;
     const contentFilter = useCallback(
-        () => new Set([elementType.DIRECTORY, ...types]),
+        () => new Set([ElementType.DIRECTORY, ...types]),
         [types]
     );
 
@@ -96,13 +96,13 @@ const DirectoryItemSelector: FunctionComponent<DirectoryItemSelectorProps> = ({
                 id: e.elementUuid,
                 name: e.elementName,
                 specificMetadata: e.specificMetadata,
-                icon: getFileIcon(e.type, styles.icon),
+                icon: getFileIcon(e.type, styles.icon as SxProps),
                 children:
-                    e.type === elementType.DIRECTORY
+                    e.type === ElementType.DIRECTORY
                         ? convertChildren(e.children)
                         : undefined,
                 childrenCount:
-                    e.type === elementType.DIRECTORY
+                    e.type === ElementType.DIRECTORY
                         ? e.subdirectoriesCount
                         : undefined,
             };
@@ -115,15 +115,15 @@ const DirectoryItemSelector: FunctionComponent<DirectoryItemSelectorProps> = ({
                 return {
                     id: e.elementUuid,
                     name: e.elementName,
-                    icon: getFileIcon(e.type, styles.icon),
+                    icon: getFileIcon(e.type, styles.icon as SxProps),
                     children:
-                        e.type === elementType.DIRECTORY
+                        e.type === ElementType.DIRECTORY
                             ? convertChildren(
                                   nodeMap.current[e.elementUuid].children
                               )
                             : undefined,
                     childrenCount:
-                        e.type === elementType.DIRECTORY
+                        e.type === ElementType.DIRECTORY
                             ? e.subdirectoriesCount
                             : undefined,
                 };
@@ -195,7 +195,7 @@ const DirectoryItemSelector: FunctionComponent<DirectoryItemSelectorProps> = ({
                             const children = itemFilter
                                 ? childrenWithMetadata.filter((val: any) => {
                                       // Accept every directory
-                                      if (val.type === elementType.DIRECTORY) {
+                                      if (val.type === ElementType.DIRECTORY) {
                                           return true;
                                       }
                                       // otherwise filter with the custom itemFilter func

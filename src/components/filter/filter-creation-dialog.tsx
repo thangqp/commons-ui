@@ -32,6 +32,7 @@ import {
     getExpertFilterEmptyFormData,
 } from './expert/expert-filter-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { ElementType } from '../..';
 
 const emptyFormData = {
     [FieldConstants.NAME]: '',
@@ -71,6 +72,11 @@ export interface FilterCreationDialogProps {
     ) => Promise<any>;
     saveFilter: (filter: any, name: string) => Promise<any>;
     fetchAppsAndUrls: () => Promise<any>;
+    elementExists?: (
+        directory: any,
+        value: string,
+        elementType: ElementType
+    ) => Promise<any>;
 }
 
 const FilterCreationDialog = ({
@@ -80,6 +86,7 @@ const FilterCreationDialog = ({
     createFilter,
     saveFilter,
     fetchAppsAndUrls,
+    elementExists,
 }: FilterCreationDialogProps) => {
     const { snackError } = useSnackMessage();
 
@@ -169,7 +176,12 @@ const FilterCreationDialog = ({
             removeOptional={true}
             disabledSave={!!nameError || !!isValidating}
         >
-            <FilterForm creation fetchAppsAndUrls={fetchAppsAndUrls} />
+            <FilterForm
+                creation
+                fetchAppsAndUrls={fetchAppsAndUrls}
+                activeDirectory={activeDirectory}
+                elementExists={elementExists}
+            />
         </CustomMuiDialog>
     );
 };

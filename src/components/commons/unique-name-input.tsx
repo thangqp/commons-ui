@@ -13,10 +13,8 @@ import CheckIcon from '@mui/icons-material/Check';
 import { useController, useFormContext } from 'react-hook-form';
 import CircularProgress from '@mui/material/CircularProgress';
 import TextField from '@mui/material/TextField';
-import {
-    ElementType,
-    FieldConstants,
-} from '../filter/constants/field-constants';
+import { FieldConstants } from '../filter/constants/field-constants';
+import { ElementType } from '../../utils/ElementType';
 
 interface UniqueNameInputProps {
     name: string;

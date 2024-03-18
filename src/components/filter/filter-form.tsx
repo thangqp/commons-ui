@@ -7,7 +7,7 @@
 
 import { UniqueNameInput } from '../commons/unique-name-input';
 import { FieldConstants } from './constants/field-constants';
-import { ElementType, FilterType } from './constants/field-constants';
+import { FilterType } from './constants/field-constants';
 import CriteriaBasedFilterForm from './criteria-based/criteria-based-filter-form';
 import ExplicitNamingFilterForm from './explicit-naming/explicit-naming-filter-form';
 import React, { FunctionComponent } from 'react';
@@ -16,10 +16,17 @@ import ExpertFilterForm from './expert/expert-filter-form';
 import DescriptionInput from '../commons/description-modification/description-input';
 import { Grid } from '@mui/material';
 import RadioInput from '../react-hook-form/radio-input';
+import { ElementType } from '../../utils/ElementType';
 
 interface FilterFormProps {
     creation?: boolean;
     fetchAppsAndUrls: () => Promise<any>;
+    activeDirectory?: any;
+    elementExists?: (
+        directory: any,
+        value: string,
+        elementType: ElementType
+    ) => Promise<any>;
 }
 
 export const FilterForm: FunctionComponent<FilterFormProps> = (props) => {
@@ -43,6 +50,8 @@ export const FilterForm: FunctionComponent<FilterFormProps> = (props) => {
                     label={'nameProperty'}
                     elementType={ElementType.FILTER}
                     autoFocus={props.creation}
+                    activeDirectory={props.activeDirectory}
+                    elementExists={props.elementExists}
                 />
             </Grid>
             {props.creation && (
