@@ -6,20 +6,19 @@
  */
 
 import { useState } from 'react';
-import { Box, InputAdornment, Theme } from '@mui/material';
+import { Box, InputAdornment, TextFieldProps, Theme } from '@mui/material';
 import { FunctionComponent } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
-import { TextInput } from '../..';
+import { TextInputProps, TextInput } from '../..';
 
-interface ExpandingTextFieldProps {
+interface ExpandingTextFieldProps extends TextInputProps {
     name: string;
     maxCharactersNumber?: number;
     rows?: number;
     minRows?: number;
     sx?: any;
     label?: string;
-    textFieldFormProps?: any;
-    otherTexFieldProps?: any;
+    textFieldFormProps?: TextFieldProps;
 }
 const ExpandingTextField: FunctionComponent<ExpandingTextFieldProps> = ({
     name,
@@ -44,7 +43,7 @@ const ExpandingTextField: FunctionComponent<ExpandingTextFieldProps> = ({
     const handleBlur = () => {
         setIsFocused(false);
     };
-
+    console.log('debug', 'otherTexFieldProps', otherTexFieldProps);
     const isOverTheLimit = descriptionWatch?.length > maxCharactersNumber;
     const descriptionLength = descriptionWatch?.length ?? 0;
     const descriptionCounter = descriptionLength + '/' + maxCharactersNumber;

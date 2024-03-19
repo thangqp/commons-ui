@@ -115,7 +115,7 @@ type TextFieldWithAdornmentProps = TextFieldProps & {
     handleClearValue?: () => void;
 };
 
-interface TextInputProps {
+export interface TextInputProps {
     name: string;
     label?: string;
     labelValues?: any; // it's for values from https://formatjs.io/docs/react-intl/components/#formattedmessage
