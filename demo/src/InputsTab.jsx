@@ -134,7 +134,6 @@ export function InputsTab() {
                             maxCharactersNumber={300}
                             minRows={2}
                             rows={4}
-                            maxRows={10}
                         ></ExpandingTextField>
                     </Grid>
                     <Grid item xs={gridSize}>

@@ -16,10 +16,9 @@ interface ExpandingTextFieldProps {
     maxCharactersNumber?: number;
     rows?: number;
     minRows?: number;
-    maxRows?: number;
     sx?: any;
     label?: string;
-    textFieldFormProps: any;
+    textFieldFormProps?: any;
     otherTexFieldProps?: any;
 }
 const ExpandingTextField: FunctionComponent<ExpandingTextFieldProps> = ({
@@ -27,7 +26,6 @@ const ExpandingTextField: FunctionComponent<ExpandingTextFieldProps> = ({
     maxCharactersNumber,
     rows,
     minRows = 1,
-    maxRows,
     sx,
     label,
     textFieldFormProps,
@@ -86,9 +84,7 @@ const ExpandingTextField: FunctionComponent<ExpandingTextFieldProps> = ({
                 resize: 'none', // or 'horizontal' for horizontal resizing
             },
         },
-        ...(minRows && { minRows: minRows }),
         ...(rowsToDisplay && { rows: rowsToDisplay }),
-        ...(maxRows && { maxRows: maxRows }),
         ...(sx && { sx: sx }),
         ...textFieldFormProps,
     };
