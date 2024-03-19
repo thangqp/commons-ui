@@ -6,7 +6,7 @@
  */
 
 import { useState } from 'react';
-import { InputAdornment } from '@mui/material';
+import { Box, InputAdornment, Theme } from "@mui/material";
 import { FunctionComponent } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { TextInput } from '../..';
@@ -68,13 +68,16 @@ const ExpandingTextField: FunctionComponent<ExpandingTextFieldProps> = ({
                         right: 8,
                     }}
                 >
-                    <div
-                        style={{
-                            color: isOverTheLimit ? 'red' : 'inherit',
+                    <Box
+                        sx={{
+                            color: (theme: Theme) =>
+                              isOverTheLimit
+                                ? theme.palette.error.main
+                                : theme.palette.text.secondary
                         }}
                     >
                         {descriptionCounter}
-                    </div>
+                    </Box>
                 </InputAdornment>
             ),
             style: {
