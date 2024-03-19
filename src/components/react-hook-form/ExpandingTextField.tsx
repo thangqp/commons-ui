@@ -6,7 +6,7 @@
  */
 
 import { useState } from 'react';
-import { Box, InputAdornment, Theme } from "@mui/material";
+import { Box, InputAdornment, Theme } from '@mui/material';
 import { FunctionComponent } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { TextInput } from '../..';
@@ -72,7 +72,7 @@ const ExpandingTextField: FunctionComponent<ExpandingTextFieldProps> = ({
                         sx={{
                             color: (theme: Theme) =>
                                 isOverTheLimit
-                                ? theme.palette.error.main
+                                    ? theme.palette.error.main
                                     : theme.palette.text.secondary,
                         }}
                     >
