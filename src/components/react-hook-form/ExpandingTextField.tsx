@@ -71,9 +71,9 @@ const ExpandingTextField: FunctionComponent<ExpandingTextFieldProps> = ({
                     <Box
                         sx={{
                             color: (theme: Theme) =>
-                              isOverTheLimit
+                                isOverTheLimit
                                 ? theme.palette.error.main
-                                : theme.palette.text.secondary
+                                    : theme.palette.text.secondary,
                         }}
                     >
                         {descriptionCounter}
