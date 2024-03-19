@@ -178,7 +178,6 @@ const DirectoryItemsInput: FunctionComponent<DirectoryItemsInputProps> = ({
         (index: number) => {
             const chips = getValues(name) as any[];
             const chip = chips.at(index)?.id;
-            console.log('test chip : ', chip, fetchDirectoryElementPath);
             if (chip && fetchDirectoryElementPath) {
                 fetchDirectoryElementPath(chip).then((response: any[]) => {
                     const path = response
