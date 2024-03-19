@@ -23,13 +23,13 @@ interface ExpandingTextFieldProps {
 }
 const ExpandingTextField: FunctionComponent<ExpandingTextFieldProps> = ({
     name,
-    maxCharactersNumber,
+    maxCharactersNumber = 500,
     rows,
     minRows = 1,
     sx,
     label,
     textFieldFormProps,
-    otherTexFieldProps,
+    ...otherTexFieldProps
 }) => {
     const [isFocused, setIsFocused] = useState(false);
     const { control } = useFormContext();
@@ -45,10 +45,9 @@ const ExpandingTextField: FunctionComponent<ExpandingTextFieldProps> = ({
         setIsFocused(false);
     };
 
-    const maxCounter = maxCharactersNumber ?? 500;
-    const isOverTheLimit = descriptionWatch?.length > maxCounter;
+    const isOverTheLimit = descriptionWatch?.length > maxCharactersNumber;
     const descriptionLength = descriptionWatch?.length ?? 0;
-    const descriptionCounter = descriptionLength + '/' + maxCounter;
+    const descriptionCounter = descriptionLength + '/' + maxCharactersNumber;
 
     const rowsToDisplay = isFocused ? rows : minRows;
 
@@ -60,7 +59,6 @@ const ExpandingTextField: FunctionComponent<ExpandingTextFieldProps> = ({
         InputProps: {
             endAdornment: (
                 <InputAdornment
-                    color={'red'}
                     position="end"
                     sx={{
                         position: 'absolute',
