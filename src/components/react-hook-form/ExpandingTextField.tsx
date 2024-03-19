@@ -43,7 +43,6 @@ const ExpandingTextField: FunctionComponent<ExpandingTextFieldProps> = ({
     const handleBlur = () => {
         setIsFocused(false);
     };
-    console.log('debug', 'otherTexFieldProps', otherTexFieldProps);
     const isOverTheLimit = descriptionWatch?.length > maxCharactersNumber;
     const descriptionLength = descriptionWatch?.length ?? 0;
     const descriptionCounter = descriptionLength + '/' + maxCharactersNumber;
