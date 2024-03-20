@@ -10,7 +10,7 @@ import OverflowableText from '../OverflowableText';
 import { useSnackMessage } from '../../hooks/useSnackMessage';
 import FieldLabel from './utils/field-label';
 import FolderIcon from '@mui/icons-material/Folder';
-import React, {
+import {
     FunctionComponent,
     useCallback,
     useMemo,
