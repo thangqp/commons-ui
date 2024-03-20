@@ -61,9 +61,7 @@ const AuthenticationRouter = ({
                     element={
                         <SignInCallbackHandler
                             userManager={userManager.instance}
-                            handleSignInCallback={
-                                handleSigninCallbackClosure
-                            }
+                            handleSignInCallback={handleSigninCallbackClosure}
                         />
                     }
                 />
@@ -78,10 +76,7 @@ const AuthenticationRouter = ({
                         />
                     }
                 />
-                <Route
-                    path="logout-callback"
-                    element={<Navigate to="/" />}
-                />
+                <Route path="logout-callback" element={<Navigate to="/" />} />
                 <Route
                     path="*"
                     element={
@@ -123,8 +118,8 @@ const AuthenticationRouter = ({
                                 />
                                 <p>
                                     {
-                                        authenticationRouterError
-                                            .logoutError.error.message
+                                        authenticationRouterError.logoutError
+                                            .error.message
                                     }
                                 </p>
                             </Alert>
@@ -145,8 +140,7 @@ const AuthenticationRouter = ({
                                 <p>
                                     {
                                         authenticationRouterError
-                                            .userValidationError.error
-                                            .message
+                                            .userValidationError.error.message
                                     }
                                 </p>
                             </Alert>
