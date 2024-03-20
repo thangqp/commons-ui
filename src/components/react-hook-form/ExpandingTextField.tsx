@@ -58,11 +58,11 @@ const ExpandingTextField: FunctionComponent<ExpandingTextFieldProps> = ({
             endAdornment: (
                 <InputAdornment
                     position="end"
-                    sx={{
+                    sx={ (theme: Theme) => ({
                         position: 'absolute',
-                        bottom: 10,
-                        right: 8,
-                    }}
+                        bottom: theme.spacing(1.25),
+                        right: theme.spacing(1),
+                    })}
                 >
                     <Box
                         sx={{
