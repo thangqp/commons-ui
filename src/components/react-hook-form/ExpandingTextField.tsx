@@ -6,7 +6,7 @@
  */
 
 import { useState } from 'react';
-import { Box, InputAdornment, TextFieldProps, Theme } from '@mui/material';
+import { TextFieldProps, Theme, Typography } from '@mui/material';
 import { FunctionComponent } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { TextInputProps, TextInput } from '../..';
@@ -55,32 +55,23 @@ const ExpandingTextField: FunctionComponent<ExpandingTextFieldProps> = ({
         onFocus: handleFocus,
         onBlur: handleBlur,
         InputProps: {
-            endAdornment: (
-                <InputAdornment
-                    position="end"
-                    sx={ (theme: Theme) => ({
-                        position: 'absolute',
-                        bottom: theme.spacing(1.25),
-                        right: theme.spacing(1),
-                    })}
-                >
-                    <Box
-                        sx={{
-                            color: (theme: Theme) =>
-                                isOverTheLimit
-                                    ? theme.palette.error.main
-                                    : theme.palette.text.secondary,
-                        }}
-                    >
-                        {descriptionCounter}
-                    </Box>
-                </InputAdornment>
-            ),
             style: {
                 textOverflow: 'ellipsis',
                 overflow: 'hidden', // disable scrolling
                 whiteSpace: 'pre',
                 resize: 'none', // or 'horizontal' for horizontal resizing
+            },
+        },
+        helperText: (
+            <Typography variant="caption">{descriptionCounter}</Typography>
+        ),
+        FormHelperTextProps: {
+            sx: {
+                ml: 'auto',
+                color: (theme: Theme) =>
+                    isOverTheLimit
+                        ? theme.palette.error.main
+                        : theme.palette.text.secondary,
             },
         },
         ...(rowsToDisplay && { rows: rowsToDisplay }),
