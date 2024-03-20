@@ -1,3 +1,10 @@
+/**
+ * Copyright (c) 2024, RTE (http://www.rte-france.com)
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
 import type { FunctionComponent, ReactElement } from 'react';
 import type { AutocompleteProps } from '@mui/material/Autocomplete/Autocomplete';
 import type {
@@ -93,7 +100,6 @@ export { default as directory_items_input_fr } from './components/translations/d
 
 export { TagRenderer } from './components/ElementSearchDialog';
 export { EquipmentItem } from './components/ElementSearchDialog/equipment-item';
-export { default as CardErrorBoundary } from './components/CardErrorBoundary';
 export { useIntlRef } from './hooks/useIntlRef';
 export { default as SliderInput } from './components/react-hook-form/slider-input';
 export { default as TextFieldWithAdornment } from './components/react-hook-form/utils/text-field-with-adornment';
@@ -106,10 +112,13 @@ export {
 export { default as DirectoryItemsInput } from './components/react-hook-form/directory-items-input';
 export { default as DirectoryItemSelector } from './components/DirectoryItemSelector/directory-item-selector';
 export { RawReadOnlyInput } from './components/react-hook-form/raw-read-only-input';
+export { UserManagerMock } from './utils/UserManagerMock';
 
 /**
  * Section to export manual type declarations of .js and .jsx files
  */
+
+export const CardErrorBoundary: FunctionComponent;
 
 export const TopBar: FunctionComponent;
 

@@ -118,3 +118,4 @@ export {
 export { default as DirectoryItemsInput } from './components/react-hook-form/directory-items-input';
 export { default as DirectoryItemSelector } from './components/DirectoryItemSelector/directory-item-selector';
 export { RawReadOnlyInput } from './components/react-hook-form/raw-read-only-input';
+export { UserManagerMock } from './utils/UserManagerMock';
