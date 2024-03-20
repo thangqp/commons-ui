@@ -114,6 +114,10 @@ export { default as DirectoryItemSelector } from './components/DirectoryItemSele
 export { RawReadOnlyInput } from './components/react-hook-form/raw-read-only-input';
 export { UserManagerMock } from './utils/UserManagerMock';
 
+export {
+    ExpandingTextFieldProps,
+    ExpandingTextField,
+} from './components/react-hook-form/expanding-text-field';
 /**
  * Section to export manual type declarations of .js and .jsx files
  */
@@ -201,7 +205,7 @@ type TextFieldWithAdornmentProps = TextFieldProps & {
     handleClearValue?: () => void;
 };
 
-interface TextInputProps {
+export interface TextInputProps {
     name: string;
     label?: string;
     labelValues?: any; // it's for values from https://formatjs.io/docs/react-intl/components/#formattedmessage

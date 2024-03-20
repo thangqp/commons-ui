@@ -20,9 +20,11 @@ import SelectInput from '../../src/components/react-hook-form/select-input';
 import CheckboxInput from '../../src/components/react-hook-form/booleans/checkbox-input';
 import SwitchInput from '../../src/components/react-hook-form/booleans/switch-input';
 import SubmitButton from '../../src/components/react-hook-form/utils/submit-button';
+import ExpandingTextField from '../../src/components/react-hook-form/ExpandingTextField';
 
 const AUTOCOMPLETE_INPUT = 'autocomplete';
 const TEXT_INPUT = 'text';
+const DESCRIPTION_INPUT = 'description';
 const SLIDER_INPUT = 'slider';
 const SELECT_INPUT = 'select';
 const RADIO_INPUT = 'radio';
@@ -34,6 +36,7 @@ const SWITCH_INPUT = 'switch';
 const emptyFormData = {
     [AUTOCOMPLETE_INPUT]: null,
     [TEXT_INPUT]: '',
+    [DESCRIPTION_INPUT]: '',
     [SLIDER_INPUT]: null,
     [SELECT_INPUT]: null,
     [RADIO_INPUT]: null,
@@ -46,6 +49,7 @@ const emptyFormData = {
 const formSchema = yup.object().shape({
     [AUTOCOMPLETE_INPUT]: yup.string().nullable(),
     [TEXT_INPUT]: yup.string(),
+    [DESCRIPTION_INPUT]: yup.string(),
     [SLIDER_INPUT]: yup.number().nullable(),
     [SELECT_INPUT]: yup.string().nullable(),
     [RADIO_INPUT]: yup.string().nullable(),
@@ -122,6 +126,15 @@ export function InputsTab() {
                     </Grid>
                     <Grid item xs={gridSize}>
                         <TextInput name={TEXT_INPUT} label={'inputs/text'} />
+                    </Grid>
+                    <Grid item xs={gridSize}>
+                        <ExpandingTextField
+                            name={DESCRIPTION_INPUT}
+                            label={'inputs/description'}
+                            maxCharactersNumber={300}
+                            minRows={2}
+                            rows={4}
+                        ></ExpandingTextField>
                     </Grid>
                     <Grid item xs={gridSize}>
                         <SliderInput

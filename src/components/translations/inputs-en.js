@@ -16,6 +16,7 @@ const inputs_en = {
     'inputs/select': 'Select',
     'inputs/slider': 'Slider',
     'inputs/text': 'Text',
+    'inputs/description': 'Description',
     'inputs/autocomplete': 'Autocomplete',
     'inputs/boolean': 'Boolean',
     'inputs/checkbox': 'Checkbox',

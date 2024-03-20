@@ -95,6 +95,7 @@ export { useSnackMessage } from './hooks/useSnackMessage';
 export { useDebounce } from './hooks/useDebounce';
 export { default as AutocompleteInput } from './components/react-hook-form/autocomplete-input';
 export { default as TextInput } from './components/react-hook-form/text-input';
+export { default as ExpandingTextField } from './components/react-hook-form/ExpandingTextField';
 export { default as RadioInput } from './components/react-hook-form/radio-input';
 export { default as SliderInput } from './components/react-hook-form/slider-input';
 export { default as FloatInput } from './components/react-hook-form/numbers/float-input';
