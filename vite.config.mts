@@ -6,8 +6,7 @@
  */
 
 import react from '@vitejs/plugin-react';
-import type { PluginOption } from 'vite';
-import { defineConfig } from 'vite';
+import { defineConfig, PluginOption } from 'vite';
 import eslint from 'vite-plugin-eslint';
 import svgr from 'vite-plugin-svgr';
 import { libInjectCss } from 'vite-plugin-lib-inject-css';
@@ -18,11 +17,12 @@ import * as fs from 'node:fs/promises';
 import * as url from 'node:url';
 import { createRequire } from 'node:module';
 
-export default defineConfig({
+export default defineConfig((config) => ({
     plugins: [
         react(),
         eslint({
-            failOnWarning: true,
+            failOnWarning: config.mode !== 'development',
+            lintOnStart: true,
         }),
         svgr(), // works on every import with the pattern "**/*.svg?react"
         reactVirtualized(),
@@ -47,7 +47,7 @@ export default defineConfig({
         },
         minify: false, // easier to debug on the apps using this lib
     },
-});
+}));
 
 // Workaround for react-virtualized with vite
 // https://github.com/bvaughn/react-virtualized/issues/1632#issuecomment-1483966063
