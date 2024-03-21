@@ -61,7 +61,7 @@ export default defineConfig({
                 ])
             ),
             output: {
-                chunkFileNames: 'chunks/[name].[hash].js', // we have few remaining chunks, couldn't remove them
+                chunkFileNames: 'chunks/[name].[hash].js', // in case some chunks are created, but it should not because every file is supposed to be an entry point
                 assetFileNames: 'assets/[name][extname]',
                 entryFileNames: '[name].js', // override vite and allow to keep .js extension even in ESM
             },
