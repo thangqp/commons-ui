@@ -25,9 +25,12 @@ export { default as MultipleSelectionDialog } from './components/MultipleSelecti
 export { ElementType } from './utils/ElementType';
 
 export {
+    Equipment,
     EQUIPMENT_TYPE,
+    EquipmentType,
     getEquipmentsInfosForSearchBar,
     equipmentStyles,
+    Identifiable,
 } from './utils/EquipmentType';
 
 export {

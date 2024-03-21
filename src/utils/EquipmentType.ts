@@ -19,7 +19,7 @@ export const equipmentStyles = {
         alignItems: 'center',
         justifyContent: 'space-between',
     },
-    equipmentTag: (theme) => ({
+    equipmentTag: (theme: string) => ({
         borderRadius: '10px',
         padding: '4px',
         fontSize: 'x-small',
@@ -44,81 +44,117 @@ export const equipmentStyles = {
     },
 };
 
+export enum EquipmentType {
+    SUBSTATION = 'SUBSTATION',
+    LOAD = 'LOAD',
+    GENERATOR = 'GENERATOR',
+    LINE = 'LINE',
+    TWO_WINDING_TRANSFORMER = 'TWO_WINDINGS_TRANSFORMER',
+    BATTERY = 'BATTERY',
+    SHUNT_COMPENSATOR = 'SHUNT_COMPENSATOR',
+    VOLTAGE_LEVEL = 'VOLTAGE_LEVEL',
+    BUSBAR_SECTION = 'BUSBAR_SECTION',
+    DANGLING_LINE = 'DANGLING_LINE',
+    HVDC_LINE = 'HVDC_LINE',
+    THREE_WINDINGS_TRANSFORMER = 'THREE_WINDINGS_TRANSFORMER',
+    STATIC_VAR_COMPENSATOR = 'STATIC_VAR_COMPENSATOR',
+    HVDC_CONVERTER_STATION = 'HVDC_CONVERTER_STATION',
+    VSC_CONVERTER_STATION = 'VSC_CONVERTER_STATION',
+    LCC_CONVERTER_STATION = 'LCC_CONVERTER_STATION',
+    BUS = 'BUS',
+    SWITCH = 'SWITCH',
+}
+
 // Must be equivalent as the back enum
-export const EQUIPMENT_TYPE = {
-    SUBSTATION: {
-        name: 'SUBSTATION',
+export const EQUIPMENT_TYPE: Record<
+    EquipmentType,
+    { name: EquipmentType; tagLabel: string } | undefined
+> = {
+    [EquipmentType.SUBSTATION]: {
+        name: EquipmentType.SUBSTATION,
         tagLabel: 'equipment_search/substationTag',
     },
-    VOLTAGE_LEVEL: {
-        name: 'VOLTAGE_LEVEL',
+    [EquipmentType.VOLTAGE_LEVEL]: {
+        name: EquipmentType.VOLTAGE_LEVEL,
         tagLabel: 'equipment_search/voltageLevelTag',
     },
-    LINE: {
-        name: 'LINE',
+    [EquipmentType.LINE]: {
+        name: EquipmentType.LINE,
         tagLabel: 'equipment_search/lineTag',
     },
-    TWO_WINDINGS_TRANSFORMER: {
-        name: 'TWO_WINDINGS_TRANSFORMER',
+    [EquipmentType.TWO_WINDING_TRANSFORMER]: {
+        name: EquipmentType.TWO_WINDING_TRANSFORMER,
         tagLabel: 'equipment_search/2wtTag',
     },
-    THREE_WINDINGS_TRANSFORMER: {
-        name: 'THREE_WINDINGS_TRANSFORMER',
+    [EquipmentType.THREE_WINDINGS_TRANSFORMER]: {
+        name: EquipmentType.THREE_WINDINGS_TRANSFORMER,
         tagLabel: 'equipment_search/3wtTag',
     },
-    HVDC_LINE: {
-        name: 'HVDC_LINE',
+    [EquipmentType.HVDC_LINE]: {
+        name: EquipmentType.HVDC_LINE,
         tagLabel: 'equipment_search/hvdcLineTag',
     },
-    GENERATOR: {
-        name: 'GENERATOR',
+    [EquipmentType.GENERATOR]: {
+        name: EquipmentType.GENERATOR,
         tagLabel: 'equipment_search/generatorTag',
     },
-    BATTERY: {
-        name: 'BATTERY',
+    [EquipmentType.BATTERY]: {
+        name: EquipmentType.BATTERY,
         tagLabel: 'equipment_search/batteryTag',
     },
-    LOAD: {
-        name: 'LOAD',
+    [EquipmentType.LOAD]: {
+        name: EquipmentType.LOAD,
         tagLabel: 'equipment_search/loadTag',
     },
-    SHUNT_COMPENSATOR: {
-        name: 'SHUNT_COMPENSATOR',
+    [EquipmentType.SHUNT_COMPENSATOR]: {
+        name: EquipmentType.SHUNT_COMPENSATOR,
         tagLabel: 'equipment_search/shuntTag',
     },
-    DANGLING_LINE: {
-        name: 'DANGLING_LINE',
+    [EquipmentType.DANGLING_LINE]: {
+        name: EquipmentType.DANGLING_LINE,
         tagLabel: 'equipment_search/lineTag',
     },
-    STATIC_VAR_COMPENSATOR: {
-        name: 'STATIC_VAR_COMPENSATOR',
+    [EquipmentType.STATIC_VAR_COMPENSATOR]: {
+        name: EquipmentType.STATIC_VAR_COMPENSATOR,
         tagLabel: 'equipment_search/svcTag',
     },
-    HVDC_CONVERTER_STATION: {
-        name: 'HVDC_CONVERTER_STATION',
+    [EquipmentType.HVDC_CONVERTER_STATION]: {
+        name: EquipmentType.HVDC_CONVERTER_STATION,
         tagLabel: 'equipment_search/hvdcStationTag',
     },
-    BUSBAR_SECTION: {
-        name: 'BUSBAR_SECTION',
+    [EquipmentType.BUSBAR_SECTION]: {
+        name: EquipmentType.BUSBAR_SECTION,
         tagLabel: 'equipment_search/busbarSectionTag',
     },
-    BUS: {
-        name: 'BUS',
+    [EquipmentType.BUS]: {
+        name: EquipmentType.BUS,
         tagLabel: 'equipment_search/busTag',
     },
-    SWITCH: {
-        name: 'SWITCH',
+    [EquipmentType.SWITCH]: {
+        name: EquipmentType.SWITCH,
         tagLabel: 'equipment_search/switchTag',
     },
+    [EquipmentType.VSC_CONVERTER_STATION]: undefined,
+    [EquipmentType.LCC_CONVERTER_STATION]: undefined,
 };
 
+export interface Identifiable {
+    id: string;
+    name: string;
+}
+
+export interface Equipment extends Identifiable {
+    type: EquipmentType;
+    voltageLevels?: Identifiable[];
+}
+
 export const getEquipmentsInfosForSearchBar = (
-    equipmentsInfos,
-    getNameOrId
+    equipmentsInfos: Equipment[],
+    getNameOrId: (e: Identifiable) => string
 ) => {
-    return equipmentsInfos.flatMap((e) => {
+    return equipmentsInfos.flatMap((e): unknown => {
         let label = getNameOrId(e);
-        return e.type === 'SUBSTATION'
+        return e.type === EquipmentType.SUBSTATION
             ? [
                   {
                       label: label,
@@ -127,7 +163,7 @@ export const getEquipmentsInfosForSearchBar = (
                       type: e.type,
                   },
               ]
-            : e.voltageLevels.map((vli) => {
+            : e.voltageLevels?.map((vli) => {
                   return {
                       label: label,
                       id: e.id,
