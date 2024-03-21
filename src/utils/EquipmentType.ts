@@ -140,7 +140,7 @@ export const EQUIPMENT_TYPE: Record<
 
 export interface Identifiable {
     id: string;
-    name: string;
+    name?: string;
 }
 
 export interface Equipment extends Identifiable {
@@ -148,11 +148,19 @@ export interface Equipment extends Identifiable {
     voltageLevels?: Identifiable[];
 }
 
+export interface EquipmentInfos extends Identifiable {
+    label: string;
+    key: string;
+    type: EquipmentType;
+    voltageLevelLabel?: string;
+    voltageLevelId?: string;
+}
+
 export const getEquipmentsInfosForSearchBar = (
     equipmentsInfos: Equipment[],
     getNameOrId: (e: Identifiable) => string
 ) => {
-    return equipmentsInfos.flatMap((e): unknown => {
+    return equipmentsInfos.flatMap((e): EquipmentInfos[] => {
         let label = getNameOrId(e);
         return e.type === EquipmentType.SUBSTATION
             ? [
@@ -172,6 +180,6 @@ export const getEquipmentsInfosForSearchBar = (
                       voltageLevelLabel: getNameOrId(vli),
                       voltageLevelId: vli.id,
                   };
-              });
+              }) ?? [];
     });
 };

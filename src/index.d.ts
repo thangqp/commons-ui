@@ -36,6 +36,7 @@ export { default as MultipleSelectionDialog } from './components/MultipleSelecti
 
 export {
     Equipment,
+    EquipmentInfos,
     EQUIPMENT_TYPE,
     EquipmentType,
     getEquipmentsInfosForSearchBar,
