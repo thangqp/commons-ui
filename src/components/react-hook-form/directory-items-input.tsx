@@ -68,7 +68,11 @@ interface DirectoryItemsInputProps {
         elementTypes: string[]
     ) => Promise<any>;
     fetchRootFolders: (types: string[]) => Promise<any>;
-    fetchElementsInfos: (ids: UUID[], elementTypes: string[]) => Promise<any>;
+    fetchElementsInfos: (
+        ids: UUID[],
+        elementTypes: string[],
+        equipmentTypes?: string[]
+    ) => Promise<any>;
     labelRequiredFromContext?: boolean;
 }
 
