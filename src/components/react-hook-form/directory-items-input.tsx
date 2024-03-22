@@ -10,12 +10,7 @@ import OverflowableText from '../OverflowableText';
 import { useSnackMessage } from '../../hooks/useSnackMessage';
 import FieldLabel from './utils/field-label';
 import FolderIcon from '@mui/icons-material/Folder';
-import React, {
-    FunctionComponent,
-    useCallback,
-    useMemo,
-    useState,
-} from 'react';
+import { FunctionComponent, useCallback, useMemo, useState } from 'react';
 import { useController, useFieldArray, useFormContext } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 import ErrorInput from '../react-hook-form/error-management/error-input.jsx';
@@ -73,7 +68,11 @@ export interface DirectoryItemsInputProps {
         elementTypes: string[]
     ) => Promise<any>;
     fetchRootFolders: (types: string[]) => Promise<any>;
-    fetchElementsInfos: (ids: UUID[], elementTypes: string[]) => Promise<any>;
+    fetchElementsInfos: (
+        ids: UUID[],
+        elementTypes: string[],
+        equipmentTypes?: string[]
+    ) => Promise<any>;
     labelRequiredFromContext?: boolean;
     fetchDirectoryElementPath?: (id: UUID) => Promise<any[]>;
 }

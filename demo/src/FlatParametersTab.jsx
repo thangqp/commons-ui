@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import RightResizableBox from './right-resizable-box';
 import FlatParameters from '../../src/components/FlatParameters/FlatParameters';
 

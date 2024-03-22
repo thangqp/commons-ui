@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Clear as ClearIcon } from '@mui/icons-material';
 import { IconButton, InputAdornment, TextField } from '@mui/material';

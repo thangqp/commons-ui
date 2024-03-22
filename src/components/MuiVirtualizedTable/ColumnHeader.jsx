@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { useRef } from 'react';
+import { forwardRef, useCallback, useMemo, useRef, useState } from 'react';
 
 import {
     ArrowDownward as ArrowDownwardIcon,
@@ -92,7 +92,7 @@ const FilterButton = (props) => {
     );
 };
 
-export const ColumnHeader = React.forwardRef((props, ref) => {
+export const ColumnHeader = forwardRef((props, ref) => {
     const {
         className,
         label,
@@ -105,14 +105,14 @@ export const ColumnHeader = React.forwardRef((props, ref) => {
         style,
     } = props;
 
-    const [hovered, setHovered] = React.useState();
-    const onHover = React.useCallback((evt) => {
+    const [hovered, setHovered] = useState();
+    const onHover = useCallback((evt) => {
         setHovered(evt.type === 'mouseenter');
     }, []);
 
     const topmostDiv = useRef();
 
-    const handleFilterClick = React.useMemo(() => {
+    const handleFilterClick = useMemo(() => {
         if (!onFilterClick) {
             return undefined;
         }

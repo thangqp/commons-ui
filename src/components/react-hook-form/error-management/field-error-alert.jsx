@@ -5,7 +5,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React from 'react';
 import { Alert, Grid } from '@mui/material';
 
 // component to display alert when a specific rhf field is in error

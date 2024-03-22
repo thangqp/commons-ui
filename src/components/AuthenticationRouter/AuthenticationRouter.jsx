@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import SignInCallbackHandler from '../SignInCallbackHandler';
 import {
@@ -40,138 +40,130 @@ const AuthenticationRouter = ({
     );
 
     return (
-        <React.Fragment>
-            <Grid
-                container
-                alignContent={'center'}
-                alignItems={'center'}
-                direction={'column'}
-            >
-                {userManager.error !== null && (
-                    <h1>Error : Getting userManager; {userManager.error}</h1>
-                )}
-                {signInCallbackError !== null && (
-                    <h1>
-                        Error : SignIn Callback Error;
-                        {signInCallbackError.message}
-                    </h1>
-                )}
-                <Routes>
-                    <Route
-                        path="sign-in-callback"
-                        element={
-                            <SignInCallbackHandler
-                                userManager={userManager.instance}
-                                handleSignInCallback={
-                                    handleSigninCallbackClosure
-                                }
-                            />
-                        }
-                    />
-                    <Route
-                        path="silent-renew-callback"
-                        element={
-                            <SilentRenewCallbackHandler
-                                userManager={userManager.instance}
-                                handleSilentRenewCallback={
-                                    handleSilentRenewCallbackClosure
-                                }
-                            />
-                        }
-                    />
-                    <Route
-                        path="logout-callback"
-                        element={<Navigate to="/" />}
-                    />
-                    <Route
-                        path="*"
-                        element={
-                            showAuthenticationRouterLogin &&
-                            authenticationRouterError == null && (
-                                <Login
-                                    disabled={userManager.instance === null}
-                                    onLoginClick={() =>
-                                        login(location, userManager.instance)
-                                    }
-                                />
-                            )
-                        }
-                    />
-                </Routes>
-
-                {authenticationRouterError !== null && (
-                    <>
-                        <Grid item>
-                            <Logout
+        <Grid
+            container
+            alignContent={'center'}
+            alignItems={'center'}
+            direction={'column'}
+        >
+            {userManager.error !== null && (
+                <h1>Error : Getting userManager; {userManager.error}</h1>
+            )}
+            {signInCallbackError !== null && (
+                <h1>
+                    Error : SignIn Callback Error;
+                    {signInCallbackError.message}
+                </h1>
+            )}
+            <Routes>
+                <Route
+                    path="sign-in-callback"
+                    element={
+                        <SignInCallbackHandler
+                            userManager={userManager.instance}
+                            handleSignInCallback={handleSigninCallbackClosure}
+                        />
+                    }
+                />
+                <Route
+                    path="silent-renew-callback"
+                    element={
+                        <SilentRenewCallbackHandler
+                            userManager={userManager.instance}
+                            handleSilentRenewCallback={
+                                handleSilentRenewCallbackClosure
+                            }
+                        />
+                    }
+                />
+                <Route path="logout-callback" element={<Navigate to="/" />} />
+                <Route
+                    path="*"
+                    element={
+                        showAuthenticationRouterLogin &&
+                        authenticationRouterError == null && (
+                            <Login
                                 disabled={userManager.instance === null}
-                                onLogoutClick={() =>
-                                    logout(location, userManager.instance)
+                                onLoginClick={() =>
+                                    login(location, userManager.instance)
                                 }
                             />
-                        </Grid>
-                        <Grid item xs={4}>
-                            {authenticationRouterError.logoutError != null && (
-                                <Alert severity="error">
-                                    <AlertTitle>
-                                        <FormattedMessage id="login/errorInLogout" />
-                                    </AlertTitle>
-                                    <FormattedMessage
-                                        id="login/errorInLogoutMessage"
-                                        values={{
-                                            userName:
-                                                authenticationRouterError.userName,
-                                        }}
-                                    />
-                                    <p>
-                                        {
-                                            authenticationRouterError
-                                                .logoutError.error.message
-                                        }
-                                    </p>
-                                </Alert>
-                            )}
-                            {authenticationRouterError?.userValidationError !=
-                                null && (
-                                <Alert severity="error">
-                                    <AlertTitle>
-                                        <FormattedMessage id="login/errorInUserValidation" />
-                                    </AlertTitle>
-                                    <FormattedMessage
-                                        id="login/errorInUserValidationMessage"
-                                        values={{
-                                            userName:
-                                                authenticationRouterError.userName,
-                                        }}
-                                    />
-                                    <p>
-                                        {
-                                            authenticationRouterError
-                                                .userValidationError.error
-                                                .message
-                                        }
-                                    </p>
-                                </Alert>
-                            )}
-                            {authenticationRouterError?.unauthorizedUserInfo !=
-                                null && (
-                                <Alert severity="info">
-                                    <AlertTitle>
-                                        <FormattedMessage id="login/unauthorizedAccess" />
-                                    </AlertTitle>
-                                    <FormattedMessage
-                                        id="login/unauthorizedAccessMessage"
-                                        values={{
-                                            userName:
-                                                authenticationRouterError.userName,
-                                        }}
-                                    />
-                                </Alert>
-                            )}
-                        </Grid>
-                    </>
-                )}
-            </Grid>
-        </React.Fragment>
+                        )
+                    }
+                />
+            </Routes>
+
+            {authenticationRouterError !== null && (
+                <>
+                    <Grid item>
+                        <Logout
+                            disabled={userManager.instance === null}
+                            onLogoutClick={() =>
+                                logout(location, userManager.instance)
+                            }
+                        />
+                    </Grid>
+                    <Grid item xs={4}>
+                        {authenticationRouterError.logoutError != null && (
+                            <Alert severity="error">
+                                <AlertTitle>
+                                    <FormattedMessage id="login/errorInLogout" />
+                                </AlertTitle>
+                                <FormattedMessage
+                                    id="login/errorInLogoutMessage"
+                                    values={{
+                                        userName:
+                                            authenticationRouterError.userName,
+                                    }}
+                                />
+                                <p>
+                                    {
+                                        authenticationRouterError.logoutError
+                                            .error.message
+                                    }
+                                </p>
+                            </Alert>
+                        )}
+                        {authenticationRouterError?.userValidationError !=
+                            null && (
+                            <Alert severity="error">
+                                <AlertTitle>
+                                    <FormattedMessage id="login/errorInUserValidation" />
+                                </AlertTitle>
+                                <FormattedMessage
+                                    id="login/errorInUserValidationMessage"
+                                    values={{
+                                        userName:
+                                            authenticationRouterError.userName,
+                                    }}
+                                />
+                                <p>
+                                    {
+                                        authenticationRouterError
+                                            .userValidationError.error.message
+                                    }
+                                </p>
+                            </Alert>
+                        )}
+                        {authenticationRouterError?.unauthorizedUserInfo !=
+                            null && (
+                            <Alert severity="info">
+                                <AlertTitle>
+                                    <FormattedMessage id="login/unauthorizedAccess" />
+                                </AlertTitle>
+                                <FormattedMessage
+                                    id="login/unauthorizedAccessMessage"
+                                    values={{
+                                        userName:
+                                            authenticationRouterError.userName,
+                                    }}
+                                />
+                            </Alert>
+                        )}
+                    </Grid>
+                </>
+            )}
+        </Grid>
     );
 };
 export default AuthenticationRouter;

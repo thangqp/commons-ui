@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import {
@@ -174,9 +174,8 @@ const TopBar = ({
     onLanguageClick,
     language,
 }) => {
-    const [anchorElSettingsMenu, setAnchorElSettingsMenu] =
-        React.useState(null);
-    const [anchorElAppsMenu, setAnchorElAppsMenu] = React.useState(null);
+    const [anchorElSettingsMenu, setAnchorElSettingsMenu] = useState(null);
+    const [anchorElAppsMenu, setAnchorElAppsMenu] = useState(null);
     const fullScreenRef = useRef(null);
     const [isFullScreen, setIsFullScreen] = useState(false);
 

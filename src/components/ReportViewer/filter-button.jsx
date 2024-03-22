@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Box, IconButton } from '@mui/material';
 import { Menu as MenuIcon } from '@mui/icons-material';
 import { MultiSelectList } from './multi-select-list';
