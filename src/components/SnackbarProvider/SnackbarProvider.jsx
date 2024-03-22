@@ -5,13 +5,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { useRef } from 'react';
+import { forwardRef, useRef } from 'react';
 import { Button } from '@mui/material';
 
 import { SnackbarProvider as OrigSnackbarProvider } from 'notistack';
 
 /* A wrapper around notistack's SnackbarProvider that provides defaults props */
-const SnackbarProvider = React.forwardRef((props, ref) => {
+const SnackbarProvider = forwardRef((props, ref) => {
     // create our own ref and use it if the parent
     // did not create a ref for us.
     const innerRef = useRef();

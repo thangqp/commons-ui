@@ -97,6 +97,7 @@ export { useSnackMessage } from './hooks/useSnackMessage';
 export { useDebounce } from './hooks/useDebounce';
 export { default as AutocompleteInput } from './components/react-hook-form/autocomplete-input';
 export { default as TextInput } from './components/react-hook-form/text-input';
+export { default as ExpandingTextField } from './components/react-hook-form/ExpandingTextField';
 export { default as RadioInput } from './components/react-hook-form/radio-input';
 export { default as SliderInput } from './components/react-hook-form/slider-input';
 export { default as FloatInput } from './components/react-hook-form/numbers/float-input';
@@ -120,3 +121,4 @@ export {
 export { default as DirectoryItemsInput } from './components/react-hook-form/directory-items-input';
 export { default as DirectoryItemSelector } from './components/DirectoryItemSelector/directory-item-selector';
 export { RawReadOnlyInput } from './components/react-hook-form/raw-read-only-input';
+export { UserManagerMock } from './utils/UserManagerMock';

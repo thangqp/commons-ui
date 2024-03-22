@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { MoreVert as ResizePanelHandleIcon } from '@mui/icons-material';
 import { ResizableBox } from 'react-resizable';
 import { useWindowWidth } from '@react-hook/window-size';

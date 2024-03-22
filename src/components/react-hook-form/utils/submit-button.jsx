@@ -5,7 +5,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React from 'react';
 import { Button } from '@mui/material';
 import { useFormState } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';

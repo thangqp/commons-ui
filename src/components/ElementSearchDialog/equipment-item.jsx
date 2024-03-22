@@ -10,7 +10,6 @@ import parse from 'autosuggest-highlight/parse';
 import clsx from 'clsx';
 import { FormattedMessage } from 'react-intl';
 import OverflowableText from '../OverflowableText';
-import React from 'react';
 import { EQUIPMENT_TYPE } from '../../utils/EquipmentType';
 import { Box } from '@mui/material';
 import { mergeSx } from '../../utils/styles';

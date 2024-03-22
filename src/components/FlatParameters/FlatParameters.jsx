@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { useCallback, useState } from 'react';
+import { Fragment, useCallback, useState } from 'react';
 import {
     Autocomplete,
     Chip,
@@ -449,7 +449,7 @@ export const FlatParameters = ({
     return (
         <List sx={styles.paramList}>
             {paramsAsArray.map((param, index) => (
-                <React.Fragment key={param.name}>
+                <Fragment key={param.name}>
                     <ListItem sx={styles.paramListItem}>
                         <Tooltip
                             title={
@@ -475,7 +475,7 @@ export const FlatParameters = ({
                     {showSeparator && index !== paramsAsArray.length - 1 && (
                         <Divider />
                     )}
-                </React.Fragment>
+                </Fragment>
             ))}
         </List>
     );
