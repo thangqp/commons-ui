@@ -12,7 +12,7 @@ import SnackbarProvider from '../../src/components/SnackbarProvider';
 import AuthenticationRouter from '../../src/components/AuthenticationRouter';
 import CardErrorBoundary from '../../src/components/CardErrorBoundary';
 import {
-    elementType,
+    ElementType,
     EQUIPMENT_TYPE,
     equipmentStyles,
     getFileIcon,
@@ -416,7 +416,7 @@ const AppContent = ({ language, onLanguageClick }) => {
     function testIcons() {
         return (
             <Grid container direction={'column'}>
-                {Object.keys(elementType).map((type) => (
+                {Object.keys(ElementType).map((type) => (
                     <Grid container item key={type}>
                         <Grid item>{getFileIcon(type)}</Grid>
                         <Grid item>{type}</Grid>
