@@ -22,7 +22,6 @@ import type {
 
 export { default as TreeViewFinder } from './components/TreeViewFinder';
 export { default as AboutDialog } from './components/TopBar/AboutDialog';
-export { default as SnackbarProvider } from './components/SnackbarProvider';
 export { default as AuthenticationRouter } from './components/AuthenticationRouter';
 export { default as MuiVirtualizedTable } from './components/MuiVirtualizedTable';
 export {
@@ -125,9 +124,9 @@ export { ElementType } from './utils/ElementType';
  * Section to export manual type declarations of .js and .jsx files
  */
 
-export const CardErrorBoundary: FunctionComponent;
-
-export const TopBar: FunctionComponent;
+export const CardErrorBoundary: FunctionComponent<any>;
+export const TopBar: FunctionComponent<any>;
+export const SnackbarProvider: FunctionComponent<any>;
 
 export function logout(
     dispatch: any,
