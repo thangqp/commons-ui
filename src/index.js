@@ -26,6 +26,7 @@ export { ElementType } from './utils/ElementType';
 
 export {
     EQUIPMENT_TYPE,
+    EquipmentType,
     getEquipmentsInfosForSearchBar,
     equipmentStyles,
 } from './utils/EquipmentType';
