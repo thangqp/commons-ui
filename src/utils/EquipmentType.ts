@@ -49,7 +49,7 @@ export enum EquipmentType {
     LOAD = 'LOAD',
     GENERATOR = 'GENERATOR',
     LINE = 'LINE',
-    TWO_WINDING_TRANSFORMER = 'TWO_WINDINGS_TRANSFORMER',
+    TWO_WINDINGS_TRANSFORMER = 'TWO_WINDINGS_TRANSFORMER',
     BATTERY = 'BATTERY',
     SHUNT_COMPENSATOR = 'SHUNT_COMPENSATOR',
     VOLTAGE_LEVEL = 'VOLTAGE_LEVEL',
@@ -82,8 +82,8 @@ export const EQUIPMENT_TYPE: Record<
         name: EquipmentType.LINE,
         tagLabel: 'equipment_search/lineTag',
     },
-    [EquipmentType.TWO_WINDING_TRANSFORMER]: {
-        name: EquipmentType.TWO_WINDING_TRANSFORMER,
+    [EquipmentType.TWO_WINDINGS_TRANSFORMER]: {
+        name: EquipmentType.TWO_WINDINGS_TRANSFORMER,
         tagLabel: 'equipment_search/2wtTag',
     },
     [EquipmentType.THREE_WINDINGS_TRANSFORMER]: {
@@ -134,8 +134,14 @@ export const EQUIPMENT_TYPE: Record<
         name: EquipmentType.SWITCH,
         tagLabel: 'equipment_search/switchTag',
     },
-    [EquipmentType.VSC_CONVERTER_STATION]: undefined,
-    [EquipmentType.LCC_CONVERTER_STATION]: undefined,
+    [EquipmentType.VSC_CONVERTER_STATION]: {
+        name: EquipmentType.VSC_CONVERTER_STATION,
+        tagLabel: 'equipment_search/vscConverterStationTag',
+    },
+    [EquipmentType.LCC_CONVERTER_STATION]: {
+        name: EquipmentType.LCC_CONVERTER_STATION,
+        tagLabel: 'equipment_search/lccConverterStationTag',
+    },
 };
 
 export interface Identifiable {
