@@ -28,15 +28,15 @@
     },
     "dependencies": {
         "autosuggest-highlight": "^3.3.4",
-        "clsx": "^1.2.1",
-        "jwt-decode": "^3.1.2",
+        "clsx": "^2.1.0",
+        "jwt-decode": "^4.0.0",
         "memoize-one": "^6.0.0",
         "oidc-client": "^1.11.5",
         "prop-types": "^15.8.1",
-        "react-csv-downloader": "^2.9.1",
+        "react-csv-downloader": "^3.1.0",
         "react-request-fullscreen": "^1.1.2",
         "react-virtualized": "^9.22.5",
-        "uuid": "^3.4.0"
+        "uuid": "^9.0.1"
     },
     "peerDependencies": {
         "@emotion/react": "^11.8.1",
@@ -95,9 +95,9 @@
         "react-resizable": "^3.0.5",
         "react-router-dom": "^6.22.3",
         "ts-node": "^10.9.2",
-        "type-fest": "^2.19.0",
+        "type-fest": "^4.14.0",
         "typescript": "5.1.6",
-        "utf-8-validate": "^5.0.10",
+        "utf-8-validate": "^6.0.3",
         "vite": "^5.2.6",
         "vite-plugin-dts": "^2.3.0",
         "vite-plugin-eslint": "^1.8.1",
