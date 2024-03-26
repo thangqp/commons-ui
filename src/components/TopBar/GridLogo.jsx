@@ -23,6 +23,9 @@ const styles = {
     clickable: {
         cursor: 'pointer',
     },
+    hideOnSmallScreen: {
+        display: { xs: 'none', lg: 'block' },
+    },
 };
 
 const GridLogo = ({ appLogo, appName, appColor, onClick }) => {
@@ -34,12 +37,14 @@ const GridLogo = ({ appLogo, appName, appColor, onClick }) => {
             >
                 {appLogo || <BrokenImage />}
             </Box>
-            <LogoText
-                appName={appName}
-                appColor={appColor}
-                onClick={onClick}
-                style={styles.title}
-            />
+            <Box sx={styles.hideOnSmallScreen}>
+                <LogoText
+                    appName={appName}
+                    appColor={appColor}
+                    onClick={onClick}
+                    style={styles.title}
+                />
+            </Box>
         </>
     );
 };
