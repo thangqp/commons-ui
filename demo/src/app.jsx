@@ -640,7 +640,7 @@ const AppContent = ({ language, onLanguageClick }) => {
                         setOpenTreeViewFinderDialogCustomDialog(true)
                     }
                 >
-                    Open Custom TreeViewFinder (emotion) ...
+                    Open Custom TreeViewFinder…
                 </Button>
                 <CustomTreeViewFinder
                     open={openTreeViewFinderDialogCustomDialog}
