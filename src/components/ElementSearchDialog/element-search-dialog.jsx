@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Autocomplete, Dialog, DialogContent, TextField } from '@mui/material';
 import PropTypes from 'prop-types';
 import { Search, SearchOff } from '@mui/icons-material';
@@ -133,14 +133,14 @@ const ElementSearchDialog = (props) => {
                             InputProps={{
                                 ...params.InputProps,
                                 startAdornment: (
-                                    <React.Fragment>
+                                    <>
                                         {searchTermDisabled ? (
                                             <SearchOff color="disabled" />
                                         ) : (
                                             <Search color="disabled" />
                                         )}
                                         {params.InputProps.startAdornment}
-                                    </React.Fragment>
+                                    </>
                                 ),
                             }}
                         />

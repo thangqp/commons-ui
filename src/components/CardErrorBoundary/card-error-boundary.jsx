@@ -9,7 +9,7 @@
 //    https://reactjs.org/docs/error-boundaries.html
 //    https://mui.com/material-ui/react-card/#complex-interaction
 
-import React from 'react';
+import { Component } from 'react';
 import {
     Box,
     Card,
@@ -38,7 +38,7 @@ const ExpandMore = styled((props) => {
     }),
 }));
 
-class CardErrorBoundary extends React.Component {
+class CardErrorBoundary extends Component {
     constructor(props) {
         super(props);
         this.state = {

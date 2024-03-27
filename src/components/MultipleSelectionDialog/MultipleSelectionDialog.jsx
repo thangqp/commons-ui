@@ -17,7 +17,7 @@ import {
     List,
 } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 const MultipleSelectionDialog = ({
     options,
@@ -41,7 +41,6 @@ const MultipleSelectionDialog = ({
             if (oldValues.includes(option)) {
                 return oldValues.filter((o) => o !== option);
             }
-
             return [...oldValues, option];
         });
     };
@@ -78,25 +77,23 @@ const MultipleSelectionDialog = ({
                                 const optionId = option?.id ?? option;
                                 const label = getOptionLabel(option);
                                 return (
-                                    <React.Fragment key={optionId}>
-                                        <Grid item>
-                                            <FormControlLabel
-                                                label={label}
-                                                control={
-                                                    <Checkbox
-                                                        checked={selectedIds.includes(
+                                    <Grid item key={optionId}>
+                                        <FormControlLabel
+                                            label={label}
+                                            control={
+                                                <Checkbox
+                                                    checked={selectedIds.includes(
+                                                        optionId
+                                                    )}
+                                                    onChange={() =>
+                                                        handleOptionSelection(
                                                             optionId
-                                                        )}
-                                                        onChange={() =>
-                                                            handleOptionSelection(
-                                                                optionId
-                                                            )
-                                                        }
-                                                    />
-                                                }
-                                            />
-                                        </Grid>
-                                    </React.Fragment>
+                                                        )
+                                                    }
+                                                />
+                                            }
+                                        />
+                                    </Grid>
                                 );
                             })}
                         </List>

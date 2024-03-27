@@ -12,7 +12,8 @@ import {
     useRef,
     useState,
 } from 'react';
-import { getFileIcon, ElementType } from '../../utils/ElementType.jsx';
+import { getFileIcon } from '../../utils/ElementIcon';
+import { ElementType } from '../../utils/ElementType';
 import { useSnackMessage } from '../../hooks/useSnackMessage.js';
 import TreeViewFinder from '../TreeViewFinder';
 import { SxProps, Theme } from '@mui/material';
@@ -41,7 +42,7 @@ interface DirectoryItemSelectorProps {
     fetchElementsInfos: (
         ids: UUID[],
         elementTypes: string[],
-        equipmentTypes?: string[]
+        equipmentTypes: string[]
     ) => Promise<any>;
     classes?: any;
     contentText?: string;

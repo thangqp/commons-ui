@@ -22,8 +22,11 @@ export { default as ElementSearchDialog } from './components/ElementSearchDialog
 export { default as FlatParameters } from './components/FlatParameters';
 export { default as MultipleSelectionDialog } from './components/MultipleSelectionDialog';
 
+export { ElementType } from './utils/ElementType';
+
 export {
     EQUIPMENT_TYPE,
+    EquipmentType,
     getEquipmentsInfosForSearchBar,
     equipmentStyles,
 } from './utils/EquipmentType';
@@ -36,7 +39,7 @@ export {
     getPreLoginPath,
 } from './utils/AuthService';
 
-export { ElementType, getFileIcon } from './utils/ElementType';
+export { getFileIcon } from './utils/ElementIcon';
 
 export {
     DEFAULT_CELL_PADDING,
@@ -96,6 +99,7 @@ export { useSnackMessage } from './hooks/useSnackMessage';
 export { useDebounce } from './hooks/useDebounce';
 export { default as AutocompleteInput } from './components/react-hook-form/autocomplete-input';
 export { default as TextInput } from './components/react-hook-form/text-input';
+export { default as ExpandingTextField } from './components/react-hook-form/ExpandingTextField';
 export { default as RadioInput } from './components/react-hook-form/radio-input';
 export { default as SliderInput } from './components/react-hook-form/slider-input';
 export { default as FloatInput } from './components/react-hook-form/numbers/float-input';
@@ -146,3 +150,4 @@ export {
 export { default as MultipleAutocompleteInput } from './utils/rhf-inputs/autocomplete-inputs/multiple-autocomplete-input';
 export { default as CsvUploader } from './utils/rhf-inputs/ag-grid-table-rhf/csv-uploader/csv-uploader';
 export { UniqueNameInput } from './components/commons/unique-name-input';
+export { UserManagerMock } from './utils/UserManagerMock';

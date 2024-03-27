@@ -13,19 +13,7 @@ import {
     NoteAlt as NoteAltIcon,
 } from '@mui/icons-material';
 import { SxProps } from '@mui/material';
-
-export enum ElementType {
-    DIRECTORY = 'DIRECTORY',
-    STUDY = 'STUDY',
-    FILTER = 'FILTER',
-    CONTINGENCY_LIST = 'CONTINGENCY_LIST',
-    MODIFICATION = 'MODIFICATION',
-    CASE = 'CASE',
-    VOLTAGE_INIT_PARAMETERS = 'VOLTAGE_INIT_PARAMETERS',
-    SECURITY_ANALYSIS_PARAMETERS = 'SECURITY_ANALYSIS_PARAMETERS',
-    LOADFLOW_PARAMETERS = 'LOADFLOW_PARAMETERS',
-    SENSITIVITY_PARAMETERS = 'SENSITIVITY_PARAMETERS',
-}
+import { ElementType } from './ElementType';
 
 export function getFileIcon(type: ElementType, style: SxProps) {
     switch (type) {

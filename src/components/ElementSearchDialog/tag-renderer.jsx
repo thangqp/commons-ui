@@ -6,7 +6,6 @@
  */
 import OverflowableText from '../OverflowableText';
 import clsx from 'clsx';
-import React from 'react';
 import { EQUIPMENT_TYPE } from '../../utils/EquipmentType';
 import PropTypes from 'prop-types';
 import { mergeSx } from '../../utils/styles';

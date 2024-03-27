@@ -5,14 +5,14 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import TopBar from '../../src/components/TopBar';
 import SnackbarProvider from '../../src/components/SnackbarProvider';
 import AuthenticationRouter from '../../src/components/AuthenticationRouter';
 import CardErrorBoundary from '../../src/components/CardErrorBoundary';
 import {
-    elementType,
+    ElementType,
     EQUIPMENT_TYPE,
     equipmentStyles,
     getFileIcon,
@@ -280,13 +280,13 @@ const AppContent = ({ language, onLanguageClick }) => {
 
     const [equipmentLabelling, setEquipmentLabelling] = useState(false);
 
-    const [openReportViewer, setOpenReportViewer] = React.useState(false);
+    const [openReportViewer, setOpenReportViewer] = useState(false);
     const [openTreeViewFinderDialog, setOpenTreeViewFinderDialog] =
-        React.useState(false);
+        useState(false);
     const [
         openTreeViewFinderDialogCustomDialog,
         setOpenTreeViewFinderDialogCustomDialog,
-    ] = React.useState(false);
+    ] = useState(false);
 
     // Can't use lazy initializer because useMatch is a hook
     const [initialMatchSilentRenewCallbackUrl] = useState(
@@ -416,7 +416,7 @@ const AppContent = ({ language, onLanguageClick }) => {
     function testIcons() {
         return (
             <Grid container direction={'column'}>
-                {Object.keys(elementType).map((type) => (
+                {Object.keys(ElementType).map((type) => (
                     <Grid container item key={type}>
                         <Grid item>{getFileIcon(type)}</Grid>
                         <Grid item>{type}</Grid>
