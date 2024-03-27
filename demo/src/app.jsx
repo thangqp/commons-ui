@@ -43,9 +43,8 @@ import {
     TextField,
     ThemeProvider,
     Typography,
+    StyledEngineProvider,
 } from '@mui/material';
-import { StyledEngineProvider } from '@mui/styled-engine';
-import { makeStyles, withStyles } from '@mui/styles';
 import { styled } from '@mui/system';
 
 import { useMatch } from 'react-router';
@@ -158,20 +157,21 @@ const getMuiTheme = (theme) => {
     }
 };
 
-const useEquipmentStyles = makeStyles(equipmentStyles);
-
+/**
+ * @param {import('@mui/material/styles').Theme} theme Theme from ThemeProvider
+ */
 const TreeViewFinderCustomStyles = (theme) => ({
-    icon: {
+    '& .icon': {
         width: '32px',
         height: '32px',
     },
-    labelIcon: {
+    '& .labelIcon': {
         backgroundColor: 'green',
         marginRight: theme.spacing(1),
     },
 });
-const CustomTreeViewFinderJss = withStyles(TreeViewFinderCustomStyles)(
-    TreeViewFinder
+const CustomTreeViewFinderJss = styled(TreeViewFinder)(
+    TreeViewFinderCustomStyles
 );
 
 const TreeViewFinderCustomStylesEmotion = ({ theme }) =>
@@ -259,7 +259,6 @@ const AppContent = ({ language, onLanguageClick }) => {
     const navigate = useNavigate();
     const location = useLocation();
     const intl = useIntl();
-    const equipmentClasses = useEquipmentStyles();
     const [searchDisabled, setSearchDisabled] = useState(false);
     const [userManager, setUserManager] = useState({
         instance: null,
@@ -781,11 +780,6 @@ const AppContent = ({ language, onLanguageClick }) => {
                             elementsFound={equipmentsFound}
                             renderElement={(props) => (
                                 <EquipmentItem
-                                    classes={
-                                        stylesProvider === 'jss'
-                                            ? equipmentClasses
-                                            : undefined
-                                    }
                                     styles={
                                         stylesProvider === 'emotion'
                                             ? equipmentStyles
