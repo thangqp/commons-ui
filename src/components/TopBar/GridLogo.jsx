@@ -19,6 +19,7 @@ const styles = {
     },
     title: {
         marginLeft: '18px',
+        display: { xs: 'none', lg: 'block' },
     },
     clickable: {
         cursor: 'pointer',
