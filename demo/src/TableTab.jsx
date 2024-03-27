@@ -84,27 +84,16 @@ const stylesVirtualizedTable = (theme) => ({
         backgroundColor: theme.palette.info.main,
     },
 });
-const StyledVirtualizedTableJss = styled(MuiVirtualizedTable)(
-    stylesVirtualizedTable
-);
 
 const stylesEmotion = ({ theme }) =>
     toNestedGlobalSelectors(
         stylesVirtualizedTable(theme),
         generateMuiVirtualizedTableClass
     );
-const StyledVirtualizedTableEmotion =
-    styled(MuiVirtualizedTable)(stylesEmotion);
+const StyledVirtualizedTable = styled(MuiVirtualizedTable)(stylesEmotion);
 
-export const TableTab = ({ stylesProvider }) => {
+export const TableTab = () => {
     const [usesCustomStyles, setUsesCustomStyles] = useState(true);
-
-    const StyledVirtualizedTable =
-        stylesProvider === 'emotion'
-            ? StyledVirtualizedTableEmotion
-            : stylesProvider === 'jss'
-            ? StyledVirtualizedTableJss
-            : undefined;
 
     const VirtualizedTable = usesCustomStyles
         ? StyledVirtualizedTable
@@ -235,7 +224,7 @@ export const TableTab = ({ stylesProvider }) => {
         return (
             <Stack sx={{ margin: '1ex' }}>
                 {mkSwitch(
-                    'Custom theme (' + stylesProvider + ')',
+                    'Custom theme (emotion)',
                     usesCustomStyles,
                     setUsesCustomStyles
                 )}
