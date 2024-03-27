@@ -19,12 +19,10 @@ const styles = {
     },
     title: {
         marginLeft: '18px',
+        display: { xs: 'none', lg: 'block' },
     },
     clickable: {
         cursor: 'pointer',
-    },
-    hideOnSmallScreen: {
-        display: { xs: 'none', lg: 'block' },
     },
 };
 
@@ -37,14 +35,12 @@ const GridLogo = ({ appLogo, appName, appColor, onClick }) => {
             >
                 {appLogo || <BrokenImage />}
             </Box>
-            <Box sx={styles.hideOnSmallScreen}>
-                <LogoText
-                    appName={appName}
-                    appColor={appColor}
-                    onClick={onClick}
-                    style={styles.title}
-                />
-            </Box>
+            <LogoText
+                appName={appName}
+                appColor={appColor}
+                onClick={onClick}
+                style={styles.title}
+            />
         </>
     );
 };
