@@ -38,7 +38,7 @@ npm run licenses-check
 
 Notes : 
 * Check [license-checker-config.json](license-checker-config.json) for license white list and exclusion.
-If you need to update this list, please inform administrators.
+If you need to update this list, please inform organization's owners.
 * We need to exclude some packages for now :
     * `@mapbox/jsonlint-lines-primitives@2.0.2` is a special license
     * `cartocolor@4.0.2` is Creative Commons but not correctly described in the package
