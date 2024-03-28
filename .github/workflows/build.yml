@@ -2,8 +2,8 @@ name: CI
 on: [push]
 
 jobs:
-    licenses:
-        name: Check licenses headers and dependencies
+    license-headers:
+        name: Check licenses headers
         runs-on: ubuntu-latest
 
         steps:
