@@ -96,8 +96,9 @@ const DirectoryItemsInput: FunctionComponent<DirectoryItemsInputProps> = ({
 }) => {
     const { snackError } = useSnackMessage();
     const intl = useIntl();
-    const [selectedChip, setSelectedChip] = useState<UUID[]>([]);
-    const [expandedNodes, setExpandedNodes] = useState<UUID[]>([]);
+    const [selected, setSelected] = useState<UUID[]>([]);
+    const [expanded, setExpanded] = useState<UUID[]>([]);
+    const [multiselect, setMultiSelect] = useState(true);
     const types = useMemo(() => [elementType], [elementType]);
     const [directoryItemSelectorOpen, setDirectoryItemSelectorOpen] =
         useState(false);
@@ -120,8 +121,8 @@ const DirectoryItemsInput: FunctionComponent<DirectoryItemsInputProps> = ({
     const addElements = useCallback(
         (values: any[]) => {
             // if we select a chip and return a new values, we remove it to be replaced
-            if (selectedChip && selectedChip?.length > 0 && values.length > 0) {
-                selectedChip.forEach((chip) => {
+            if (selected?.length > 0) {
+                selected.forEach((chip) => {
                     remove(
                         getValues(name).findIndex(
                             (item: any) => item.id === chip
@@ -149,8 +150,9 @@ const DirectoryItemsInput: FunctionComponent<DirectoryItemsInputProps> = ({
                 }
             });
             setDirectoryItemSelectorOpen(false);
-            setSelectedChip([]);
-            setExpandedNodes([]);
+            setSelected([]);
+            setExpanded([]);
+            setMultiSelect(true);
         },
         [
             append,
@@ -159,7 +161,7 @@ const DirectoryItemsInput: FunctionComponent<DirectoryItemsInputProps> = ({
             name,
             onRowChanged,
             onChange,
-            selectedChip,
+            selected,
             remove,
         ]
     );
@@ -184,9 +186,10 @@ const DirectoryItemsInput: FunctionComponent<DirectoryItemsInputProps> = ({
                         .filter((e) => e.elementUuid !== chip)
                         .map((e) => e.elementUuid);
 
-                    setExpandedNodes(path);
-                    setSelectedChip([chip]);
+                    setExpanded(path);
+                    setSelected([chip]);
                     setDirectoryItemSelectorOpen(true);
+                    setMultiSelect(false);
                 });
             }
         },
@@ -244,9 +247,10 @@ const DirectoryItemsInput: FunctionComponent<DirectoryItemsInputProps> = ({
                                 sx={styles.addDirectoryElements}
                                 size={'small'}
                                 disabled={disable}
-                                onClick={() =>
-                                    setDirectoryItemSelectorOpen(true)
-                                }
+                                onClick={() => {
+                                    setDirectoryItemSelectorOpen(true);
+                                    setMultiSelect(true);
+                                }}
                             >
                                 <FolderIcon />
                             </IconButton>
@@ -267,8 +271,9 @@ const DirectoryItemsInput: FunctionComponent<DirectoryItemsInputProps> = ({
                 fetchDirectoryContent={fetchDirectoryContent}
                 fetchRootFolders={fetchRootFolders}
                 fetchElementsInfos={fetchElementsInfos}
-                defaultSelected={selectedChip}
-                defaultExpanded={expandedNodes}
+                selected={selected}
+                expanded={expanded}
+                multiselect={multiselect}
             />
         </>
     );

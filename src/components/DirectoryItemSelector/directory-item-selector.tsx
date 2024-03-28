@@ -53,6 +53,8 @@ interface DirectoryItemSelectorProps {
     cancelButtonProps?: any;
     onlyLeaves?: boolean;
     multiselect?: boolean;
+    selected?: string[];
+    expanded?: string[];
 }
 
 const DirectoryItemSelector: FunctionComponent<DirectoryItemSelectorProps> = ({
@@ -74,6 +76,8 @@ const DirectoryItemSelector: FunctionComponent<DirectoryItemSelectorProps> = ({
     cancelButtonProps,
     onlyLeaves = true,
     multiselect = true,
+    selected,
+    expanded,
 }) => {
     const [data, setData] = useState<any[]>([]);
     const [rootDirectories, setRootDirectories] = useState<any[]>([]);
@@ -261,6 +265,8 @@ const DirectoryItemSelector: FunctionComponent<DirectoryItemSelectorProps> = ({
                 validationButtonText={validationButtonText}
                 className={className}
                 cancelButtonProps={cancelButtonProps}
+                selected={selected}
+                expanded={expanded}
             />
         </>
     );

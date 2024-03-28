@@ -101,6 +101,8 @@ const composeClasses = makeComposeClasses(generateTreeViewFinderClass);
  * @param {Boolean}         [onlyLeaves=true] - Allow/Forbid selection only on leaves
  * @param {Boolean}         [multiselect=false] - Allow/Forbid multiselection on Tree
  * @param {Object}          [cancelButtonProps] - The cancel button props
+ * @param {Object}          [selected = []] - ids of selected items
+ * @param {Array}           [expanded = []] - ids of the expanded items
  */
 const TreeViewFinder = (props) => {
     const intl = useIntl();
@@ -120,6 +122,8 @@ const TreeViewFinder = (props) => {
         sortMethod,
         className,
         cancelButtonProps,
+        selected: selectedProp,
+        expanded: expandedProp,
     } = props;
 
     const [mapPrintedNodes, setMapPrintedNodes] = useState({});
@@ -190,28 +194,28 @@ const TreeViewFinder = (props) => {
     };
 
     useEffect(() => {
-        if (defaultSelected?.length > 0) {
+        if (selectedProp?.length > 0) {
             setSelected((oldSelectedNodes) => [
                 ...oldSelectedNodes,
-                ...defaultSelected,
+                ...selectedProp,
             ]);
         }
-    }, [defaultSelected]);
+    }, [selectedProp]);
 
     useEffect(() => {
-        if (defaultExpanded?.length > 0) {
+        if (expandedProp?.length > 0) {
             setExpanded((oldExpandedNodes) => [
                 ...oldExpandedNodes,
-                ...defaultExpanded,
+                ...expandedProp,
             ]);
         }
-    }, [defaultExpanded]);
+    }, [expandedProp]);
 
     useEffect(() => {
         // if we have selected elements by default, we scroll to it
-        if (defaultSelected?.length > 0) {
+        if (selectedProp?.length > 0) {
             // we check if all expanded nodes by default all already expanded first
-            const isNodeExpanded = defaultExpanded.every((nodeId) =>
+            const isNodeExpanded = expandedProp.every((nodeId) =>
                 expanded.includes(nodeId)
             );
 
@@ -226,7 +230,7 @@ const TreeViewFinder = (props) => {
                 });
             }
         }
-    }, [expanded, defaultSelected, defaultExpanded, data]);
+    }, [expanded, selectedProp, expandedProp, data]);
 
     /* User Interaction management */
     const handleNodeSelect = (e, values) => {
@@ -253,7 +257,7 @@ const TreeViewFinder = (props) => {
             return validationButtonText;
         } else {
             const buttonLabelId =
-                defaultSelected?.length > 0
+                selectedProp?.length > 0
                     ? 'treeview_finder/replaceElementsValidation'
                     : 'treeview_finder/addElementsValidation';
             return intl.formatMessage(
@@ -332,7 +336,7 @@ const TreeViewFinder = (props) => {
                     ) : null
                 }
                 ref={(element) => {
-                    if (defaultSelected.includes(node.id)) {
+                    if (selectedProp.includes(node.id)) {
                         scrollRef.current.push(element);
                     }
                 }}
@@ -416,9 +420,9 @@ const TreeViewFinder = (props) => {
                     }}
                     disabled={
                         selected.length === 0 ||
-                        (selected.length === defaultSelected.length &&
+                        (selected.length === selectedProp.length &&
                             selected.every((nodeId) =>
-                                defaultSelected.includes(nodeId)
+                                selectedProp.includes(nodeId)
                             ))
                     }
                 >
@@ -454,6 +458,8 @@ TreeViewFinder.propTypes = {
     sortMethod: PropTypes.func,
     cancelButtonProps: PropTypes.object,
     className: PropTypes.string,
+    selected: PropTypes.arrayOf(PropTypes.string),
+    expanded: PropTypes.arrayOf(PropTypes.string),
 };
 
 /* TreeViewFinder props default values */
