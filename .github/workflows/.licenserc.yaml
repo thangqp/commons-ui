@@ -1,5 +1,6 @@
 header:
   license:
+    spdx-id: MPL-2.0
     pattern: |
       Copyright copyright \d{4}, RTE \(http:\/\/www\.rte-france\.com\)
       This Source Code Form is subject to the terms of the Mozilla Public
