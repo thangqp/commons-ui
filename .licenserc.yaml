@@ -1,7 +1,5 @@
 header:
   license:
-    copyright-owner: RTE (http://www.rte-france.com)
-    software-name: commons-ui
     pattern: |
       Copyright copyright \d{4}, RTE \(http:\/\/www\.rte-france\.com\)
       This Source Code Form is subject to the terms of the Mozilla Public
