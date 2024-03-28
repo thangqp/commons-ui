@@ -96,6 +96,7 @@ export { default as CardErrorBoundary } from './components/CardErrorBoundary';
 export { useIntlRef } from './hooks/useIntlRef';
 export { useSnackMessage } from './hooks/useSnackMessage';
 export { useDebounce } from './hooks/useDebounce';
+export { useAnnouncementsSubscriber } from './hooks/useGlobalNotificationsSubscriber';
 export { default as AutocompleteInput } from './components/react-hook-form/autocomplete-input';
 export { default as TextInput } from './components/react-hook-form/text-input';
 export { default as ExpandingTextField } from './components/react-hook-form/ExpandingTextField';

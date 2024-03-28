@@ -104,6 +104,7 @@ export { default as directory_items_input_fr } from './components/translations/d
 export { TagRenderer } from './components/ElementSearchDialog';
 export { EquipmentItem } from './components/ElementSearchDialog/equipment-item';
 export { useIntlRef } from './hooks/useIntlRef';
+export { useAnnouncementsSubscriber } from './hooks/useGlobalNotificationsSubscriber';
 export { default as SliderInput } from './components/react-hook-form/slider-input';
 export { default as TextFieldWithAdornment } from './components/react-hook-form/utils/text-field-with-adornment';
 export {
