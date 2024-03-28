@@ -151,8 +151,6 @@ const DirectoryItemsInput: FunctionComponent<DirectoryItemsInputProps> = ({
             });
             setDirectoryItemSelectorOpen(false);
             setSelected([]);
-            setExpanded([]);
-            setMultiSelect(true);
         },
         [
             append,
