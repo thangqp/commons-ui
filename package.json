@@ -25,7 +25,7 @@
         "test:coverage": "jest --coverage",
         "test:watch": "jest --watch",
         "lint": "eslint . --ext js,mjs,jsx,ts,mts,tsx --max-warnings 0",
-        "licenses-check": "license-checker --summary --excludePrivatePackages --production"
+        "licenses-check": "license-checker --summary --excludePrivatePackages --production --onlyAllow \"$( jq -r .onlyAllow[] license-checker-config.json | tr '\n' ';')\" --excludePackages \"jq -r .excludePackages[] license-checker-config.json\""
     },
     "dependencies": {
         "autosuggest-highlight": "^3.2.0",

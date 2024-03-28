@@ -16,14 +16,10 @@ jobs:
           - name: Check License Header (Check Mode)
             uses: apache/skywalking-eyes/header@v0.5.0
           
-          - name: Read License WhiteList
-            id: get_license_white_list
-            run: echo "white_list=$(cat license_white_list.txt)" >> "$GITHUB_OUTPUT"
-          
           - name: Check License Dependencies
             run: |
               npm install
-              npm run licenses-check -- --onlyAllow "${{ steps.get_license_white_list.outputs.white_list }}" --excludePackages "@mapbox/jsonlint-lines-primitives@2.0.2;cartocolor@4.0.2"
+              npm run licenses-check
 
     build:
         runs-on: ubuntu-latest
