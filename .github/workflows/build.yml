@@ -16,7 +16,7 @@ jobs:
           - name: Check License Header (Check Mode)
             uses: apache/skywalking-eyes/header@v0.5.0
             with:
-              config: .github/workflows/.licenserc.yaml
+              config: .github/config/.licenserc.yaml
 
     build:
         runs-on: ubuntu-latest
