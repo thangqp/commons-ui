@@ -121,7 +121,7 @@ const DirectoryItemsInput: FunctionComponent<DirectoryItemsInputProps> = ({
     const addElements = useCallback(
         (values: any[]) => {
             // if we select a chip and return a new values, we remove it to be replaced
-            if (selected?.length > 0) {
+            if (selected?.length > 0 && values?.length > 0) {
                 selected.forEach((chip) => {
                     remove(
                         getValues(name).findIndex(
