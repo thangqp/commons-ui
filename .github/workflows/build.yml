@@ -13,64 +13,14 @@ jobs:
             with:
                 persist-credentials: false
 
-          - name: Check License Header (Fix Mode)
-            uses: apache/skywalking-eyes/header@v0.5.0
-            with:
-              mode : fix
-
-          - name: Get current Pull Request number
-            uses: actions/github-script@v7
-            id: get_issue_number
-            with:
-              script: |
-                if (context.issue.number) {
-                  // Return issue number if present
-                  return context.issue.number;
-                } else {
-                  // Otherwise return issue number from commit
-                  return (
-                    await github.rest.repos.listPullRequestsAssociatedWithCommit({
-                      commit_sha: context.sha,
-                      owner: context.repo.owner,
-                      repo: context.repo.repo,
-                    })
-                  ).data[0].number;
-                }
-              result-encoding: string
-
-          - name: Create Pull Request if necessary
-            if: github.ref != 'refs/heads/main' && ${{ steps.get_issue_number.outputs.result }} != ''
-            uses: peter-evans/create-pull-request@v6
-            id: cpr
-            with:
-              commit-message: License header fix(es)
-              title: Fixes by Check License Header action
-              body: This is an auto-generated PR with fixes by Check License Header.
-              branch: "license-header-check/${{ github.ref_name }}"
-
-          - name: Comment original Pull Request
-            if: ${{ github.ref != 'refs/heads/main' && steps.cpr.outputs.pull-request-operation == 'created' && steps.cpr.outputs.pull-request-url }}
-            uses: actions/github-script@v7
-            with:
-              script: |
-                github.rest.issues.createComment({
-                  issue_number: ${{ steps.get_issue_number.outputs.result }},
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  body: `:warning: 👋 © Please add missing license headers! PR : ${{ steps.cpr.outputs.pull-request-url }}`
-                })
-
-          # Because fix mode doesn't fail, must rerun in check mode to fail CI if necessary
           - name: Check License Header (Check Mode)
             uses: apache/skywalking-eyes/header@v0.5.0
-            with:
-              mode : check
           
           - name: Read License WhiteList
             id: get_license_white_list
             run: echo "white_list=$(cat license_white_list.txt)" >> "$GITHUB_OUTPUT"
           
-          - name: Check license dependencies
+          - name: Check License Dependencies
             run: |
               npm install
               npm run licenses-check -- --onlyAllow "${{ steps.get_license_white_list.outputs.white_list }}" --excludePackages "@mapbox/jsonlint-lines-primitives@2.0.2;cartocolor@4.0.2"

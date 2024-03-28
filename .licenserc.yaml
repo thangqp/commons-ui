@@ -2,36 +2,24 @@ header:
   license:
     copyright-owner: RTE (http://www.rte-france.com)
     software-name: commons-ui
-
     pattern: |
       Copyright copyright \d{4}, RTE \(http:\/\/www\.rte-france\.com\)
       This Source Code Form is subject to the terms of the Mozilla Public
       License, v\. 2\.0\. If a copy of the MPL was not distributed with this
       file, You can obtain one at http:\/\/mozilla\.org\/MPL\/2\.0\/\.
-    content: |
-      Copyright (c) [year], [owner]
-      This Source Code Form is subject to the terms of the Mozilla Public
-      License, v. 2.0. If a copy of the MPL was not distributed with this
-      file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
   paths-ignore:
     - 'dist'
     - 'licenses'
     - '**/*.md'
     - 'LICENSE'
-    - 'license_white_list.txt'
     - 'NOTICE'
     - '**/.*'
+    - '**/*.txt'
     - '**/*.json'
     - '**/*.yaml'
     - '**/*.yml'
     - '**/*.svg'
 
 
-  comment: never
-
-  language:
-      JSX:
-        extensions:
-          - ".jsx"
-        comment_style_id: SlashAsterisk
+  comment: on-failure
