@@ -584,7 +584,11 @@ class MuiVirtualizedTable extends PureComponent {
     };
 
     onClickableRowClick = (event) => {
-        if (!(event.rowData?.notClickable === true)) {
+        if (
+            event.rowData?.notClickable !== true ||
+            event.event?.shiftKey ||
+            event.event?.ctrlKey
+        ) {
             this.props.onRowClick(event);
         }
     };
