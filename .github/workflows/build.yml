@@ -15,11 +15,6 @@ jobs:
 
           - name: Check License Header (Check Mode)
             uses: apache/skywalking-eyes/header@v0.5.0
-          
-          - name: Check License Dependencies
-            run: |
-              npm install
-              npm run licenses-check
 
     build:
         runs-on: ubuntu-latest
@@ -37,6 +32,7 @@ jobs:
             - name: Build
               run: |
                   npm install
+                  npm run licenses-check
                   npm run lint
                   npm run test
                   npm run build
