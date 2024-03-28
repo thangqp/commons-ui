@@ -64,7 +64,7 @@ export interface DirectoryItemsInputProps {
     onChange?: (e: any) => void;
     disable?: boolean;
     fetchDirectoryContent: (
-        directoryUuid: UUID | string,
+        directoryUuid: UUID,
         elementTypes: string[]
     ) => Promise<any>;
     fetchRootFolders: (types: string[]) => Promise<any>;

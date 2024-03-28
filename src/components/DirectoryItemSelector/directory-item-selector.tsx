@@ -35,7 +35,7 @@ interface DirectoryItemSelectorProps {
     title: string;
     itemFilter?: any;
     fetchDirectoryContent: (
-        directoryUuid: UUID | string,
+        directoryUuid: UUID,
         elementTypes: string[]
     ) => Promise<any>;
     fetchRootFolders: (types: string[]) => Promise<any>;
@@ -53,8 +53,8 @@ interface DirectoryItemSelectorProps {
     cancelButtonProps?: any;
     onlyLeaves?: boolean;
     multiselect?: boolean;
-    selected?: string[];
-    expanded?: string[];
+    selected?: UUID[];
+    expanded?: UUID[];
 }
 
 const DirectoryItemSelector: FunctionComponent<DirectoryItemSelectorProps> = ({
@@ -138,7 +138,7 @@ const DirectoryItemSelector: FunctionComponent<DirectoryItemSelectorProps> = ({
     );
 
     const addToDirectory = useCallback(
-        (nodeId: UUID | string, content: any[]) => {
+        (nodeId: UUID, content: any[]) => {
             let [nrs, mdr] = updatedTree(
                 rootsRef.current,
                 nodeMap.current,
@@ -174,7 +174,7 @@ const DirectoryItemSelector: FunctionComponent<DirectoryItemSelectorProps> = ({
     }, [convertRoots, types, snackError, fetchRootFolders]);
 
     const fetchDirectory = useCallback(
-        (nodeId: UUID | string): void => {
+        (nodeId: UUID): void => {
             fetchDirectoryContent(nodeId, types)
                 .then((children) => {
                     const childrenMatchedTypes = children.filter((item: any) =>
@@ -229,13 +229,13 @@ const DirectoryItemSelector: FunctionComponent<DirectoryItemSelectorProps> = ({
     useEffect(() => {
         if (open) {
             updateRootDirectories();
-            if (defaultExpanded) {
-                defaultExpanded.forEach((nodeId) => {
+            if (expanded) {
+                expanded.forEach((nodeId) => {
                     fetchDirectory(nodeId);
                 });
             }
         }
-    }, [open, updateRootDirectories, defaultExpanded, fetchDirectory]);
+    }, [open, updateRootDirectories, expanded, fetchDirectory]);
 
     function sortHandlingDirectories(a: any, b: any): number {
         //If children property is set it means it's a directory, they are handled differently in order to keep them at the top of the list
@@ -284,7 +284,7 @@ export default DirectoryItemSelector;
 function updatedTree(
     prevRoots: any[],
     prevMap: any,
-    nodeId: UUID | string | null,
+    nodeId: UUID | null,
     children: any[]
 ) {
     const nextChildren = children
