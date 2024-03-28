@@ -12,10 +12,9 @@ import {
     Settings as SettingsIcon,
     NoteAlt as NoteAltIcon,
 } from '@mui/icons-material';
-import { SxProps } from '@mui/material';
 import { ElementType } from './ElementType';
 
-export function getFileIcon(type: ElementType, style: SxProps) {
+export function getFileIcon(type, style) {
     switch (type) {
         case ElementType.STUDY:
             return <PhotoLibraryIcon sx={style} />;

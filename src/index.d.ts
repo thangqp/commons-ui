@@ -8,9 +8,9 @@
 import type { FunctionComponent, ReactElement } from 'react';
 import type {
     ButtonProps,
-    SwitchProps,
     CheckboxProps,
     RadioGroupProps,
+    SwitchProps,
     SxProps,
     TextFieldProps,
 } from '@mui/material';
@@ -180,12 +180,6 @@ interface SnackInputs {
     headerTxt?: string;
     headerId?: string;
     headerValues?: Record<string, string>;
-}
-
-interface UseSnackMessageReturn {
-    snackError: (snackInputs: SnackInputs) => void;
-    snackWarning: (snackInputs: SnackInputs) => void;
-    snackInfo: (snackInputs: SnackInputs) => void;
 }
 
 export function useSnackMessage(): UseSnackMessageReturn;

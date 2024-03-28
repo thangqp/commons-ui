@@ -23,7 +23,9 @@ interface IDescriptionModificationDialogue {
 }
 
 const schema = yup.object().shape({
-    [FieldConstants.DESCRIPTION]: yup.string().max(500, 'descriptionLimitError'),
+    [FieldConstants.DESCRIPTION]: yup
+        .string()
+        .max(500, 'descriptionLimitError'),
 });
 
 const DescriptionModificationDialogue: FunctionComponent<
@@ -52,7 +54,8 @@ const DescriptionModificationDialogue: FunctionComponent<
     const onSubmit = useCallback(
         (data: { description: string }) => {
             updateElement(elementUuid, {
-                [FieldConstants.DESCRIPTION]: data[FieldConstants.DESCRIPTION].trim(),
+                [FieldConstants.DESCRIPTION]:
+                    data[FieldConstants.DESCRIPTION].trim(),
             }).catch((error: any) => {
                 snackError({
                     messageTxt: error.message,
@@ -60,7 +63,7 @@ const DescriptionModificationDialogue: FunctionComponent<
                 });
             });
         },
-        [elementUuid, snackError]
+        [elementUuid, updateElement, snackError]
     );
 
     return (
