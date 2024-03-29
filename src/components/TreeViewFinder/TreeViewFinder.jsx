@@ -134,6 +134,7 @@ const TreeViewFinder = (props) => {
     const [selected, setSelected] = useState(defaultSelected);
 
     const scrollRef = useRef([]);
+    const [autoScrollAllowed, setAutoScrollAllowed] = useState(true);
 
     /* Utilities */
     const isSelectable = (node) => {
@@ -213,7 +214,7 @@ const TreeViewFinder = (props) => {
 
     useEffect(() => {
         // if we have selected elements by default, we scroll to it
-        if (selectedProp?.length > 0) {
+        if (selectedProp?.length > 0 && autoScrollAllowed) {
             // we check if all expanded nodes by default all already expanded first
             const isNodeExpanded = expandedProp.every((nodeId) =>
                 expanded.includes(nodeId)
@@ -228,9 +229,10 @@ const TreeViewFinder = (props) => {
                     block: 'center',
                     inline: 'center',
                 });
+                setAutoScrollAllowed(false);
             }
         }
-    }, [expanded, selectedProp, expandedProp, data]);
+    }, [expanded, selectedProp, expandedProp, data, autoScrollAllowed]);
 
     /* User Interaction management */
     const handleNodeSelect = (e, values) => {
@@ -408,6 +410,7 @@ const TreeViewFinder = (props) => {
                     onClick={() => {
                         onClose([]);
                         setSelected([]);
+                        setAutoScrollAllowed(true);
                     }}
                     {...cancelButtonProps}
                 />
@@ -417,6 +420,7 @@ const TreeViewFinder = (props) => {
                     onClick={() => {
                         onClose(computeSelectedNodes());
                         setSelected([]);
+                        setAutoScrollAllowed(true);
                     }}
                     disabled={
                         selected.length === 0 ||
