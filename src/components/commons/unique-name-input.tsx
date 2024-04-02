@@ -158,6 +158,7 @@ export const UniqueNameInput: FunctionComponent<UniqueNameInputProps> = (
         </InputAdornment>
     );
 
+    console.log('######### - DEBUG TAG po - #########')
     return (
         <TextField
             onChange={handleManualChange}
