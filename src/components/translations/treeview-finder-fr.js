@@ -11,9 +11,9 @@ const treeview_finder_fr = {
     'treeview_finder/add': 'Ajouter...',
     'treeview_finder/deleteSelection': 'Supprimer la selection',
     'treeview_finder/contentText':
-        '{multiselect, select, true {Veuillez choisir un ou plusieurs éléments.} false {Veuillez choisir un élément.} other {}}',
+        '{multiSelect, select, true {Veuillez choisir un ou plusieurs éléments.} false {Veuillez choisir un élément.} other {}}',
     'treeview_finder/finderTitle':
-        '{multiselect, select, true {Veuillez choisir un ou plusieurs éléments.} false {Veuillez choisir un élément.} other {}}',
+        '{multiSelect, select, true {Veuillez choisir un ou plusieurs éléments.} false {Veuillez choisir un élément.} other {}}',
     'treeview_finder/addElementsValidation':
         '{nbElements, plural, =0 {Veuillez sélectionner un élément} =1 {Ajouter cet élément} other {Ajouter # éléments}}',
     'treeview_finder/replaceElementsValidation':
