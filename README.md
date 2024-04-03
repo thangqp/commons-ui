@@ -27,3 +27,15 @@ you need to follow the steps below:
 -   [Test your package](https://docs.npmjs.com/creating-and-publishing-scoped-public-packages#testing-your-package): `npm install`
 -   [Login on the command line to the npm registry](https://docs.npmjs.com/logging-in-to-an-npm-enterprise-registry-from-the-command-line): `npm login`
 -   [Publish the package](https://docs.npmjs.com/creating-and-publishing-scoped-public-packages#publishing-scoped-public-packages): `npm publish`
+
+#### License Headers and dependencies checking
+
+To check dependencies license compatibility with this project one locally, please run the following command :
+
+```
+npm run licenses-check
+```
+
+Notes : 
+* Check [license-checker-config.json](license-checker-config.json) for license white list and exclusion.
+If you need to update this list, please inform organization's owners.
