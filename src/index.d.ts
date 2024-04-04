@@ -9,9 +9,9 @@ import type { FunctionComponent, ReactElement } from 'react';
 import type { AutocompleteProps } from '@mui/material/Autocomplete/Autocomplete';
 import type {
     ButtonProps,
-    SwitchProps,
     CheckboxProps,
     RadioGroupProps,
+    SwitchProps,
     SxProps,
     TextFieldProps,
 } from '@mui/material';
@@ -104,7 +104,10 @@ export { default as directory_items_input_fr } from './components/translations/d
 export { TagRenderer } from './components/ElementSearchDialog';
 export { EquipmentItem } from './components/ElementSearchDialog/equipment-item';
 export { useIntlRef } from './hooks/useIntlRef';
-export { default as CustomFormProvider } from './components/react-hook-form/custom-form-provider';
+export {
+    default as CustomFormProvider,
+    useCustomFormContext,
+} from './components/react-hook-form/custom-form-provider';
 export { default as SliderInput } from './components/react-hook-form/slider-input';
 export { default as TextFieldWithAdornment } from './components/react-hook-form/utils/text-field-with-adornment';
 export {
