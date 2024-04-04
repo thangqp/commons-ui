@@ -5,22 +5,29 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid, Theme, Chip, FormControl, IconButton } from '@mui/material';
+import {
+    Chip,
+    FormControl,
+    Grid,
+    IconButton,
+    Theme,
+    Tooltip,
+} from '@mui/material';
 import OverflowableText from '../OverflowableText';
 import { useSnackMessage } from '../../hooks/useSnackMessage';
 import FieldLabel from './utils/field-label';
 import FolderIcon from '@mui/icons-material/Folder';
 import { FunctionComponent, useCallback, useMemo, useState } from 'react';
-import { useController, useFieldArray, useFormContext } from 'react-hook-form';
+import { useController, useFieldArray } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 import ErrorInput from '../react-hook-form/error-management/error-input.jsx';
 import MidFormError from '../react-hook-form/error-management/mid-form-error.jsx';
 import { RawReadOnlyInput } from './raw-read-only-input';
-import { Tooltip } from '@mui/material';
 import { mergeSx } from '../../utils/styles.js';
 import DirectoryItemSelector from '../DirectoryItemSelector/directory-item-selector.tsx';
 import { isFieldFromContextRequired } from './utils/functions.jsx';
 import { UUID } from 'crypto';
+import { useCustomFormContext } from './custom-form-provider.tsx';
 
 export const NAME = 'name';
 
@@ -105,7 +112,7 @@ const DirectoryItemsInput: FunctionComponent<DirectoryItemsInputProps> = ({
         name,
     });
 
-    const formContext = useFormContext();
+    const formContext = useCustomFormContext();
     const { getValues } = formContext;
     const {
         fieldState: { error },
