@@ -25,9 +25,9 @@ import MidFormError from '../react-hook-form/error-management/mid-form-error.jsx
 import { RawReadOnlyInput } from './raw-read-only-input';
 import { mergeSx } from '../../utils/styles.js';
 import DirectoryItemSelector from '../DirectoryItemSelector/directory-item-selector.tsx';
-import { isFieldFromContextRequired } from './utils/functions.jsx';
 import { UUID } from 'crypto';
 import { useCustomFormContext } from './custom-form-provider.tsx';
+import { isFieldRequired } from './utils/functions';
 
 export const NAME = 'name';
 
@@ -113,7 +113,7 @@ const DirectoryItemsInput: FunctionComponent<DirectoryItemsInputProps> = ({
     });
 
     const formContext = useCustomFormContext();
-    const { getValues } = formContext;
+    const { getValues, validationSchema } = formContext;
     const {
         fieldState: { error },
     } = useController({
@@ -169,9 +169,9 @@ const DirectoryItemsInput: FunctionComponent<DirectoryItemsInputProps> = ({
                         label={label}
                         optional={
                             labelRequiredFromContext &&
-                            !isFieldFromContextRequired(
+                            !isFieldRequired(
                                 name,
-                                formContext,
+                                validationSchema,
                                 getValues()
                             )
                         }
