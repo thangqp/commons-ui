@@ -17,7 +17,7 @@ import {
     identity,
     isFieldRequired,
 } from './utils/functions';
-import { useCustomFormContext } from './custom-form-provider';
+import { useCustomFormContext } from './provider/use-custom-form-context';
 
 const TextInput = ({
     name,

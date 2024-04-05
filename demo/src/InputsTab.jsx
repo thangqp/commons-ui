@@ -20,7 +20,7 @@ import CheckboxInput from '../../src/components/react-hook-form/booleans/checkbo
 import SwitchInput from '../../src/components/react-hook-form/booleans/switch-input';
 import SubmitButton from '../../src/components/react-hook-form/utils/submit-button';
 import ExpandingTextField from '../../src/components/react-hook-form/ExpandingTextField';
-import CustomFormProvider from '../../src/components/react-hook-form/custom-form-provider';
+import CustomFormProvider from '../../src/components/react-hook-form/provider/custom-form-provider';
 
 const AUTOCOMPLETE_INPUT = 'autocomplete';
 const TEXT_INPUT = 'text';

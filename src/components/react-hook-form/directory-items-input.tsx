@@ -26,7 +26,7 @@ import { RawReadOnlyInput } from './raw-read-only-input';
 import { mergeSx } from '../../utils/styles.js';
 import DirectoryItemSelector from '../DirectoryItemSelector/directory-item-selector.tsx';
 import { UUID } from 'crypto';
-import { useCustomFormContext } from './custom-form-provider.tsx';
+import { useCustomFormContext } from './provider/use-custom-form-context';
 import { isFieldRequired } from './utils/functions';
 
 export const NAME = 'name';
