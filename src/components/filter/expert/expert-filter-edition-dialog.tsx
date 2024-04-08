@@ -20,6 +20,8 @@ import { EXPERT_FILTER_QUERY, expertFilterSchema } from './expert-filter-form';
 import { saveExpertFilter } from '../filters-utils';
 import { importExpertRules } from './expert-filter-utils';
 import { ElementType } from '../../..';
+import { UUID } from 'crypto';
+import { elementExistsType } from "../criteria-based/criteria-based-filter-edition-dialog.tsx";
 
 const formSchema = yup
     .object()
@@ -50,12 +52,8 @@ export interface ExpertFilterEditionDialogProps {
         activeDirectory: any
     ) => Promise<any>;
     saveFilter: (filter: any, name: string) => Promise<any>;
-    activeDirectory?: any;
-    elementExists?: (
-        directory: any,
-        value: string,
-        elementType: ElementType
-    ) => Promise<any>;
+    activeDirectory?: UUID;
+    elementExists?: elementExistsType;
 }
 
 export const ExpertFilterEditionDialog = ({

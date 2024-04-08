@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useCallback, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useCallback, useEffect, useState } from "react";
 import { FilterType, FieldConstants } from '../constants/field-constants';
 import {
     backToFrontTweak,
@@ -20,9 +20,23 @@ import yup from '../../../utils/yup-config';
 import { FetchStatus } from '../../../hooks/customHooks';
 import { FilterForm } from '../filter-form';
 import { ElementType } from '../../..';
+import { UUID } from 'crypto';
 
-export const noSelectionForCopy = {
-    sourceCaseUuid: null,
+export type SelectionCopy = {
+    sourceItemUuid: UUID | null;
+    name: string | null;
+    description: string | null;
+    parentDirectoryUuid: UUID | null;
+};
+
+export type elementExistsType = (
+    directory: UUID,
+    value: string,
+    elementType: ElementType
+) => Promise<boolean>;
+
+export const noSelectionForCopy: SelectionCopy = {
+    sourceItemUuid: null,
     name: null,
     description: null,
     parentDirectoryUuid: null,
@@ -38,24 +52,20 @@ const formSchema = yup
     })
     .required();
 
-interface OwnProps {
+interface CriteriaBasedFilterEditionDialogProps {
     id: string;
     name: string;
     titleId: string;
     open: boolean;
     onClose: () => void;
-    broadcastChannel: any;
+    broadcastChannel: BroadcastChannel;
     getFilterById: (id: string) => Promise<any>;
     saveFilter: (value: any, t: Record<string, any>) => Promise<void>;
-    selectionForCopy: any;
+    selectionForCopy: SelectionCopy;
     fetchAppsAndUrls: () => Promise<any>;
-    setSelelectionForCopy: (selection: any) => void;
-    activeDirectory?: any;
-    elementExists?: (
-        directory: any,
-        value: string,
-        elementType: ElementType
-    ) => Promise<any>;
+    setSelelectionForCopy: (selection: SelectionCopy) => Dispatch<SetStateAction<SelectionCopy>>;
+    activeDirectory?: UUID;
+    elementExists?: elementExistsType;
 }
 
 export const CriteriaBasedFilterEditionDialog = ({
@@ -72,7 +82,7 @@ export const CriteriaBasedFilterEditionDialog = ({
     setSelelectionForCopy,
     activeDirectory,
     elementExists,
-}: OwnProps) => {
+}: CriteriaBasedFilterEditionDialogProps) => {
     const { snackError } = useSnackMessage();
     const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
 

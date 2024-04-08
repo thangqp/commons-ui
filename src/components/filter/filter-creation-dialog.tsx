@@ -32,7 +32,7 @@ import {
     getExpertFilterEmptyFormData,
 } from './expert/expert-filter-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { ElementType } from '../..';
+import { elementExistsType } from "./criteria-based/criteria-based-filter-edition-dialog.tsx";
 
 const emptyFormData = {
     [FieldConstants.NAME]: '',
@@ -72,11 +72,7 @@ export interface FilterCreationDialogProps {
     ) => Promise<any>;
     saveFilter: (filter: any, name: string) => Promise<any>;
     fetchAppsAndUrls: () => Promise<any>;
-    elementExists?: (
-        directory: any,
-        value: string,
-        elementType: ElementType
-    ) => Promise<any>;
+    elementExists?: elementExistsType;
 }
 
 const FilterCreationDialog = ({

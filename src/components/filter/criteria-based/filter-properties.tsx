@@ -147,11 +147,11 @@ export const filterPropertiesYupSchema = {
         ),
 };
 
-interface OwnProps {
+interface FilterPropertiesProps {
     fetchAppsAndUrls: () => Promise<any>;
 }
 
-function FilterProperties({ fetchAppsAndUrls }: OwnProps) {
+function FilterProperties({ fetchAppsAndUrls }: FilterPropertiesProps) {
     const watchEquipmentType = useWatch({
         name: FieldConstants.EQUIPMENT_TYPE,
     });

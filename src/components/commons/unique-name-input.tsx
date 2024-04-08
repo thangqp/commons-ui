@@ -15,6 +15,8 @@ import CircularProgress from '@mui/material/CircularProgress';
 import TextField from '@mui/material/TextField';
 import { FieldConstants } from '../filter/constants/field-constants';
 import { ElementType } from '../../utils/ElementType';
+import { UUID } from 'crypto';
+import { elementExistsType } from "../filter/criteria-based/criteria-based-filter-edition-dialog.tsx";
 
 interface UniqueNameInputProps {
     name: string;
@@ -32,25 +34,28 @@ interface UniqueNameInputProps {
         | 'inputProps'
         | 'InputProps'
     >;
-    activeDirectory?: any;
-    elementExists?: (
-        directory: any,
-        value: string,
-        elementType: ElementType
-    ) => Promise<any>;
+    activeDirectory?: UUID;
+    elementExists?: elementExistsType;
 }
 
 /**
  * Input component that constantly check if the field's value is available or not
  */
-export const UniqueNameInput: FunctionComponent<UniqueNameInputProps> = (
-    props
-) => {
+export const UniqueNameInput: FunctionComponent<UniqueNameInputProps> = ({
+    name,
+    label,
+    elementType,
+    autoFocus,
+    onManualChangeCallback,
+    formProps,
+    activeDirectory,
+    elementExists,
+}) => {
     const {
-        field: { onChange, onBlur, value, name, ref },
+        field: { onChange, onBlur, value, ref },
         fieldState: { error, isDirty },
     } = useController({
-        name: props.name,
+        name: name,
     });
 
     const {
@@ -68,24 +73,23 @@ export const UniqueNameInput: FunctionComponent<UniqueNameInputProps> = (
     // This is a trick to share the custom validation state among the form : while this error is present, we can't validate the form
     const isValidating = errors.root?.isValidating;
 
-    const directory = selectedDirectory || props.activeDirectory;
+    const directory = selectedDirectory || activeDirectory;
 
     const handleCheckName = useCallback(
         (value: string) => {
             if (value) {
-                props.elementExists &&
-                    props
-                        .elementExists(directory, value, props.elementType)
+                elementExists &&
+                    elementExists(directory, value, elementType)
                         .then((alreadyExist) => {
                             if (alreadyExist) {
-                                setError(props.name, {
+                                setError(name, {
                                     type: 'validate',
                                     message: 'nameAlreadyUsed',
                                 });
                             }
                         })
                         .catch((error) => {
-                            setError(props.name, {
+                            setError(name, {
                                 type: 'validate',
                                 message: 'nameValidityCheckErrorMsg',
                             });
@@ -96,14 +100,7 @@ export const UniqueNameInput: FunctionComponent<UniqueNameInputProps> = (
                         });
             }
         },
-        [
-            setError,
-            clearErrors,
-            props.name,
-            props.elementType,
-            props.elementExists,
-            directory,
-        ]
+        [setError, clearErrors, name, elementType, elementExists, directory]
     );
 
     const debouncedHandleCheckName = useDebounce(handleCheckName, 700);
@@ -118,11 +115,11 @@ export const UniqueNameInput: FunctionComponent<UniqueNameInputProps> = (
 
         // if the name is unchanged, we don't do custom validation
         if (!isDirty) {
-            clearErrors(props.name);
+            clearErrors(name);
             return;
         }
         if (trimmedValue) {
-            clearErrors(props.name);
+            clearErrors(name);
             setError('root.isValidating', {
                 type: 'validate',
                 message: 'cantSubmitWhileValidating',
@@ -130,7 +127,7 @@ export const UniqueNameInput: FunctionComponent<UniqueNameInputProps> = (
             debouncedHandleCheckName(trimmedValue);
         } else {
             clearErrors('root.isValidating');
-            setError(props.name, {
+            setError(name, {
                 type: 'validate',
                 message: 'nameEmpty',
             });
@@ -139,7 +136,7 @@ export const UniqueNameInput: FunctionComponent<UniqueNameInputProps> = (
         debouncedHandleCheckName,
         setError,
         clearErrors,
-        props.name,
+        name,
         value,
         isDirty,
         selectedDirectory,
@@ -150,10 +147,10 @@ export const UniqueNameInput: FunctionComponent<UniqueNameInputProps> = (
         e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => {
         onChange(e.target.value);
-        props.onManualChangeCallback && props.onManualChangeCallback();
+        onManualChangeCallback && onManualChangeCallback();
     };
 
-    const translatedLabel = <FormattedMessage id={props.label} />;
+    const translatedLabel = <FormattedMessage id={label} />;
 
     const translatedError = error && <FormattedMessage id={error.message} />;
 
@@ -174,13 +171,13 @@ export const UniqueNameInput: FunctionComponent<UniqueNameInputProps> = (
             inputRef={ref}
             label={translatedLabel}
             type="text"
-            autoFocus={props.autoFocus}
+            autoFocus={autoFocus}
             margin="dense"
             fullWidth
             error={!!error}
             helperText={translatedError}
             InputProps={{ endAdornment: endAdornment }}
-            {...props.formProps}
+            {...formProps}
         />
     );
 };

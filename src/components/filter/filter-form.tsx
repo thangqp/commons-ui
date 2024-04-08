@@ -17,16 +17,14 @@ import DescriptionInput from '../commons/description-modification/description-in
 import { Grid } from '@mui/material';
 import RadioInput from '../react-hook-form/radio-input';
 import { ElementType } from '../../utils/ElementType';
+import { UUID } from 'crypto';
+import { elementExistsType } from "./criteria-based/criteria-based-filter-edition-dialog.tsx";
 
 interface FilterFormProps {
     creation?: boolean;
     fetchAppsAndUrls: () => Promise<any>;
-    activeDirectory?: any;
-    elementExists?: (
-        directory: any,
-        value: string,
-        elementType: ElementType
-    ) => Promise<any>;
+    activeDirectory?: UUID;
+    elementExists?: elementExistsType;
 }
 
 export const FilterForm: FunctionComponent<FilterFormProps> = (props) => {

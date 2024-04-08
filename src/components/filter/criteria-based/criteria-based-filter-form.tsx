@@ -22,11 +22,11 @@ export const criteriaBasedFilterEmptyFormData = getCriteriaBasedFormData(null, {
     [FreePropertiesTypes.FREE_FILTER_PROPERTIES]: [],
 });
 
-interface OwnProps {
+interface CriteriaBasedFilterFormProps {
     fetchAppsAndUrls: () => Promise<any>;
 }
 
-function CriteriaBasedFilterForm({ fetchAppsAndUrls }: OwnProps) {
+function CriteriaBasedFilterForm({ fetchAppsAndUrls }: CriteriaBasedFilterFormProps) {
     return (
         <Grid container item spacing={1}>
             <CriteriaBasedForm

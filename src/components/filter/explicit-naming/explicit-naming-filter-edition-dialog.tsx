@@ -24,7 +24,8 @@ import { v4 as uuid4 } from 'uuid';
 import { noSelectionForCopy } from '../constants/equipment-types';
 import { FilterType } from '../constants/field-constants';
 import { FetchStatus } from '../../../hooks/customHooks';
-import { ElementType } from '../../..';
+import { UUID } from 'crypto';
+import { elementExistsType } from "../criteria-based/criteria-based-filter-edition-dialog.tsx";
 
 const formSchema = yup
     .object()
@@ -36,13 +37,13 @@ const formSchema = yup
     })
     .required();
 
-interface OwnProps {
+interface ExplicitNamingFilterEditionDialogProps {
     id: string;
     name: string;
     titleId: string;
     open: boolean;
     onClose: () => void;
-    broadcastChannel: any;
+    broadcastChannel: BroadcastChannel;
     selectionForCopy: any;
     setSelectionForCopy: (selection: any) => void;
     getFilterById: (id: string) => Promise<any>;
@@ -54,12 +55,8 @@ interface OwnProps {
         activeDirectory: any
     ) => Promise<any>;
     saveFilter: (filter: any, name: string) => Promise<any>;
-    activeDirectory?: any;
-    elementExists?: (
-        directory: any,
-        value: string,
-        elementType: ElementType
-    ) => Promise<any>;
+    activeDirectory?: UUID;
+    elementExists?: elementExistsType;
 }
 
 const ExplicitNamingFilterEditionDialog = ({
@@ -77,7 +74,7 @@ const ExplicitNamingFilterEditionDialog = ({
     saveFilter,
     activeDirectory,
     elementExists,
-}: OwnProps) => {
+}: ExplicitNamingFilterEditionDialogProps) => {
     const { snackError } = useSnackMessage();
     const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
 
