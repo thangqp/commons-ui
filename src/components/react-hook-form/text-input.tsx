@@ -13,7 +13,7 @@ import {
     TextFieldProps,
 } from '@mui/material';
 import { Clear as ClearIcon } from '@mui/icons-material';
-import { useController, useFormContext } from 'react-hook-form';
+import { useController } from 'react-hook-form';
 import TextFieldWithAdornment from './utils/text-field-with-adornment';
 import FieldLabel from './utils/field-label';
 import {
@@ -22,6 +22,7 @@ import {
     identity,
     isFieldRequired,
 } from './utils/functions';
+import { useCustomFormContext } from './provider/use-custom-form-context';
 
 type Input = string | number;
 
@@ -69,8 +70,7 @@ const TextInput = ({
     formProps,
 }: TextInputProps) => {
     const { validationSchema, getValues, removeOptional } =
-        useFormContext() as any;
-
+        useCustomFormContext();
     const {
         field: { onChange, value, ref },
         fieldState: { error },

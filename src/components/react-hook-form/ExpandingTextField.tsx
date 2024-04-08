@@ -5,11 +5,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useState } from 'react';
+import { FunctionComponent, useState } from 'react';
 import { TextFieldProps, Theme, Typography } from '@mui/material';
-import { FunctionComponent } from 'react';
-import { useFormContext, useWatch } from 'react-hook-form';
-import { TextInputProps, TextInput } from '../..';
+import { useWatch } from 'react-hook-form';
+import { TextInput, TextInputProps } from '../..';
+import { useCustomFormContext } from './provider/use-custom-form-context';
 
 interface ExpandingTextFieldProps extends TextInputProps {
     name: string;
@@ -20,6 +20,7 @@ interface ExpandingTextFieldProps extends TextInputProps {
     label?: string;
     textFieldFormProps?: TextFieldProps;
 }
+
 const ExpandingTextField: FunctionComponent<ExpandingTextFieldProps> = ({
     name,
     maxCharactersNumber = 500,
@@ -31,7 +32,7 @@ const ExpandingTextField: FunctionComponent<ExpandingTextFieldProps> = ({
     ...otherTexFieldProps
 }) => {
     const [isFocused, setIsFocused] = useState(false);
-    const { control } = useFormContext();
+    const { control } = useCustomFormContext();
     const descriptionWatch = useWatch({
         name: name,
         control,

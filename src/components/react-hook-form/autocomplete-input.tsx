@@ -19,6 +19,7 @@ import {
     isFieldRequired,
 } from './utils/functions';
 import FieldLabel from './utils/field-label';
+import { useCustomFormContext } from './provider/use-custom-form-context';
 
 export interface AutocompleteInputProps
     extends Omit<
@@ -64,7 +65,7 @@ const AutocompleteInput = ({
     ...props
 }: AutocompleteInputProps & any) => {
     const { validationSchema, getValues, removeOptional } =
-        useFormContext() as any;
+        useCustomFormContext();
     const {
         field: { onChange, value, ref },
         fieldState: { error },
