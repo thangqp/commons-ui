@@ -96,7 +96,14 @@ export const UniqueNameInput: FunctionComponent<UniqueNameInputProps> = (
                         });
             }
         },
-        [setError, clearErrors, props, directory]
+        [
+            setError,
+            clearErrors,
+            props.name,
+            props.elementType,
+            props.elementExists,
+            directory,
+        ]
     );
 
     const debouncedHandleCheckName = useDebounce(handleCheckName, 700);
@@ -158,7 +165,6 @@ export const UniqueNameInput: FunctionComponent<UniqueNameInputProps> = (
         </InputAdornment>
     );
 
-    console.log('######### - DEBUG TAG po - #########')
     return (
         <TextField
             onChange={handleManualChange}
