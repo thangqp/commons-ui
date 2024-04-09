@@ -18,7 +18,7 @@ import { Grid } from '@mui/material';
 import RadioInput from '../react-hook-form/radio-input';
 import { ElementType } from '../../utils/ElementType';
 import { UUID } from 'crypto';
-import { elementExistsType } from "./criteria-based/criteria-based-filter-edition-dialog.tsx";
+import { elementExistsType } from './criteria-based/criteria-based-filter-edition-dialog.tsx';
 
 interface FilterFormProps {
     creation?: boolean;

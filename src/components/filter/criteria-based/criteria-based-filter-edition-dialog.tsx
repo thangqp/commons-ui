@@ -5,7 +5,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Dispatch, SetStateAction, useCallback, useEffect, useState } from "react";
+import {
+    Dispatch,
+    SetStateAction,
+    useCallback,
+    useEffect,
+    useState,
+} from 'react';
 import { FilterType, FieldConstants } from '../constants/field-constants';
 import {
     backToFrontTweak,
@@ -63,7 +69,9 @@ interface CriteriaBasedFilterEditionDialogProps {
     saveFilter: (value: any, t: Record<string, any>) => Promise<void>;
     selectionForCopy: SelectionCopy;
     fetchAppsAndUrls: () => Promise<any>;
-    setSelelectionForCopy: (selection: SelectionCopy) => Dispatch<SetStateAction<SelectionCopy>>;
+    setSelelectionForCopy: (
+        selection: SelectionCopy
+    ) => Dispatch<SetStateAction<SelectionCopy>>;
     activeDirectory?: UUID;
     elementExists?: elementExistsType;
 }

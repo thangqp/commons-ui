@@ -25,7 +25,7 @@ import { noSelectionForCopy } from '../constants/equipment-types';
 import { FilterType } from '../constants/field-constants';
 import { FetchStatus } from '../../../hooks/customHooks';
 import { UUID } from 'crypto';
-import { elementExistsType } from "../criteria-based/criteria-based-filter-edition-dialog.tsx";
+import { elementExistsType } from '../criteria-based/criteria-based-filter-edition-dialog.tsx';
 
 const formSchema = yup
     .object()

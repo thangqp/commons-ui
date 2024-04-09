@@ -32,7 +32,7 @@ import {
     getExpertFilterEmptyFormData,
 } from './expert/expert-filter-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { elementExistsType } from "./criteria-based/criteria-based-filter-edition-dialog.tsx";
+import { elementExistsType } from './criteria-based/criteria-based-filter-edition-dialog.tsx';
 
 const emptyFormData = {
     [FieldConstants.NAME]: '',

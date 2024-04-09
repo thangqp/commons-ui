@@ -19,9 +19,8 @@ import { FilterForm } from '../filter-form';
 import { EXPERT_FILTER_QUERY, expertFilterSchema } from './expert-filter-form';
 import { saveExpertFilter } from '../filters-utils';
 import { importExpertRules } from './expert-filter-utils';
-import { ElementType } from '../../..';
 import { UUID } from 'crypto';
-import { elementExistsType } from "../criteria-based/criteria-based-filter-edition-dialog.tsx";
+import { elementExistsType } from '../criteria-based/criteria-based-filter-edition-dialog.tsx';
 
 const formSchema = yup
     .object()

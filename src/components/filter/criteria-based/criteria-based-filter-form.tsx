@@ -26,7 +26,9 @@ interface CriteriaBasedFilterFormProps {
     fetchAppsAndUrls: () => Promise<any>;
 }
 
-function CriteriaBasedFilterForm({ fetchAppsAndUrls }: CriteriaBasedFilterFormProps) {
+function CriteriaBasedFilterForm({
+    fetchAppsAndUrls,
+}: CriteriaBasedFilterFormProps) {
     return (
         <Grid container item spacing={1}>
             <CriteriaBasedForm

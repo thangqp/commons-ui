@@ -16,7 +16,7 @@ import TextField from '@mui/material/TextField';
 import { FieldConstants } from '../filter/constants/field-constants';
 import { ElementType } from '../../utils/ElementType';
 import { UUID } from 'crypto';
-import { elementExistsType } from "../filter/criteria-based/criteria-based-filter-edition-dialog.tsx";
+import { elementExistsType } from '../filter/criteria-based/criteria-based-filter-edition-dialog.tsx';
 
 interface UniqueNameInputProps {
     name: string;
