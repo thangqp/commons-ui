@@ -7,7 +7,7 @@
 
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { FormProvider, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { Box, Grid } from '@mui/material';
 import AutocompleteInput from '../../src/components/react-hook-form/autocomplete-input';
 import TextInput from '../../src/components/react-hook-form/text-input';
@@ -20,6 +20,7 @@ import CheckboxInput from '../../src/components/react-hook-form/booleans/checkbo
 import SwitchInput from '../../src/components/react-hook-form/booleans/switch-input';
 import SubmitButton from '../../src/components/react-hook-form/utils/submit-button';
 import ExpandingTextField from '../../src/components/react-hook-form/ExpandingTextField';
+import CustomFormProvider from '../../src/components/react-hook-form/provider/custom-form-provider';
 
 const AUTOCOMPLETE_INPUT = 'autocomplete';
 const TEXT_INPUT = 'text';
@@ -106,7 +107,7 @@ export function InputsTab() {
     }
 
     return (
-        <FormProvider validationSchema={formSchema} {...formMethods}>
+        <CustomFormProvider validationSchema={formSchema} {...formMethods}>
             <Box
                 sx={{
                     display: 'flex',
@@ -190,6 +191,6 @@ export function InputsTab() {
                     <SubmitButton onClick={handleSubmit(onSubmit, onError)} />
                 </Box>
             </Box>
-        </FormProvider>
+        </CustomFormProvider>
     );
 }
