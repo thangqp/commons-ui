@@ -10,7 +10,7 @@ import {
     DataType,
     FieldType,
     OperatorType,
-} from './expert-filter.type';
+} from '../expert/expert-filter.type.ts';
 import { Field } from 'react-querybuilder';
 
 export const EXPERT_FILTER_EQUIPMENTS = {

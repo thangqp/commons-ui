@@ -6,20 +6,16 @@
  */
 
 import {
-    defaultOperators,
-    findPath,
-    getParentPath,
-    QueryValidator,
-    remove,
-    RuleGroupType,
-    RuleGroupTypeAny,
-    ValidationMap,
-} from 'react-querybuilder';
-import { RuleType } from 'react-querybuilder/dist/cjs/react-querybuilder.cjs.development';
-import { FIELDS_OPTIONS, OPERATOR_OPTIONS } from './expert-filter-constants';
+  defaultOperators,
+  findPath,
+  getParentPath,
+  QueryValidator,
+  remove,
+  RuleGroupType,
+  RuleGroupTypeAny, RuleType,
+  ValidationMap
+} from "react-querybuilder";
 import { IntlShape } from 'react-intl';
-
-import { EMPTY_RULE } from '../../../utils/field-constants';
 import {
     CombinatorType,
     DataType,
@@ -28,8 +24,10 @@ import {
     RuleGroupTypeExport,
     RuleTypeExport,
 } from './expert-filter.type';
-import { microUnitToUnit, unitToMicroUnit } from 'utils/conversion-utils';
 import { validate as uuidValidate } from 'uuid';
+import { FIELDS_OPTIONS, OPERATOR_OPTIONS } from "../constants/expert-filter-constants.ts";
+import { microUnitToUnit, unitToMicroUnit } from "../../../utils/conversion-utils.ts";
+import { FieldConstants } from "../constants/field-constants.ts";
 
 type CustomRuleType = RuleType & { dataType: DataType };
 type CustomRuleGroupType = RuleGroupType & { dataType: DataType };
@@ -297,7 +295,7 @@ export const queryValidator: QueryValidator = (query) => {
             if (!rule.value?.[0] || !rule.value?.[1]) {
                 result[rule.id] = {
                     valid: false,
-                    reasons: [EMPTY_RULE],
+                    reasons: [FieldConstants.EMPTY_RULE],
                 };
             } else if (
                 isNaN(parseFloat(rule.value[0])) ||
@@ -305,12 +303,12 @@ export const queryValidator: QueryValidator = (query) => {
             ) {
                 result[rule.id] = {
                     valid: false,
-                    reasons: [INCORRECT_RULE],
+                    reasons: [FieldConstants.INCORRECT_RULE],
                 };
             } else if (parseFloat(rule.value[0]) >= parseFloat(rule.value[1])) {
                 result[rule.id] = {
                     valid: false,
-                    reasons: [BETWEEN_RULE],
+                    reasons: [FieldConstants.BETWEEN_RULE],
                 };
             }
         } else if (
@@ -320,7 +318,7 @@ export const queryValidator: QueryValidator = (query) => {
         ) {
             result[rule.id] = {
                 valid: false,
-                reasons: [EMPTY_RULE],
+                reasons: [FieldConstants.EMPTY_RULE],
             };
         } else if (
             rule.id &&
@@ -329,12 +327,12 @@ export const queryValidator: QueryValidator = (query) => {
         ) {
             result[rule.id] = {
                 valid: false,
-                reasons: [EMPTY_RULE],
+                reasons: [FieldConstants.EMPTY_RULE],
             };
         } else if (rule.id && isNumberInput && isNaN(parseFloat(rule.value))) {
             result[rule.id] = {
                 valid: false,
-                reasons: [INCORRECT_RULE],
+                reasons: [FieldConstants.INCORRECT_RULE],
             };
         } else if (
             rule.id &&
@@ -344,7 +342,7 @@ export const queryValidator: QueryValidator = (query) => {
         ) {
             result[rule.id] = {
                 valid: false,
-                reasons: [EMPTY_RULE],
+                reasons: [FieldConstants.EMPTY_RULE],
             };
         }
     };
@@ -352,7 +350,7 @@ export const queryValidator: QueryValidator = (query) => {
     const validateGroup = (ruleGroup: RuleGroupTypeAny) => {
         const reasons: any[] = [];
         if (ruleGroup.rules.length === 0) {
-            reasons.push(EMPTY_GROUP);
+            reasons.push(FieldConstants.EMPTY_GROUP);
         }
         if (ruleGroup.id) {
             if (reasons.length) {

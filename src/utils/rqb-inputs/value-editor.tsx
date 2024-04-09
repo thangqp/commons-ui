@@ -8,20 +8,18 @@
 import { ValueEditorProps } from 'react-querybuilder';
 import React, { useCallback } from 'react';
 import { MaterialValueEditor } from '@react-querybuilder/material';
-import {
-  FieldType,
-  OperatorType,
-} from '../../dialogs/filter/expert/expert-filter.type';
+
 import CountryValueEditor from './country-value-editor';
 import TranslatedValueEditor from './translated-value-editor';
 import TextValueEditor from './text-value-editor';
 import Box from '@mui/material/Box';
-import ElementValueEditor from './element-value-editor';
-import { FilterType } from '../../../utils/elementType';
+
 import { ElementType } from '@gridsuite/commons-ui';
-import { EQUIPMENT_TYPE, FILTER_UUID } from '../field-constants';
 import { useFormContext } from 'react-hook-form';
-import { VoltageLevel } from '../../../utils/equipment-types';
+import { FieldConstants, FilterType } from "../../components/filter/constants/field-constants.ts";
+import { DataType, FieldType, OperatorType } from "../../components/filter/expert/expert-filter.type.ts";
+import { EQUIPMENT_TYPE } from "../EquipmentType.ts";
+import { VoltageLevel } from "../../components/filter/constants/equipment-types.ts";
 
 const styles = {
   noArrows: {
@@ -48,7 +46,7 @@ const ValueEditor = (props: ValueEditorProps) => {
           value?.specificMetadata?.type !== FilterType.EXPERT.id &&
           ((props.field === FieldType.ID &&
               value?.specificMetadata?.equipmentType ===
-              getValues(EQUIPMENT_TYPE)) ||
+              getValues(FieldConstants.EQUIPMENT_TYPE)) ||
             ((props.field === FieldType.VOLTAGE_LEVEL_ID ||
                 props.field === FieldType.VOLTAGE_LEVEL_ID_1 ||
                 props.field === FieldType.VOLTAGE_LEVEL_ID_2) &&
@@ -93,12 +91,12 @@ const ValueEditor = (props: ValueEditorProps) => {
     ) {
       equipmentTypes = [VoltageLevel.type];
     } else if (props.field === FieldType.ID) {
-      equipmentTypes = [getValues(EQUIPMENT_TYPE)];
+      equipmentTypes = [getValues(FieldConstants.EQUIPMENT_TYPE)];
     }
 
     return (
       <ElementValueEditor
-        name={FILTER_UUID + props.rule.id}
+        name={DataType.FILTER_UUID + props.rule.id}
         elementType={ElementType.FILTER}
         equipmentTypes={equipmentTypes}
         titleId="selectFilterDialogTitle"

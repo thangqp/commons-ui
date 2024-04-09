@@ -17,12 +17,12 @@ import {
     getComputedLanguage,
 } from '../rhf-inputs/select-inputs/countries-input';
 
-interface OwnProps {
+interface CountryValueEditorProps {
     paramGlobalState: unknown;
     updateParam: (param: unknown) => Promise<unknown>;
 }
 
-const CountryValueEditor = (props: ValueEditorProps & OwnProps) => {
+const CountryValueEditor = (props: ValueEditorProps & CountryValueEditorProps) => {
     const [languageLocal] = useParameterState(
         PARAM_LANGUAGE,
         props.paramGlobalState,
