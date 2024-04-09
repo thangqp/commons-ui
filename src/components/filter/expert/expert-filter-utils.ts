@@ -13,15 +13,13 @@ import {
     remove,
     RuleGroupType,
     RuleGroupTypeAny,
-    RuleType,
     ValidationMap,
 } from 'react-querybuilder';
-import {
-    FIELDS_OPTIONS,
-    OPERATOR_OPTIONS,
-} from '../constants/expert-filter-constants';
+import { RuleType } from 'react-querybuilder/dist/cjs/react-querybuilder.cjs.development';
+import { FIELDS_OPTIONS, OPERATOR_OPTIONS } from './expert-filter-constants';
 import { IntlShape } from 'react-intl';
-import { FieldConstants } from '../constants/field-constants';
+
+import { EMPTY_RULE } from '../../../utils/field-constants';
 import {
     CombinatorType,
     DataType,
@@ -30,10 +28,8 @@ import {
     RuleGroupTypeExport,
     RuleTypeExport,
 } from './expert-filter.type';
-import {
-    microUnitToUnit,
-    unitToMicroUnit,
-} from '../../../utils/conversion-utils';
+import { microUnitToUnit, unitToMicroUnit } from 'utils/conversion-utils';
+import { validate as uuidValidate } from 'uuid';
 
 type CustomRuleType = RuleType & { dataType: DataType };
 type CustomRuleGroupType = RuleGroupType & { dataType: DataType };
@@ -45,7 +41,17 @@ const microUnits = [
     FieldType.SHUNT_SUSCEPTANCE_2,
 ];
 
-const getDataType = (fieldName: string) => {
+const getDataType = (fieldName: string, operator: string) => {
+    if (
+        (fieldName === FieldType.ID ||
+            fieldName === FieldType.VOLTAGE_LEVEL_ID ||
+            fieldName === FieldType.VOLTAGE_LEVEL_ID_1 ||
+            fieldName === FieldType.VOLTAGE_LEVEL_ID_2) &&
+        (operator === OperatorType.IS_PART_OF ||
+            operator === OperatorType.IS_NOT_PART_OF)
+    ) {
+        return DataType.FILTER_UUID;
+    }
     const field = Object.values(FIELDS_OPTIONS).find(
         (field) => field.name === fieldName
     );
@@ -60,14 +66,35 @@ export const getOperators = (fieldName: string, intl: IntlShape) => {
 
     switch (field?.dataType) {
         case DataType.STRING:
-            return [
+            let operators: {
+                name: string;
+                customName: string;
+                label: string;
+            }[] = [
                 OPERATOR_OPTIONS.CONTAINS,
                 OPERATOR_OPTIONS.IS,
                 OPERATOR_OPTIONS.BEGINS_WITH,
                 OPERATOR_OPTIONS.ENDS_WITH,
                 OPERATOR_OPTIONS.IN,
                 OPERATOR_OPTIONS.EXISTS,
-            ].map((operator) => ({
+            ];
+            if (
+                field.name === FieldType.ID ||
+                field.name === FieldType.VOLTAGE_LEVEL_ID ||
+                field.name === FieldType.VOLTAGE_LEVEL_ID_1 ||
+                field.name === FieldType.VOLTAGE_LEVEL_ID_2
+            ) {
+                // two additional operators when fields ID or VOLTAGE_LEVEL_ID are selected
+                operators.push(OPERATOR_OPTIONS.IS_PART_OF);
+                operators.push(OPERATOR_OPTIONS.IS_NOT_PART_OF);
+            }
+            if (field.name === FieldType.ID) {
+                // When the ID is selected, the operator EXISTS must be removed.
+                operators = operators.filter(
+                    (field) => field.name !== OperatorType.EXISTS
+                );
+            }
+            return operators.map((operator) => ({
                 name: operator.name,
                 label: intl.formatMessage({ id: operator.label }),
             }));
@@ -90,11 +117,22 @@ export const getOperators = (fieldName: string, intl: IntlShape) => {
                 label: intl.formatMessage({ id: operator.label }),
             }));
         case DataType.ENUM:
-            return [
+            let enumOperators: {
+                name: string;
+                customName: string;
+                label: string;
+            }[] = [
                 OPERATOR_OPTIONS.EQUALS,
                 OPERATOR_OPTIONS.NOT_EQUALS,
                 OPERATOR_OPTIONS.IN,
-            ].map((operator) => ({
+            ];
+            if (field.name === FieldType.SHUNT_COMPENSATOR_TYPE) {
+                // When the SHUNT_COMPENSATOR_TYPE is selected, the operator IN must be removed.
+                enumOperators = enumOperators.filter(
+                    (field) => field.customName !== OperatorType.IN
+                );
+            }
+            return enumOperators.map((operator) => ({
                 name: operator.name,
                 label: intl.formatMessage({ id: operator.label }),
             }));
@@ -130,7 +168,7 @@ export function exportExpertRules(
             values: isValueAnArray
                 ? changeValueUnit(rule.value, rule.field as FieldType)
                 : undefined,
-            dataType: getDataType(rule.field) as DataType,
+            dataType: getDataType(rule.field, rule.operator) as DataType,
         };
     }
 
@@ -186,7 +224,11 @@ export function importExpertRules(
                 (operator) => operator.customName === rule.operator
             )?.name as string,
             value: parseValue(rule),
-            dataType: rule.dataType,
+            dataType:
+                rule.operator === OperatorType.IS_PART_OF ||
+                rule.operator === OperatorType.IS_NOT_PART_OF
+                    ? DataType.STRING
+                    : rule.dataType,
         };
     }
 
@@ -240,9 +282,11 @@ export const queryValidator: QueryValidator = (query) => {
     const validateRule = (rule: RuleType) => {
         const isValueAnArray = Array.isArray(rule.value);
         const isNumberInput =
-            getDataType(rule.field) === DataType.NUMBER && !isValueAnArray;
+            getDataType(rule.field, rule.operator) === DataType.NUMBER &&
+            !isValueAnArray;
         const isStringInput =
-            getDataType(rule.field) === DataType.STRING && !isValueAnArray;
+            getDataType(rule.field, rule.operator) === DataType.STRING &&
+            !isValueAnArray;
         if (rule.id && rule.operator === OPERATOR_OPTIONS.EXISTS.name) {
             // In the case of EXISTS operator, because we do not have a second value to evaluate, we force a valid result.
             result[rule.id] = {
@@ -253,7 +297,7 @@ export const queryValidator: QueryValidator = (query) => {
             if (!rule.value?.[0] || !rule.value?.[1]) {
                 result[rule.id] = {
                     valid: false,
-                    reasons: [FieldConstants.EMPTY_RULE],
+                    reasons: [EMPTY_RULE],
                 };
             } else if (
                 isNaN(parseFloat(rule.value[0])) ||
@@ -261,12 +305,12 @@ export const queryValidator: QueryValidator = (query) => {
             ) {
                 result[rule.id] = {
                     valid: false,
-                    reasons: [FieldConstants.INCORRECT_RULE],
+                    reasons: [INCORRECT_RULE],
                 };
             } else if (parseFloat(rule.value[0]) >= parseFloat(rule.value[1])) {
                 result[rule.id] = {
                     valid: false,
-                    reasons: [FieldConstants.BETWEEN_RULE],
+                    reasons: [BETWEEN_RULE],
                 };
             }
         } else if (
@@ -276,7 +320,7 @@ export const queryValidator: QueryValidator = (query) => {
         ) {
             result[rule.id] = {
                 valid: false,
-                reasons: [FieldConstants.EMPTY_RULE],
+                reasons: [EMPTY_RULE],
             };
         } else if (
             rule.id &&
@@ -285,12 +329,22 @@ export const queryValidator: QueryValidator = (query) => {
         ) {
             result[rule.id] = {
                 valid: false,
-                reasons: [FieldConstants.EMPTY_RULE],
+                reasons: [EMPTY_RULE],
             };
         } else if (rule.id && isNumberInput && isNaN(parseFloat(rule.value))) {
             result[rule.id] = {
                 valid: false,
-                reasons: [FieldConstants.INCORRECT_RULE],
+                reasons: [INCORRECT_RULE],
+            };
+        } else if (
+            rule.id &&
+            (rule.operator === OPERATOR_OPTIONS.IS_PART_OF.name ||
+                rule.operator === OPERATOR_OPTIONS.IS_NOT_PART_OF.name) &&
+            (!rule.value?.length || !uuidValidate(rule.value[0]))
+        ) {
+            result[rule.id] = {
+                valid: false,
+                reasons: [EMPTY_RULE],
             };
         }
     };
@@ -298,7 +352,7 @@ export const queryValidator: QueryValidator = (query) => {
     const validateGroup = (ruleGroup: RuleGroupTypeAny) => {
         const reasons: any[] = [];
         if (ruleGroup.rules.length === 0) {
-            reasons.push(FieldConstants.EMPTY_GROUP);
+            reasons.push(EMPTY_GROUP);
         }
         if (ruleGroup.id) {
             if (reasons.length) {
