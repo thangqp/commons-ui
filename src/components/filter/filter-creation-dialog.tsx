@@ -12,7 +12,7 @@ import {
     saveExplicitNamingFilter,
 } from './filters-utils';
 import { Resolver, useForm } from 'react-hook-form';
-import { useSnackMessage } from '../../hooks/useSnackMessage';
+import { useSnackMessage } from '../../hooks/useSnackMessage.ts';
 import CustomMuiDialog from '../commons/custom-mui-dialog/custom-mui-dialog';
 import {
     criteriaBasedFilterEmptyFormData,

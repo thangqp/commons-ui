@@ -12,17 +12,17 @@ import { FormattedMessage } from 'react-intl';
 import React from 'react';
 
 interface ActionWithRulesAndAddersWithLabelProps
-  extends ActionWithRulesAndAddersProps {
-  label: string;
+    extends ActionWithRulesAndAddersProps {
+    label: string;
 }
 
 const AddButton = (props: ActionWithRulesAndAddersWithLabelProps) => (
-  <span>
+    <span>
         <Button
-          startIcon={<AddIcon />}
-          onClick={props.handleOnClick}
-          size={'small'}
-          className={'add-button'}
+            startIcon={<AddIcon />}
+            onClick={props.handleOnClick}
+            size={'small'}
+            className={'add-button'}
         >
             <FormattedMessage id={props.label} />
         </Button>

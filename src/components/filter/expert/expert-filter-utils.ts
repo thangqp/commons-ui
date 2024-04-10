@@ -6,15 +6,16 @@
  */
 
 import {
-  defaultOperators,
-  findPath,
-  getParentPath,
-  QueryValidator,
-  remove,
-  RuleGroupType,
-  RuleGroupTypeAny, RuleType,
-  ValidationMap
-} from "react-querybuilder";
+    defaultOperators,
+    findPath,
+    getParentPath,
+    QueryValidator,
+    remove,
+    RuleGroupType,
+    RuleGroupTypeAny,
+    RuleType,
+    ValidationMap,
+} from 'react-querybuilder';
 import { IntlShape } from 'react-intl';
 import {
     CombinatorType,
@@ -25,9 +26,15 @@ import {
     RuleTypeExport,
 } from './expert-filter.type';
 import { validate as uuidValidate } from 'uuid';
-import { FIELDS_OPTIONS, OPERATOR_OPTIONS } from "../constants/expert-filter-constants.ts";
-import { microUnitToUnit, unitToMicroUnit } from "../../../utils/conversion-utils.ts";
-import { FieldConstants } from "../constants/field-constants.ts";
+import {
+    FIELDS_OPTIONS,
+    OPERATOR_OPTIONS,
+} from '../constants/expert-filter-constants.ts';
+import {
+    microUnitToUnit,
+    unitToMicroUnit,
+} from '../../../utils/conversion-utils.ts';
+import { FieldConstants } from '../constants/field-constants.ts';
 
 type CustomRuleType = RuleType & { dataType: DataType };
 type CustomRuleGroupType = RuleGroupType & { dataType: DataType };

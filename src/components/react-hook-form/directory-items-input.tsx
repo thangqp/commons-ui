@@ -14,13 +14,11 @@ import {
     Tooltip,
 } from '@mui/material';
 import OverflowableText from '../OverflowableText';
-import { useSnackMessage } from '../../hooks/useSnackMessage';
 import FieldLabel from './utils/field-label';
 import FolderIcon from '@mui/icons-material/Folder';
 import { FunctionComponent, useCallback, useMemo, useState } from 'react';
 import { useController, useFieldArray } from 'react-hook-form';
 import { useIntl } from 'react-intl';
-import ErrorInput from '../react-hook-form/error-management/error-input.jsx';
 import MidFormError from '../react-hook-form/error-management/mid-form-error.jsx';
 import { RawReadOnlyInput } from './raw-read-only-input';
 import { mergeSx } from '../../utils/styles.js';
@@ -28,6 +26,8 @@ import DirectoryItemSelector from '../DirectoryItemSelector/directory-item-selec
 import { UUID } from 'crypto';
 import { useCustomFormContext } from './provider/use-custom-form-context';
 import { isFieldRequired } from './utils/functions';
+import ErrorInput from "./error-management/error-input.tsx";
+import { useSnackMessage } from '../../hooks/useSnackMessage.ts';
 
 export const NAME = 'name';
 
@@ -70,12 +70,12 @@ interface DirectoryItemsInputProps {
     onRowChanged?: (a: boolean) => void;
     onChange?: (e: any) => void;
     disable?: boolean;
-    fetchDirectoryContent: (
+    fetchDirectoryContent?: (
         directoryUuid: UUID,
         elementTypes: string[]
     ) => Promise<any>;
-    fetchRootFolders: (types: string[]) => Promise<any>;
-    fetchElementsInfos: (
+    fetchRootFolders?: (types: string[]) => Promise<any>;
+    fetchElementsInfos?: (
         ids: UUID[],
         elementTypes: string[],
         equipmentTypes?: string[]

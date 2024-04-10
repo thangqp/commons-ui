@@ -16,44 +16,17 @@ import {
     PARAM_LANGUAGE,
     getComputedLanguage,
 } from '../rhf-inputs/select-inputs/countries-input';
+import { useLocalizedCountries } from '../localized-countries-hook';
 
 interface CountryValueEditorProps {
     paramGlobalState: unknown;
     updateParam: (param: unknown) => Promise<unknown>;
 }
 
-const CountryValueEditor = (props: ValueEditorProps & CountryValueEditorProps) => {
-    const [languageLocal] = useParameterState(
-        PARAM_LANGUAGE,
-        props.paramGlobalState,
-        props.updateParam
-    );
-    const countriesListCB = useCallback(() => {
-        try {
-            return require('localized-countries')(
-                require('localized-countries/data/' +
-                    getComputedLanguage(languageLocal as string).substr(0, 2))
-            );
-        } catch (error) {
-            // fallback to English if no localized list is found
-            return require('localized-countries')(
-                require('localized-countries/data/en')
-            );
-        }
-    }, [languageLocal]);
-
-    const countriesList = useMemo(
-        () =>
-            Object.keys(countriesListCB().object()).map((country) => {
-                return { name: country, label: countriesListCB().get(country) };
-            }),
-        [countriesListCB]
-    );
-
-    const countriesListAutocomplete = useMemo(
-        () => countriesListCB(),
-        [countriesListCB]
-    );
+const CountryValueEditor = (
+    props: ValueEditorProps & CountryValueEditorProps
+) => {
+    const { translate, countryCodes } = useLocalizedCountries();
 
     // When we switch to 'in' operator, we need to switch the input value to an array and vice versa
     useConvertValue(props);
@@ -65,7 +38,7 @@ const CountryValueEditor = (props: ValueEditorProps & CountryValueEditorProps) =
         return (
             <MaterialValueEditor
                 {...props}
-                values={countriesList}
+                values={countryCodes}
                 title={undefined} // disable the tooltip
             />
         );
@@ -73,10 +46,8 @@ const CountryValueEditor = (props: ValueEditorProps & CountryValueEditorProps) =
         return (
             <Autocomplete
                 value={props.value}
-                options={Object.keys(countriesListAutocomplete.object())}
-                getOptionLabel={(code: string) =>
-                    countriesListAutocomplete.get(code)
-                }
+                options={countryCodes}
+                getOptionLabel={(code: string) => translate(code)}
                 onChange={(event, value: any) => props.handleOnChange(value)}
                 multiple
                 fullWidth

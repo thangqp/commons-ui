@@ -7,6 +7,7 @@ import {
     LANG_FRENCH,
     LANG_SYSTEM,
 } from '../../../components/TopBar/topBarConstants';
+import { useLocalizedCountries } from '../../localized-countries-hook';
 
 const supportedLanguages = [LANG_FRENCH, LANG_ENGLISH];
 
@@ -36,37 +37,14 @@ export const CountriesInput: FunctionComponent<CountryInputProps> = ({
     paramGlobalState,
     updateParam,
 }) => {
-    const [languageLocal] = useParameterState(
-        PARAM_LANGUAGE,
-        paramGlobalState,
-        updateParam
-    );
-    const countriesListCB = useCallback(() => {
-        try {
-            return require('localized-countries')(
-                require('localized-countries/data/' +
-                    getComputedLanguage(languageLocal as string).substr(0, 2))
-            );
-        } catch (error) {
-            // fallback to english if no localised list found
-            return require('localized-countries')(
-                require('localized-countries/data/en')
-            );
-        }
-    }, [languageLocal]);
-
-    const countriesList = useMemo(() => countriesListCB(), [countriesListCB]);
-
-    const getLabel = (code: string | { id: string; label: string }) => {
-        return countriesList.get(code);
-    };
+    const { translate, countryCodes } = useLocalizedCountries();
 
     return (
         <AutocompleteInput
             name={name}
             label={label}
-            options={Object.keys(countriesList.object())}
-            getOptionLabel={getLabel}
+            options={countryCodes}
+            getOptionLabel={translate}
             fullWidth
             multiple
             renderTags={(val: any[], getTagsProps: any) =>
@@ -74,7 +52,7 @@ export const CountriesInput: FunctionComponent<CountryInputProps> = ({
                     <Chip
                         key={code}
                         size={'small'}
-                        label={getLabel(code)}
+                        label={translate(code)}
                         {...getTagsProps({ index })}
                     />
                 ))
