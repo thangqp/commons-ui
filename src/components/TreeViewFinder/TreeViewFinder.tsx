@@ -32,7 +32,7 @@ import {
     ModalProps,
 } from '@mui/material';
 
-import { TreeItem, TreeView, TreeViewClasses } from '@mui/lab';
+import { TreeItem, TreeView, TreeViewClasses } from '@mui/x-tree-view';
 import {
     Check as CheckIcon,
     ChevronRight as ChevronRightIcon,
