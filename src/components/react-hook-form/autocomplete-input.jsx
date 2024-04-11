@@ -7,7 +7,7 @@
 
 import PropTypes from 'prop-types';
 import { Autocomplete, TextField } from '@mui/material';
-import { useController, useFormContext } from 'react-hook-form';
+import { useController } from 'react-hook-form';
 import {
     genHelperError,
     genHelperPreviousValue,
@@ -15,6 +15,7 @@ import {
     isFieldRequired,
 } from './utils/functions';
 import FieldLabel from './utils/field-label';
+import { useCustomFormContext } from './provider/use-custom-form-context';
 
 const AutocompleteInput = ({
     name,
@@ -29,7 +30,8 @@ const AutocompleteInput = ({
     formProps,
     ...props
 }) => {
-    const { validationSchema, getValues, removeOptional } = useFormContext();
+    const { validationSchema, getValues, removeOptional } =
+        useCustomFormContext();
     const {
         field: { onChange, value, ref },
         fieldState: { error },
