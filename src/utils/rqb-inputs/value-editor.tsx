@@ -26,7 +26,7 @@ import {
 } from '../../components/filter/expert/expert-filter.type.ts';
 import { VoltageLevel } from '../../components/filter/constants/equipment-types.ts';
 import ElementValueEditor from './element-value-editor.tsx';
-import { ElementType } from "../ElementType.ts";
+import { ElementType } from '../ElementType.ts';
 
 const styles = {
     noArrows: {
