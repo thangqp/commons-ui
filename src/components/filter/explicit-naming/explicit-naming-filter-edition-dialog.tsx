@@ -17,12 +17,11 @@ import {
     explicitNamingFilterSchema,
     FILTER_EQUIPMENTS_ATTRIBUTES,
 } from './explicit-naming-filter-form';
-import { FieldConstants } from '../constants/field-constants';
+import { FieldConstants, FilterType } from '../constants/field-constants';
 
 import { FilterForm } from '../filter-form';
 import { v4 as uuid4 } from 'uuid';
 import { noSelectionForCopy } from '../constants/equipment-types';
-import { FilterType } from '../constants/field-constants';
 import { FetchStatus } from '../../../hooks/customHooks';
 import { UUID } from 'crypto';
 import { elementExistsType } from '../criteria-based/criteria-based-filter-edition-dialog.tsx';
@@ -57,6 +56,7 @@ interface ExplicitNamingFilterEditionDialogProps {
     saveFilter: (filter: any, name: string) => Promise<any>;
     activeDirectory?: UUID;
     elementExists?: elementExistsType;
+    language?: string;
 }
 
 const ExplicitNamingFilterEditionDialog = ({
@@ -74,6 +74,7 @@ const ExplicitNamingFilterEditionDialog = ({
     saveFilter,
     activeDirectory,
     elementExists,
+    language,
 }: ExplicitNamingFilterEditionDialogProps) => {
     const { snackError } = useSnackMessage();
     const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
@@ -172,6 +173,7 @@ const ExplicitNamingFilterEditionDialog = ({
             removeOptional={true}
             disabledSave={!!nameError || !!isValidating}
             isDataFetching={dataFetchStatus === FetchStatus.FETCHING}
+            language={language}
         >
             {isDataReady && (
                 <FilterForm

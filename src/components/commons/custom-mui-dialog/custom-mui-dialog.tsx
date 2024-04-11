@@ -6,18 +6,19 @@
  */
 
 import React, { FunctionComponent } from 'react';
-import { FieldErrors, FormProvider } from 'react-hook-form';
+import { FieldErrors } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 import {
+    Dialog,
     DialogActions,
     DialogContent,
+    DialogTitle,
     Grid,
     LinearProgress,
-    Dialog,
-    DialogTitle,
 } from '@mui/material';
 import SubmitButton from '../../react-hook-form/utils/submit-button';
 import CancelButton from '../../react-hook-form/utils/cancel-button';
+import CustomFormProvider from '../../react-hook-form/provider/custom-form-provider.tsx';
 
 interface ICustomMuiDialog {
     open: boolean;
@@ -32,6 +33,7 @@ interface ICustomMuiDialog {
     onCancel?: () => void;
     children: React.ReactNode;
     isDataFetching?: boolean;
+    language?: string;
 }
 
 const styles = {
@@ -57,6 +59,7 @@ const CustomMuiDialog: FunctionComponent<ICustomMuiDialog> = ({
     removeOptional = false,
     onCancel,
     children,
+    language,
 }) => {
     const { handleSubmit } = formMethods;
 
@@ -82,10 +85,11 @@ const CustomMuiDialog: FunctionComponent<ICustomMuiDialog> = ({
     };
 
     return (
-        <FormProvider
+        <CustomFormProvider
             validationSchema={formSchema}
             {...formMethods}
             removeOptional={removeOptional}
+            language={language}
         >
             <Dialog
                 sx={styles.dialogPaper}
@@ -112,7 +116,7 @@ const CustomMuiDialog: FunctionComponent<ICustomMuiDialog> = ({
                     />
                 </DialogActions>
             </Dialog>
-        </FormProvider>
+        </CustomFormProvider>
     );
 };
 

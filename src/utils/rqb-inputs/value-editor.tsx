@@ -25,7 +25,6 @@ import {
     FieldType,
     OperatorType,
 } from '../../components/filter/expert/expert-filter.type.ts';
-import { EQUIPMENT_TYPE } from '../EquipmentType.ts';
 import { VoltageLevel } from '../../components/filter/constants/equipment-types.ts';
 import ElementValueEditor from './element-value-editor.tsx';
 

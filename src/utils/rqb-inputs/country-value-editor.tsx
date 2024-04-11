@@ -6,17 +6,11 @@
  */
 
 import { ValueEditorProps } from 'react-querybuilder';
-import { useCallback, useMemo } from 'react';
 import { MaterialValueEditor } from '@react-querybuilder/material';
-import { useParameterState } from '../../hooks/useParameterState';
 import { Autocomplete, TextField } from '@mui/material';
 import useConvertValue from './use-convert-value';
 import useValid from './use-valid';
-import {
-    PARAM_LANGUAGE,
-    getComputedLanguage,
-} from '../rhf-inputs/select-inputs/countries-input';
-import { useLocalizedCountries } from '../localized-countries-hook';
+import { useLocalizedCountries } from '../localized-countries-hook.js';
 
 interface CountryValueEditorProps {
     paramGlobalState: unknown;

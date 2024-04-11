@@ -11,10 +11,12 @@ const config: Config = {
     testEnvironment: 'jsdom',
     moduleNameMapper: {
         '^.+\\.svg\\?react$': 'jest-svg-transformer',
+        '^.+\\.(css|less|scss)$': 'identity-obj-proxy',
     },
     globals: {
         IS_REACT_ACT_ENVIRONMENT: true,
     },
+    setupFiles: ['<rootDir>/jest.setup.ts'],
 };
 
 export default config;

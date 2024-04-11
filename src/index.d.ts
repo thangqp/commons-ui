@@ -5,18 +5,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import type { FunctionComponent, ReactElement } from 'react';
-import type {
-    ButtonProps,
-    CheckboxProps,
-    RadioGroupProps,
-    SwitchProps,
-    SxProps,
-    TextFieldProps,
-} from '@mui/material';
-import { UseSnackMessageReturn } from './hooks/useSnackMessage';
-import { AutocompleteInputProps } from './components/react-hook-form/autocomplete-input';
-import { ErrorInputProps } from './components/react-hook-form/error-management/error-input';
+import type { FunctionComponent, ReactElement } from "react";
+import type { ButtonProps, CheckboxProps, RadioGroupProps, SwitchProps, SxProps, TextFieldProps } from "@mui/material";
+import { UseSnackMessageReturn } from "./hooks/useSnackMessage";
+import { AutocompleteInputProps } from "./components/react-hook-form/autocomplete-input";
+import { ErrorInputProps } from "./components/react-hook-form/error-management/error-input";
 
 /**
  * Section to export generated type declarations
@@ -145,7 +138,6 @@ export { InputWithPopupConfirmation } from './utils/rhf-inputs/select-inputs/inp
 export { MuiSelectInput } from './utils/rhf-inputs/select-inputs/mui-select-input';
 export {
     CountriesInput,
-    PARAM_LANGUAGE,
     getSystemLanguage,
     getComputedLanguage,
 } from './utils/rhf-inputs/select-inputs/countries-input';

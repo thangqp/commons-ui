@@ -73,6 +73,7 @@ export interface FilterCreationDialogProps {
     saveFilter: (filter: any, name: string) => Promise<any>;
     fetchAppsAndUrls: () => Promise<any>;
     elementExists?: elementExistsType;
+    language?: string;
 }
 
 const FilterCreationDialog = ({
@@ -83,6 +84,7 @@ const FilterCreationDialog = ({
     saveFilter,
     fetchAppsAndUrls,
     elementExists,
+    language,
 }: FilterCreationDialogProps) => {
     const { snackError } = useSnackMessage();
 
@@ -171,6 +173,7 @@ const FilterCreationDialog = ({
             titleId={'createNewFilter'}
             removeOptional={true}
             disabledSave={!!nameError || !!isValidating}
+            language={language}
         >
             <FilterForm
                 creation

@@ -145,7 +145,6 @@ export { default as InputWithPopupConfirmation } from './utils/rhf-inputs/select
 export { default as MuiSelectInput } from './utils/rhf-inputs/select-inputs/mui-select-input';
 export {
     default as CountriesInput,
-    PARAM_LANGUAGE,
     getSystemLanguage,
     getComputedLanguage,
 } from './utils/rhf-inputs/select-inputs/countries-input';

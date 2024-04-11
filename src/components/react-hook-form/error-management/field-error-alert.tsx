@@ -6,11 +6,15 @@
  */
 
 import { Alert, Grid } from '@mui/material';
-import { ReactElement } from 'react';
+import React from 'react';
 
 // component to display alert when a specific rhf field is in error
 // this component needs to be isolated to avoid too many rerenders
-const FieldErrorAlert = ({ message }: { message: string | ReactElement }) => {
+const FieldErrorAlert = ({
+    message,
+}: {
+    message: string | React.ReactNode;
+}) => {
     return (
         <Grid item xs={12}>
             <Alert severity="error">{message}</Alert>

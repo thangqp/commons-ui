@@ -9,19 +9,14 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import localizedCountries from 'localized-countries';
 import countriesFr from 'localized-countries/data/fr';
 import countriesEn from 'localized-countries/data/en';
-import { useParameterState } from '../hooks/useParameterState';
-import {
-    PARAM_LANGUAGE,
-    getComputedLanguage,
-} from './rhf-inputs/select-inputs/countries-input';
+import { getComputedLanguage } from './rhf-inputs/select-inputs/countries-input';
 
-export const useLocalizedCountries = () => {
-    const [languageLocal] = useParameterState(PARAM_LANGUAGE);
+export const useLocalizedCountries = (language) => {
     const [localizedCountriesModule, setLocalizedCountriesModule] = useState();
 
     //TODO FM this is disgusting, can we make it better ?
     useEffect(() => {
-        const lang = getComputedLanguage(languageLocal).substr(0, 2);
+        const lang = getComputedLanguage(language).substring(0, 2);
         let localizedCountriesResult;
         // vite does not support ESM dynamic imports on node_modules, so we have to imports the languages before and do this
         // https://github.com/vitejs/vite/issues/14102
@@ -38,7 +33,7 @@ export const useLocalizedCountries = () => {
             localizedCountriesResult = localizedCountries(countriesEn);
         }
         setLocalizedCountriesModule(localizedCountriesResult);
-    }, [languageLocal]);
+    }, [language]);
 
     const countryCodes = useMemo(
         () =>

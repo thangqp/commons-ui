@@ -6,14 +6,13 @@
  */
 
 import { useCallback, useEffect, useState } from 'react';
-import { FilterType } from '../constants/field-constants';
+import { FieldConstants, FilterType } from '../constants/field-constants';
 import { noSelectionForCopy } from '../constants/equipment-types';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
 import CustomMuiDialog from '../../commons/custom-mui-dialog/custom-mui-dialog';
 import yup from '../../../utils/yup-config';
-import { FieldConstants } from '../constants/field-constants';
 import { FetchStatus } from '../../../hooks/customHooks';
 import { FilterForm } from '../filter-form';
 import { EXPERT_FILTER_QUERY, expertFilterSchema } from './expert-filter-form';
@@ -53,6 +52,7 @@ export interface ExpertFilterEditionDialogProps {
     saveFilter: (filter: any, name: string) => Promise<any>;
     activeDirectory?: UUID;
     elementExists?: elementExistsType;
+    language?: string;
 }
 
 export const ExpertFilterEditionDialog = ({
@@ -70,6 +70,7 @@ export const ExpertFilterEditionDialog = ({
     saveFilter,
     activeDirectory,
     elementExists,
+    language,
 }: ExpertFilterEditionDialogProps) => {
     const { snackError } = useSnackMessage();
     const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
@@ -165,6 +166,7 @@ export const ExpertFilterEditionDialog = ({
             removeOptional={true}
             disabledSave={!!nameError || !!isValidating}
             isDataFetching={dataFetchStatus === FetchStatus.FETCHING}
+            language={language}
         >
             {isDataReady && (
                 <FilterForm

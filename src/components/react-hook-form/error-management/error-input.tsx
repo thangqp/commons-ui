@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { MutableRefObject, ReactElement, useEffect, useRef } from 'react';
+import React, { MutableRefObject, useEffect, useRef } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useController } from 'react-hook-form';
 
@@ -14,8 +14,8 @@ export interface ErrorInputProps {
     InputField?: ({
         message,
     }: {
-        message: string | ReactElement;
-    }) => ReactElement;
+        message: string | React.ReactNode;
+    }) => React.ReactNode;
 }
 
 const ErrorInput = ({ name, InputField }: ErrorInputProps) => {

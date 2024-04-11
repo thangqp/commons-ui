@@ -1,5 +1,4 @@
-import { useParameterState } from '../../../hooks/useParameterState';
-import { useCallback, useMemo, FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { Chip } from '@mui/material';
 import AutocompleteInput from '../../../components/react-hook-form/autocomplete-input';
 import {
@@ -8,10 +7,9 @@ import {
     LANG_SYSTEM,
 } from '../../../components/TopBar/topBarConstants';
 import { useLocalizedCountries } from '../../localized-countries-hook';
+import { useCustomFormContext } from '../../../components/react-hook-form/provider/use-custom-form-context.ts';
 
 const supportedLanguages = [LANG_FRENCH, LANG_ENGLISH];
-
-export const PARAM_LANGUAGE = 'language';
 
 export const getSystemLanguage = () => {
     const systemLanguage = navigator.language.split(/[-_]/)[0];
@@ -20,24 +18,21 @@ export const getSystemLanguage = () => {
         : LANG_ENGLISH;
 };
 
-export const getComputedLanguage = (language: string) => {
+export const getComputedLanguage = (language: string): string => {
     return language === LANG_SYSTEM ? getSystemLanguage() : language;
 };
 
 interface CountryInputProps {
     name: string;
     label: string;
-    paramGlobalState: unknown;
-    updateParam: (param: unknown) => Promise<unknown>;
 }
 
 export const CountriesInput: FunctionComponent<CountryInputProps> = ({
     name,
     label,
-    paramGlobalState,
-    updateParam,
 }) => {
-    const { translate, countryCodes } = useLocalizedCountries();
+    const { language } = useCustomFormContext();
+    const { translate, countryCodes } = useLocalizedCountries(language);
 
     return (
         <AutocompleteInput

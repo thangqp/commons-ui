@@ -26,7 +26,7 @@ import DirectoryItemSelector from '../DirectoryItemSelector/directory-item-selec
 import { UUID } from 'crypto';
 import { useCustomFormContext } from './provider/use-custom-form-context';
 import { isFieldRequired } from './utils/functions';
-import ErrorInput from "./error-management/error-input.tsx";
+import ErrorInput from './error-management/error-input.tsx';
 import { useSnackMessage } from '../../hooks/useSnackMessage.ts';
 
 export const NAME = 'name';

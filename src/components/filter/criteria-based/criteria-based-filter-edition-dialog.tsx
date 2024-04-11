@@ -5,28 +5,19 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import {
-    Dispatch,
-    SetStateAction,
-    useCallback,
-    useEffect,
-    useState,
-} from 'react';
-import { FilterType, FieldConstants } from '../constants/field-constants';
-import {
-    backToFrontTweak,
-    frontToBackTweak,
-} from './criteria-based-filter-utils';
-import CustomMuiDialog from '../../commons/custom-mui-dialog/custom-mui-dialog';
-import { useSnackMessage } from '../../../hooks/useSnackMessage';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { criteriaBasedFilterSchema } from './criteria-based-filter-form';
-import yup from '../../../utils/yup-config';
-import { FetchStatus } from '../../../hooks/customHooks';
-import { FilterForm } from '../filter-form';
-import { ElementType } from '../../..';
-import { UUID } from 'crypto';
+import { Dispatch, SetStateAction, useCallback, useEffect, useState } from "react";
+import { FieldConstants, FilterType } from "../constants/field-constants";
+import { backToFrontTweak, frontToBackTweak } from "./criteria-based-filter-utils";
+import CustomMuiDialog from "../../commons/custom-mui-dialog/custom-mui-dialog";
+import { useSnackMessage } from "../../../hooks/useSnackMessage";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { criteriaBasedFilterSchema } from "./criteria-based-filter-form";
+import yup from "../../../utils/yup-config";
+import { FetchStatus } from "../../../hooks/customHooks";
+import { FilterForm } from "../filter-form";
+import { ElementType } from "../../..";
+import { UUID } from "crypto";
 
 export type SelectionCopy = {
     sourceItemUuid: UUID | null;
@@ -74,6 +65,7 @@ interface CriteriaBasedFilterEditionDialogProps {
     ) => Dispatch<SetStateAction<SelectionCopy>>;
     activeDirectory?: UUID;
     elementExists?: elementExistsType;
+    language?: string;
 }
 
 export const CriteriaBasedFilterEditionDialog = ({
@@ -90,6 +82,7 @@ export const CriteriaBasedFilterEditionDialog = ({
     setSelelectionForCopy,
     activeDirectory,
     elementExists,
+    language,
 }: CriteriaBasedFilterEditionDialogProps) => {
     const { snackError } = useSnackMessage();
     const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
@@ -174,6 +167,7 @@ export const CriteriaBasedFilterEditionDialog = ({
             removeOptional={true}
             disabledSave={!!nameError || !!isValidating}
             isDataFetching={dataFetchStatus === FetchStatus.FETCHING}
+            language={language}
         >
             {isDataReady && (
                 <FilterForm
