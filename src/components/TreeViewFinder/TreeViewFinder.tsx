@@ -147,7 +147,7 @@ export interface TreeViewFinderProps {
 const TreeViewFinder = (props: TreeViewFinderProps) => {
     const intl = useIntl();
     const {
-        classes,
+        classes = {},
         title,
         contentText,
         open,
@@ -171,11 +171,11 @@ const TreeViewFinder = (props: TreeViewFinderProps) => {
 
     // Controlled expanded for TreeView
     const [expanded, setExpanded] = useState<string[] | undefined>(
-        defaultExpanded
+        defaultExpanded ?? []
     );
     // Controlled selected for TreeView
     const [selected, setSelected] = useState<string[] | undefined>(
-        defaultSelected
+        defaultSelected ?? []
     );
 
     const scrollRef = useRef<any>([]);
@@ -193,7 +193,7 @@ const TreeViewFinder = (props: TreeViewFinderProps) => {
     const isValidationDisabled = () => {
         return (
             selected?.length === 0 ||
-            (selected?.length === selectedProp.length &&
+            (selected?.length === selectedProp?.length &&
                 selected?.every((nodeId) => selectedProp?.includes(nodeId)))
         );
     };
@@ -277,7 +277,7 @@ const TreeViewFinder = (props: TreeViewFinderProps) => {
         }
         // if we have selected elements by default, we scroll to it
         if (
-            (!Array.isArray(selectedProp) || selectedProp?.length > 0) &&
+            (!Array.isArray(selectedProp) || selectedProp.length > 0) &&
             autoScrollAllowed
         ) {
             // we check if all expanded nodes by default all already expanded first
@@ -436,7 +436,7 @@ const TreeViewFinder = (props: TreeViewFinderProps) => {
         if (!multiSelect) {
             return {
                 multiSelect: false as const,
-                selected: selected?.at(0),
+                selected: selected ? selected.at(0) : [],
             };
         }
         return {
