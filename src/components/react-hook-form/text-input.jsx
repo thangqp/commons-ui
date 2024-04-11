@@ -8,7 +8,7 @@
 import PropTypes from 'prop-types';
 import { IconButton, InputAdornment, TextField } from '@mui/material';
 import { Clear as ClearIcon } from '@mui/icons-material';
-import { useController, useFormContext } from 'react-hook-form';
+import { useController } from 'react-hook-form';
 import TextFieldWithAdornment from './utils/text-field-with-adornment';
 import FieldLabel from './utils/field-label';
 import {
@@ -17,6 +17,7 @@ import {
     identity,
     isFieldRequired,
 } from './utils/functions';
+import { useCustomFormContext } from './provider/use-custom-form-context';
 
 const TextInput = ({
     name,
@@ -32,7 +33,8 @@ const TextInput = ({
     clearable,
     formProps,
 }) => {
-    const { validationSchema, getValues, removeOptional } = useFormContext();
+    const { validationSchema, getValues, removeOptional } =
+        useCustomFormContext();
     const {
         field: { onChange, value, ref },
         fieldState: { error },
