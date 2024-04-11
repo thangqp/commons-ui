@@ -436,12 +436,12 @@ const TreeViewFinder = (props: TreeViewFinderProps) => {
         if (!multiSelect) {
             return {
                 multiSelect: false as const,
-                selected: selected ? selected.at(0) : [],
+                selected: selected && selected.length > 0 ? selected.at(0) : '',
             };
         }
         return {
             multiSelect: true as const,
-            selected: selected,
+            selected: selected ?? [],
         };
     };
 
