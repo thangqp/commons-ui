@@ -15,13 +15,13 @@ import {
 import { getFileIcon } from '../../utils/ElementIcon';
 import { ElementType } from '../../utils/ElementType';
 import { useSnackMessage } from '../../hooks/useSnackMessage.js';
-import TreeViewFinder from '../TreeViewFinder';
-import { Theme } from '@mui/material';
-import { UUID } from 'crypto';
 import {
+    default as TreeViewFinder,
     TreeViewFinderNodeProps,
     TreeViewFinderProps,
 } from '../TreeViewFinder/TreeViewFinder.js';
+import { Theme } from '@mui/material';
+import { UUID } from 'crypto';
 
 const styles = {
     icon: (theme: Theme) => ({

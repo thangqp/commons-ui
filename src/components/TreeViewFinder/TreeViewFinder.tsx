@@ -92,7 +92,7 @@ export interface TreeViewFinderProps {
     //TreeView Props
     defaultExpanded?: string[];
     defaultSelected?: string[];
-    selected: string[];
+    selected?: string[];
     expanded?: string[];
     multiSelect?: boolean;
     classes?: Partial<TreeViewClasses>;
@@ -101,7 +101,7 @@ export interface TreeViewFinderProps {
     // dialog props
     contentText?: string;
     open: ModalProps['open'];
-    onClose: (nodes: TreeViewFinderNodeProps[] | undefined) => void;
+    onClose: (nodes: TreeViewFinderNodeProps[]) => void;
     validationButtonText?: string;
     cancelButtonProps?: ButtonProps;
     title?: string;
@@ -141,8 +141,8 @@ export interface TreeViewFinderProps {
  * @param {Boolean}         [onlyLeaves=true] - Allow/Forbid selection only on leaves
  * @param {Boolean}         [multiSelect=false] - Allow/Forbid multiselection on Tree
  * @param {Object}          [cancelButtonProps] - The cancel button props
- * @param {Object}          [selected = []] - ids of selected items
- * @param {Array}           [expanded = []] - ids of the expanded items
+ * @param {Object}          [selected] - ids of selected items
+ * @param {Array}           [expanded] - ids of the expanded items
  */
 const TreeViewFinder = (props: TreeViewFinderProps) => {
     const intl = useIntl();
@@ -220,16 +220,13 @@ const TreeViewFinder = (props: TreeViewFinderProps) => {
         // compute all mapPrintedNodes here from data prop
         // if data changes in current expanded nodes
         let newMapPrintedNodes = computeMapPrintedNodes(data);
-        console.debug(
-            'data updated, new mapPrintedNodes (nbNodes = ',
-            Object.keys(newMapPrintedNodes).length,
-            ') : ',
-            newMapPrintedNodes
-        );
         setMapPrintedNodes(newMapPrintedNodes);
     }, [data, computeMapPrintedNodes]);
 
     const computeSelectedNodes = () => {
+        if (!selected) {
+            return [];
+        }
         return selected?.map((nodeId) => {
             return mapPrintedNodes[nodeId];
         });
@@ -251,7 +248,10 @@ const TreeViewFinder = (props: TreeViewFinderProps) => {
     };
 
     useEffect(() => {
-        if (selectedProp?.length > 0) {
+        if (!selectedProp) {
+            return;
+        }
+        if (selectedProp.length > 0) {
             setSelected((oldSelectedNodes) => [
                 ...(oldSelectedNodes ? oldSelectedNodes : []),
                 ...selectedProp,
@@ -276,10 +276,7 @@ const TreeViewFinder = (props: TreeViewFinderProps) => {
             return;
         }
         // if we have selected elements by default, we scroll to it
-        if (
-            (!Array.isArray(selectedProp) || selectedProp.length > 0) &&
-            autoScrollAllowed
-        ) {
+        if (selectedProp.length > 0 && autoScrollAllowed) {
             // we check if all expanded nodes by default all already expanded first
             const isNodeExpanded = expandedProp?.every((nodeId) =>
                 expanded?.includes(nodeId)
