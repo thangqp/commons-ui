@@ -12,11 +12,19 @@ import useConvertValue from './use-convert-value';
 import useValid from './use-valid';
 import { useLocalizedCountries } from '../localized-countries-hook.js';
 import { useCustomFormContext } from '../../components/react-hook-form/provider/use-custom-form-context.ts';
+import { useMemo } from 'react';
 
 const CountryValueEditor = (props: ValueEditorProps) => {
     const { language } = useCustomFormContext();
     const { translate, countryCodes } = useLocalizedCountries(language);
 
+    const countriesList = useMemo(
+        () =>
+            countryCodes.map((country: string) => {
+                return { name: country, label: translate(country) };
+            }),
+        [countryCodes, translate]
+    );
     // When we switch to 'in' operator, we need to switch the input value to an array and vice versa
     useConvertValue(props);
 
@@ -27,7 +35,7 @@ const CountryValueEditor = (props: ValueEditorProps) => {
         return (
             <MaterialValueEditor
                 {...props}
-                values={countryCodes}
+                values={countriesList}
                 title={undefined} // disable the tooltip
             />
         );
