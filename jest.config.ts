@@ -13,6 +13,8 @@ const config: Config = {
         '^.+\\.svg\\?react$': 'jest-svg-transformer',
         '^.+\\.(css|less|scss)$': 'identity-obj-proxy',
     },
+    // see https://github.com/react-dnd/react-dnd/issues/3443
+    transformIgnorePatterns: ['node_modules/(?!react-dnd)/'],
     globals: {
         IS_REACT_ACT_ENVIRONMENT: true,
     },
