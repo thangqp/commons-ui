@@ -8,7 +8,7 @@
 import React, { createContext, PropsWithChildren } from 'react';
 import { FormProvider, UseFormReturn } from 'react-hook-form';
 import * as yup from 'yup';
-import { getSystemLanguage } from "../../../utils/localized-countries-hook";
+import { getSystemLanguage } from '../../../utils/localized-countries-hook';
 
 type CustomFormContextProps = {
     removeOptional?: boolean;
