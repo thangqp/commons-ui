@@ -143,9 +143,7 @@ export {
 } from './utils/rhf-inputs/range-input';
 export { default as InputWithPopupConfirmation } from './utils/rhf-inputs/select-inputs/input-with-popup-confirmation';
 export { default as MuiSelectInput } from './utils/rhf-inputs/select-inputs/mui-select-input';
-export {
-    default as CountriesInput
-} from './utils/rhf-inputs/select-inputs/countries-input';
+export { default as CountriesInput } from './utils/rhf-inputs/select-inputs/countries-input';
 export { default as MultipleAutocompleteInput } from './utils/rhf-inputs/autocomplete-inputs/multiple-autocomplete-input';
 export { default as CsvUploader } from './utils/rhf-inputs/ag-grid-table-rhf/csv-uploader/csv-uploader';
 export { UniqueNameInput } from './components/commons/unique-name-input';
