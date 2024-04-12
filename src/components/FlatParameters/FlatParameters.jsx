@@ -208,6 +208,12 @@ export const FlatParameters = ({
         if (param.name === inEditionParam && uncommitted !== null) {
             return uncommitted;
         } else if (initValues && initValues.hasOwnProperty(param.name)) {
+            if (param.type === 'BOOLEAN') {
+                // on the server side, we only store String, so we eventually need to convert before
+                return initValues[param.name] === 'false'
+                    ? false
+                    : initValues[param.name]; // 'true' is truthly
+            }
             if (param.type !== 'STRING_LIST') {
                 return initValues[param.name];
             }
