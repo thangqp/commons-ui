@@ -252,17 +252,19 @@ const DirectoryItemsInput: FunctionComponent<DirectoryItemsInputProps> = ({
                 <Grid item xs>
                     <Grid container direction="row-reverse">
                         <Tooltip title={intl.formatMessage({ id: titleId })}>
-                            <IconButton
-                                sx={styles.addDirectoryElements}
-                                size={'small'}
-                                disabled={disable}
-                                onClick={() => {
-                                    setDirectoryItemSelectorOpen(true);
-                                    setMultiSelect(true);
-                                }}
-                            >
-                                <FolderIcon />
-                            </IconButton>
+                            <span>
+                                <IconButton
+                                    sx={styles.addDirectoryElements}
+                                    size={'small'}
+                                    disabled={disable}
+                                    onClick={() => {
+                                        setDirectoryItemSelectorOpen(true);
+                                        setMultiSelect(true);
+                                    }}
+                                >
+                                    <FolderIcon />
+                                </IconButton>
+                            </span>
                         </Tooltip>
                     </Grid>
                 </Grid>
