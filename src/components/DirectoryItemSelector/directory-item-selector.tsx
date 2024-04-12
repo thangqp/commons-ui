@@ -233,8 +233,8 @@ const DirectoryItemSelector: FunctionComponent<DirectoryItemSelectorProps> = ({
             multiSelect // defaulted to true
             open={open}
             expanded={expanded as string[]}
-            {...otherTreeViewFinderProps}
             onlyLeaves // defaulted to true
+            {...otherTreeViewFinderProps}
             data={data}
         />
     );
