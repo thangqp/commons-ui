@@ -75,11 +75,7 @@ const ValueEditor = (props: ValueEditorProps) => {
             props.field as FieldType
         )
     ) {
-        return (
-            <CountryValueEditor
-                {...props}
-            />
-        );
+        return <CountryValueEditor {...props} />;
     }
     if (
         props.field === FieldType.ENERGY_SOURCE ||
