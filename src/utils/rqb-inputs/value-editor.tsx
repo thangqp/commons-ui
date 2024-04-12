@@ -77,10 +77,6 @@ const ValueEditor = (props: ValueEditorProps) => {
     ) {
         return (
             <CountryValueEditor
-                paramGlobalState={undefined}
-                updateParam={function (param: unknown): Promise<unknown> {
-                    throw new Error('Function not implemented.');
-                }}
                 {...props}
             />
         );

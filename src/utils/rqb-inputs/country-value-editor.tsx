@@ -11,16 +11,13 @@ import { Autocomplete, TextField } from '@mui/material';
 import useConvertValue from './use-convert-value';
 import useValid from './use-valid';
 import { useLocalizedCountries } from '../localized-countries-hook.js';
-
-interface CountryValueEditorProps {
-    paramGlobalState: unknown;
-    updateParam: (param: unknown) => Promise<unknown>;
-}
+import { useCustomFormContext } from '../../components/react-hook-form/provider/use-custom-form-context.ts';
 
 const CountryValueEditor = (
-    props: ValueEditorProps & CountryValueEditorProps
+    props: ValueEditorProps
 ) => {
-    const { translate, countryCodes } = useLocalizedCountries();
+    const { language } = useCustomFormContext();
+    const { translate, countryCodes } = useLocalizedCountries(language);
 
     // When we switch to 'in' operator, we need to switch the input value to an array and vice versa
     useConvertValue(props);
