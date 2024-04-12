@@ -26,6 +26,7 @@ import { RawReadOnlyInput } from './raw-read-only-input';
 import { mergeSx } from '../../utils/styles.js';
 import DirectoryItemSelector from '../DirectoryItemSelector/directory-item-selector.tsx';
 import { UUID } from 'crypto';
+import { TreeViewFinderNodeProps } from '../TreeViewFinder/TreeViewFinder.tsx';
 import { useCustomFormContext } from './provider/use-custom-form-context';
 import { isFieldRequired } from './utils/functions';
 
@@ -105,7 +106,7 @@ const DirectoryItemsInput: FunctionComponent<DirectoryItemsInputProps> = ({
     const intl = useIntl();
     const [selected, setSelected] = useState<UUID[]>([]);
     const [expanded, setExpanded] = useState<UUID[]>([]);
-    const [multiselect, setMultiSelect] = useState(true);
+    const [multiSelect, setMultiSelect] = useState(true);
     const types = useMemo(() => [elementType], [elementType]);
     const [directoryItemSelectorOpen, setDirectoryItemSelectorOpen] =
         useState(false);
@@ -126,7 +127,10 @@ const DirectoryItemsInput: FunctionComponent<DirectoryItemsInputProps> = ({
     });
 
     const addElements = useCallback(
-        (values: any[]) => {
+        (values: TreeViewFinderNodeProps[] | undefined) => {
+            if (!values) {
+                return;
+            }
             // if we select a chip and return a new values, we remove it to be replaced
             if (selected?.length > 0 && values?.length > 0) {
                 selected.forEach((chip) => {
@@ -278,7 +282,7 @@ const DirectoryItemsInput: FunctionComponent<DirectoryItemsInputProps> = ({
                 fetchElementsInfos={fetchElementsInfos}
                 selected={selected}
                 expanded={expanded}
-                multiselect={multiselect}
+                multiSelect={multiSelect}
             />
         </>
     );

@@ -18,6 +18,10 @@ import { useSnackMessage } from '../../hooks/useSnackMessage.js';
 import TreeViewFinder from '../TreeViewFinder';
 import { Theme } from '@mui/material';
 import { UUID } from 'crypto';
+import {
+    TreeViewFinderNodeProps,
+    TreeViewFinderProps,
+} from '../TreeViewFinder/TreeViewFinder.js';
 
 const styles = {
     icon: (theme: Theme) => ({
@@ -27,12 +31,10 @@ const styles = {
     }),
 };
 
-interface DirectoryItemSelectorProps {
+interface DirectoryItemSelectorProps extends TreeViewFinderProps {
     open: boolean;
-    onClose: any;
     types: string[];
     equipmentTypes?: string[];
-    title: string;
     itemFilter?: any;
     fetchDirectoryContent: (
         directoryUuid: UUID,
@@ -44,37 +46,21 @@ interface DirectoryItemSelectorProps {
         elementTypes: string[],
         equipmentTypes: string[]
     ) => Promise<any>;
-    classes?: any;
-    contentText?: string;
-    validationButtonText?: string;
-    className?: string;
-    onlyLeaves?: boolean;
-    multiselect?: boolean;
-    selected?: UUID[];
     expanded?: UUID[];
-    treeViewFinderProps?: any;
 }
 
 const DirectoryItemSelector: FunctionComponent<DirectoryItemSelectorProps> = ({
     open,
-    onClose,
     types,
     equipmentTypes,
-    title,
     itemFilter,
     fetchDirectoryContent,
     fetchRootFolders,
     fetchElementsInfos,
-    classes,
-    contentText,
-    validationButtonText,
-    className,
-    onlyLeaves = true,
-    multiselect = true,
     expanded,
-    ...treeViewFinderProps
+    ...otherTreeViewFinderProps
 }) => {
-    const [data, setData] = useState<any[]>([]);
+    const [data, setData] = useState<TreeViewFinderNodeProps[]>([]);
     const [rootDirectories, setRootDirectories] = useState<any[]>([]);
     const nodeMap = useRef<any>({});
     const dataRef = useRef<any[]>([]);
@@ -83,8 +69,6 @@ const DirectoryItemSelector: FunctionComponent<DirectoryItemSelectorProps> = ({
     const rootsRef = useRef<any[]>([]);
     rootsRef.current = rootDirectories;
     const { snackError } = useSnackMessage();
-    const openRef = useRef<boolean>();
-    openRef.current = open;
     const contentFilter = useCallback(
         () => new Set([ElementType.DIRECTORY, ...types]),
         [types]
@@ -243,24 +227,16 @@ const DirectoryItemSelector: FunctionComponent<DirectoryItemSelectorProps> = ({
     }
 
     return (
-        <>
-            <TreeViewFinder
-                multiselect={multiselect}
-                onTreeBrowse={fetchDirectory}
-                data={data}
-                onlyLeaves={onlyLeaves}
-                sortMethod={sortHandlingDirectories}
-                title={title}
-                onClose={onClose}
-                open={open}
-                classes={classes}
-                contentText={contentText}
-                validationButtonText={validationButtonText}
-                className={className}
-                expanded={expanded}
-                {...treeViewFinderProps}
-            />
-        </>
+        <TreeViewFinder
+            onTreeBrowse={fetchDirectory as (NodeId: string) => void}
+            sortMethod={sortHandlingDirectories}
+            multiSelect // defaulted to true
+            open={open}
+            expanded={expanded as string[]}
+            {...otherTreeViewFinderProps}
+            onlyLeaves // defaulted to true
+            data={data}
+        />
     );
 };
 
