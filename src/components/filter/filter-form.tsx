@@ -19,6 +19,7 @@ import RadioInput from '../react-hook-form/radio-input';
 import { ElementType } from '../../utils/ElementType';
 import { UUID } from 'crypto';
 import { elementExistsType } from './criteria-based/criteria-based-filter-edition-dialog.tsx';
+import ExpandingTextField from "../react-hook-form/ExpandingTextField.tsx";
 
 interface FilterFormProps {
     creation?: boolean;
@@ -55,7 +56,12 @@ export const FilterForm: FunctionComponent<FilterFormProps> = (props) => {
             {props.creation && (
                 <>
                     <Grid item xs={12}>
-                        <DescriptionInput rows={5} />
+                      <ExpandingTextField
+                        name={FieldConstants.DESCRIPTION}
+                        label={'descriptionProperty'}
+                        minRows={3}
+                        rows={5}
+                      />
                     </Grid>
                     <Grid item>
                         <RadioInput

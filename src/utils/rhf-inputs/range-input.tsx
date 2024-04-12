@@ -106,10 +106,6 @@ const RangeInput = ({ name, label }: { name: string; label: string }) => {
             name={`${name}.${FieldConstants.OPERATION_TYPE}`}
             options={Object.values(RangeType)}
             fullWidth
-            style={{
-                borderRadius: '4px 0 0 4px',
-            }}
-            variant="filled"
         />
     );
 
