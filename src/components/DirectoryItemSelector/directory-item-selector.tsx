@@ -19,7 +19,7 @@ import {
     default as TreeViewFinder,
     TreeViewFinderNodeProps,
     TreeViewFinderProps,
-} from '../TreeViewFinder/TreeViewFinder.js';
+} from '../TreeViewFinder/TreeViewFinder';
 import { Theme } from '@mui/material';
 import { UUID } from 'crypto';
 
