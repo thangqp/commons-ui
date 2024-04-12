@@ -9,7 +9,24 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import localizedCountries from 'localized-countries';
 import countriesFr from 'localized-countries/data/fr';
 import countriesEn from 'localized-countries/data/en';
-import { getComputedLanguage } from './rhf-inputs/select-inputs/countries-input';
+import {
+    LANG_FRENCH,
+    LANG_ENGLISH,
+    LANG_SYSTEM,
+} from '../components/TopBar/topBarConstants';
+
+const supportedLanguages = [LANG_FRENCH, LANG_ENGLISH];
+
+export const getSystemLanguage = () => {
+    const systemLanguage = navigator.language.split(/[-_]/)[0];
+    return supportedLanguages.includes(systemLanguage)
+        ? systemLanguage
+        : LANG_ENGLISH;
+};
+
+export const getComputedLanguage = (language) => {
+    return language === LANG_SYSTEM ? getSystemLanguage() : language;
+};
 
 export const useLocalizedCountries = (language) => {
     const [localizedCountriesModule, setLocalizedCountriesModule] = useState();

@@ -15,19 +15,6 @@ import {
 import { useLocalizedCountries } from '../../localized-countries-hook';
 import { useCustomFormContext } from '../../../components/react-hook-form/provider/use-custom-form-context.ts';
 
-const supportedLanguages = [LANG_FRENCH, LANG_ENGLISH];
-
-export const getSystemLanguage = () => {
-    const systemLanguage = navigator.language.split(/[-_]/)[0];
-    return supportedLanguages.includes(systemLanguage)
-        ? systemLanguage
-        : LANG_ENGLISH;
-};
-
-export const getComputedLanguage = (language: string): string => {
-    return language === LANG_SYSTEM ? getSystemLanguage() : language;
-};
-
 interface CountryInputProps {
     name: string;
     label: string;
