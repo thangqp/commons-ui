@@ -11,7 +11,7 @@ import { createRoot } from 'react-dom/client';
 import { act } from 'react-dom/test-utils';
 import { IntlProvider } from 'react-intl';
 
-import TopBar from './TopBar';
+import TopBar, { LANG_ENGLISH } from './TopBar';
 import { top_bar_en } from '../../';
 
 import PowsyblLogo from '../images/powsybl_logo.svg?react';
@@ -60,6 +60,8 @@ it('renders', () => {
                         onLogoClick={() => {}}
                         user={{ profile: { name: 'John Doe' } }}
                         appsAndUrls={apps}
+                        language={LANG_ENGLISH}
+                        onLanguageClick={() => {}}
                     >
                         <p>testchild</p>
                     </TopBar>
