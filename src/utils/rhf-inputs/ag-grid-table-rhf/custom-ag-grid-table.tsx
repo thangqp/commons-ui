@@ -260,6 +260,13 @@ export const CustomAgGridTable = ({
                     getRowId={(row) =>
                         row.data[FieldConstants.AG_GRID_ROW_UUID]
                     }
+                    pagination={pagination}
+                    paginationPageSize={paginationPageSize}
+                    suppressRowClickSelection={suppressRowClickSelection}
+                    alwaysShowVerticalScroll={alwaysShowVerticalScroll}
+                    stopEditingWhenCellsLoseFocus={
+                        stopEditingWhenCellsLoseFocus
+                    }
                     {...props}
                 ></AgGridReact>
             </Grid>
