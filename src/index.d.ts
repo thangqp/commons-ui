@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import type { FunctionComponent, ReactElement } from 'react';
+import React, { FunctionComponent, ReactElement } from 'react';
 import type {
     ButtonProps,
     CheckboxProps,
@@ -17,6 +17,7 @@ import type {
 import { UseSnackMessageReturn } from './hooks/useSnackMessage';
 import { AutocompleteInputProps } from './components/react-hook-form/autocomplete-input';
 import { ErrorInputProps } from './components/react-hook-form/error-management/error-input';
+import { FieldErrors } from 'react-hook-form';
 
 /**
  * Section to export generated type declarations
@@ -174,6 +175,7 @@ export function logout(
 export const DARK_THEME: string, LIGHT_THEME: string;
 
 type Input = string | number;
+
 interface SnackInputs {
     messageTxt?: string;
     messageId?: string;
@@ -312,3 +314,44 @@ interface OverflowableTextProps {
 }
 
 export const OverflowableText: FunctionComponent<OverflowableTextProps>;
+
+interface ICustomMuiDialog {
+    open: boolean;
+    formSchema: any;
+    formMethods: any;
+    onClose: (event: React.MouseEvent) => void;
+    onSave: (data: any) => void;
+    onValidationError?: (errors: FieldErrors) => void;
+    titleId: string;
+    disabledSave?: boolean;
+    removeOptional?: boolean;
+    onCancel?: () => void;
+    children: React.ReactNode;
+    isDataFetching?: boolean;
+    language?: string;
+}
+
+export const CustomMuiDialog: FunctionComponent<ICustomMuiDialog>;
+
+interface IDescriptionModificationDialog {
+    elementUuid: string;
+    description: string;
+    open: boolean;
+    onClose: () => void;
+    updateElement: (uuid: string, data: unknown) => Promise<any>;
+}
+
+export const DescriptionModificationDialog: FunctionComponent<IDescriptionModificationDialog>;
+
+interface CriteriaBasedFormProps {
+    defaultValues: Record<string, any>;
+}
+
+export const CriteriaBasedForm: FunctionComponent<CriteriaBasedFormProps>;
+
+export {
+    getCriteriaBasedSchema,
+    getCriteriaBasedFormData,
+    CONTINGENCY_LIST_EQUIPMENTS,
+    FILTER_EQUIPMENTS,
+} from './components/filter/constants/criteria-based-utils';

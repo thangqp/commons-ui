@@ -14,7 +14,7 @@ import { useSnackMessage } from '../../../hooks/useSnackMessage';
 import CustomMuiDialog from '../custom-mui-dialog/custom-mui-dialog';
 import DescriptionInput from './description-input';
 
-interface IDescriptionModificationDialogue {
+interface IDescriptionModificationDialog {
     elementUuid: string;
     description: string;
     open: boolean;
@@ -28,8 +28,8 @@ const schema = yup.object().shape({
         .max(500, 'descriptionLimitError'),
 });
 
-const DescriptionModificationDialogue: FunctionComponent<
-    IDescriptionModificationDialogue
+const DescriptionModificationDialog: FunctionComponent<
+    IDescriptionModificationDialog
 > = ({ elementUuid, description, open, onClose, updateElement }) => {
     const { snackError } = useSnackMessage();
 
@@ -81,4 +81,4 @@ const DescriptionModificationDialogue: FunctionComponent<
     );
 };
 
-export default DescriptionModificationDialogue;
+export default DescriptionModificationDialog;

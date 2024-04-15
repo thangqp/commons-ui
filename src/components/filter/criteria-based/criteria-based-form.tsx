@@ -12,11 +12,11 @@ import SelectInput from '../../react-hook-form/select-input';
 import InputWithPopupConfirmation from '../../../utils/rhf-inputs/select-inputs/input-with-popup-confirmation';
 import { FILTER_EQUIPMENTS } from '../constants/criteria-based-utils';
 
-interface OwnProps {
+interface CriteriaBasedFormProps {
     defaultValues: Record<string, any>;
 }
 
-const CriteriaBasedForm = ({ defaultValues }: OwnProps) => {
+const CriteriaBasedForm = ({ defaultValues }: CriteriaBasedFormProps) => {
     const { getValues, setValue } = useFormContext();
 
     const watchEquipmentType = useWatch({

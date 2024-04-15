@@ -21,6 +21,16 @@ export { default as OverflowableText } from './components/OverflowableText';
 export { default as ElementSearchDialog } from './components/ElementSearchDialog';
 export { default as FlatParameters } from './components/FlatParameters';
 export { default as MultipleSelectionDialog } from './components/MultipleSelectionDialog';
+export { default as CustomMuiDialog } from './components/commons/custom-mui-dialog/custom-mui-dialog';
+export { default as DescriptionModificationDialog } from './components/commons/description-modification/description-modification-dialog';
+export { default as CriteriaBasedForm } from './components/filter/criteria-based/criteria-based-form';
+
+export {
+    getCriteriaBasedSchema,
+    getCriteriaBasedFormData,
+    CONTINGENCY_LIST_EQUIPMENTS,
+    FILTER_EQUIPMENTS,
+} from './components/filter/constants/criteria-based-utils';
 
 export { ElementType } from './utils/ElementType';
 
