@@ -32,6 +32,25 @@ export {
     FILTER_EQUIPMENTS,
 } from './components/filter/constants/criteria-based-utils';
 
+export {
+    Line,
+    Generator,
+    Load,
+    Battery,
+    SVC,
+    DanglingLine,
+    LCC,
+    VSC,
+    Hvdc,
+    BusBar,
+    TwoWindingTransfo,
+    ThreeWindingTransfo,
+    ShuntCompensator,
+    VoltageLevel,
+    Substation,
+    noSelectionForCopy,
+} from './components/filter/constants/equipment-types';
+
 export { ElementType } from './utils/ElementType';
 
 export {

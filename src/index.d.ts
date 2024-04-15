@@ -159,6 +159,25 @@ export {
 
 export { ElementType } from './utils/ElementType';
 
+export {
+    Line,
+    Generator,
+    Load,
+    Battery,
+    SVC,
+    DanglingLine,
+    LCC,
+    VSC,
+    Hvdc,
+    BusBar,
+    TwoWindingTransfo,
+    ThreeWindingTransfo,
+    ShuntCompensator,
+    VoltageLevel,
+    Substation,
+    noSelectionForCopy,
+} from './components/filter/constants/equipment-types';
+
 /**
  * Section to export manual type declarations of .js and .jsx files
  */
