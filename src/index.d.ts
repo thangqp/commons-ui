@@ -387,3 +387,13 @@ export {
     CONTINGENCY_LIST_EQUIPMENTS,
     FILTER_EQUIPMENTS,
 } from './components/filter/constants/criteria-based-utils';
+
+interface PopupConfirmationDialogProps {
+    message: string;
+    validateButtonLabel: string;
+    openConfirmationPopup: boolean;
+    setOpenConfirmationPopup: (value: boolean) => void;
+    handlePopupConfirmation: () => void;
+}
+
+export const PopupConfirmationDialog: FunctionComponent<PopupConfirmationDialogProps>;

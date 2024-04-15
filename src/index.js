@@ -24,6 +24,7 @@ export { default as MultipleSelectionDialog } from './components/MultipleSelecti
 export { default as CustomMuiDialog } from './components/commons/custom-mui-dialog/custom-mui-dialog';
 export { default as DescriptionModificationDialog } from './components/commons/description-modification/description-modification-dialog';
 export { default as CriteriaBasedForm } from './components/filter/criteria-based/criteria-based-form';
+export { default as PopupConfirmationDialog } from './utils/popup-confirmation-dialog.tsx';
 
 export {
     getCriteriaBasedSchema,

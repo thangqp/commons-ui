@@ -14,7 +14,7 @@ import Button from '@mui/material/Button';
 import { FormattedMessage } from 'react-intl';
 import CancelButton from '../components/react-hook-form/utils/cancel-button';
 
-interface OwnProps {
+interface PopupConfirmationDialogProps {
     message: string;
     validateButtonLabel: string;
     openConfirmationPopup: boolean;
@@ -28,7 +28,7 @@ const PopupConfirmationDialog = ({
     openConfirmationPopup,
     setOpenConfirmationPopup,
     handlePopupConfirmation,
-}: OwnProps) => {
+}: PopupConfirmationDialogProps) => {
     return (
         <Dialog
             open={openConfirmationPopup}
