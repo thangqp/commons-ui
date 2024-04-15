@@ -157,8 +157,6 @@ export {
     ExpandingTextField,
 } from './components/react-hook-form/expanding-text-field';
 
-export { ElementType } from './utils/ElementType';
-
 export {
     Line,
     Generator,
@@ -177,6 +175,12 @@ export {
     Substation,
     noSelectionForCopy,
 } from './components/filter/constants/equipment-types';
+
+export {
+    FieldConstants,
+    FilterType,
+    ContingencyListType,
+} from './components/filter/constants/field-constants';
 
 /**
  * Section to export manual type declarations of .js and .jsx files
