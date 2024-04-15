@@ -191,6 +191,15 @@ export {
     ContingencyListType,
 } from './components/filter/constants/field-constants';
 
+export {
+    GRIDSUITE_DEFAULT_PRECISION,
+    roundToPrecision,
+    roundToDefaultPrecision,
+    isBlankOrEmpty,
+    unitToMicroUnit,
+    microUnitToUnit,
+} from './utils/conversion-utils';
+
 /**
  * Section to export manual type declarations of .js and .jsx files
  */

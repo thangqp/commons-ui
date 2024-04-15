@@ -61,6 +61,15 @@ export {
     ContingencyListType,
 } from './components/filter/constants/field-constants';
 
+export {
+    GRIDSUITE_DEFAULT_PRECISION,
+    roundToPrecision,
+    roundToDefaultPrecision,
+    isBlankOrEmpty,
+    unitToMicroUnit,
+    microUnitToUnit,
+} from './utils/conversion-utils';
+
 export { ElementType } from './utils/ElementType';
 
 export {
