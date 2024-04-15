@@ -66,12 +66,9 @@ export const isFieldRequired = (
 
 export const gridItem = (field: string | ReactElement, size: number = 6) => {
     return (
-        <Grid
-            item
-            xs={size}
-            alignItems={'start'}
-            component={() => <>{field}</>}
-        />
+        <Grid item xs={size} alignItems={'start'}>
+            {field}
+        </Grid>
     );
 };
 
