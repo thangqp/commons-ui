@@ -18,10 +18,10 @@ import { ValueParserParams } from 'ag-grid-community';
 import { Generator, Load } from '../constants/equipment-types';
 import { FilterType } from '../constants/field-constants';
 import { NumericEditor } from '../../../utils/rhf-inputs/ag-grid-table-rhf/cell-editors/numericEditor';
-import { toFloatOrNullValue } from '../../../utils/dialog-utils';
 import InputWithPopupConfirmation from '../../../utils/rhf-inputs/select-inputs/input-with-popup-confirmation';
 import { v4 as uuid4 } from 'uuid';
 import { FILTER_EQUIPMENTS } from '../constants/criteria-based-utils';
+import { toFloatOrNullValue } from '../../react-hook-form/utils/functions.tsx';
 
 export const FILTER_EQUIPMENTS_ATTRIBUTES = 'filterEquipmentsAttributes';
 export const DISTRIBUTION_KEY = 'distributionKey';

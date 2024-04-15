@@ -6,6 +6,8 @@
  */
 import { FormattedMessage } from 'react-intl';
 import { SchemaDescription, getIn } from 'yup';
+import { ReactElement } from 'react';
+import { Grid } from '@mui/material';
 
 export function genHelperPreviousValue(
     previousValue: number | string,
@@ -60,4 +62,30 @@ export const isFieldRequired = (
 
     //static way, not working when using "when" in schema, but does not need form values
     //return yup.reach(schema, fieldName)?.exclusiveTests?.required === true;
+};
+
+export const gridItem = (field: string | ReactElement, size: number = 6) => {
+    return (
+        <Grid
+            item
+            xs={size}
+            alignItems={'start'}
+            component={() => <>{field}</>}
+        />
+    );
+};
+
+export const isFloatNumber = (val: string) => {
+    return /^-?[0-9]*[.,]?[0-9]*$/.test(val);
+};
+
+export const toFloatOrNullValue = (value: string) => {
+    if (value === '-') {
+        return value;
+    }
+    if (value === '0') {
+        return 0;
+    }
+    const tmp = value?.replace(',', '.') || '';
+    return parseFloat(tmp) || null;
 };
