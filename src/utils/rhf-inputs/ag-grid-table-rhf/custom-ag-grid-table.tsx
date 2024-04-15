@@ -87,7 +87,7 @@ const style = (customProps: any) => ({
     }),
 });
 
-interface OwnProps {
+interface CustomAgGridTableProps {
     name: string;
     columnDefs: any;
     makeDefaultRowData: any;
@@ -114,7 +114,7 @@ export const CustomAgGridTable = ({
     alwaysShowVerticalScroll,
     stopEditingWhenCellsLoseFocus,
     ...props
-}: OwnProps) => {
+}: CustomAgGridTableProps) => {
     const theme: any = useTheme();
     const [gridApi, setGridApi] = useState<any>(null);
     const [selectedRows, setSelectedRows] = useState([]);

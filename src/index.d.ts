@@ -17,7 +17,7 @@ import type {
 import { UseSnackMessageReturn } from './hooks/useSnackMessage';
 import { AutocompleteInputProps } from './components/react-hook-form/autocomplete-input';
 import { ErrorInputProps } from './components/react-hook-form/error-management/error-input';
-import { FieldErrors } from 'react-hook-form';
+import { FieldErrors, FieldValues, UseFieldArrayReturn } from 'react-hook-form';
 
 /**
  * Section to export generated type declarations
@@ -397,3 +397,35 @@ interface PopupConfirmationDialogProps {
 }
 
 export const PopupConfirmationDialog: FunctionComponent<PopupConfirmationDialogProps>;
+
+interface BottomRightButtonsProps {
+    name: string;
+    disableUp: boolean;
+    disableDown: boolean;
+    disableDelete: boolean;
+    handleAddRow: () => void;
+    handleDeleteRows: () => void;
+    handleMoveRowUp: () => void;
+    handleMoveRowDown: () => void;
+    useFieldArrayOutput: UseFieldArrayReturn<FieldValues, string, 'id'>;
+    csvProps: any;
+}
+
+export const BottomRightButtons: FunctionComponent<BottomRightButtonsProps>;
+
+interface CustomAgGridTableProps {
+    name: string;
+    columnDefs: any;
+    makeDefaultRowData: any;
+    csvProps: unknown;
+    cssProps: unknown;
+    defaultColDef: unknown;
+    pagination: boolean;
+    paginationPageSize: number;
+    suppressRowClickSelection: boolean;
+    alwaysShowVerticalScroll: boolean;
+    stopEditingWhenCellsLoseFocus: boolean;
+}
+
+export const CustomAgGridTable: FunctionComponent<CustomAgGridTableProps>;
+export { ROW_DRAGGING_SELECTION_COLUMN_DEF } from './utils/rhf-inputs/ag-grid-table-rhf/custom-ag-grid-table';

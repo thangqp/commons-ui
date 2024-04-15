@@ -23,7 +23,7 @@ const InnerColoredButton = styled(IconButton)(({ theme }) => {
     };
 });
 
-interface OwnProps {
+interface BottomRightButtonsProps {
     name: string;
     disableUp: boolean;
     disableDown: boolean;
@@ -47,7 +47,7 @@ const BottomRightButtons = ({
     handleMoveRowDown,
     useFieldArrayOutput,
     csvProps,
-}: OwnProps) => {
+}: BottomRightButtonsProps) => {
     const [uploaderOpen, setUploaderOpen] = useState(false);
     const intl = useIntl();
 

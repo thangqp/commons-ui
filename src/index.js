@@ -24,7 +24,10 @@ export { default as MultipleSelectionDialog } from './components/MultipleSelecti
 export { default as CustomMuiDialog } from './components/commons/custom-mui-dialog/custom-mui-dialog';
 export { default as DescriptionModificationDialog } from './components/commons/description-modification/description-modification-dialog';
 export { default as CriteriaBasedForm } from './components/filter/criteria-based/criteria-based-form';
-export { default as PopupConfirmationDialog } from './utils/popup-confirmation-dialog.tsx';
+export { default as PopupConfirmationDialog } from './utils/popup-confirmation-dialog';
+export { default as BottomRightButtons } from './utils/rhf-inputs/ag-grid-table-rhf/bottom-right-buttons';
+export { default as CustomAgGridTable } from './utils/rhf-inputs/ag-grid-table-rhf/custom-ag-grid-table';
+export { ROW_DRAGGING_SELECTION_COLUMN_DEF } from './utils/rhf-inputs/ag-grid-table-rhf/custom-ag-grid-table';
 
 export {
     getCriteriaBasedSchema,
