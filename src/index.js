@@ -160,6 +160,12 @@ export {
     isFloatNumber,
     toFloatOrNullValue,
 } from './components/react-hook-form/utils/functions';
+export {
+    keyGenerator,
+    areArrayElementsUnique,
+    mergeSx,
+    isObjectEmpty,
+} from './utils/functions';
 export { default as DirectoryItemsInput } from './components/react-hook-form/directory-items-input';
 export { default as DirectoryItemSelector } from './components/DirectoryItemSelector/directory-item-selector';
 export { RawReadOnlyInput } from './components/react-hook-form/raw-read-only-input';
