@@ -19,6 +19,7 @@ import {
 import SubmitButton from '../../react-hook-form/utils/submit-button';
 import CancelButton from '../../react-hook-form/utils/cancel-button';
 import CustomFormProvider from '../../react-hook-form/provider/custom-form-provider.tsx';
+import { UUID } from 'crypto';
 
 interface ICustomMuiDialog {
     open: boolean;
@@ -34,6 +35,16 @@ interface ICustomMuiDialog {
     children: React.ReactNode;
     isDataFetching?: boolean;
     language?: string;
+    fetchDirectoryContent?: (
+        directoryUuid: UUID,
+        elementTypes: string[]
+    ) => Promise<any>;
+    fetchRootFolders?: (types: string[]) => Promise<any>;
+    fetchElementsInfos?: (
+        ids: UUID[],
+        elementTypes: string[],
+        equipmentTypes: string[]
+    ) => Promise<any>;
 }
 
 const styles = {
@@ -60,6 +71,9 @@ const CustomMuiDialog: FunctionComponent<ICustomMuiDialog> = ({
     onCancel,
     children,
     language,
+    fetchDirectoryContent,
+    fetchRootFolders,
+    fetchElementsInfos,
 }) => {
     const { handleSubmit } = formMethods;
 
@@ -90,6 +104,9 @@ const CustomMuiDialog: FunctionComponent<ICustomMuiDialog> = ({
             {...formMethods}
             removeOptional={removeOptional}
             language={language}
+            fetchDirectoryContent={fetchDirectoryContent}
+            fetchRootFolders={fetchRootFolders}
+            fetchElementsInfos={fetchElementsInfos}
         >
             <Dialog
                 sx={styles.dialogPaper}

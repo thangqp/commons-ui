@@ -6,9 +6,8 @@
  */
 
 import React, { useEffect } from 'react';
-import { useFormContext } from 'react-hook-form';
 import { validate as uuidValidate } from 'uuid';
-import { DirectoryItemsInput } from '../../index';
+import { DirectoryItemsInput, useCustomFormContext } from '../../index';
 
 const ElementValueEditor = (props: {
     name: string;
@@ -20,7 +19,7 @@ const ElementValueEditor = (props: {
     itemFilter?: any;
     defaultValue?: any;
 }) => {
-    const { setValue } = useFormContext();
+    const { setValue, fetchElementsInfos } = useCustomFormContext();
 
     useEffect(() => {
         if (
@@ -30,22 +29,29 @@ const ElementValueEditor = (props: {
             props.defaultValue[0].length > 0 &&
             uuidValidate(props.defaultValue[0])
         ) {
-            /*fetchElementsInfos(props.defaultValue).then(
-                (childrenWithMetadata) => {
-                    setValue(
-                        props.name,
-                        childrenWithMetadata.map((v: any) => {
-                            return {
-                                id: v.elementUuid,
-                                name: v.elementName,
-                                specificMetadata: v.specificMetadata,
-                            };
-                        })
-                    );
-                }
-            );*/
+            fetchElementsInfos &&
+                fetchElementsInfos(props.defaultValue).then(
+                    (childrenWithMetadata) => {
+                        setValue(
+                            props.name,
+                            childrenWithMetadata.map((v: any) => {
+                                return {
+                                    id: v.elementUuid,
+                                    name: v.elementName,
+                                    specificMetadata: v.specificMetadata,
+                                };
+                            })
+                        );
+                    }
+                );
         }
-    }, [props.name, props.defaultValue, props.elementType, setValue]);
+    }, [
+        props.name,
+        props.defaultValue,
+        props.elementType,
+        setValue,
+        fetchElementsInfos,
+    ]);
 
     return (
         <DirectoryItemsInput

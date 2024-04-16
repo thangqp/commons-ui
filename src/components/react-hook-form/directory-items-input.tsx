@@ -23,7 +23,6 @@ import MidFormError from '../react-hook-form/error-management/mid-form-error.jsx
 import { RawReadOnlyInput } from './raw-read-only-input';
 import { mergeSx } from '../../utils/styles.js';
 import DirectoryItemSelector from '../DirectoryItemSelector/directory-item-selector.tsx';
-import { UUID } from 'crypto';
 import { useCustomFormContext } from './provider/use-custom-form-context';
 import { isFieldRequired } from './utils/functions';
 import ErrorInput from './error-management/error-input.tsx';
@@ -70,16 +69,6 @@ interface DirectoryItemsInputProps {
     onRowChanged?: (a: boolean) => void;
     onChange?: (e: any) => void;
     disable?: boolean;
-    fetchDirectoryContent?: (
-        directoryUuid: UUID,
-        elementTypes: string[]
-    ) => Promise<any>;
-    fetchRootFolders?: (types: string[]) => Promise<any>;
-    fetchElementsInfos?: (
-        ids: UUID[],
-        elementTypes: string[],
-        equipmentTypes?: string[]
-    ) => Promise<any>;
     labelRequiredFromContext?: boolean;
 }
 
@@ -94,9 +83,6 @@ const DirectoryItemsInput: FunctionComponent<DirectoryItemsInputProps> = ({
     onRowChanged,
     onChange,
     disable = false,
-    fetchDirectoryContent,
-    fetchRootFolders,
-    fetchElementsInfos,
     labelRequiredFromContext = true,
 }) => {
     const { snackError } = useSnackMessage();
@@ -113,7 +99,14 @@ const DirectoryItemsInput: FunctionComponent<DirectoryItemsInputProps> = ({
     });
 
     const formContext = useCustomFormContext();
-    const { getValues, validationSchema } = formContext;
+    const {
+        getValues,
+        validationSchema,
+        fetchDirectoryContent,
+        fetchRootFolders,
+        fetchElementsInfos,
+    } = formContext;
+
     const {
         fieldState: { error },
     } = useController({

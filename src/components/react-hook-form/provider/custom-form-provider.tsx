@@ -9,11 +9,22 @@ import React, { createContext, PropsWithChildren } from 'react';
 import { FormProvider, UseFormReturn } from 'react-hook-form';
 import * as yup from 'yup';
 import { getSystemLanguage } from '../../../utils/localized-countries-hook';
+import { UUID } from 'crypto';
 
 type CustomFormContextProps = {
     removeOptional?: boolean;
     validationSchema: yup.AnySchema;
     language: string;
+    fetchDirectoryContent?: (
+        directoryUuid: UUID,
+        elementTypes: string[]
+    ) => Promise<any>;
+    fetchRootFolders?: (types: string[]) => Promise<any>;
+    fetchElementsInfos?: (
+        ids: UUID[],
+        elementTypes?: string[],
+        equipmentTypes?: string[]
+    ) => Promise<any>;
 };
 
 export type MergedFormContextProps = UseFormReturn<any> &
@@ -25,6 +36,9 @@ export const CustomFormContext = createContext<CustomFormContextProps>({
     removeOptional: false,
     validationSchema: yup.object(),
     language: getSystemLanguage(),
+    fetchDirectoryContent: undefined,
+    fetchRootFolders: undefined,
+    fetchElementsInfos: undefined,
 });
 
 const CustomFormProvider = (props: CustomFormProviderProps) => {
@@ -32,6 +46,9 @@ const CustomFormProvider = (props: CustomFormProviderProps) => {
         validationSchema,
         removeOptional,
         language,
+        fetchDirectoryContent,
+        fetchRootFolders,
+        fetchElementsInfos,
         children,
         ...formMethods
     } = props;
@@ -43,6 +60,9 @@ const CustomFormProvider = (props: CustomFormProviderProps) => {
                     validationSchema: validationSchema,
                     removeOptional: removeOptional,
                     language: language,
+                    fetchDirectoryContent: fetchDirectoryContent,
+                    fetchRootFolders: fetchRootFolders,
+                    fetchElementsInfos: fetchElementsInfos,
                 }}
             >
                 {children}

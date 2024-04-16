@@ -53,6 +53,16 @@ export interface ExpertFilterEditionDialogProps {
     activeDirectory?: UUID;
     elementExists?: elementExistsType;
     language?: string;
+    fetchDirectoryContent: (
+        directoryUuid: UUID,
+        elementTypes: string[]
+    ) => Promise<any>;
+    fetchRootFolders: (types: string[]) => Promise<any>;
+    fetchElementsInfos: (
+        ids: UUID[],
+        elementTypes: string[],
+        equipmentTypes: string[]
+    ) => Promise<any>;
 }
 
 export const ExpertFilterEditionDialog = ({
@@ -71,6 +81,9 @@ export const ExpertFilterEditionDialog = ({
     activeDirectory,
     elementExists,
     language,
+    fetchDirectoryContent,
+    fetchRootFolders,
+    fetchElementsInfos,
 }: ExpertFilterEditionDialogProps) => {
     const { snackError } = useSnackMessage();
     const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
@@ -167,6 +180,9 @@ export const ExpertFilterEditionDialog = ({
             disabledSave={!!nameError || !!isValidating}
             isDataFetching={dataFetchStatus === FetchStatus.FETCHING}
             language={language}
+            fetchDirectoryContent={fetchDirectoryContent}
+            fetchRootFolders={fetchRootFolders}
+            fetchElementsInfos={fetchElementsInfos}
         >
             {isDataReady && (
                 <FilterForm

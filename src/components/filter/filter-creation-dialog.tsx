@@ -33,6 +33,7 @@ import {
 } from './expert/expert-filter-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { elementExistsType } from './criteria-based/criteria-based-filter-edition-dialog.tsx';
+import { UUID } from 'crypto';
 
 const emptyFormData = {
     [FieldConstants.NAME]: '',
@@ -74,6 +75,16 @@ export interface FilterCreationDialogProps {
     fetchAppsAndUrls: () => Promise<any>;
     elementExists?: elementExistsType;
     language?: string;
+    fetchDirectoryContent?: (
+        directoryUuid: UUID,
+        elementTypes: string[]
+    ) => Promise<any>;
+    fetchRootFolders?: (types: string[]) => Promise<any>;
+    fetchElementsInfos?: (
+        ids: UUID[],
+        elementTypes: string[],
+        equipmentTypes: string[]
+    ) => Promise<any>;
 }
 
 const FilterCreationDialog = ({
@@ -85,6 +96,9 @@ const FilterCreationDialog = ({
     fetchAppsAndUrls,
     elementExists,
     language,
+    fetchDirectoryContent,
+    fetchRootFolders,
+    fetchElementsInfos,
 }: FilterCreationDialogProps) => {
     const { snackError } = useSnackMessage();
 
@@ -174,6 +188,9 @@ const FilterCreationDialog = ({
             removeOptional={true}
             disabledSave={!!nameError || !!isValidating}
             language={language}
+            fetchDirectoryContent={fetchDirectoryContent}
+            fetchRootFolders={fetchRootFolders}
+            fetchElementsInfos={fetchElementsInfos}
         >
             <FilterForm
                 creation
