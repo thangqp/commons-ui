@@ -12,7 +12,8 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
 import CustomMuiDialog from '../custom-mui-dialog/custom-mui-dialog';
-import DescriptionInput from './description-input';
+import ExpandingTextField from '../../react-hook-form/ExpandingTextField.tsx';
+import { Box } from '@mui/material';
 
 interface IDescriptionModificationDialog {
     elementUuid: string;
@@ -76,7 +77,14 @@ const DescriptionModificationDialog: FunctionComponent<
             titleId={'description'}
             removeOptional={true}
         >
-            <DescriptionInput minRows={3} sx={{ marginTop: '10px' }} noLabel />
+            <Box paddingTop={1}>
+                <ExpandingTextField
+                    name={FieldConstants.DESCRIPTION}
+                    label={'descriptionProperty'}
+                    minRows={3}
+                    rows={5}
+                ></ExpandingTextField>
+            </Box>{' '}
         </CustomMuiDialog>
     );
 };
