@@ -53,8 +53,8 @@ interface ExplicitNamingFilterEditionDialogProps {
         name: string,
         description: string,
         activeDirectory: any
-    ) => Promise<any>;
-    saveFilter: (filter: any, name: string) => Promise<any>;
+    ) => Promise<void>;
+    saveFilter: (filter: any, name: string) => Promise<void>;
     activeDirectory?: UUID;
     elementExists?: elementExistsType;
     language?: string;

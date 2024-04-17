@@ -20,7 +20,7 @@ interface IDescriptionModificationDialog {
     description: string;
     open: boolean;
     onClose: () => void;
-    updateElement: (uuid: string, data: unknown) => Promise<any>;
+    updateElement: (uuid: string, data: unknown) => Promise<void>;
 }
 
 const schema = yup.object().shape({
