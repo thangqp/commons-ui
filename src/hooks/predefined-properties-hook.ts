@@ -9,7 +9,7 @@ import {
     EquipmentType,
     mapEquipmentTypeForPredefinedProperties,
 } from '../utils/equipment-types-for-predefined-properties-mapper';
-import { useSnackMessage } from "./useSnackMessage.ts";
+import { useSnackMessage } from './useSnackMessage.ts';
 
 export type PredefinedProperties = {
     [propertyName: string]: string[];
