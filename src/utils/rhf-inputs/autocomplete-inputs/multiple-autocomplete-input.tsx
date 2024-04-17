@@ -50,7 +50,6 @@ const MultipleAutocompleteInput = ({ name, ...props }: any) => {
             multiple
             ChipProps={{ size: 'small' }}
             {...props}
-            u
         />
     );
 };
