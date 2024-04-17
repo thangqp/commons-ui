@@ -4,9 +4,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { useSnackMessage } from '../../../hooks/useSnackMessage';
 import Grid from '@mui/material/Grid';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useWatch } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 import { FilterType } from '../constants/field-constants';
@@ -21,25 +20,11 @@ import {
     PROPERTY_VALUES_1,
     PROPERTY_VALUES_2,
 } from './filter-property';
+import { StudyMetadata, usePredefinedProperties } from "../../../hooks/predefined-properties-hook.ts";
 
 export enum FreePropertiesTypes {
     SUBSTATION_FILTER_PROPERTIES = 'substationFreeProperties',
     FREE_FILTER_PROPERTIES = 'freeProperties',
-}
-
-function fetchPredefinedProperties(fetchAppsAndUrls: () => Promise<any>) {
-    return fetchAppsAndUrls().then((res) => {
-        const studyMetadata = res.find(
-            (metadata: any) => metadata.name === 'Study'
-        );
-        if (!studyMetadata) {
-            return Promise.reject(
-                'Study entry could not be found in metadatas'
-            );
-        }
-
-        return studyMetadata?.predefinedEquipmentProperties?.substation;
-    });
 }
 
 function propertyValuesTest(
@@ -154,28 +139,42 @@ export const filterPropertiesYupSchema = {
 };
 
 interface FilterPropertiesProps {
-    fetchAppsAndUrls: () => Promise<any>;
+    fetchAppsAndUrls: () => Promise<StudyMetadata[]>;
 }
 
 function FilterProperties({ fetchAppsAndUrls }: FilterPropertiesProps) {
     const watchEquipmentType = useWatch({
         name: FieldConstants.EQUIPMENT_TYPE,
     });
-    const isForSubstation = watchEquipmentType === Substation.type;
-    const isForLoad = watchEquipmentType === Load.type;
-    const [fieldProps, setFieldProps] = useState({});
+    const [equipmentPredefinedProps, setEquipmentType] =
+        usePredefinedProperties(watchEquipmentType, fetchAppsAndUrls);
+    const [substationPredefinedProps, setSubstationType] =
+        usePredefinedProperties(null, fetchAppsAndUrls);
 
-    const { snackError } = useSnackMessage();
+    const displayEquipmentProperties = useMemo(() => {
+        return (
+            watchEquipmentType === Substation.type ||
+            watchEquipmentType === Load.type
+        );
+    }, [watchEquipmentType]);
+
+    const displaySubstationProperties = useMemo(() => {
+        return (
+            watchEquipmentType !== Substation.type &&
+            watchEquipmentType !== null
+        );
+    }, [watchEquipmentType]);
 
     useEffect(() => {
-        fetchPredefinedProperties(fetchAppsAndUrls)
-            .then((p) => setFieldProps(p))
-            .catch((error) => {
-                snackError({
-                    messageTxt: error.message ?? error,
-                });
-            });
-    }, [snackError, fetchAppsAndUrls]);
+        if (displayEquipmentProperties) {
+            setEquipmentType(watchEquipmentType);
+        }
+    }, [displayEquipmentProperties, watchEquipmentType, setEquipmentType]);
+    useEffect(() => {
+        if (displaySubstationProperties) {
+            setSubstationType(Substation.type);
+        }
+    }, [displaySubstationProperties, setSubstationType]);
 
     return (
         watchEquipmentType && (
@@ -184,20 +183,20 @@ function FilterProperties({ fetchAppsAndUrls }: FilterPropertiesProps) {
                     <FormattedMessage id={'FreePropsCrit'}>
                         {(txt) => <h3>{txt}</h3>}
                     </FormattedMessage>
-                    {(isForSubstation || isForLoad) && (
+                    {displayEquipmentProperties && (
                         <FilterFreeProperties
                             freePropertiesType={
                                 FreePropertiesTypes.FREE_FILTER_PROPERTIES
                             }
-                            predefined={fieldProps}
+                            predefined={equipmentPredefinedProps}
                         />
                     )}
-                    {!isForSubstation && (
+                    {displaySubstationProperties && (
                         <FilterFreeProperties
                             freePropertiesType={
                                 FreePropertiesTypes.SUBSTATION_FILTER_PROPERTIES
                             }
-                            predefined={fieldProps}
+                            predefined={substationPredefinedProps}
                         />
                     )}
                 </Grid>
