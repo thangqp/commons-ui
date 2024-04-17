@@ -15,6 +15,7 @@ import {
     PROPERTY_VALUES_2,
 } from './filter-property';
 import { getCriteriaBasedFormData } from '../constants/criteria-based-utils';
+import { PredefinedProperties } from '../../../hooks/predefined-properties-hook.ts';
 
 /**
  * Transform
@@ -42,8 +43,8 @@ export const backToFrontTweak = (response: any) => {
     if (props2) {
         Object.keys(props2).forEach((k) => allKeys.add(k));
     }
-    const filterSubstationProperties: unknown[] = [];
-    const filterFreeProperties: unknown[] = [];
+    const filterSubstationProperties: PredefinedProperties[] = [];
+    const filterFreeProperties: PredefinedProperties[] = [];
     allKeys.forEach((k: string) => {
         const prop: any = { [PROPERTY_NAME]: k };
         const values = subProps?.[k];

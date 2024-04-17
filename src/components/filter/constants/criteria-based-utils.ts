@@ -14,6 +14,7 @@ import RangeInput, {
 } from '../../../utils/rhf-inputs/range-input';
 import yup from '../../../utils/yup-config';
 import SelectInput from '../../react-hook-form/select-input';
+import { FunctionComponent } from 'react';
 
 const countries = {
     renderer: CountriesInput,
@@ -87,13 +88,24 @@ const energySource = {
     },
 };
 
-interface Equipment {
+type CriteriaFormField = {
+    renderer: FunctionComponent<any>;
+    props: {
+        label: string;
+        name: string;
+    };
+};
+
+type CriteriaFormEquipment = {
     id: string;
     label: string;
-    fields: unknown[];
-}
+    fields: CriteriaFormField[];
+};
 
-export const CONTINGENCY_LIST_EQUIPMENTS: Record<string, Equipment> = {
+export const CONTINGENCY_LIST_EQUIPMENTS: Record<
+    string,
+    CriteriaFormEquipment
+> = {
     LINE: {
         id: 'LINE',
         label: 'Lines',
@@ -131,7 +143,7 @@ export const CONTINGENCY_LIST_EQUIPMENTS: Record<string, Equipment> = {
     },
 };
 
-export const FILTER_EQUIPMENTS: Record<string, Equipment> = {
+export const FILTER_EQUIPMENTS: Record<string, CriteriaFormEquipment> = {
     ...CONTINGENCY_LIST_EQUIPMENTS,
     THREE_WINDINGS_TRANSFORMER: {
         id: 'THREE_WINDINGS_TRANSFORMER',
