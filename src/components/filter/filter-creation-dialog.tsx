@@ -67,7 +67,7 @@ const formSchema = yup
 export interface FilterCreationDialogProps {
     open: boolean;
     onClose: () => void;
-    activeDirectory: any;
+    activeDirectory?: UUID;
     createFilter: (
         filter: any,
         name: string,
@@ -141,10 +141,10 @@ const FilterCreationDialog = ({
                             messageTxt: error,
                         });
                     },
-                    activeDirectory,
                     onClose,
                     createFilter,
-                    saveFilter
+                    saveFilter,
+                    activeDirectory
                 );
             } else if (
                 filterForm[FieldConstants.FILTER_TYPE] ===

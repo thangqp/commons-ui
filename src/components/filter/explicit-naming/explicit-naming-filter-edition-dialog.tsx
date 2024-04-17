@@ -140,7 +140,6 @@ const ExplicitNamingFilterEditionDialog = ({
                         messageTxt: error,
                     });
                 },
-                null,
                 onClose,
                 createFilter,
                 saveFilter

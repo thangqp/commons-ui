@@ -10,6 +10,7 @@ import { frontToBackTweak } from './criteria-based/criteria-based-filter-utils';
 import { Generator, Load } from './constants/equipment-types';
 import { DISTRIBUTION_KEY } from './explicit-naming/explicit-naming-filter-form';
 import { exportExpertRules } from './expert/expert-filter-utils';
+import { UUID } from 'crypto';
 
 export const saveExplicitNamingFilter = (
     tableValues: any[],
@@ -19,7 +20,6 @@ export const saveExplicitNamingFilter = (
     description: string,
     id: string | null,
     setCreateFilterErr: (value: any) => void,
-    activeDirectory: any,
     handleClose: () => void,
     createFilter: (
         filter: any,
@@ -27,7 +27,8 @@ export const saveExplicitNamingFilter = (
         description: string,
         activeDirectory: any
     ) => Promise<void>,
-    saveFilter: (filter: any, name: string) => Promise<void>
+    saveFilter: (filter: any, name: string) => Promise<void>,
+    activeDirectory?: UUID
 ) => {
     // we remove unnecessary fields from the table
     let cleanedTableValues;
