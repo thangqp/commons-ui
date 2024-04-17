@@ -25,6 +25,7 @@ import {
 } from 'react-hook-form';
 import * as yup from 'yup';
 import { MergedFormContextProps } from './components/react-hook-form/provider/custom-form-provider.tsx';
+import { UUID } from 'crypto';
 
 /**
  * Section to export generated type declarations
@@ -444,3 +445,9 @@ interface CustomAgGridTableProps {
 
 export const CustomAgGridTable: FunctionComponent<CustomAgGridTableProps>;
 export { ROW_DRAGGING_SELECTION_COLUMN_DEF } from './utils/rhf-inputs/ag-grid-table-rhf/custom-ag-grid-table';
+
+export type ElementAttributes = {
+    elementUuid: UUID;
+    elementName: string;
+    type: keyof typeof ElementType;
+};

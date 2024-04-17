@@ -10,6 +10,7 @@ import { FormProvider, UseFormReturn } from 'react-hook-form';
 import * as yup from 'yup';
 import { getSystemLanguage } from '../../../utils/localized-countries-hook';
 import { UUID } from 'crypto';
+import { ElementAttributes } from '../../../index';
 
 type CustomFormContextProps = {
     removeOptional?: boolean;
@@ -18,13 +19,13 @@ type CustomFormContextProps = {
     fetchDirectoryContent?: (
         directoryUuid: UUID,
         elementTypes: string[]
-    ) => Promise<any>;
-    fetchRootFolders?: (types: string[]) => Promise<any>;
+    ) => Promise<ElementAttributes[]>;
+    fetchRootFolders?: (types: string[]) => Promise<ElementAttributes[]>;
     fetchElementsInfos?: (
         ids: UUID[],
         elementTypes?: string[],
         equipmentTypes?: string[]
-    ) => Promise<any>;
+    ) => Promise<ElementAttributes[]>;
 };
 
 export type MergedFormContextProps = UseFormReturn<any> &

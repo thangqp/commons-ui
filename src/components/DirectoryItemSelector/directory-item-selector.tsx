@@ -18,6 +18,7 @@ import { useSnackMessage } from '../../hooks/useSnackMessage.ts';
 import TreeViewFinder from '../TreeViewFinder';
 import { SxProps, Theme } from '@mui/material';
 import { UUID } from 'crypto';
+import { ElementAttributes } from '../../index';
 
 const styles = {
     icon: (theme: Theme) => ({
@@ -37,13 +38,13 @@ interface DirectoryItemSelectorProps {
     fetchDirectoryContent?: (
         directoryUuid: UUID,
         elementTypes: string[]
-    ) => Promise<any>;
-    fetchRootFolders?: (types: string[]) => Promise<any>;
+    ) => Promise<ElementAttributes[]>;
+    fetchRootFolders?: (types: string[]) => Promise<ElementAttributes[]>;
     fetchElementsInfos?: (
         ids: UUID[],
         elementTypes: string[],
         equipmentTypes: string[]
-    ) => Promise<any>;
+    ) => Promise<ElementAttributes[]>;
     classes?: any;
     contentText?: string;
     defaultExpanded?: string[];

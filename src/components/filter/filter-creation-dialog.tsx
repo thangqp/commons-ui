@@ -36,6 +36,7 @@ import { elementExistsType } from './criteria-based/criteria-based-filter-editio
 import { UUID } from 'crypto';
 import { MergedFormContextProps } from '../react-hook-form/provider/custom-form-provider.tsx';
 import { StudyMetadata } from '../../hooks/predefined-properties-hook.ts';
+import { ElementAttributes } from '../../index';
 
 const emptyFormData = {
     [FieldConstants.NAME]: '',
@@ -80,13 +81,13 @@ export interface FilterCreationDialogProps {
     fetchDirectoryContent?: (
         directoryUuid: UUID,
         elementTypes: string[]
-    ) => Promise<any>;
-    fetchRootFolders?: (types: string[]) => Promise<any>;
+    ) => Promise<ElementAttributes[]>;
+    fetchRootFolders?: (types: string[]) => Promise<ElementAttributes[]>;
     fetchElementsInfos?: (
         ids: UUID[],
         elementTypes: string[],
         equipmentTypes: string[]
-    ) => Promise<any>;
+    ) => Promise<ElementAttributes[]>;
 }
 
 const FilterCreationDialog = ({
