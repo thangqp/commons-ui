@@ -21,10 +21,11 @@ import FilterProperty, {
 import AddIcon from '@mui/icons-material/Add';
 import { useMemo } from 'react';
 import { Hvdc, Line } from '../constants/equipment-types';
+import { PredefinedProperties } from '../../../hooks/predefined-properties-hook.ts';
 
 interface FilterFreePropertiesProps {
     freePropertiesType: FreePropertiesTypes;
-    predefined: Object;
+    predefined: PredefinedProperties;
 }
 
 function FilterFreeProperties({

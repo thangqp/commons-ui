@@ -12,6 +12,7 @@ import { useFormContext, useWatch } from 'react-hook-form';
 import AutocompleteInput from '../../react-hook-form/autocomplete-input';
 import MultipleAutocompleteInput from '../../../utils/rhf-inputs/autocomplete-inputs/multiple-autocomplete-input';
 import { FieldConstants } from '../constants/field-constants';
+import { PredefinedProperties } from '../../../hooks/predefined-properties-hook.ts';
 
 export const PROPERTY_NAME = 'name_property';
 export const PROPERTY_VALUES = 'prop_values';
@@ -22,7 +23,7 @@ interface FilterPropertyProps {
     index: number;
     valuesFields: Array<{ name: string; label: string }>;
     handleDelete: (index: number) => void;
-    predefined: any;
+    predefined: PredefinedProperties;
     propertyType: string;
 }
 
