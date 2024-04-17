@@ -21,6 +21,8 @@ import SwitchInput from '../../src/components/react-hook-form/booleans/switch-in
 import SubmitButton from '../../src/components/react-hook-form/utils/submit-button';
 import ExpandingTextField from '../../src/components/react-hook-form/ExpandingTextField';
 import CustomFormProvider from '../../src/components/react-hook-form/provider/custom-form-provider';
+import SelectClearable from '../../src/components/inputs/select-clearable';
+import { useState } from 'react';
 
 const AUTOCOMPLETE_INPUT = 'autocomplete';
 const TEXT_INPUT = 'text';
@@ -106,6 +108,8 @@ export function InputsTab() {
         console.error('Error during validation : ', errors);
     }
 
+    const [selectValue, setSelectValue] = useState();
+
     return (
         <CustomFormProvider validationSchema={formSchema} {...formMethods}>
             <Box
@@ -148,6 +152,14 @@ export function InputsTab() {
                     <Grid item xs={gridSize}>
                         <SelectInput
                             name={SELECT_INPUT}
+                            label={'inputs/select'}
+                            options={options}
+                        />
+                    </Grid>
+                    <Grid item xs={gridSize}>
+                        <SelectClearable
+                            value={selectValue}
+                            onChange={setSelectValue}
                             label={'inputs/select'}
                             options={options}
                         />

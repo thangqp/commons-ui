@@ -7,7 +7,7 @@
 
 import { FormattedMessage } from 'react-intl';
 
-const FieldLabel = ({ label, optional, values = undefined }) => {
+const FieldLabel = ({ label, optional = false, values = undefined }) => {
     return (
         <>
             <FormattedMessage id={label} values={values} />
