@@ -20,6 +20,7 @@ import { saveExpertFilter } from '../filters-utils';
 import { importExpertRules } from './expert-filter-utils';
 import { UUID } from 'crypto';
 import { elementExistsType } from '../criteria-based/criteria-based-filter-edition-dialog.tsx';
+import { MergedFormContextProps } from '../../react-hook-form/provider/custom-form-provider.tsx';
 
 const formSchema = yup
     .object()
@@ -89,9 +90,15 @@ export const ExpertFilterEditionDialog = ({
     const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
 
     // default values are set via reset when we fetch data
-    const formMethods = useForm({
-        resolver: yupResolver(formSchema),
-    });
+    const formMethods = {
+        ...useForm({
+            resolver: yupResolver(formSchema),
+        }),
+        language: language,
+        fetchDirectoryContent: fetchDirectoryContent,
+        fetchRootFolders: fetchRootFolders,
+        fetchElementsInfos: fetchElementsInfos,
+    } as MergedFormContextProps;
 
     const {
         reset,
@@ -179,10 +186,6 @@ export const ExpertFilterEditionDialog = ({
             removeOptional={true}
             disabledSave={!!nameError || !!isValidating}
             isDataFetching={dataFetchStatus === FetchStatus.FETCHING}
-            language={language}
-            fetchDirectoryContent={fetchDirectoryContent}
-            fetchRootFolders={fetchRootFolders}
-            fetchElementsInfos={fetchElementsInfos}
         >
             {isDataReady && (
                 <FilterForm

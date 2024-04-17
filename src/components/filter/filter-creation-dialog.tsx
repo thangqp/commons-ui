@@ -34,6 +34,7 @@ import {
 import { yupResolver } from '@hookform/resolvers/yup';
 import { elementExistsType } from './criteria-based/criteria-based-filter-edition-dialog.tsx';
 import { UUID } from 'crypto';
+import { MergedFormContextProps } from '../react-hook-form/provider/custom-form-provider.tsx';
 
 const emptyFormData = {
     [FieldConstants.NAME]: '',
@@ -102,10 +103,16 @@ const FilterCreationDialog = ({
 }: FilterCreationDialogProps) => {
     const { snackError } = useSnackMessage();
 
-    const formMethods = useForm({
-        defaultValues: emptyFormData,
-        resolver: yupResolver(formSchema) as unknown as Resolver,
-    });
+    const formMethods = {
+        ...useForm({
+            defaultValues: emptyFormData,
+            resolver: yupResolver(formSchema) as unknown as Resolver,
+        }),
+        language: language,
+        fetchDirectoryContent: fetchDirectoryContent,
+        fetchRootFolders: fetchRootFolders,
+        fetchElementsInfos: fetchElementsInfos,
+    } as MergedFormContextProps;
 
     const {
         formState: { errors },
@@ -187,10 +194,6 @@ const FilterCreationDialog = ({
             titleId={'createNewFilter'}
             removeOptional={true}
             disabledSave={!!nameError || !!isValidating}
-            language={language}
-            fetchDirectoryContent={fetchDirectoryContent}
-            fetchRootFolders={fetchRootFolders}
-            fetchElementsInfos={fetchElementsInfos}
         >
             <FilterForm
                 creation

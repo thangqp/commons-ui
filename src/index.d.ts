@@ -17,7 +17,14 @@ import type {
 import { UseSnackMessageReturn } from './hooks/useSnackMessage';
 import { AutocompleteInputProps } from './components/react-hook-form/autocomplete-input';
 import { ErrorInputProps } from './components/react-hook-form/error-management/error-input';
-import { FieldErrors, FieldValues, UseFieldArrayReturn } from 'react-hook-form';
+import {
+    FieldErrors,
+    FieldValues,
+    UseFieldArrayReturn,
+    UseFormReturn,
+} from 'react-hook-form';
+import * as yup from 'yup';
+import { MergedFormContextProps } from './components/react-hook-form/provider/custom-form-provider.tsx';
 
 /**
  * Section to export generated type declarations
@@ -358,8 +365,8 @@ export const OverflowableText: FunctionComponent<OverflowableTextProps>;
 
 interface ICustomMuiDialog {
     open: boolean;
-    formSchema: any;
-    formMethods: any;
+    formSchema: yup.AnySchema;
+    formMethods: UseFormReturn<any> | MergedFormContextProps;
     onClose: (event: React.MouseEvent) => void;
     onSave: (data: any) => void;
     onValidationError?: (errors: FieldErrors) => void;
@@ -369,7 +376,6 @@ interface ICustomMuiDialog {
     onCancel?: () => void;
     children: React.ReactNode;
     isDataFetching?: boolean;
-    language?: string;
 }
 
 export const CustomMuiDialog: FunctionComponent<ICustomMuiDialog>;

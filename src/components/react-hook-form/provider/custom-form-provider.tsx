@@ -14,7 +14,7 @@ import { UUID } from 'crypto';
 type CustomFormContextProps = {
     removeOptional?: boolean;
     validationSchema: yup.AnySchema;
-    language: string;
+    language?: string;
     fetchDirectoryContent?: (
         directoryUuid: UUID,
         elementTypes: string[]
