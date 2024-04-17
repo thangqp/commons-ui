@@ -5,11 +5,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { useSnackMessage } from '@gridsuite/commons-ui';
 import {
     EquipmentType,
     mapEquipmentTypeForPredefinedProperties,
 } from '../utils/equipment-types-for-predefined-properties-mapper';
+import { useSnackMessage } from "./useSnackMessage.ts";
 
 export type PredefinedProperties = {
     [propertyName: string]: string[];
