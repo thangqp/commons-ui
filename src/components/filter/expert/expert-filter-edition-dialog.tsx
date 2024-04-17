@@ -21,6 +21,7 @@ import { importExpertRules } from './expert-filter-utils';
 import { UUID } from 'crypto';
 import { elementExistsType } from '../criteria-based/criteria-based-filter-edition-dialog.tsx';
 import { MergedFormContextProps } from '../../react-hook-form/provider/custom-form-provider.tsx';
+import { StudyMetadata } from '../../../hooks/predefined-properties-hook.ts';
 
 const formSchema = yup
     .object()
@@ -42,7 +43,7 @@ export interface ExpertFilterEditionDialogProps {
 
     selectionForCopy: any;
     getFilterById: (id: string) => Promise<{ [prop: string]: any }>;
-    fetchAppsAndUrls: () => Promise<any>;
+    fetchAppsAndUrls: () => Promise<StudyMetadata[]>;
     setSelectionForCopy: (selection: any) => void;
     createFilter: (
         filter: any,

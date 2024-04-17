@@ -16,6 +16,7 @@ import {
     getCriteriaBasedSchema,
 } from '../constants/criteria-based-utils';
 import Grid from '@mui/material/Grid';
+import { StudyMetadata } from '../../../hooks/predefined-properties-hook.ts';
 
 export const criteriaBasedFilterSchema = getCriteriaBasedSchema({
     [FieldConstants.ENERGY_SOURCE]: yup.string().nullable(),
@@ -29,7 +30,7 @@ export const criteriaBasedFilterEmptyFormData = getCriteriaBasedFormData(null, {
 });
 
 interface CriteriaBasedFilterFormProps {
-    fetchAppsAndUrls: () => Promise<any>;
+    fetchAppsAndUrls: () => Promise<StudyMetadata[]>;
 }
 
 function CriteriaBasedFilterForm({

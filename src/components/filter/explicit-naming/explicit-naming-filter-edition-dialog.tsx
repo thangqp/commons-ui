@@ -25,6 +25,7 @@ import { noSelectionForCopy } from '../constants/equipment-types';
 import { FetchStatus } from '../../../hooks/customHooks';
 import { UUID } from 'crypto';
 import { elementExistsType } from '../criteria-based/criteria-based-filter-edition-dialog.tsx';
+import { StudyMetadata } from '../../../hooks/predefined-properties-hook.ts';
 
 const formSchema = yup
     .object()
@@ -46,7 +47,7 @@ interface ExplicitNamingFilterEditionDialogProps {
     selectionForCopy: any;
     setSelectionForCopy: (selection: any) => void;
     getFilterById: (id: string) => Promise<any>;
-    fetchAppsAndUrls: () => Promise<any>;
+    fetchAppsAndUrls: () => Promise<StudyMetadata[]>;
     createFilter: (
         filter: any,
         name: string,

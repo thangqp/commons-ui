@@ -27,6 +27,7 @@ import { FetchStatus } from '../../../hooks/customHooks';
 import { FilterForm } from '../filter-form';
 import { ElementType } from '../../..';
 import { UUID } from 'crypto';
+import { StudyMetadata } from '../../../hooks/predefined-properties-hook.ts';
 
 export type SelectionCopy = {
     sourceItemUuid: UUID | null;
@@ -68,7 +69,7 @@ interface CriteriaBasedFilterEditionDialogProps {
     getFilterById: (id: string) => Promise<any>;
     saveFilter: (value: any, t: Record<string, any>) => Promise<void>;
     selectionForCopy: SelectionCopy;
-    fetchAppsAndUrls: () => Promise<any>;
+    fetchAppsAndUrls: () => Promise<StudyMetadata[]>;
     setSelelectionForCopy: (
         selection: SelectionCopy
     ) => Dispatch<SetStateAction<SelectionCopy>>;

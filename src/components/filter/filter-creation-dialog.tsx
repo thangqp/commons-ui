@@ -35,6 +35,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { elementExistsType } from './criteria-based/criteria-based-filter-edition-dialog.tsx';
 import { UUID } from 'crypto';
 import { MergedFormContextProps } from '../react-hook-form/provider/custom-form-provider.tsx';
+import { StudyMetadata } from '../../hooks/predefined-properties-hook.ts';
 
 const emptyFormData = {
     [FieldConstants.NAME]: '',
@@ -73,7 +74,7 @@ export interface FilterCreationDialogProps {
         activeDirectory: any
     ) => Promise<any>;
     saveFilter: (filter: any, name: string) => Promise<any>;
-    fetchAppsAndUrls: () => Promise<any>;
+    fetchAppsAndUrls: () => Promise<StudyMetadata[]>;
     elementExists?: elementExistsType;
     language?: string;
     fetchDirectoryContent?: (
