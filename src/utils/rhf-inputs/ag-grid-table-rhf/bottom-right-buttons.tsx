@@ -23,7 +23,7 @@ const InnerColoredButton = styled(IconButton)(({ theme }) => {
     };
 });
 
-interface BottomRightButtonsProps {
+export interface BottomRightButtonsProps {
     name: string;
     disableUp: boolean;
     disableDown: boolean;

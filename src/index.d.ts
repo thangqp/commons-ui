@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { FunctionComponent, ReactElement } from 'react';
+import { FunctionComponent, ReactElement } from 'react';
 import type {
     ButtonProps,
     CheckboxProps,
@@ -17,15 +17,12 @@ import type {
 import { UseSnackMessageReturn } from './hooks/useSnackMessage';
 import { AutocompleteInputProps } from './components/react-hook-form/autocomplete-input';
 import { ErrorInputProps } from './components/react-hook-form/error-management/error-input';
-import {
-    FieldErrors,
-    FieldValues,
-    UseFieldArrayReturn,
-    UseFormReturn,
-} from 'react-hook-form';
-import * as yup from 'yup';
-import { MergedFormContextProps } from './components/react-hook-form/provider/custom-form-provider.tsx';
 import { UUID } from 'crypto';
+import { IDescriptionModificationDialog } from './components/commons/description-modification/description-modification-dialog.tsx';
+import { CriteriaBasedFormProps } from './components/filter/criteria-based/criteria-based-form.tsx';
+import { PopupConfirmationDialogProps } from './utils/popup-confirmation-dialog.tsx';
+import { BottomRightButtonsProps } from './utils/rhf-inputs/ag-grid-table-rhf/bottom-right-buttons.tsx';
+import { CustomAgGridTableProps } from './utils/rhf-inputs/ag-grid-table-rhf/custom-ag-grid-table.tsx';
 
 /**
  * Section to export generated type declarations
@@ -363,86 +360,17 @@ interface OverflowableTextProps {
 }
 
 export const OverflowableText: FunctionComponent<OverflowableTextProps>;
-
-interface ICustomMuiDialog {
-    open: boolean;
-    formSchema: yup.AnySchema;
-    formMethods: UseFormReturn<any> | MergedFormContextProps;
-    onClose: (event: React.MouseEvent) => void;
-    onSave: (data: any) => void;
-    onValidationError?: (errors: FieldErrors) => void;
-    titleId: string;
-    disabledSave?: boolean;
-    removeOptional?: boolean;
-    onCancel?: () => void;
-    children: React.ReactNode;
-    isDataFetching?: boolean;
-}
-
 export const CustomMuiDialog: FunctionComponent<ICustomMuiDialog>;
-
-interface IDescriptionModificationDialog {
-    elementUuid: string;
-    description: string;
-    open: boolean;
-    onClose: () => void;
-    updateElement: (uuid: string, data: unknown) => Promise<any>;
-}
-
 export const DescriptionModificationDialog: FunctionComponent<IDescriptionModificationDialog>;
-
-interface CriteriaBasedFormProps {
-    defaultValues: Record<string, any>;
-}
-
 export const CriteriaBasedForm: FunctionComponent<CriteriaBasedFormProps>;
-
 export {
     getCriteriaBasedSchema,
     getCriteriaBasedFormData,
     CONTINGENCY_LIST_EQUIPMENTS,
     FILTER_EQUIPMENTS,
 } from './components/filter/constants/criteria-based-utils';
-
-interface PopupConfirmationDialogProps {
-    message: string;
-    validateButtonLabel: string;
-    openConfirmationPopup: boolean;
-    setOpenConfirmationPopup: (value: boolean) => void;
-    handlePopupConfirmation: () => void;
-}
-
 export const PopupConfirmationDialog: FunctionComponent<PopupConfirmationDialogProps>;
-
-interface BottomRightButtonsProps {
-    name: string;
-    disableUp: boolean;
-    disableDown: boolean;
-    disableDelete: boolean;
-    handleAddRow: () => void;
-    handleDeleteRows: () => void;
-    handleMoveRowUp: () => void;
-    handleMoveRowDown: () => void;
-    useFieldArrayOutput: UseFieldArrayReturn<FieldValues, string, 'id'>;
-    csvProps: any;
-}
-
 export const BottomRightButtons: FunctionComponent<BottomRightButtonsProps>;
-
-interface CustomAgGridTableProps {
-    name: string;
-    columnDefs: any;
-    makeDefaultRowData: any;
-    csvProps: unknown;
-    cssProps: unknown;
-    defaultColDef: unknown;
-    pagination: boolean;
-    paginationPageSize: number;
-    suppressRowClickSelection: boolean;
-    alwaysShowVerticalScroll: boolean;
-    stopEditingWhenCellsLoseFocus: boolean;
-}
-
 export const CustomAgGridTable: FunctionComponent<CustomAgGridTableProps>;
 export { ROW_DRAGGING_SELECTION_COLUMN_DEF } from './utils/rhf-inputs/ag-grid-table-rhf/custom-ag-grid-table';
 

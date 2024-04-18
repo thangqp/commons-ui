@@ -87,7 +87,7 @@ const style = (customProps: any) => ({
     }),
 });
 
-interface CustomAgGridTableProps {
+export interface CustomAgGridTableProps {
     name: string;
     columnDefs: any;
     makeDefaultRowData: any;

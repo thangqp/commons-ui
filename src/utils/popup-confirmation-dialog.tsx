@@ -14,7 +14,7 @@ import Button from '@mui/material/Button';
 import { FormattedMessage } from 'react-intl';
 import CancelButton from '../components/react-hook-form/utils/cancel-button';
 
-interface PopupConfirmationDialogProps {
+export interface PopupConfirmationDialogProps {
     message: string;
     validateButtonLabel: string;
     openConfirmationPopup: boolean;

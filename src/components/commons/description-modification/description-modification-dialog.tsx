@@ -15,7 +15,7 @@ import CustomMuiDialog from '../custom-mui-dialog/custom-mui-dialog';
 import ExpandingTextField from '../../react-hook-form/ExpandingTextField.tsx';
 import { Box } from '@mui/material';
 
-interface IDescriptionModificationDialog {
+export interface IDescriptionModificationDialog {
     elementUuid: string;
     description: string;
     open: boolean;
