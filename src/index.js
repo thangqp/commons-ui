@@ -96,6 +96,7 @@ export { default as CardErrorBoundary } from './components/CardErrorBoundary';
 export { useIntlRef } from './hooks/useIntlRef';
 export { useSnackMessage } from './hooks/useSnackMessage';
 export { useDebounce } from './hooks/useDebounce';
+export { default as SelectClearable } from './components/inputs/select-clearable';
 export { useCustomFormContext } from './components/react-hook-form/provider/use-custom-form-context';
 export { default as CustomFormProvider } from './components/react-hook-form/provider/custom-form-provider';
 export { default as AutocompleteInput } from './components/react-hook-form/autocomplete-input';
