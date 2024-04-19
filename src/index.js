@@ -101,7 +101,7 @@ export {
     LANG_SYSTEM,
     LANG_ENGLISH,
     LANG_FRENCH,
-} from './components/TopBar/topBarConstants';
+} from './components/TopBar/TopBar.jsx';
 
 export {
     USER,

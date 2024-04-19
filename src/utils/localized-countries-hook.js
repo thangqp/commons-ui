@@ -13,7 +13,7 @@ import {
     LANG_FRENCH,
     LANG_ENGLISH,
     LANG_SYSTEM,
-} from '../components/TopBar/topBarConstants';
+} from '../components/TopBar/TopBar';
 
 const supportedLanguages = [LANG_FRENCH, LANG_ENGLISH];
 
