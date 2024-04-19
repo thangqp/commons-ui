@@ -15,7 +15,6 @@ import {
 import { getFileIcon } from '../../utils/ElementIcon';
 import { ElementType } from '../../utils/ElementType';
 import { SxProps, Theme } from '@mui/material';
-import { useSnackMessage } from '../../hooks/useSnackMessage.js';
 import {
     default as TreeViewFinder,
     TreeViewFinderNodeProps,
@@ -23,6 +22,7 @@ import {
 } from '../TreeViewFinder/TreeViewFinder';
 import { UUID } from 'crypto';
 import { ElementAttributes } from '../../index';
+import { useSnackMessage } from "../../hooks/useSnackMessage.ts";
 
 const styles = {
     icon: (theme: Theme) => ({
