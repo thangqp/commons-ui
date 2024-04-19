@@ -12,8 +12,11 @@ type OwnProps = {
     optional?: boolean;
     values?: any;
 };
-
-const FieldLabel = ({ label, optional, values = undefined }: OwnProps) => {
+const FieldLabel = ({
+    label,
+    optional = false,
+    values = undefined,
+}: OwnProps) => {
     return (
         <>
             <FormattedMessage id={label} values={values} />
