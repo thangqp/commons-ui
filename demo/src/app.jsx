@@ -305,7 +305,7 @@ const AppContent = ({ language, onLanguageClick }) => {
     // TreeViewFinder Controlled parameters
     const [dynamicData, setDynamicData] = useState(false);
     const [dataFormat, setDataFormat] = useState('Tree');
-    const [multiselect, setMultiselect] = useState(false);
+    const [multiSelect, setMultiSelect] = useState(false);
     const [onlyLeaves, setOnlyLeaves] = useState(true);
     const [sortedAlphabetically, setSortedAlphabetically] = useState(false);
 
@@ -564,7 +564,7 @@ const AppContent = ({ language, onLanguageClick }) => {
                 <TreeViewFinderConfig
                     dynamicData={dynamicData}
                     dataFormat={dataFormat}
-                    multiselect={multiselect}
+                    multiSelect={multiSelect}
                     onlyLeaves={onlyLeaves}
                     sortedAlphabetically={sortedAlphabetically}
                     onDynamicDataChange={(event) =>
@@ -574,7 +574,7 @@ const AppContent = ({ language, onLanguageClick }) => {
                         setDataFormat(event.target.value)
                     }
                     onSelectionTypeChange={(event) =>
-                        setMultiselect(event.target.value === 'multiselect')
+                        setMultiSelect(event.target.value === 'multiselect')
                     }
                     onOnlyLeavesChange={(event) =>
                         setOnlyLeaves(event.target.checked)
@@ -610,7 +610,7 @@ const AppContent = ({ language, onLanguageClick }) => {
                         console.log('Elements chosen : ', nodes);
                     }}
                     data={dataFormat === 'Tree' ? nodesTree : nodesList}
-                    multiselect={multiselect}
+                    multiSelect={multiSelect}
                     onTreeBrowse={
                         dynamicData
                             ? dataFormat === 'Tree'
@@ -649,7 +649,7 @@ const AppContent = ({ language, onLanguageClick }) => {
                         console.log('Elements chosen : ', nodes);
                     }}
                     data={dataFormat === 'Tree' ? nodesTree : nodesList}
-                    multiselect={multiselect}
+                    multiSelect={multiSelect}
                     onTreeBrowse={
                         dynamicData
                             ? dataFormat === 'Tree'

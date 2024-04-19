@@ -28,7 +28,11 @@ import { CustomAgGridTableProps } from './utils/rhf-inputs/ag-grid-table-rhf/cus
  * Section to export generated type declarations
  */
 
-export { default as TreeViewFinder } from './components/TreeViewFinder';
+export {
+    default as TreeViewFinder,
+    TreeViewFinderProps,
+    TreeViewFinderNodeProps,
+} from './components/TreeViewFinder';
 export { default as AboutDialog } from './components/TopBar/AboutDialog';
 export { default as AuthenticationRouter } from './components/AuthenticationRouter';
 export { default as MuiVirtualizedTable } from './components/MuiVirtualizedTable';

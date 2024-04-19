@@ -22,7 +22,7 @@ import {
 
  * @param {Boolean}         dynamicData - Does data needs dynamic update (Controlled). (see onDynamicDataChange)
  * @param {String}          dataFormat - Data format. Could be ('Tree' or 'List') (Controlled). (see onDataFormatChange)
- * @param {Boolean}         multiselect - TreeViewFinder selection type parameter (Controlled). (see onSelectionTypeChange)
+ * @param {Boolean}         multiSelect - TreeViewFinder selection type parameter (Controlled). (see onSelectionTypeChange)
  * @param {Boolean}         onlyLeaves - TreeViewFinder selection only on leaves items (Controlled). (see onOnlyLeavesChange)
  * @param {EventListener}   onDynamicDataChange - onChange type EventListener on the dynamicData value change.
  * @param {EventListener}   onDataFormatChange - onChange type EventListener on the dataFormat value change.
@@ -33,7 +33,7 @@ const TreeViewFinderConfig = (props) => {
     const {
         dynamicData,
         dataFormat,
-        multiselect,
+        multiSelect,
         onlyLeaves,
         sortedAlphabetically,
         onDynamicDataChange,
@@ -115,7 +115,7 @@ const TreeViewFinderConfig = (props) => {
                         <RadioGroup
                             aria-label="seletcion-type"
                             name="Selection type"
-                            value={multiselect ? 'multiselect' : 'singleselect'}
+                            value={multiSelect ? 'multiselect' : 'singleselect'}
                             onChange={onSelectionTypeChange}
                         >
                             <FormControlLabel

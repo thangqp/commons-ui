@@ -23,6 +23,8 @@ import MidFormError from '../react-hook-form/error-management/mid-form-error.jsx
 import { RawReadOnlyInput } from './raw-read-only-input';
 import { mergeSx } from '../../utils/styles.js';
 import DirectoryItemSelector from '../DirectoryItemSelector/directory-item-selector.tsx';
+import { UUID } from 'crypto';
+import { TreeViewFinderNodeProps } from '../TreeViewFinder/TreeViewFinder.tsx';
 import { useCustomFormContext } from './provider/use-custom-form-context';
 import { isFieldRequired } from './utils/functions';
 import ErrorInput from './error-management/error-input.tsx';
@@ -58,7 +60,7 @@ const styles = {
     },
 };
 
-interface DirectoryItemsInputProps {
+export interface DirectoryItemsInputProps {
     label: string | undefined;
     name: string;
     elementType: string;
@@ -70,6 +72,7 @@ interface DirectoryItemsInputProps {
     onChange?: (e: any) => void;
     disable?: boolean;
     labelRequiredFromContext?: boolean;
+    fetchDirectoryElementPath?: (id: UUID) => Promise<any[]>;
 }
 
 const DirectoryItemsInput: FunctionComponent<DirectoryItemsInputProps> = ({
@@ -84,9 +87,13 @@ const DirectoryItemsInput: FunctionComponent<DirectoryItemsInputProps> = ({
     onChange,
     disable = false,
     labelRequiredFromContext = true,
+    fetchDirectoryElementPath,
 }) => {
     const { snackError } = useSnackMessage();
     const intl = useIntl();
+    const [selected, setSelected] = useState<UUID[]>([]);
+    const [expanded, setExpanded] = useState<UUID[]>([]);
+    const [multiSelect, setMultiSelect] = useState(true);
     const types = useMemo(() => [elementType], [elementType]);
     const [directoryItemSelectorOpen, setDirectoryItemSelectorOpen] =
         useState(false);
@@ -114,7 +121,20 @@ const DirectoryItemsInput: FunctionComponent<DirectoryItemsInputProps> = ({
     });
 
     const addElements = useCallback(
-        (values: any[]) => {
+        (values: TreeViewFinderNodeProps[] | undefined) => {
+            if (!values) {
+                return;
+            }
+            // if we select a chip and return a new values, we remove it to be replaced
+            if (selected?.length > 0 && values?.length > 0) {
+                selected.forEach((chip) => {
+                    remove(
+                        getValues(name).findIndex(
+                            (item: any) => item.id === chip
+                        )
+                    );
+                });
+            }
             values.forEach((value) => {
                 const { icon, children, ...otherElementAttributes } = value;
 
@@ -135,8 +155,18 @@ const DirectoryItemsInput: FunctionComponent<DirectoryItemsInputProps> = ({
                 }
             });
             setDirectoryItemSelectorOpen(false);
+            setSelected([]);
         },
-        [append, getValues, snackError, name, onRowChanged, onChange]
+        [
+            append,
+            getValues,
+            snackError,
+            name,
+            onRowChanged,
+            onChange,
+            selected,
+            remove,
+        ]
     );
 
     const removeElements = useCallback(
@@ -146,6 +176,27 @@ const DirectoryItemsInput: FunctionComponent<DirectoryItemsInputProps> = ({
             onChange && onChange(getValues(name));
         },
         [onRowChanged, remove, getValues, name, onChange]
+    );
+
+    const handleChipClick = useCallback(
+        (index: number) => {
+            const chips = getValues(name) as any[];
+            const chip = chips.at(index)?.id;
+            if (chip && fetchDirectoryElementPath) {
+                fetchDirectoryElementPath(chip).then((response: any[]) => {
+                    const path = response
+                        .reverse() // we reverse the order so the root parent is first in the list
+                        .filter((e) => e.elementUuid !== chip)
+                        .map((e) => e.elementUuid);
+
+                    setExpanded(path);
+                    setSelected([chip]);
+                    setDirectoryItemSelectorOpen(true);
+                    setMultiSelect(false);
+                });
+            }
+        },
+        [getValues, name, fetchDirectoryElementPath]
     );
 
     return (
@@ -177,6 +228,7 @@ const DirectoryItemsInput: FunctionComponent<DirectoryItemsInputProps> = ({
                                 key={item.id}
                                 size="small"
                                 onDelete={() => removeElements(index)}
+                                onClick={() => handleChipClick(index)}
                                 label={
                                     <OverflowableText
                                         text={
@@ -194,16 +246,19 @@ const DirectoryItemsInput: FunctionComponent<DirectoryItemsInputProps> = ({
                 <Grid item xs>
                     <Grid container direction="row-reverse">
                         <Tooltip title={intl.formatMessage({ id: titleId })}>
-                            <IconButton
-                                sx={styles.addDirectoryElements}
-                                size={'small'}
-                                disabled={disable}
-                                onClick={() =>
-                                    setDirectoryItemSelectorOpen(true)
-                                }
-                            >
-                                <FolderIcon />
-                            </IconButton>
+                            <span>
+                                <IconButton
+                                    sx={styles.addDirectoryElements}
+                                    size={'small'}
+                                    disabled={disable}
+                                    onClick={() => {
+                                        setDirectoryItemSelectorOpen(true);
+                                        setMultiSelect(true);
+                                    }}
+                                >
+                                    <FolderIcon />
+                                </IconButton>
+                            </span>
                         </Tooltip>
                     </Grid>
                 </Grid>
@@ -221,6 +276,9 @@ const DirectoryItemsInput: FunctionComponent<DirectoryItemsInputProps> = ({
                 fetchDirectoryContent={fetchDirectoryContent}
                 fetchRootFolders={fetchRootFolders}
                 fetchElementsInfos={fetchElementsInfos}
+                selected={selected}
+                expanded={expanded}
+                multiSelect={multiSelect}
             />
         </>
     );

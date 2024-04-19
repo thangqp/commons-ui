@@ -14,9 +14,13 @@ import {
 } from 'react';
 import { getFileIcon } from '../../utils/ElementIcon';
 import { ElementType } from '../../utils/ElementType';
-import { useSnackMessage } from '../../hooks/useSnackMessage.ts';
-import TreeViewFinder from '../TreeViewFinder';
 import { SxProps, Theme } from '@mui/material';
+import { useSnackMessage } from '../../hooks/useSnackMessage.js';
+import {
+    default as TreeViewFinder,
+    TreeViewFinderNodeProps,
+    TreeViewFinderProps,
+} from '../TreeViewFinder/TreeViewFinder';
 import { UUID } from 'crypto';
 import { ElementAttributes } from '../../index';
 
@@ -28,12 +32,10 @@ const styles = {
     }),
 };
 
-interface DirectoryItemSelectorProps {
+interface DirectoryItemSelectorProps extends TreeViewFinderProps {
     open: boolean;
-    onClose: any;
     types: string[];
     equipmentTypes?: string[];
-    title: string;
     itemFilter?: any;
     fetchDirectoryContent?: (
         directoryUuid: UUID,
@@ -54,29 +56,21 @@ interface DirectoryItemSelectorProps {
     cancelButtonProps?: any;
     onlyLeaves?: boolean;
     multiselect?: boolean;
+    expanded?: UUID[];
 }
 
 const DirectoryItemSelector: FunctionComponent<DirectoryItemSelectorProps> = ({
     open,
-    onClose,
     types,
     equipmentTypes,
-    title,
     itemFilter,
     fetchDirectoryContent,
     fetchRootFolders,
     fetchElementsInfos,
-    classes,
-    contentText,
-    defaultExpanded,
-    defaultSelected,
-    validationButtonText,
-    className,
-    cancelButtonProps,
-    onlyLeaves = true,
-    multiselect = true,
+    expanded,
+    ...otherTreeViewFinderProps
 }) => {
-    const [data, setData] = useState<any[]>([]);
+    const [data, setData] = useState<TreeViewFinderNodeProps[]>([]);
     const [rootDirectories, setRootDirectories] = useState<any[]>([]);
     const nodeMap = useRef<any>({});
     const dataRef = useRef<any[]>([]);
@@ -85,8 +79,6 @@ const DirectoryItemSelector: FunctionComponent<DirectoryItemSelectorProps> = ({
     const rootsRef = useRef<any[]>([]);
     rootsRef.current = rootDirectories;
     const { snackError } = useSnackMessage();
-    const openRef = useRef<boolean>();
-    openRef.current = open;
     const contentFilter = useCallback(
         () => new Set([ElementType.DIRECTORY, ...types]),
         [types]
@@ -171,12 +163,6 @@ const DirectoryItemSelector: FunctionComponent<DirectoryItemSelectorProps> = ({
                 });
     }, [convertRoots, types, snackError, fetchRootFolders]);
 
-    useEffect(() => {
-        if (open) {
-            updateRootDirectories();
-        }
-    }, [open, updateRootDirectories]);
-
     const fetchDirectory = useCallback(
         (nodeId: UUID): void => {
             fetchDirectoryContent &&
@@ -239,6 +225,17 @@ const DirectoryItemSelector: FunctionComponent<DirectoryItemSelectorProps> = ({
         ]
     );
 
+    useEffect(() => {
+        if (open) {
+            updateRootDirectories();
+            if (expanded) {
+                expanded.forEach((nodeId) => {
+                    fetchDirectory(nodeId);
+                });
+            }
+        }
+    }, [open, updateRootDirectories, expanded, fetchDirectory]);
+
     function sortHandlingDirectories(a: any, b: any): number {
         //If children property is set it means it's a directory, they are handled differently in order to keep them at the top of the list
         if (a.children && !b.children) {
@@ -250,25 +247,16 @@ const DirectoryItemSelector: FunctionComponent<DirectoryItemSelectorProps> = ({
     }
 
     return (
-        <>
-            <TreeViewFinder
-                multiselect={multiselect}
-                onTreeBrowse={fetchDirectory}
-                data={data}
-                onlyLeaves={onlyLeaves}
-                sortMethod={sortHandlingDirectories}
-                title={title}
-                onClose={onClose}
-                open={open}
-                classes={classes}
-                contentText={contentText}
-                defaultExpanded={defaultExpanded}
-                defaultSelected={defaultSelected}
-                validationButtonText={validationButtonText}
-                className={className}
-                cancelButtonProps={cancelButtonProps}
-            />
-        </>
+        <TreeViewFinder
+            onTreeBrowse={fetchDirectory as (NodeId: string) => void}
+            sortMethod={sortHandlingDirectories}
+            multiSelect // defaulted to true
+            open={open}
+            expanded={expanded as string[]}
+            onlyLeaves // defaulted to true
+            {...otherTreeViewFinderProps}
+            data={data}
+        />
     );
 };
 
