@@ -69,7 +69,6 @@ interface CriteriaBasedFilterEditionDialogProps {
     getFilterById: (id: string) => Promise<any>;
     saveFilter: (value: any, t: Record<string, any>) => Promise<void>;
     selectionForCopy: SelectionCopy;
-    fetchAppsAndUrls: () => Promise<StudyMetadata[]>;
     setSelelectionForCopy: (
         selection: SelectionCopy
     ) => Dispatch<SetStateAction<SelectionCopy>>;
@@ -88,7 +87,6 @@ export const CriteriaBasedFilterEditionDialog = ({
     getFilterById,
     saveFilter,
     selectionForCopy,
-    fetchAppsAndUrls,
     setSelelectionForCopy,
     activeDirectory,
     elementExists,
@@ -183,7 +181,6 @@ export const CriteriaBasedFilterEditionDialog = ({
         >
             {isDataReady && (
                 <FilterForm
-                    fetchAppsAndUrls={fetchAppsAndUrls}
                     activeDirectory={activeDirectory}
                     elementExists={elementExists}
                 />

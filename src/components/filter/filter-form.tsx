@@ -23,7 +23,6 @@ import { StudyMetadata } from '../../hooks/predefined-properties-hook.ts';
 
 interface FilterFormProps {
     creation?: boolean;
-    fetchAppsAndUrls: () => Promise<StudyMetadata[]>;
     activeDirectory?: UUID;
     elementExists?: elementExistsType;
 }
@@ -75,9 +74,7 @@ export const FilterForm: FunctionComponent<FilterFormProps> = (props) => {
                 </>
             )}
             {filterType === FilterType.CRITERIA_BASED.id && (
-                <CriteriaBasedFilterForm
-                    fetchAppsAndUrls={props.fetchAppsAndUrls}
-                />
+                <CriteriaBasedFilterForm />
             )}
             {filterType === FilterType.EXPLICIT_NAMING.id && (
                 <ExplicitNamingFilterForm />

@@ -44,7 +44,6 @@ export interface ExpertFilterEditionDialogProps {
 
     selectionForCopy: any;
     getFilterById: (id: string) => Promise<{ [prop: string]: any }>;
-    fetchAppsAndUrls: () => Promise<StudyMetadata[]>;
     setSelectionForCopy: (selection: any) => void;
     createFilter: (
         filter: any,
@@ -77,7 +76,6 @@ export const ExpertFilterEditionDialog = ({
     broadcastChannel,
     selectionForCopy,
     getFilterById,
-    fetchAppsAndUrls,
     setSelectionForCopy,
     createFilter,
     saveFilter,
@@ -191,7 +189,6 @@ export const ExpertFilterEditionDialog = ({
         >
             {isDataReady && (
                 <FilterForm
-                    fetchAppsAndUrls={fetchAppsAndUrls}
                     activeDirectory={activeDirectory}
                     elementExists={elementExists}
                 />

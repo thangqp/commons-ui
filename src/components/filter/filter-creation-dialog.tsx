@@ -114,6 +114,7 @@ const FilterCreationDialog = ({
         fetchDirectoryContent: fetchDirectoryContent,
         fetchRootFolders: fetchRootFolders,
         fetchElementsInfos: fetchElementsInfos,
+        fetchAppsAndUrls: fetchAppsAndUrls,
     } as MergedFormContextProps;
 
     const {
@@ -199,7 +200,6 @@ const FilterCreationDialog = ({
         >
             <FilterForm
                 creation
-                fetchAppsAndUrls={fetchAppsAndUrls}
                 activeDirectory={activeDirectory}
                 elementExists={elementExists}
             />

@@ -10,6 +10,7 @@ import {
     mapEquipmentTypeForPredefinedProperties,
 } from '../utils/equipment-types-for-predefined-properties-mapper';
 import { useSnackMessage } from './useSnackMessage.ts';
+import { useCustomFormContext } from '../components/react-hook-form/provider/use-custom-form-context.ts';
 
 export type PredefinedProperties = {
     [propertyName: string]: string[];
@@ -54,16 +55,16 @@ const fetchPredefinedProperties = async (
 };
 
 export const usePredefinedProperties = (
-    initialType: EquipmentType | null,
-    fetchAppsAndUrls: () => Promise<StudyMetadata[]>
+    initialType: EquipmentType | null
 ): [PredefinedProperties, Dispatch<SetStateAction<EquipmentType | null>>] => {
     const [type, setType] = useState<EquipmentType | null>(initialType);
     const [equipmentPredefinedProps, setEquipmentPredefinedProps] =
         useState<PredefinedProperties>({});
     const { snackError } = useSnackMessage();
+    const { fetchAppsAndUrls } = useCustomFormContext();
 
     useEffect(() => {
-        if (type !== null) {
+        if (fetchAppsAndUrls && type !== null) {
             fetchPredefinedProperties(type, fetchAppsAndUrls)
                 .then((p) => {
                     if (p !== undefined) {

@@ -11,6 +11,7 @@ import * as yup from 'yup';
 import { getSystemLanguage } from '../../../utils/localized-countries-hook';
 import { UUID } from 'crypto';
 import { ElementAttributes } from '../../../index';
+import { StudyMetadata } from '../../../hooks/predefined-properties-hook.ts';
 
 type CustomFormContextProps = {
     removeOptional?: boolean;
@@ -26,6 +27,7 @@ type CustomFormContextProps = {
         elementTypes?: string[],
         equipmentTypes?: string[]
     ) => Promise<ElementAttributes[]>;
+    fetchAppsAndUrls?: () => Promise<StudyMetadata[]>;
 };
 
 export type MergedFormContextProps = UseFormReturn<any> &
@@ -40,6 +42,7 @@ export const CustomFormContext = createContext<CustomFormContextProps>({
     fetchDirectoryContent: undefined,
     fetchRootFolders: undefined,
     fetchElementsInfos: undefined,
+    fetchAppsAndUrls: undefined,
 });
 
 const CustomFormProvider = (props: CustomFormProviderProps) => {
@@ -50,6 +53,7 @@ const CustomFormProvider = (props: CustomFormProviderProps) => {
         fetchDirectoryContent,
         fetchRootFolders,
         fetchElementsInfos,
+        fetchAppsAndUrls,
         children,
         ...formMethods
     } = props;
@@ -64,6 +68,7 @@ const CustomFormProvider = (props: CustomFormProviderProps) => {
                     fetchDirectoryContent: fetchDirectoryContent,
                     fetchRootFolders: fetchRootFolders,
                     fetchElementsInfos: fetchElementsInfos,
+                    fetchAppsAndUrls: fetchAppsAndUrls,
                 }}
             >
                 {children}

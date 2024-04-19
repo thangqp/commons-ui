@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import Grid from '@mui/material/Grid';
-import { useEffect, useMemo } from 'react';
+import { FunctionComponent, useEffect, useMemo } from 'react';
 import { useWatch } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 import { FilterType } from '../constants/field-constants';
@@ -20,10 +20,7 @@ import {
     PROPERTY_VALUES_1,
     PROPERTY_VALUES_2,
 } from './filter-property';
-import {
-    StudyMetadata,
-    usePredefinedProperties,
-} from '../../../hooks/predefined-properties-hook.ts';
+import { usePredefinedProperties } from '../../../hooks/predefined-properties-hook.ts';
 
 export enum FreePropertiesTypes {
     SUBSTATION_FILTER_PROPERTIES = 'substationFreeProperties',
@@ -141,18 +138,14 @@ export const filterPropertiesYupSchema = {
         ),
 };
 
-interface FilterPropertiesProps {
-    fetchAppsAndUrls: () => Promise<StudyMetadata[]>;
-}
-
-function FilterProperties({ fetchAppsAndUrls }: FilterPropertiesProps) {
+const FilterProperties: FunctionComponent = () => {
     const watchEquipmentType = useWatch({
         name: FieldConstants.EQUIPMENT_TYPE,
     });
     const [equipmentPredefinedProps, setEquipmentType] =
-        usePredefinedProperties(watchEquipmentType, fetchAppsAndUrls);
+        usePredefinedProperties(watchEquipmentType);
     const [substationPredefinedProps, setSubstationType] =
-        usePredefinedProperties(null, fetchAppsAndUrls);
+        usePredefinedProperties(null);
 
     const displayEquipmentProperties = useMemo(() => {
         return (
@@ -206,6 +199,6 @@ function FilterProperties({ fetchAppsAndUrls }: FilterPropertiesProps) {
             </Grid>
         )
     );
-}
+};
 
 export default FilterProperties;

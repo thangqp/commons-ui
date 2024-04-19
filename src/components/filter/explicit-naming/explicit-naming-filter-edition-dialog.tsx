@@ -47,7 +47,6 @@ interface ExplicitNamingFilterEditionDialogProps {
     selectionForCopy: any;
     setSelectionForCopy: (selection: any) => void;
     getFilterById: (id: string) => Promise<any>;
-    fetchAppsAndUrls: () => Promise<StudyMetadata[]>;
     createFilter: (
         filter: any,
         name: string,
@@ -70,7 +69,6 @@ const ExplicitNamingFilterEditionDialog = ({
     selectionForCopy,
     setSelectionForCopy,
     getFilterById,
-    fetchAppsAndUrls,
     createFilter,
     saveFilter,
     activeDirectory,
@@ -179,7 +177,6 @@ const ExplicitNamingFilterEditionDialog = ({
         >
             {isDataReady && (
                 <FilterForm
-                    fetchAppsAndUrls={fetchAppsAndUrls}
                     activeDirectory={activeDirectory}
                     elementExists={elementExists}
                 />

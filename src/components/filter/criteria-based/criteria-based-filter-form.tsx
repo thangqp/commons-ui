@@ -16,7 +16,7 @@ import {
     getCriteriaBasedSchema,
 } from '../constants/criteria-based-utils';
 import Grid from '@mui/material/Grid';
-import { StudyMetadata } from '../../../hooks/predefined-properties-hook.ts';
+import { FunctionComponent } from 'react';
 
 export const criteriaBasedFilterSchema = getCriteriaBasedSchema({
     [FieldConstants.ENERGY_SOURCE]: yup.string().nullable(),
@@ -29,13 +29,7 @@ export const criteriaBasedFilterEmptyFormData = getCriteriaBasedFormData(null, {
     [FreePropertiesTypes.FREE_FILTER_PROPERTIES]: [],
 });
 
-interface CriteriaBasedFilterFormProps {
-    fetchAppsAndUrls: () => Promise<StudyMetadata[]>;
-}
-
-function CriteriaBasedFilterForm({
-    fetchAppsAndUrls,
-}: CriteriaBasedFilterFormProps) {
+const CriteriaBasedFilterForm: FunctionComponent = () => {
     return (
         <Grid container item spacing={1}>
             <CriteriaBasedForm
@@ -45,9 +39,9 @@ function CriteriaBasedFilterForm({
                     ]
                 }
             />
-            <FilterProperties fetchAppsAndUrls={fetchAppsAndUrls} />
+            <FilterProperties />
         </Grid>
     );
-}
+};
 
 export default CriteriaBasedFilterForm;
