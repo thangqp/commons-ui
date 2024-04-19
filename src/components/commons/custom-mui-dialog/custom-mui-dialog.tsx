@@ -42,7 +42,7 @@ const styles = {
     dialogPaper: {
         '.MuiDialog-paper': {
             width: 'auto',
-            minWidth: '800px',
+            minWidth: '1100px',
             margin: 'auto',
         },
     },

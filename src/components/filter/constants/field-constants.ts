@@ -45,6 +45,10 @@ export enum FieldConstants {
     EMPTY_GROUP = 'emptyGroup',
     INCORRECT_RULE = 'incorrectRule',
     BETWEEN_RULE = 'betweenRule',
+    PROPERTY = 'PROPERTY',
+    PROPERTY_NAME = 'propertyName',
+    PROPERTY_VALUES = 'propertyValues',
+    PROPERTY_OPERATOR = 'propertyOperator',
 }
 
 export const FilterType = {

@@ -31,6 +31,7 @@ import {
     OPERATOR_OPTIONS,
 } from '../constants/expert-filter-constants.ts';
 import {
+    isBlankOrEmpty,
     microUnitToUnit,
     unitToMicroUnit,
 } from '../../../utils/conversion-utils.ts';
@@ -141,6 +142,16 @@ export const getOperators = (fieldName: string, intl: IntlShape) => {
                 name: operator.name,
                 label: intl.formatMessage({ id: operator.label }),
             }));
+        case DataType.PROPERTY:
+            let propertiesOperators: {
+                name: string;
+                customName: string;
+                label: string;
+            }[] = [OPERATOR_OPTIONS.IS];
+            return propertiesOperators.map((operator) => ({
+                name: operator.name,
+                label: intl.formatMessage({ id: operator.label }),
+            }));
     }
     return defaultOperators;
 };
@@ -161,19 +172,34 @@ export function exportExpertRules(
 ): RuleGroupTypeExport {
     function transformRule(rule: CustomRuleType): RuleTypeExport {
         const isValueAnArray = Array.isArray(rule.value);
+        const dataType = getDataType(rule.field, rule.operator) as DataType;
         return {
             field: rule.field as FieldType,
-            operator: Object.values(OPERATOR_OPTIONS).find(
-                (operator) => operator.name === rule.operator
-            )?.customName as OperatorType,
+            operator:
+                dataType !== DataType.PROPERTY
+                    ? (Object.values(OPERATOR_OPTIONS).find(
+                          (operator) => operator.name === rule.operator
+                      )?.customName as OperatorType)
+                    : rule.value.propertyOperator,
             value:
-                !isValueAnArray && rule.operator !== OperatorType.EXISTS
+                !isValueAnArray &&
+                rule.operator !== OperatorType.EXISTS &&
+                dataType !== DataType.PROPERTY
                     ? changeValueUnit(rule.value, rule.field as FieldType)
                     : undefined,
-            values: isValueAnArray
-                ? changeValueUnit(rule.value, rule.field as FieldType)
-                : undefined,
-            dataType: getDataType(rule.field, rule.operator) as DataType,
+            values:
+                isValueAnArray && dataType !== DataType.PROPERTY
+                    ? changeValueUnit(rule.value, rule.field as FieldType)
+                    : undefined,
+            dataType: dataType,
+            propertyName:
+                dataType === DataType.PROPERTY
+                    ? rule.value.propertyName
+                    : undefined,
+            propertyValues:
+                dataType === DataType.PROPERTY
+                    ? rule.value.propertyValues
+                    : undefined,
         };
     }
 
@@ -201,7 +227,13 @@ export function importExpertRules(
     query: RuleGroupTypeExport
 ): CustomRuleGroupType {
     function parseValue(rule: RuleTypeExport) {
-        if (rule.values) {
+        if (rule.propertyName) {
+            return {
+                propertyName: rule.propertyName,
+                propertyValues: rule.propertyValues,
+                propertyOperator: rule.operator,
+            };
+        } else if (rule.values) {
             // values is a Set on server side, so need to sort
             if (rule.dataType === DataType.NUMBER) {
                 return rule.values
@@ -225,9 +257,12 @@ export function importExpertRules(
     function transformRule(rule: RuleTypeExport): CustomRuleType {
         return {
             field: rule.field,
-            operator: Object.values(OPERATOR_OPTIONS).find(
-                (operator) => operator.customName === rule.operator
-            )?.name as string,
+            operator:
+                rule.dataType !== DataType.PROPERTY
+                    ? (Object.values(OPERATOR_OPTIONS).find(
+                          (operator) => operator.customName === rule.operator
+                      )?.name as string)
+                    : OperatorType.IS,
             value: parseValue(rule),
             dataType:
                 rule.operator === OperatorType.IS_PART_OF ||
@@ -351,9 +386,20 @@ export const queryValidator: QueryValidator = (query) => {
                 valid: false,
                 reasons: [FieldConstants.EMPTY_RULE],
             };
+        } else if (
+            rule.id &&
+            getDataType(rule.field, rule.operator) === DataType.PROPERTY &&
+            (isBlankOrEmpty(rule.value?.propertyName) ||
+                isBlankOrEmpty(rule.value?.propertyOperator) ||
+                isBlankOrEmpty(rule.value?.propertyValues) ||
+                !rule.value?.propertyValues?.length)
+        ) {
+            result[rule.id] = {
+                valid: false,
+                reasons: [FieldConstants.EMPTY_RULE],
+            };
         }
     };
-
     const validateGroup = (ruleGroup: RuleGroupTypeAny) => {
         const reasons: any[] = [];
         if (ruleGroup.rules.length === 0) {

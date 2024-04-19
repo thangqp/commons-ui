@@ -24,9 +24,13 @@ import {
     FieldType,
     OperatorType,
 } from '../../components/filter/expert/expert-filter.type.ts';
-import { VoltageLevel } from '../../components/filter/constants/equipment-types.ts';
+import {
+    Substation,
+    VoltageLevel,
+} from '../../components/filter/constants/equipment-types.ts';
 import ElementValueEditor from './element-value-editor.tsx';
 import { ElementType } from '../ElementType.ts';
+import PropertyValueEditor from './property-value-editor.tsx';
 
 const styles = {
     noArrows: {
@@ -123,6 +127,29 @@ const ValueEditor = (props: ValueEditorProps) => {
         props.field === FieldType.VOLTAGE_LEVEL_ID_2
     ) {
         return <TextValueEditor {...props} />;
+    } else if (
+        props.field === FieldType.PROPERTY ||
+        props.field === FieldType.SUBSTATION_PROPERTY ||
+        props.field === FieldType.SUBSTATION_PROPERTY_1 ||
+        props.field === FieldType.SUBSTATION_PROPERTY_2
+    ) {
+        let equipmentType;
+        if (
+            props.field === FieldType.SUBSTATION_PROPERTY ||
+            props.field === FieldType.SUBSTATION_PROPERTY_1 ||
+            props.field === FieldType.SUBSTATION_PROPERTY_2
+        ) {
+            equipmentType = Substation.type;
+        } else {
+            equipmentType = getValues(FieldConstants.EQUIPMENT_TYPE);
+        }
+
+        return (
+            <PropertyValueEditor
+                equipmentType={equipmentType}
+                valueEditorProps={props}
+            />
+        );
     }
     return (
         <Box sx={props.inputType === 'number' ? styles.noArrows : undefined}>
