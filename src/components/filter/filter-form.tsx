@@ -19,7 +19,6 @@ import { ElementType } from '../../utils/ElementType';
 import { UUID } from 'crypto';
 import { elementExistsType } from './criteria-based/criteria-based-filter-edition-dialog.tsx';
 import ExpandingTextField from '../react-hook-form/ExpandingTextField.tsx';
-import { StudyMetadata } from '../../hooks/predefined-properties-hook.ts';
 
 interface FilterFormProps {
     creation?: boolean;

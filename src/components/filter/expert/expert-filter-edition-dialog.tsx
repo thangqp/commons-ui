@@ -21,7 +21,6 @@ import { importExpertRules } from './expert-filter-utils';
 import { UUID } from 'crypto';
 import { elementExistsType } from '../criteria-based/criteria-based-filter-edition-dialog.tsx';
 import { MergedFormContextProps } from '../../react-hook-form/provider/custom-form-provider.tsx';
-import { StudyMetadata } from '../../../hooks/predefined-properties-hook.ts';
 import { ElementAttributes } from '../../../index';
 
 const formSchema = yup

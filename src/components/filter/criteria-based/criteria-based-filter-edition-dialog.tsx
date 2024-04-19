@@ -27,7 +27,6 @@ import { FetchStatus } from '../../../hooks/customHooks';
 import { FilterForm } from '../filter-form';
 import { ElementType } from '../../..';
 import { UUID } from 'crypto';
-import { StudyMetadata } from '../../../hooks/predefined-properties-hook.ts';
 
 export type SelectionCopy = {
     sourceItemUuid: UUID | null;
