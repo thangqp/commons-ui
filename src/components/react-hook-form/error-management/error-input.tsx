@@ -5,20 +5,28 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { MutableRefObject, useEffect, useRef } from 'react';
+import React, {
+    FunctionComponent,
+    MutableRefObject,
+    useEffect,
+    useRef,
+} from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useController } from 'react-hook-form';
 
 export interface ErrorInputProps {
     name: string;
-    InputField?: ({
+    InputField: ({
         message,
     }: {
         message: string | React.ReactNode;
     }) => React.ReactNode;
 }
 
-const ErrorInput = ({ name, InputField }: ErrorInputProps) => {
+const ErrorInput: FunctionComponent<ErrorInputProps> = ({
+    name,
+    InputField,
+}: ErrorInputProps) => {
     const {
         fieldState: { error },
         formState: { isSubmitting },
@@ -56,14 +64,11 @@ const ErrorInput = ({ name, InputField }: ErrorInputProps) => {
         <>
             {error?.message && (
                 <div ref={errorRef}>
-                    {InputField &&
-                        InputField({
-                            message: (
-                                <FormattedMessage
-                                    {...errorProps(error?.message)}
-                                />
-                            ),
-                        })}
+                    {InputField({
+                        message: (
+                            <FormattedMessage {...errorProps(error?.message)} />
+                        ),
+                    })}
                 </div>
             )}
         </>

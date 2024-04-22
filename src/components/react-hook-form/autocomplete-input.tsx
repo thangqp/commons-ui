@@ -20,11 +20,12 @@ import {
 } from './utils/functions';
 import FieldLabel from './utils/field-label';
 import { useCustomFormContext } from './provider/use-custom-form-context';
+import { FunctionComponent } from 'react';
 
 export interface AutocompleteInputProps
     extends Omit<
         AutocompleteProps<
-            string | { id: string; label: string },
+            Option,
             boolean | undefined,
             boolean | undefined,
             boolean | undefined
@@ -33,14 +34,10 @@ export interface AutocompleteInputProps
         'value' | 'onChange' | 'renderInput'
     > {
     name: string;
-    options: ({ id: string; label: string } | string)[];
+    options: (Option | string)[];
     label?: string;
-    outputTransform?: (
-        value: { id: string; label: string } | string
-    ) => { id: string; label: string } | string;
-    inputTransform?: (
-        value: { id: string; label: string } | string | any
-    ) => { id: string; label: string } | string | null;
+    outputTransform?: (value: Option) => Option;
+    inputTransform?: (value: Option | any) => Option | null;
     readOnly?: boolean;
     previousValue?: string;
     allowNewValue?: boolean;
@@ -51,7 +48,14 @@ export interface AutocompleteInputProps
     >;
 }
 
-const AutocompleteInput = ({
+export type Option =
+    | {
+          id: string;
+          label: string;
+      }
+    | string;
+
+const AutocompleteInput: FunctionComponent<AutocompleteInputProps> = ({
     name,
     label,
     options,
@@ -71,7 +75,7 @@ const AutocompleteInput = ({
         fieldState: { error },
     } = useController({ name });
 
-    const handleChange = (value: any) => {
+    const handleChange = (value: Option) => {
         onChangeCallback && onChangeCallback();
         //if free solo not enabled or if value is not of string type, we call onChange right away
         if (!allowNewValue || typeof value !== 'string') {
@@ -81,7 +85,8 @@ const AutocompleteInput = ({
 
         //otherwise, we check if user input matches with one of the options
         const matchingOption = options.find(
-            (option: any) => option.id === value
+            (option: Option) =>
+                typeof option !== 'string' && option.id === value
         );
         //if it does, we send the matching option to react hook form
         if (matchingOption) {
@@ -96,7 +101,7 @@ const AutocompleteInput = ({
     return (
         <Autocomplete
             value={inputTransform(value || '')}
-            onChange={(_, data) => handleChange(data)}
+            onChange={(_, data) => handleChange(data as Option)}
             {...(allowNewValue && {
                 freeSolo: true,
                 autoComplete: true,

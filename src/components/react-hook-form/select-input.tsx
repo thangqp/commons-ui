@@ -7,29 +7,39 @@
 
 import AutocompleteInput, {
     AutocompleteInputProps,
+    Option,
 } from './autocomplete-input';
 import { useIntl } from 'react-intl';
 
-interface OwnProps {
-    options: { id: string; label: string }[];
+export interface SelectInputProps
+    extends Omit<
+        AutocompleteInputProps,
+        'outputTransform' | 'inputTransform' | 'readOnly' | 'getOptionLabel' // already defined in SelectInput
+    > {
+    options: Option[];
 }
 
-export type SelectInputProps = Omit<
-    AutocompleteInputProps,
-    'outputTransform' | 'inputTransform' | 'readOnly' | 'getOptionLabel' // already defined in SelectInput
->;
-
-const SelectInput = (props: OwnProps & SelectInputProps) => {
+const SelectInput = (props: SelectInputProps) => {
     const intl = useIntl();
 
-    const inputTransform = (value: { id: string; label: string } | string) => {
+    const inputTransform = (value: Option) => {
         if (typeof value === 'string') {
-            return props.options.find((option) => option?.id === value) || null;
+            return (
+                props.options.find(
+                    (option) =>
+                        typeof option !== 'string' && option?.id === value
+                ) || null
+            );
         }
-        return props.options.find((option) => option?.id === value.id) || null;
+        return (
+            props.options.find(
+                (option) =>
+                    typeof option !== 'string' && option?.id === value.id
+            ) || null
+        );
     };
 
-    const outputTransform = (value: { id: string; label: string } | string) => {
+    const outputTransform = (value: Option) => {
         if (typeof value === 'string') {
             return value;
         }
@@ -38,10 +48,12 @@ const SelectInput = (props: OwnProps & SelectInputProps) => {
 
     return (
         <AutocompleteInput
-            getOptionLabel={(option: any) => {
-                return option?.label
-                    ? intl.formatMessage({ id: option?.label }) // If the option has a label property, display the label using internationalization
-                    : option?.id; // If the option doesn't have a label property, display the ID instead
+            getOptionLabel={(option: Option) => {
+                return typeof option !== 'string'
+                    ? option?.label
+                        ? intl.formatMessage({ id: option?.label }) // If the option has a label property, display the label using internationalization
+                        : option?.id // If the option doesn't have a label property, display the ID instead
+                    : option;
             }}
             inputTransform={inputTransform}
             outputTransform={outputTransform}

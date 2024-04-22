@@ -16,11 +16,11 @@ import {
     Grid,
     LinearProgress,
 } from '@mui/material';
-import SubmitButton from '../../react-hook-form/utils/submit-button';
-import CancelButton from '../../react-hook-form/utils/cancel-button';
+import SubmitButton from '../react-hook-form/utils/submit-button';
+import CancelButton from '../react-hook-form/utils/cancel-button';
 import CustomFormProvider, {
     MergedFormContextProps,
-} from '../../react-hook-form/provider/custom-form-provider.tsx';
+} from '../react-hook-form/provider/custom-form-provider';
 import * as yup from 'yup';
 
 interface ICustomMuiDialog {

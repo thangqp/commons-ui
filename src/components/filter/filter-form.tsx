@@ -5,9 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { UniqueNameInput } from '../commons/unique-name-input';
+import { UniqueNameInput } from '../../utils/rhf-inputs/unique-name-input';
 import { FieldConstants } from './constants/field-constants';
-import { FilterType } from './constants/field-constants';
 import CriteriaBasedFilterForm from './criteria-based/criteria-based-filter-form';
 import ExplicitNamingFilterForm from './explicit-naming/explicit-naming-filter-form';
 import React, { FunctionComponent } from 'react';
@@ -17,8 +16,9 @@ import { Box, Grid } from '@mui/material';
 import RadioInput from '../react-hook-form/radio-input';
 import { ElementType } from '../../utils/ElementType';
 import { UUID } from 'crypto';
-import { elementExistsType } from './criteria-based/criteria-based-filter-edition-dialog.tsx';
-import ExpandingTextField from '../react-hook-form/ExpandingTextField.tsx';
+import { elementExistsType } from './criteria-based/criteria-based-filter-edition-dialog';
+import ExpandingTextField from '../react-hook-form/ExpandingTextField';
+import { FilterType } from './constants/filter-constants';
 
 interface FilterFormProps {
     creation?: boolean;

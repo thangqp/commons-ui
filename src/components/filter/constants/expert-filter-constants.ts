@@ -13,6 +13,12 @@ import {
 } from '../expert/expert-filter.type.ts';
 import { Field } from 'react-querybuilder';
 
+export enum RULES {
+    EMPTY_RULE = 'emptyRule',
+    EMPTY_GROUP = 'emptyGroup',
+    INCORRECT_RULE = 'incorrectRule',
+    BETWEEN_RULE = 'betweenRule',
+}
 export const EXPERT_FILTER_EQUIPMENTS = {
     SUBSTATION: {
         id: 'SUBSTATION',

@@ -6,22 +6,24 @@
  */
 
 import { useCallback, useEffect, useState } from 'react';
-import { FieldConstants, FilterType } from '../constants/field-constants';
+import { FieldConstants } from '../constants/field-constants';
 import { noSelectionForCopy } from '../constants/equipment-types';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
-import CustomMuiDialog from '../../commons/custom-mui-dialog/custom-mui-dialog';
+import CustomMuiDialog from '../../dialogs/custom-mui-dialog';
 import yup from '../../../utils/yup-config';
 import { FetchStatus } from '../../../hooks/customHooks';
 import { FilterForm } from '../filter-form';
 import { EXPERT_FILTER_QUERY, expertFilterSchema } from './expert-filter-form';
-import { saveExpertFilter } from '../filters-utils';
+import { saveExpertFilter } from '../utils/filters-utils';
 import { importExpertRules } from './expert-filter-utils';
 import { UUID } from 'crypto';
-import { elementExistsType } from '../criteria-based/criteria-based-filter-edition-dialog.tsx';
-import { MergedFormContextProps } from '../../react-hook-form/provider/custom-form-provider.tsx';
-import { ElementAttributes } from '../../../index';
+import { elementExistsType } from '../criteria-based/criteria-based-filter-edition-dialog';
+import { MergedFormContextProps } from '../../react-hook-form/provider/custom-form-provider';
+import { ElementAttributes } from '../../DirectoryItemSelector/directory-item-selector';
+import { FilterContext } from '../filter-context';
+import { FilterType } from '../constants/filter-constants';
 
 const formSchema = yup
     .object()
@@ -61,8 +63,8 @@ export interface ExpertFilterEditionDialogProps {
     fetchRootFolders: (types: string[]) => Promise<ElementAttributes[]>;
     fetchElementsInfos: (
         ids: UUID[],
-        elementTypes: string[],
-        equipmentTypes: string[]
+        elementTypes?: string[],
+        equipmentTypes?: string[]
     ) => Promise<ElementAttributes[]>;
 }
 
@@ -94,9 +96,6 @@ export const ExpertFilterEditionDialog = ({
             resolver: yupResolver(formSchema),
         }),
         language: language,
-        fetchDirectoryContent: fetchDirectoryContent,
-        fetchRootFolders: fetchRootFolders,
-        fetchElementsInfos: fetchElementsInfos,
     } as MergedFormContextProps;
 
     const {
@@ -186,12 +185,20 @@ export const ExpertFilterEditionDialog = ({
             disabledSave={!!nameError || !!isValidating}
             isDataFetching={dataFetchStatus === FetchStatus.FETCHING}
         >
-            {isDataReady && (
-                <FilterForm
-                    activeDirectory={activeDirectory}
-                    elementExists={elementExists}
-                />
-            )}
+            <FilterContext.Provider
+                value={{
+                    fetchDirectoryContent: fetchDirectoryContent,
+                    fetchRootFolders: fetchRootFolders,
+                    fetchElementsInfos: fetchElementsInfos,
+                }}
+            >
+                {isDataReady && (
+                    <FilterForm
+                        activeDirectory={activeDirectory}
+                        elementExists={elementExists}
+                    />
+                )}
+            </FilterContext.Provider>
         </CustomMuiDialog>
     );
 };

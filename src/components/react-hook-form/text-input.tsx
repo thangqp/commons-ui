@@ -14,7 +14,9 @@ import {
 } from '@mui/material';
 import { Clear as ClearIcon } from '@mui/icons-material';
 import { useController } from 'react-hook-form';
-import TextFieldWithAdornment from './utils/text-field-with-adornment';
+import TextFieldWithAdornment, {
+    TextFieldWithAdornmentProps,
+} from './utils/text-field-with-adornment';
 import FieldLabel from './utils/field-label';
 import {
     genHelperError,
@@ -23,16 +25,7 @@ import {
     isFieldRequired,
 } from './utils/functions';
 import { useCustomFormContext } from './provider/use-custom-form-context';
-
-type Input = string | number;
-
-type TextFieldWithAdornmentProps = TextFieldProps & {
-    // variant already included in TextFieldProps
-    value: Input; // we override the default type of TextFieldProps which is unknown
-    adornmentPosition: string;
-    adornmentText: string;
-    handleClearValue?: () => void;
-};
+import { Input } from './numbers/float-input';
 
 export interface TextInputProps {
     name: string;
@@ -76,6 +69,12 @@ const TextInput = ({
         fieldState: { error },
     } = useController({ name });
 
+    const Field = adornment !== undefined ? TextFieldWithAdornment : TextField;
+    const finalAdornment = {
+        adornmentPosition: adornment?.position ?? '',
+        adornmentText: adornment?.text ?? '',
+    };
+
     const handleClearValue = () => {
         onChange(outputTransform(''));
     };
@@ -99,17 +98,13 @@ const TextInput = ({
                   !removeOptional,
           });
 
-    return adornment ? (
-        <TextFieldWithAdornment
+    return (
+        <Field
             key={id ? id : label}
             size="small"
             fullWidth
             id={id ? id : label}
             label={fieldLabel}
-            {...(adornment && {
-                adornmentPosition: adornment.position,
-                adornmentText: adornment?.text,
-            })}
             value={transformedValue}
             onChange={handleValueChanged}
             InputProps={{
@@ -134,34 +129,7 @@ const TextInput = ({
             {...genHelperPreviousValue(previousValue!, adornment)}
             {...genHelperError(error?.message)}
             {...formProps}
-        />
-    ) : (
-        <TextField
-            key={id ? id : label}
-            size="small"
-            fullWidth
-            id={id ? id : label}
-            label={fieldLabel}
-            value={transformedValue}
-            onChange={handleValueChanged}
-            InputProps={{
-                endAdornment: (
-                    <InputAdornment position="end">
-                        {clearable &&
-                            transformedValue !== undefined &&
-                            transformedValue !== '' && (
-                                <IconButton onClick={handleClearValue}>
-                                    <ClearIcon />
-                                </IconButton>
-                            )}
-                        {customAdornment && { ...customAdornment }}
-                    </InputAdornment>
-                ),
-            }}
-            inputRef={ref}
-            {...genHelperPreviousValue(previousValue!, adornment)}
-            {...genHelperError(error?.message)}
-            {...formProps}
+            {...finalAdornment}
         />
     );
 };

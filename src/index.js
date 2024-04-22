@@ -21,20 +21,22 @@ export { default as OverflowableText } from './components/OverflowableText';
 export { default as ElementSearchDialog } from './components/ElementSearchDialog';
 export { default as FlatParameters } from './components/FlatParameters';
 export { default as MultipleSelectionDialog } from './components/MultipleSelectionDialog';
-export { default as CustomMuiDialog } from './components/commons/custom-mui-dialog/custom-mui-dialog';
-export { default as DescriptionModificationDialog } from './components/commons/description-modification/description-modification-dialog';
+export { default as CustomMuiDialog } from './components/dialogs/custom-mui-dialog';
+export { default as DescriptionModificationDialog } from './components/dialogs/description-modification-dialog';
 export { default as CriteriaBasedForm } from './components/filter/criteria-based/criteria-based-form';
-export { default as PopupConfirmationDialog } from './utils/popup-confirmation-dialog';
+export { default as PopupConfirmationDialog } from './components/dialogs/popup-confirmation-dialog';
 export { default as BottomRightButtons } from './utils/rhf-inputs/ag-grid-table-rhf/bottom-right-buttons';
 export { default as CustomAgGridTable } from './utils/rhf-inputs/ag-grid-table-rhf/custom-ag-grid-table';
 export { ROW_DRAGGING_SELECTION_COLUMN_DEF } from './utils/rhf-inputs/ag-grid-table-rhf/custom-ag-grid-table';
 
 export {
-    getCriteriaBasedSchema,
-    getCriteriaBasedFormData,
     CONTINGENCY_LIST_EQUIPMENTS,
     FILTER_EQUIPMENTS,
-} from './components/filter/constants/criteria-based-utils';
+} from './components/filter/constants/criteria-based-constants';
+export {
+    getCriteriaBasedFormData,
+    getCriteriaBasedSchema,
+} from './components/filter/utils/criteria-based-utils';
 
 export {
     Line,
@@ -55,11 +57,7 @@ export {
     noSelectionForCopy,
 } from './components/filter/constants/equipment-types';
 
-export {
-    FieldConstants,
-    FilterType,
-    ContingencyListType,
-} from './components/filter/constants/field-constants';
+export { FieldConstants } from './components/filter/constants/field-constants';
 
 export {
     GRIDSUITE_DEFAULT_PRECISION,
@@ -192,7 +190,7 @@ export {
     saveExplicitNamingFilter,
     saveCriteriaBasedFilter,
     saveExpertFilter,
-} from './components/filter/filters-utils';
+} from './components/filter/utils/filters-utils';
 export {
     default as RangeInput,
     DEFAULT_RANGE_VALUE,
@@ -204,5 +202,5 @@ export { default as MuiSelectInput } from './utils/rhf-inputs/select-inputs/mui-
 export { default as CountriesInput } from './utils/rhf-inputs/select-inputs/countries-input';
 export { default as MultipleAutocompleteInput } from './utils/rhf-inputs/autocomplete-inputs/multiple-autocomplete-input';
 export { default as CsvUploader } from './utils/rhf-inputs/ag-grid-table-rhf/csv-uploader/csv-uploader';
-export { UniqueNameInput } from './components/commons/unique-name-input';
+export { UniqueNameInput } from './utils/rhf-inputs/unique-name-input';
 export { UserManagerMock } from './utils/UserManagerMock';

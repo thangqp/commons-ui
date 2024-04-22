@@ -15,22 +15,20 @@ import TextValueEditor from './text-value-editor';
 import Box from '@mui/material/Box';
 
 import { useFormContext } from 'react-hook-form';
-import {
-    FieldConstants,
-    FilterType,
-} from '../../components/filter/constants/field-constants.ts';
+import { FieldConstants } from '../../components/filter/constants/field-constants';
 import {
     DataType,
     FieldType,
     OperatorType,
-} from '../../components/filter/expert/expert-filter.type.ts';
+} from '../../components/filter/expert/expert-filter.type';
 import {
     Substation,
     VoltageLevel,
-} from '../../components/filter/constants/equipment-types.ts';
-import ElementValueEditor from './element-value-editor.tsx';
-import { ElementType } from '../ElementType.ts';
-import PropertyValueEditor from './property-value-editor.tsx';
+} from '../../components/filter/constants/equipment-types';
+import ElementValueEditor from './element-value-editor';
+import { ElementType } from '../ElementType';
+import PropertyValueEditor from './property-value-editor';
+import { FilterType } from '../../components/filter/constants/filter-constants';
 
 const styles = {
     noArrows: {

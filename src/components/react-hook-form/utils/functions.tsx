@@ -37,17 +37,6 @@ export function identity(x: any) {
     return x;
 }
 
-// When using Typescript, you can't get the validation schema from useFormContext (because it is a custom prop)
-// this method can be used instead in Typescript files
-export const isFieldFromContextRequired = (
-    fieldName: string,
-    formContext: any,
-    values: unknown
-) => {
-    const { validationSchema } = formContext;
-    return isFieldRequired(fieldName, validationSchema, values);
-};
-
 export const isFieldRequired = (
     fieldName: string,
     schema: any,

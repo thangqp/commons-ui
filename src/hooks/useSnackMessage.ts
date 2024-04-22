@@ -5,9 +5,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useCallback } from 'react';
-import { useSnackbar } from 'notistack';
+import React, { useCallback } from 'react';
+import { EnqueueSnackbar, useSnackbar } from 'notistack';
 import { useIntlRef } from './useIntlRef';
+import { IntlShape } from 'react-intl';
 
 interface SnackInputs {
     messageTxt?: string;
@@ -71,10 +72,10 @@ export function useSnackMessage(): UseSnackMessageReturn {
 
 function makeSnackbar(
     snackInputs: SnackInputs,
-    intlRef: any,
-    enqueueSnackbar: any,
-    level: any,
-    persistent: any
+    intlRef: React.MutableRefObject<IntlShape>,
+    enqueueSnackbar: EnqueueSnackbar,
+    level: 'default' | 'error' | 'success' | 'warning' | 'info' | undefined,
+    persistent: boolean
 ) {
     const message = checkAndTranslateIfNecessary(
         intlRef,
@@ -88,17 +89,19 @@ function makeSnackbar(
         snackInputs.headerId,
         snackInputs.headerValues
     );
-    displayMessageWithSnackbar(
-        message,
-        header,
-        enqueueSnackbar,
-        level,
-        persistent
-    );
+    if (message !== null && header !== null) {
+        displayMessageWithSnackbar(
+            message,
+            header,
+            enqueueSnackbar,
+            level,
+            persistent
+        );
+    }
 }
 
 function checkAndTranslateIfNecessary(
-    intlRef: any,
+    intlRef: React.MutableRefObject<IntlShape>,
     txt?: string,
     id?: string,
     values?: any
@@ -125,10 +128,10 @@ function checkInputs(txt?: string, id?: string, values?: any) {
 
 function displayMessageWithSnackbar(
     message: string,
-    header: any,
-    enqueueSnackbar: any,
-    level: any,
-    persistent: any
+    header: string,
+    enqueueSnackbar: EnqueueSnackbar,
+    level: 'default' | 'error' | 'success' | 'warning' | 'info' | undefined,
+    persistent: boolean
 ) {
     let fullMessage = '';
     if (header) {

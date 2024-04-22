@@ -8,26 +8,12 @@
 import React, { createContext, PropsWithChildren } from 'react';
 import { FormProvider, UseFormReturn } from 'react-hook-form';
 import * as yup from 'yup';
-import { getSystemLanguage } from '../../../utils/localized-countries-hook';
-import { UUID } from 'crypto';
-import { ElementAttributes } from '../../../index';
-import { StudyMetadata } from '../../../hooks/predefined-properties-hook.ts';
+import { getSystemLanguage } from '../../../hooks/localized-countries-hook';
 
 type CustomFormContextProps = {
     removeOptional?: boolean;
     validationSchema: yup.AnySchema;
     language?: string;
-    fetchDirectoryContent?: (
-        directoryUuid: UUID,
-        elementTypes: string[]
-    ) => Promise<ElementAttributes[]>;
-    fetchRootFolders?: (types: string[]) => Promise<ElementAttributes[]>;
-    fetchElementsInfos?: (
-        ids: UUID[],
-        elementTypes?: string[],
-        equipmentTypes?: string[]
-    ) => Promise<ElementAttributes[]>;
-    fetchAppsAndUrls?: () => Promise<StudyMetadata[]>;
 };
 
 export type MergedFormContextProps = UseFormReturn<any> &
@@ -39,10 +25,6 @@ export const CustomFormContext = createContext<CustomFormContextProps>({
     removeOptional: false,
     validationSchema: yup.object(),
     language: getSystemLanguage(),
-    fetchDirectoryContent: undefined,
-    fetchRootFolders: undefined,
-    fetchElementsInfos: undefined,
-    fetchAppsAndUrls: undefined,
 });
 
 const CustomFormProvider = (props: CustomFormProviderProps) => {
@@ -50,10 +32,6 @@ const CustomFormProvider = (props: CustomFormProviderProps) => {
         validationSchema,
         removeOptional,
         language,
-        fetchDirectoryContent,
-        fetchRootFolders,
-        fetchElementsInfos,
-        fetchAppsAndUrls,
         children,
         ...formMethods
     } = props;
@@ -65,10 +43,6 @@ const CustomFormProvider = (props: CustomFormProviderProps) => {
                     validationSchema: validationSchema,
                     removeOptional: removeOptional,
                     language: language,
-                    fetchDirectoryContent: fetchDirectoryContent,
-                    fetchRootFolders: fetchRootFolders,
-                    fetchElementsInfos: fetchElementsInfos,
-                    fetchAppsAndUrls: fetchAppsAndUrls,
                 }}
             >
                 {children}

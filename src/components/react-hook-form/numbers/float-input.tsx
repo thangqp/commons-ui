@@ -7,13 +7,14 @@
 
 import TextInput, { TextInputProps } from '../text-input';
 import { isFloatNumber } from './utils';
+import { FunctionComponent } from 'react';
 
 export type FloatInputProps = Omit<
     TextInputProps,
     'outputTransform' | 'inputTransform' | 'acceptValue' // already defined in FloatInput
 >;
 
-type Input = string | number;
+export type Input = string | number;
 
 // toLocaleString never uses exponential notation unlike toString.  Avoiding
 // exponential notation makes in place normalizing of numbers after each
@@ -38,7 +39,9 @@ const normalizeFixed = (number: number) => {
     });
 };
 
-const FloatInput = (props: FloatInputProps) => {
+const FloatInput: FunctionComponent<FloatInputProps> = (
+    props: FloatInputProps
+) => {
     const inputTransform = (value: Input) => {
         if (typeof value == 'number' && !isNaN(value)) {
             // if we have a parsed real number, normalize like we do after each
@@ -58,9 +61,9 @@ const FloatInput = (props: FloatInputProps) => {
             if (['-', '.'].includes(value as string)) {
                 return value as string;
             }
-            return value === null || isNaN(value as number)
+            return value === null || Number.isNaN(value)
                 ? ''
-                : value.toString();
+                : (value as string);
         }
     };
 

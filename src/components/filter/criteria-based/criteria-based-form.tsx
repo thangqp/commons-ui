@@ -10,7 +10,7 @@ import { useFormContext, useWatch } from 'react-hook-form';
 import { Grid } from '@mui/material';
 import SelectInput from '../../react-hook-form/select-input';
 import InputWithPopupConfirmation from '../../../utils/rhf-inputs/select-inputs/input-with-popup-confirmation';
-import { FILTER_EQUIPMENTS } from '../constants/criteria-based-utils';
+import { FILTER_EQUIPMENTS } from '../constants/criteria-based-constants';
 
 export interface CriteriaBasedFormProps {
     defaultValues: Record<string, any>;

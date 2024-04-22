@@ -8,11 +8,9 @@
 export enum FieldConstants {
     ID = 'id',
     NAME = 'name',
-
     FILTER_TYPE = 'filterType',
     EQUIPMENT_TYPE = 'equipmentType',
     EQUIPMENT_TABLE = 'equipmentTable',
-
     EQUIPMENT_ID = 'equipmentID',
     EQUIPMENT_IDS = 'equipmentIDs',
     CONTINGENCY_NAME = 'contingencyName',
@@ -41,27 +39,8 @@ export enum FieldConstants {
     API_CALL = 'apiCall',
     CASE_NAME = 'caseName',
     DIRECTORY = 'directory',
-    EMPTY_RULE = 'emptyRule',
-    EMPTY_GROUP = 'emptyGroup',
-    INCORRECT_RULE = 'incorrectRule',
-    BETWEEN_RULE = 'betweenRule',
     PROPERTY = 'PROPERTY',
     PROPERTY_NAME = 'propertyName',
     PROPERTY_VALUES = 'propertyValues',
     PROPERTY_OPERATOR = 'propertyOperator',
 }
-
-export const FilterType = {
-    CRITERIA_BASED: { id: 'CRITERIA', label: 'filter.criteriaBased' },
-    EXPLICIT_NAMING: { id: 'IDENTIFIER_LIST', label: 'filter.explicitNaming' },
-    EXPERT: { id: 'EXPERT', label: 'filter.expert' },
-};
-
-export const ContingencyListType = {
-    CRITERIA_BASED: { id: 'FORM', label: 'contingencyList.criteriaBased' },
-    EXPLICIT_NAMING: {
-        id: 'IDENTIFIERS',
-        label: 'contingencyList.explicitNaming',
-    },
-    SCRIPT: { id: 'SCRIPT', label: 'contingencyList.script' },
-};

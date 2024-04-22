@@ -16,15 +16,14 @@ import Grid from '@mui/material/Grid';
 import SelectInput from '../../../components/react-hook-form/select-input';
 import { ValueParserParams } from 'ag-grid-community';
 import { Generator, Load } from '../constants/equipment-types';
-import { FilterType } from '../constants/field-constants';
 import { NumericEditor } from '../../../utils/rhf-inputs/ag-grid-table-rhf/cell-editors/numericEditor';
 import InputWithPopupConfirmation from '../../../utils/rhf-inputs/select-inputs/input-with-popup-confirmation';
 import { v4 as uuid4 } from 'uuid';
-import { FILTER_EQUIPMENTS } from '../constants/criteria-based-utils';
-import { toFloatOrNullValue } from '../../react-hook-form/utils/functions.tsx';
+import { FILTER_EQUIPMENTS } from '../constants/criteria-based-constants';
+import { toFloatOrNullValue } from '../../react-hook-form/utils/functions';
+import { DISTRIBUTION_KEY, FilterType } from '../constants/filter-constants';
 
 export const FILTER_EQUIPMENTS_ATTRIBUTES = 'filterEquipmentsAttributes';
-export const DISTRIBUTION_KEY = 'distributionKey';
 
 export const explicitNamingFilterSchema = {
     [FILTER_EQUIPMENTS_ATTRIBUTES]: yup

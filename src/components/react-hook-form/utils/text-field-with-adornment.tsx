@@ -13,10 +13,9 @@ import {
     TextField,
     TextFieldProps,
 } from '@mui/material';
+import { Input } from '../numbers/float-input';
 
-type Input = string | number;
-
-type TextFieldWithAdornmentProps = TextFieldProps & {
+export type TextFieldWithAdornmentProps = TextFieldProps & {
     // variant already included in TextFieldProps
     value: Input; // we override the default type of TextFieldProps which is unknown
     adornmentPosition: string;

@@ -5,12 +5,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { FilterType, FieldConstants } from './constants/field-constants';
-import { frontToBackTweak } from './criteria-based/criteria-based-filter-utils';
-import { Generator, Load } from './constants/equipment-types';
-import { DISTRIBUTION_KEY } from './explicit-naming/explicit-naming-filter-form';
-import { exportExpertRules } from './expert/expert-filter-utils';
+import { FieldConstants } from '../constants/field-constants';
+import { frontToBackTweak } from '../criteria-based/criteria-based-filter-utils';
+import { Generator, Load } from '../constants/equipment-types';
+import { exportExpertRules } from '../expert/expert-filter-utils';
 import { UUID } from 'crypto';
+import { DISTRIBUTION_KEY, FilterType } from '../constants/filter-constants';
 
 export const saveExplicitNamingFilter = (
     tableValues: any[],

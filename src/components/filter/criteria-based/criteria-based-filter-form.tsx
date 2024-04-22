@@ -11,12 +11,12 @@ import FilterProperties, {
 import { FieldConstants } from '../constants/field-constants';
 import yup from '../../../utils/yup-config';
 import CriteriaBasedForm from './criteria-based-form';
+import Grid from '@mui/material/Grid';
+import { FunctionComponent } from 'react';
 import {
     getCriteriaBasedFormData,
     getCriteriaBasedSchema,
-} from '../constants/criteria-based-utils';
-import Grid from '@mui/material/Grid';
-import { FunctionComponent } from 'react';
+} from '../utils/criteria-based-utils';
 
 export const criteriaBasedFilterSchema = getCriteriaBasedSchema({
     [FieldConstants.ENERGY_SOURCE]: yup.string().nullable(),

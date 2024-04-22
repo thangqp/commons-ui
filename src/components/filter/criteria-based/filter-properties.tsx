@@ -8,7 +8,6 @@ import Grid from '@mui/material/Grid';
 import { FunctionComponent, useEffect, useMemo } from 'react';
 import { useWatch } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
-import { FilterType } from '../constants/field-constants';
 import { Hvdc, Line, Load, Substation } from '../constants/equipment-types';
 import { areArrayElementsUnique } from '../../../utils/functions';
 import { FieldConstants } from '../constants/field-constants';
@@ -21,6 +20,7 @@ import {
     PROPERTY_VALUES_2,
 } from './filter-property';
 import { usePredefinedProperties } from '../../../hooks/predefined-properties-hook.ts';
+import { FilterType } from '../constants/filter-constants';
 
 export enum FreePropertiesTypes {
     SUBSTATION_FILTER_PROPERTIES = 'substationFreeProperties',

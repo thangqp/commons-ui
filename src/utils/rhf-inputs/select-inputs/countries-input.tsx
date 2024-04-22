@@ -7,8 +7,8 @@
 import { FunctionComponent } from 'react';
 import { Chip } from '@mui/material';
 import AutocompleteInput from '../../../components/react-hook-form/autocomplete-input';
-import { useLocalizedCountries } from '../../localized-countries-hook';
-import { useCustomFormContext } from '../../../components/react-hook-form/provider/use-custom-form-context.ts';
+import { useLocalizedCountries } from '../../../hooks/localized-countries-hook';
+import { useCustomFormContext } from '../../../components/react-hook-form/provider/use-custom-form-context';
 
 interface CountryInputProps {
     name: string;

@@ -16,19 +16,26 @@ import {
 import OverflowableText from '../OverflowableText';
 import FieldLabel from './utils/field-label';
 import FolderIcon from '@mui/icons-material/Folder';
-import { FunctionComponent, useCallback, useMemo, useState } from 'react';
+import {
+    FunctionComponent,
+    useCallback,
+    useContext,
+    useMemo,
+    useState,
+} from 'react';
 import { useController, useFieldArray } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 import MidFormError from '../react-hook-form/error-management/mid-form-error.jsx';
 import { RawReadOnlyInput } from './raw-read-only-input';
 import { mergeSx } from '../../utils/styles.js';
-import DirectoryItemSelector from '../DirectoryItemSelector/directory-item-selector.tsx';
+import DirectoryItemSelector from '../DirectoryItemSelector/directory-item-selector';
 import { UUID } from 'crypto';
-import { TreeViewFinderNodeProps } from '../TreeViewFinder/TreeViewFinder.tsx';
+import { TreeViewFinderNodeProps } from '../TreeViewFinder/TreeViewFinder';
 import { useCustomFormContext } from './provider/use-custom-form-context';
 import { isFieldRequired } from './utils/functions';
-import ErrorInput from './error-management/error-input.tsx';
-import { useSnackMessage } from '../../hooks/useSnackMessage.ts';
+import ErrorInput from './error-management/error-input';
+import { useSnackMessage } from '../../hooks/useSnackMessage';
+import { FilterContext } from '../filter/filter-context';
 
 export const NAME = 'name';
 
@@ -106,13 +113,10 @@ const DirectoryItemsInput: FunctionComponent<DirectoryItemsInputProps> = ({
     });
 
     const formContext = useCustomFormContext();
-    const {
-        getValues,
-        validationSchema,
-        fetchDirectoryContent,
-        fetchRootFolders,
-        fetchElementsInfos,
-    } = formContext;
+    const { getValues, validationSchema } = formContext;
+
+    const { fetchDirectoryContent, fetchRootFolders, fetchElementsInfos } =
+        useContext(FilterContext);
 
     const {
         fieldState: { error },

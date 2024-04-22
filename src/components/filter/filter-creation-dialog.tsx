@@ -10,10 +10,10 @@ import {
     saveCriteriaBasedFilter,
     saveExpertFilter,
     saveExplicitNamingFilter,
-} from './filters-utils';
+} from './utils/filters-utils';
 import { Resolver, useForm } from 'react-hook-form';
-import { useSnackMessage } from '../../hooks/useSnackMessage.ts';
-import CustomMuiDialog from '../commons/custom-mui-dialog/custom-mui-dialog';
+import { useSnackMessage } from '../../hooks/useSnackMessage';
+import CustomMuiDialog from '../dialogs/custom-mui-dialog';
 import {
     criteriaBasedFilterEmptyFormData,
     criteriaBasedFilterSchema,
@@ -23,7 +23,7 @@ import {
     FILTER_EQUIPMENTS_ATTRIBUTES,
     getExplicitNamingFilterEmptyFormData,
 } from './explicit-naming/explicit-naming-filter-form';
-import { FieldConstants, FilterType } from './constants/field-constants';
+import { FieldConstants } from './constants/field-constants';
 import yup from '../../utils/yup-config';
 import { FilterForm } from './filter-form';
 import {
@@ -32,11 +32,14 @@ import {
     getExpertFilterEmptyFormData,
 } from './expert/expert-filter-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { elementExistsType } from './criteria-based/criteria-based-filter-edition-dialog.tsx';
+import { elementExistsType } from './criteria-based/criteria-based-filter-edition-dialog';
 import { UUID } from 'crypto';
-import { MergedFormContextProps } from '../react-hook-form/provider/custom-form-provider.tsx';
+import { MergedFormContextProps } from '../react-hook-form/provider/custom-form-provider';
 import { StudyMetadata } from '../../hooks/predefined-properties-hook.ts';
-import { ElementAttributes } from '../../index';
+
+import { ElementAttributes } from '../DirectoryItemSelector/directory-item-selector';
+import { FilterContext } from './filter-context';
+import { FilterType } from './constants/filter-constants';
 
 const emptyFormData = {
     [FieldConstants.NAME]: '',
@@ -85,8 +88,8 @@ export interface FilterCreationDialogProps {
     fetchRootFolders?: (types: string[]) => Promise<ElementAttributes[]>;
     fetchElementsInfos?: (
         ids: UUID[],
-        elementTypes: string[],
-        equipmentTypes: string[]
+        elementTypes?: string[],
+        equipmentTypes?: string[]
     ) => Promise<ElementAttributes[]>;
 }
 
@@ -111,10 +114,6 @@ const FilterCreationDialog = ({
             resolver: yupResolver(formSchema) as unknown as Resolver,
         }),
         language: language,
-        fetchDirectoryContent: fetchDirectoryContent,
-        fetchRootFolders: fetchRootFolders,
-        fetchElementsInfos: fetchElementsInfos,
-        fetchAppsAndUrls: fetchAppsAndUrls,
     } as MergedFormContextProps;
 
     const {
@@ -198,11 +197,20 @@ const FilterCreationDialog = ({
             removeOptional={true}
             disabledSave={!!nameError || !!isValidating}
         >
-            <FilterForm
-                creation
-                activeDirectory={activeDirectory}
-                elementExists={elementExists}
-            />
+            <FilterContext.Provider
+                value={{
+                    fetchDirectoryContent: fetchDirectoryContent,
+                    fetchRootFolders: fetchRootFolders,
+                    fetchElementsInfos: fetchElementsInfos,
+                    fetchAppsAndUrls: fetchAppsAndUrls,
+                }}
+            >
+                <FilterForm
+                    creation
+                    activeDirectory={activeDirectory}
+                    elementExists={elementExists}
+                />
+            </FilterContext.Provider>
         </CustomMuiDialog>
     );
 };

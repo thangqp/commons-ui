@@ -10,8 +10,8 @@ import { MaterialValueEditor } from '@react-querybuilder/material';
 import { Autocomplete, TextField } from '@mui/material';
 import useConvertValue from './use-convert-value';
 import useValid from './use-valid';
-import { useLocalizedCountries } from '../localized-countries-hook.js';
-import { useCustomFormContext } from '../../components/react-hook-form/provider/use-custom-form-context.ts';
+import { useLocalizedCountries } from '../../hooks/localized-countries-hook';
+import { useCustomFormContext } from '../../components/react-hook-form/provider/use-custom-form-context';
 import { useMemo } from 'react';
 
 const CountryValueEditor = (props: ValueEditorProps) => {

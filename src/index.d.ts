@@ -17,12 +17,11 @@ import type {
 import { UseSnackMessageReturn } from './hooks/useSnackMessage';
 import { AutocompleteInputProps } from './components/react-hook-form/autocomplete-input';
 import { ErrorInputProps } from './components/react-hook-form/error-management/error-input';
-import { UUID } from 'crypto';
-import { IDescriptionModificationDialog } from './components/commons/description-modification/description-modification-dialog.tsx';
-import { CriteriaBasedFormProps } from './components/filter/criteria-based/criteria-based-form.tsx';
-import { PopupConfirmationDialogProps } from './utils/popup-confirmation-dialog.tsx';
-import { BottomRightButtonsProps } from './utils/rhf-inputs/ag-grid-table-rhf/bottom-right-buttons.tsx';
-import { CustomAgGridTableProps } from './utils/rhf-inputs/ag-grid-table-rhf/custom-ag-grid-table.tsx';
+import { IDescriptionModificationDialog } from './components/dialogs/description-modification-dialog';
+import { CriteriaBasedFormProps } from './components/filter/criteria-based/criteria-based-form';
+import { PopupConfirmationDialogProps } from './components/dialogs/popup-confirmation-dialog';
+import { BottomRightButtonsProps } from './utils/rhf-inputs/ag-grid-table-rhf/bottom-right-buttons';
+import { CustomAgGridTableProps } from './utils/rhf-inputs/ag-grid-table-rhf/custom-ag-grid-table';
 
 /**
  * Section to export generated type declarations
@@ -88,6 +87,14 @@ export {
     RESET_AUTHENTICATION_ROUTER_ERROR,
     SHOW_AUTH_INFO_LOGIN,
 } from './utils/actions';
+export {
+    CONTINGENCY_LIST_EQUIPMENTS,
+    FILTER_EQUIPMENTS,
+} from './components/filter/constants/criteria-based-constants';
+export {
+    getCriteriaBasedFormData,
+    getCriteriaBasedSchema,
+} from './components/filter/utils/criteria-based-utils';
 export { default as report_viewer_en } from './components/translations/report-viewer-en';
 export { default as report_viewer_fr } from './components/translations/report-viewer-fr';
 export { default as login_en } from './components/translations/login-en';
@@ -154,7 +161,7 @@ export {
     saveExplicitNamingFilter,
     saveCriteriaBasedFilter,
     saveExpertFilter,
-} from './components/filter/filters-utils';
+} from './components/filter/utils/filters-utils';
 export {
     RangeInput,
     DEFAULT_RANGE_VALUE,
@@ -170,7 +177,7 @@ export {
 } from './utils/rhf-inputs/select-inputs/countries-input';
 export { MultipleAutocompleteInput } from './utils/rhf-inputs/autocomplete-inputs/multiple-autocomplete-input';
 export { CsvUploader } from './utils/rhf-inputs/ag-grid-table-rhf/csv-uploader/csv-uploader';
-export { UniqueNameInput } from './components/commons/unique-name-input';
+export { UniqueNameInput } from './utils/rhf-inputs/unique-name-input';
 export {
     ExpandingTextFieldProps,
     ExpandingTextField,
@@ -195,11 +202,7 @@ export {
     noSelectionForCopy,
 } from './components/filter/constants/equipment-types';
 
-export {
-    FieldConstants,
-    FilterType,
-    ContingencyListType,
-} from './components/filter/constants/field-constants';
+export { FieldConstants } from './components/filter/constants/field-constants';
 
 export {
     GRIDSUITE_DEFAULT_PRECISION,
@@ -368,19 +371,7 @@ export const OverflowableText: FunctionComponent<OverflowableTextProps>;
 export const CustomMuiDialog: FunctionComponent<ICustomMuiDialog>;
 export const DescriptionModificationDialog: FunctionComponent<IDescriptionModificationDialog>;
 export const CriteriaBasedForm: FunctionComponent<CriteriaBasedFormProps>;
-export {
-    getCriteriaBasedSchema,
-    getCriteriaBasedFormData,
-    CONTINGENCY_LIST_EQUIPMENTS,
-    FILTER_EQUIPMENTS,
-} from './components/filter/constants/criteria-based-utils';
 export const PopupConfirmationDialog: FunctionComponent<PopupConfirmationDialogProps>;
 export const BottomRightButtons: FunctionComponent<BottomRightButtonsProps>;
 export const CustomAgGridTable: FunctionComponent<CustomAgGridTableProps>;
 export { ROW_DRAGGING_SELECTION_COLUMN_DEF } from './utils/rhf-inputs/ag-grid-table-rhf/custom-ag-grid-table';
-
-export type ElementAttributes = {
-    elementUuid: UUID;
-    elementName: string;
-    type: keyof typeof ElementType;
-};

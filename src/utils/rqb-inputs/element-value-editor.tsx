@@ -5,9 +5,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { validate as uuidValidate } from 'uuid';
 import { DirectoryItemsInput, useCustomFormContext } from '../../index';
+import { FilterContext } from '../../components/filter/filter-context';
 
 const ElementValueEditor = (props: {
     name: string;
@@ -19,7 +20,8 @@ const ElementValueEditor = (props: {
     itemFilter?: any;
     defaultValue?: any;
 }) => {
-    const { setValue, fetchElementsInfos } = useCustomFormContext();
+    const { setValue } = useCustomFormContext();
+    const { fetchElementsInfos } = useContext(FilterContext);
 
     useEffect(() => {
         if (

@@ -29,13 +29,13 @@ import { validate as uuidValidate } from 'uuid';
 import {
     FIELDS_OPTIONS,
     OPERATOR_OPTIONS,
-} from '../constants/expert-filter-constants.ts';
+    RULES,
+} from '../constants/expert-filter-constants';
 import {
     isBlankOrEmpty,
     microUnitToUnit,
     unitToMicroUnit,
-} from '../../../utils/conversion-utils.ts';
-import { FieldConstants } from '../constants/field-constants.ts';
+} from '../../../utils/conversion-utils';
 
 type CustomRuleType = RuleType & { dataType: DataType };
 type CustomRuleGroupType = RuleGroupType & { dataType: DataType };
@@ -337,7 +337,7 @@ export const queryValidator: QueryValidator = (query) => {
             if (!rule.value?.[0] || !rule.value?.[1]) {
                 result[rule.id] = {
                     valid: false,
-                    reasons: [FieldConstants.EMPTY_RULE],
+                    reasons: [RULES.EMPTY_RULE],
                 };
             } else if (
                 isNaN(parseFloat(rule.value[0])) ||
@@ -345,12 +345,12 @@ export const queryValidator: QueryValidator = (query) => {
             ) {
                 result[rule.id] = {
                     valid: false,
-                    reasons: [FieldConstants.INCORRECT_RULE],
+                    reasons: [RULES.INCORRECT_RULE],
                 };
             } else if (parseFloat(rule.value[0]) >= parseFloat(rule.value[1])) {
                 result[rule.id] = {
                     valid: false,
-                    reasons: [FieldConstants.BETWEEN_RULE],
+                    reasons: [RULES.BETWEEN_RULE],
                 };
             }
         } else if (
@@ -360,7 +360,7 @@ export const queryValidator: QueryValidator = (query) => {
         ) {
             result[rule.id] = {
                 valid: false,
-                reasons: [FieldConstants.EMPTY_RULE],
+                reasons: [RULES.EMPTY_RULE],
             };
         } else if (
             rule.id &&
@@ -369,12 +369,12 @@ export const queryValidator: QueryValidator = (query) => {
         ) {
             result[rule.id] = {
                 valid: false,
-                reasons: [FieldConstants.EMPTY_RULE],
+                reasons: [RULES.EMPTY_RULE],
             };
         } else if (rule.id && isNumberInput && isNaN(parseFloat(rule.value))) {
             result[rule.id] = {
                 valid: false,
-                reasons: [FieldConstants.INCORRECT_RULE],
+                reasons: [RULES.INCORRECT_RULE],
             };
         } else if (
             rule.id &&
@@ -384,7 +384,7 @@ export const queryValidator: QueryValidator = (query) => {
         ) {
             result[rule.id] = {
                 valid: false,
-                reasons: [FieldConstants.EMPTY_RULE],
+                reasons: [RULES.EMPTY_RULE],
             };
         } else if (
             rule.id &&
@@ -396,14 +396,14 @@ export const queryValidator: QueryValidator = (query) => {
         ) {
             result[rule.id] = {
                 valid: false,
-                reasons: [FieldConstants.EMPTY_RULE],
+                reasons: [RULES.EMPTY_RULE],
             };
         }
     };
     const validateGroup = (ruleGroup: RuleGroupTypeAny) => {
         const reasons: any[] = [];
         if (ruleGroup.rules.length === 0) {
-            reasons.push(FieldConstants.EMPTY_GROUP);
+            reasons.push(RULES.EMPTY_GROUP);
         }
         if (ruleGroup.id) {
             if (reasons.length) {

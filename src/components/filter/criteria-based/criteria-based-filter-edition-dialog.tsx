@@ -12,12 +12,12 @@ import {
     useEffect,
     useState,
 } from 'react';
-import { FieldConstants, FilterType } from '../constants/field-constants';
+import { FieldConstants } from '../constants/field-constants';
 import {
     backToFrontTweak,
     frontToBackTweak,
 } from './criteria-based-filter-utils';
-import CustomMuiDialog from '../../commons/custom-mui-dialog/custom-mui-dialog';
+import CustomMuiDialog from '../../dialogs/custom-mui-dialog';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -27,6 +27,7 @@ import { FetchStatus } from '../../../hooks/customHooks';
 import { FilterForm } from '../filter-form';
 import { ElementType } from '../../..';
 import { UUID } from 'crypto';
+import { FilterType } from '../constants/filter-constants';
 
 export type SelectionCopy = {
     sourceItemUuid: UUID | null;

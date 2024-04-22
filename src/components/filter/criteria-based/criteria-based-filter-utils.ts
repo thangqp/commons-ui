@@ -5,7 +5,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { FilterType } from '../constants/field-constants';
 import { FieldConstants } from '../constants/field-constants';
 import { FreePropertiesTypes } from './filter-properties';
 import {
@@ -14,8 +13,9 @@ import {
     PROPERTY_VALUES_1,
     PROPERTY_VALUES_2,
 } from './filter-property';
-import { getCriteriaBasedFormData } from '../constants/criteria-based-utils';
-import { PredefinedProperties } from '../../../hooks/predefined-properties-hook.ts';
+import { PredefinedProperties } from '../../../hooks/predefined-properties-hook';
+import { getCriteriaBasedFormData } from '../utils/criteria-based-utils';
+import { FilterType } from '../constants/filter-constants';
 
 /**
  * Transform

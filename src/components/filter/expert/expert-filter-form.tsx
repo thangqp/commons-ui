@@ -18,16 +18,18 @@ import {
     EXPERT_FILTER_EQUIPMENTS,
     fields,
     OPERATOR_OPTIONS,
+    RULES,
 } from '../constants/expert-filter-constants';
 import * as yup from 'yup';
 
 import { FieldType } from './expert-filter.type';
 import { v4 as uuid4 } from 'uuid';
 import { useIntl } from 'react-intl';
-import { FieldConstants, FilterType } from '../constants/field-constants';
+import { FieldConstants } from '../constants/field-constants';
 import CustomReactQueryBuilder from '../../../utils/rqb-inputs/custom-react-query-builder';
 import InputWithPopupConfirmation from '../../../utils/rhf-inputs/select-inputs/input-with-popup-confirmation';
 import SelectInput from '../../react-hook-form/select-input';
+import { FilterType } from '../constants/filter-constants';
 
 yup.setLocale({
     mixed: {
@@ -54,41 +56,41 @@ export const expertFilterSchema = {
                 then: (schema: any) =>
                     schema
                         .test(
-                            FieldConstants.EMPTY_GROUP,
-                            FieldConstants.EMPTY_GROUP,
+                            RULES.EMPTY_GROUP,
+                            RULES.EMPTY_GROUP,
                             (query: any) => {
                                 return testQuery(
-                                    FieldConstants.EMPTY_GROUP,
+                                    RULES.EMPTY_GROUP,
                                     query as RuleGroupTypeAny
                                 );
                             }
                         )
                         .test(
-                            FieldConstants.EMPTY_RULE,
-                            FieldConstants.EMPTY_RULE,
+                            RULES.EMPTY_RULE,
+                            RULES.EMPTY_RULE,
                             (query: any) => {
                                 return testQuery(
-                                    FieldConstants.EMPTY_RULE,
+                                    RULES.EMPTY_RULE,
                                     query as RuleGroupTypeAny
                                 );
                             }
                         )
                         .test(
-                            FieldConstants.INCORRECT_RULE,
-                            FieldConstants.INCORRECT_RULE,
+                            RULES.INCORRECT_RULE,
+                            RULES.INCORRECT_RULE,
                             (query: any) => {
                                 return testQuery(
-                                    FieldConstants.INCORRECT_RULE,
+                                    RULES.INCORRECT_RULE,
                                     query as RuleGroupTypeAny
                                 );
                             }
                         )
                         .test(
-                            FieldConstants.BETWEEN_RULE,
-                            FieldConstants.BETWEEN_RULE,
+                            RULES.BETWEEN_RULE,
+                            RULES.BETWEEN_RULE,
                             (query: any) => {
                                 return testQuery(
-                                    FieldConstants.BETWEEN_RULE,
+                                    RULES.BETWEEN_RULE,
                                     query as RuleGroupTypeAny
                                 );
                             }

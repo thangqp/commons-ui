@@ -12,9 +12,9 @@ import { ValueEditorProps } from 'react-querybuilder';
 import useValid from './use-valid';
 import { useIntl } from 'react-intl';
 
-import { FieldConstants } from '../../components/filter/constants/field-constants.ts';
-import { OPERATOR_OPTIONS } from '../../components/filter/constants/expert-filter-constants.ts';
-import { usePredefinedProperties } from '../../hooks/predefined-properties-hook.ts';
+import { FieldConstants } from '../../components/filter/constants/field-constants';
+import { OPERATOR_OPTIONS } from '../../components/filter/constants/expert-filter-constants';
+import { usePredefinedProperties } from '../../hooks/predefined-properties-hook';
 
 const PROPERTY_VALUE_OPERATORS = [OPERATOR_OPTIONS.IN];
 

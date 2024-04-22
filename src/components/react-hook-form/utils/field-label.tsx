@@ -7,7 +7,7 @@
 
 import { FormattedMessage } from 'react-intl';
 
-type OwnProps = {
+type FieldLabelProps = {
     label: string;
     optional?: boolean;
     values?: any;
@@ -16,7 +16,7 @@ const FieldLabel = ({
     label,
     optional = false,
     values = undefined,
-}: OwnProps) => {
+}: FieldLabelProps) => {
     return (
         <>
             <FormattedMessage id={label} values={values} />

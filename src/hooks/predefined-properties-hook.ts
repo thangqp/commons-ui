@@ -4,13 +4,19 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import {
+    Dispatch,
+    SetStateAction,
+    useContext,
+    useEffect,
+    useState,
+} from 'react';
 import {
     EquipmentType,
     mapEquipmentTypeForPredefinedProperties,
 } from '../utils/equipment-types-for-predefined-properties-mapper';
-import { useSnackMessage } from './useSnackMessage.ts';
-import { useCustomFormContext } from '../components/react-hook-form/provider/use-custom-form-context.ts';
+import { useSnackMessage } from './useSnackMessage';
+import { FilterContext } from '../components/filter/filter-context';
 
 export type PredefinedProperties = {
     [propertyName: string]: string[];
@@ -61,7 +67,7 @@ export const usePredefinedProperties = (
     const [equipmentPredefinedProps, setEquipmentPredefinedProps] =
         useState<PredefinedProperties>({});
     const { snackError } = useSnackMessage();
-    const { fetchAppsAndUrls } = useCustomFormContext();
+    const { fetchAppsAndUrls } = useContext(FilterContext);
 
     useEffect(() => {
         if (fetchAppsAndUrls && type !== null) {
