@@ -69,7 +69,7 @@ const TextInput = ({
         fieldState: { error },
     } = useController({ name });
 
-    const Field = adornment !== undefined ? TextFieldWithAdornment : TextField;
+    const Field = adornment ? TextFieldWithAdornment : TextField;
     const finalAdornment = {
         adornmentPosition: adornment?.position ?? '',
         adornmentText: adornment?.text ?? '',
