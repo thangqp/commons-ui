@@ -6,7 +6,7 @@
  */
 
 import React, { useCallback } from 'react';
-import { EnqueueSnackbar, useSnackbar } from 'notistack';
+import { BaseVariant, EnqueueSnackbar, useSnackbar } from 'notistack';
 import { useIntlRef } from './useIntlRef';
 import { IntlShape } from 'react-intl';
 
@@ -74,7 +74,7 @@ function makeSnackbar(
     snackInputs: SnackInputs,
     intlRef: React.MutableRefObject<IntlShape>,
     enqueueSnackbar: EnqueueSnackbar,
-    level: 'default' | 'error' | 'success' | 'warning' | 'info' | undefined,
+    level: BaseVariant,
     persistent: boolean
 ) {
     const message = checkAndTranslateIfNecessary(
@@ -130,7 +130,7 @@ function displayMessageWithSnackbar(
     message: string,
     header: string,
     enqueueSnackbar: EnqueueSnackbar,
-    level: 'default' | 'error' | 'success' | 'warning' | 'info' | undefined,
+    level: BaseVariant,
     persistent: boolean
 ) {
     let fullMessage = '';

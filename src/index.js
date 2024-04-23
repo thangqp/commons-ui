@@ -153,7 +153,7 @@ export { default as RadioInput } from './components/react-hook-form/radio-input'
 export { default as SliderInput } from './components/react-hook-form/slider-input';
 export { default as FloatInput } from './components/react-hook-form/numbers/float-input';
 export { default as IntegerInput } from './components/react-hook-form/numbers/integer-input';
-export { default as SelectInput } from './components/react-hook-form/select-input';
+export { default as SelectInput } from './components/react-hook-form/select-inputs/select-input';
 export { default as CheckboxInput } from './components/react-hook-form/booleans/checkbox-input';
 export { default as SwitchInput } from './components/react-hook-form/booleans/switch-input';
 export { default as ErrorInput } from './components/react-hook-form/error-management/error-input';

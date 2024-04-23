@@ -13,7 +13,7 @@ import CustomAgGridTable, {
 import { useIntl } from 'react-intl';
 import { useFormContext, useWatch } from 'react-hook-form';
 import Grid from '@mui/material/Grid';
-import SelectInput from '../../../components/react-hook-form/select-input';
+import SelectInput from '../../react-hook-form/select-inputs/select-input';
 import { ValueParserParams } from 'ag-grid-community';
 import { Generator, Load } from '../constants/equipment-types';
 import { NumericEditor } from '../../react-hook-form/ag-grid-table-rhf/cell-editors/numericEditor';

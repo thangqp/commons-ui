@@ -8,7 +8,7 @@
 import { FieldConstants } from '../constants/field-constants';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { Grid } from '@mui/material';
-import SelectInput from '../../react-hook-form/select-input';
+import SelectInput from '../../react-hook-form/select-inputs/select-input';
 import InputWithPopupConfirmation from '../../react-hook-form/select-inputs/input-with-popup-confirmation';
 import { FILTER_EQUIPMENTS } from '../constants/criteria-based-constants';
 

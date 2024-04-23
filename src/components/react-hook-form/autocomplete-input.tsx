@@ -34,7 +34,7 @@ export interface AutocompleteInputProps
         'value' | 'onChange' | 'renderInput'
     > {
     name: string;
-    options: (Option | string)[];
+    options: Option[];
     label?: string;
     outputTransform?: (value: Option) => Option;
     inputTransform?: (value: Option | any) => Option | null;

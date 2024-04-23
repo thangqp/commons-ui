@@ -15,7 +15,7 @@ import RadioInput from '../../src/components/react-hook-form/radio-input';
 import SliderInput from '../../src/components/react-hook-form/slider-input';
 import FloatInput from '../../src/components/react-hook-form/numbers/float-input';
 import IntegerInput from '../../src/components/react-hook-form/numbers/integer-input';
-import SelectInput from '../../src/components/react-hook-form/select-input';
+import SelectInput from '../../src/components/react-hook-form/select-inputs/select-input';
 import CheckboxInput from '../../src/components/react-hook-form/booleans/checkbox-input';
 import SwitchInput from '../../src/components/react-hook-form/booleans/switch-input';
 import SubmitButton from '../../src/components/react-hook-form/utils/submit-button';

@@ -49,7 +49,7 @@ const FloatInput: FunctionComponent<FloatInputProps> = (
             // numbers when the data doesn't come from a user edit in the form,
             // but from data persisted as a float.
             return normalizeFixed(value);
-        } else {
+        } else if (typeof value == 'string') {
             // The user is editing, leave as is because we already did what we
             // need to do in outputTransform after the previous keystroke.
             // NOTE: To avoid "bad things" we haven't predicted and be extra
@@ -58,13 +58,12 @@ const FloatInput: FunctionComponent<FloatInputProps> = (
             // our acceptValue because they are needed as intermediate strings
             // for the user to input useful numbers.
             // TODO can we remove the isNaN check and the special cases check?
-            if (['-', '.'].includes(value as string)) {
-                return value as string;
+            if (['-', '.'].includes(value)) {
+                return value;
             }
-            return value === null || Number.isNaN(value)
-                ? ''
-                : (value as string);
+            return Number.isNaN(value) ? '' : value;
         }
+        return '';
     };
 
     const outputTransform = (value: string): Input | null => {

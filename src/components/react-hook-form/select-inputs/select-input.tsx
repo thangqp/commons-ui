@@ -8,7 +8,7 @@
 import AutocompleteInput, {
     AutocompleteInputProps,
     Option,
-} from './autocomplete-input';
+} from '../autocomplete-input';
 import { useIntl } from 'react-intl';
 
 export interface SelectInputProps

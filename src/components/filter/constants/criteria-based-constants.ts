@@ -8,7 +8,7 @@
 import CountriesInput from '../../react-hook-form/select-inputs/countries-input';
 import { FieldConstants } from './field-constants';
 import RangeInput from '../../react-hook-form/range-input.tsx';
-import SelectInput from '../../react-hook-form/select-input';
+import SelectInput from '../../react-hook-form/select-inputs/select-input';
 import { FunctionComponent } from 'react';
 
 const countries = {
