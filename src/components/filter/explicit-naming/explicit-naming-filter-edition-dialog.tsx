@@ -22,10 +22,10 @@ import { FieldConstants } from '../constants/field-constants';
 import { FilterForm } from '../filter-form';
 import { v4 as uuid4 } from 'uuid';
 import { noSelectionForCopy } from '../constants/equipment-types';
-import { FetchStatus } from '../../../hooks/customHooks';
 import { UUID } from 'crypto';
 import { elementExistsType } from '../criteria-based/criteria-based-filter-edition-dialog';
 import { FilterType } from '../constants/filter-constants';
+import { FetchStatus } from '../../../utils/FetchStatus.ts';
 
 const formSchema = yup
     .object()

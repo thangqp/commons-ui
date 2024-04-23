@@ -13,7 +13,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
 import CustomMuiDialog from '../../dialogs/custom-mui-dialog';
 import yup from '../../../utils/yup-config';
-import { FetchStatus } from '../../../hooks/customHooks';
 import { FilterForm } from '../filter-form';
 import { EXPERT_FILTER_QUERY, expertFilterSchema } from './expert-filter-form';
 import { saveExpertFilter } from '../utils/filters-utils';
@@ -24,6 +23,7 @@ import { MergedFormContextProps } from '../../react-hook-form/provider/custom-fo
 import { ElementAttributes } from '../../DirectoryItemSelector/directory-item-selector';
 import { FilterContext } from '../filter-context';
 import { FilterType } from '../constants/filter-constants';
+import { FetchStatus } from '../../../utils/FetchStatus.ts';
 
 const formSchema = yup
     .object()
