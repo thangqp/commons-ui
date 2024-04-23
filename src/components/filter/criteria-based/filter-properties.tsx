@@ -8,7 +8,17 @@ import Grid from '@mui/material/Grid';
 import { FunctionComponent, useEffect, useMemo } from 'react';
 import { useWatch } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
-import { Hvdc, Line, Load, Substation } from '../constants/equipment-types';
+import {
+    Battery,
+    Generator,
+    Hvdc,
+    Line,
+    Load,
+    ShuntCompensator,
+    Substation,
+    TwoWindingTransfo,
+    VoltageLevel,
+} from '../constants/equipment-types';
 import { areArrayElementsUnique } from '../../../utils/functions';
 import { FieldConstants } from '../constants/field-constants';
 import yup from '../../../utils/yup-config';
@@ -150,7 +160,13 @@ const FilterProperties: FunctionComponent = () => {
     const displayEquipmentProperties = useMemo(() => {
         return (
             watchEquipmentType === Substation.type ||
-            watchEquipmentType === Load.type
+            watchEquipmentType === Load.type ||
+            watchEquipmentType === Generator.type ||
+            watchEquipmentType === Line.type ||
+            watchEquipmentType === TwoWindingTransfo.type ||
+            watchEquipmentType === Battery.type ||
+            watchEquipmentType === ShuntCompensator.type ||
+            watchEquipmentType === VoltageLevel.type
         );
     }, [watchEquipmentType]);
 
