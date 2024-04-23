@@ -25,9 +25,9 @@ export { default as CustomMuiDialog } from './components/dialogs/custom-mui-dial
 export { default as DescriptionModificationDialog } from './components/dialogs/description-modification-dialog';
 export { default as CriteriaBasedForm } from './components/filter/criteria-based/criteria-based-form';
 export { default as PopupConfirmationDialog } from './components/dialogs/popup-confirmation-dialog';
-export { default as BottomRightButtons } from './utils/rhf-inputs/ag-grid-table-rhf/bottom-right-buttons';
-export { default as CustomAgGridTable } from './utils/rhf-inputs/ag-grid-table-rhf/custom-ag-grid-table';
-export { ROW_DRAGGING_SELECTION_COLUMN_DEF } from './utils/rhf-inputs/ag-grid-table-rhf/custom-ag-grid-table';
+export { default as BottomRightButtons } from './components/react-hook-form/ag-grid-table-rhf/bottom-right-buttons';
+export { default as CustomAgGridTable } from './components/react-hook-form/ag-grid-table-rhf/custom-ag-grid-table';
+export { ROW_DRAGGING_SELECTION_COLUMN_DEF } from './components/react-hook-form/ag-grid-table-rhf/custom-ag-grid-table';
 
 export {
     CONTINGENCY_LIST_EQUIPMENTS,
@@ -196,11 +196,11 @@ export {
     DEFAULT_RANGE_VALUE,
     getRangeInputDataForm,
     getRangeInputSchema,
-} from './utils/rhf-inputs/range-input';
-export { default as InputWithPopupConfirmation } from './utils/rhf-inputs/select-inputs/input-with-popup-confirmation';
-export { default as MuiSelectInput } from './utils/rhf-inputs/select-inputs/mui-select-input';
-export { default as CountriesInput } from './utils/rhf-inputs/select-inputs/countries-input';
-export { default as MultipleAutocompleteInput } from './utils/rhf-inputs/autocomplete-inputs/multiple-autocomplete-input';
-export { default as CsvUploader } from './utils/rhf-inputs/ag-grid-table-rhf/csv-uploader/csv-uploader';
-export { UniqueNameInput } from './utils/rhf-inputs/unique-name-input';
+} from './components/react-hook-form/range-input';
+export { default as InputWithPopupConfirmation } from './components/react-hook-form/select-inputs/input-with-popup-confirmation';
+export { default as MuiSelectInput } from './components/react-hook-form/select-inputs/mui-select-input';
+export { default as CountriesInput } from './components/react-hook-form/select-inputs/countries-input';
+export { default as MultipleAutocompleteInput } from './components/react-hook-form/autocomplete-inputs/multiple-autocomplete-input';
+export { default as CsvUploader } from './components/react-hook-form/ag-grid-table-rhf/csv-uploader/csv-uploader';
+export { UniqueNameInput } from './components/react-hook-form/unique-name-input';
 export { UserManagerMock } from './utils/UserManagerMock';

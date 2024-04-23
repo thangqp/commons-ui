@@ -6,7 +6,7 @@
  */
 import { useState } from 'react';
 import { useFieldArray, useWatch } from 'react-hook-form';
-import AutocompleteInput from '../../../components/react-hook-form/autocomplete-input';
+import AutocompleteInput from '../autocomplete-input.tsx';
 
 const MultipleAutocompleteInput = ({ name, ...props }: any) => {
     const [unsavedInput, setUnsavedInput] = useState('');

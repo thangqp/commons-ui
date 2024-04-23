@@ -9,11 +9,11 @@ import { ActionWithRulesProps } from 'react-querybuilder';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useController } from 'react-hook-form';
-import { EXPERT_FILTER_QUERY } from '../../components/filter/expert/expert-filter-form';
+import { EXPERT_FILTER_QUERY } from '../filter/expert/expert-filter-form.tsx';
 import {
     getNumberOfSiblings,
     recursiveRemove,
-} from '../../components/filter/expert/expert-filter-utils';
+} from '../filter/expert/expert-filter-utils.ts';
 
 const RemoveButton = (props: ActionWithRulesProps) => {
     const {

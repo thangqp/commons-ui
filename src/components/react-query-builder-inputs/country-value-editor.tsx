@@ -6,37 +6,26 @@
  */
 
 import { ValueEditorProps } from 'react-querybuilder';
-import { useMemo } from 'react';
 import { MaterialValueEditor } from '@react-querybuilder/material';
-import { useIntl } from 'react-intl';
-import useConvertValue from './use-convert-value';
 import { Autocomplete, TextField } from '@mui/material';
-import useValid from './use-valid';
+import useConvertValue from './use-convert-value.ts';
+import useValid from './use-valid.ts';
+import { useLocalizedCountries } from '../../hooks/localized-countries-hook';
+import { useCustomFormContext } from '../react-hook-form/provider/use-custom-form-context.ts';
+import { useMemo } from 'react';
 
-const TranslatedValueEditor = (props: ValueEditorProps) => {
-    const intl = useIntl();
+const CountryValueEditor = (props: ValueEditorProps) => {
+    const { language } = useCustomFormContext();
+    const { translate, countryCodes } = useLocalizedCountries(language);
 
-    const translatedValues = useMemo(() => {
-        return props.values?.map((v) => {
-            return {
-                name: v.name,
-                label: intl.formatMessage({ id: v.label }),
-            };
-        });
-    }, [intl, props.values]);
-
-    const translatedValuesAutocomplete = useMemo(() => {
-        if (!props.values) {
-            return {};
-        }
-        return Object.fromEntries(
-            props.values.map((v) => [
-                v.name,
-                intl.formatMessage({ id: v.label }),
-            ])
-        );
-    }, [intl, props.values]);
-
+    const countriesList = useMemo(
+        () =>
+            countryCodes.map((country: string) => {
+                return { name: country, label: translate(country) };
+            }),
+        [countryCodes, translate]
+    );
+    // When we switch to 'in' operator, we need to switch the input value to an array and vice versa
     useConvertValue(props);
 
     const valid = useValid(props);
@@ -46,7 +35,7 @@ const TranslatedValueEditor = (props: ValueEditorProps) => {
         return (
             <MaterialValueEditor
                 {...props}
-                values={translatedValues}
+                values={countriesList}
                 title={undefined} // disable the tooltip
             />
         );
@@ -54,10 +43,8 @@ const TranslatedValueEditor = (props: ValueEditorProps) => {
         return (
             <Autocomplete
                 value={props.value}
-                options={Object.keys(translatedValuesAutocomplete)}
-                getOptionLabel={(code: string) =>
-                    translatedValuesAutocomplete[code]
-                }
+                options={countryCodes}
+                getOptionLabel={(code: string) => translate(code)}
                 onChange={(event, value: any) => props.handleOnChange(value)}
                 multiple
                 fullWidth
@@ -68,4 +55,4 @@ const TranslatedValueEditor = (props: ValueEditorProps) => {
         );
     }
 };
-export default TranslatedValueEditor;
+export default CountryValueEditor;

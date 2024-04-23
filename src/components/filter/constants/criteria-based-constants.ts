@@ -5,9 +5,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import CountriesInput from '../../../utils/rhf-inputs/select-inputs/countries-input';
+import CountriesInput from '../../react-hook-form/select-inputs/countries-input';
 import { FieldConstants } from './field-constants';
-import RangeInput from '../../../utils/rhf-inputs/range-input';
+import RangeInput from '../../react-hook-form/range-input.tsx';
 import SelectInput from '../../react-hook-form/select-input';
 import { FunctionComponent } from 'react';
 

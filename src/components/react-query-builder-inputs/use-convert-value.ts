@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { useEffect } from 'react';
-import { OPERATOR_OPTIONS } from '../../components/filter/constants/expert-filter-constants';
+import { OPERATOR_OPTIONS } from '../filter/constants/expert-filter-constants.ts';
 import { ValueEditorProps } from 'react-querybuilder';
 
 /**

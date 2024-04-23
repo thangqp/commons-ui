@@ -10,7 +10,7 @@ import IconButton from '@mui/material/IconButton';
 import Grid from '@mui/material/Grid';
 import { useFormContext, useWatch } from 'react-hook-form';
 import AutocompleteInput from '../../react-hook-form/autocomplete-input';
-import MultipleAutocompleteInput from '../../../utils/rhf-inputs/autocomplete-inputs/multiple-autocomplete-input';
+import MultipleAutocompleteInput from '../../react-hook-form/autocomplete-inputs/multiple-autocomplete-input';
 import { FieldConstants } from '../constants/field-constants';
 import { PredefinedProperties } from '../../../hooks/predefined-properties-hook.ts';
 

@@ -8,7 +8,7 @@
 import React, { useContext, useEffect } from 'react';
 import { validate as uuidValidate } from 'uuid';
 import { DirectoryItemsInput, useCustomFormContext } from '../../index';
-import { FilterContext } from '../../components/filter/filter-context';
+import { FilterContext } from '../filter/filter-context.ts';
 
 const ElementValueEditor = (props: {
     name: string;

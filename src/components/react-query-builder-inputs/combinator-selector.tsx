@@ -7,7 +7,7 @@
 
 import { CombinatorSelectorProps } from 'react-querybuilder';
 import { useCallback, useState } from 'react';
-import PopupConfirmationDialog from '../../components/dialogs/popup-confirmation-dialog';
+import PopupConfirmationDialog from '../dialogs/popup-confirmation-dialog.tsx';
 import { MaterialValueSelector } from '@react-querybuilder/material';
 
 const CombinatorSelector = (props: CombinatorSelectorProps) => {

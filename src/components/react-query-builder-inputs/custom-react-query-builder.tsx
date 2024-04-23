@@ -18,21 +18,21 @@ import {
 } from 'react-querybuilder';
 import { useIntl } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
-import RemoveButton from './remove-button';
-import CombinatorSelector from './combinator-selector';
-import AddButton from './add-button';
-import ValueEditor from './value-editor';
-import ValueSelector from './value-selector';
+import RemoveButton from './remove-button.tsx';
+import CombinatorSelector from './combinator-selector.tsx';
+import AddButton from './add-button.tsx';
+import ValueEditor from './value-editor.tsx';
+import ValueSelector from './value-selector.tsx';
 import { useCallback, useMemo } from 'react';
 
-import { COMBINATOR_OPTIONS } from '../../components/filter/constants/expert-filter-constants';
-import ErrorInput from '../../components/react-hook-form/error-management/error-input';
-import FieldErrorAlert from '../../components/react-hook-form/error-management/field-error-alert';
+import { COMBINATOR_OPTIONS } from '../filter/constants/expert-filter-constants.ts';
+import ErrorInput from '../react-hook-form/error-management/error-input.tsx';
+import FieldErrorAlert from '../react-hook-form/error-management/field-error-alert.tsx';
 import {
     countRules,
     getOperators,
     queryValidator,
-} from '../../components/filter/expert/expert-filter-utils';
+} from '../filter/expert/expert-filter-utils.ts';
 
 interface CustomReactQueryBuilderProps {
     name: string;

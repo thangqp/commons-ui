@@ -20,8 +20,8 @@ import { ErrorInputProps } from './components/react-hook-form/error-management/e
 import { IDescriptionModificationDialog } from './components/dialogs/description-modification-dialog';
 import { CriteriaBasedFormProps } from './components/filter/criteria-based/criteria-based-form';
 import { PopupConfirmationDialogProps } from './components/dialogs/popup-confirmation-dialog';
-import { BottomRightButtonsProps } from './utils/rhf-inputs/ag-grid-table-rhf/bottom-right-buttons';
-import { CustomAgGridTableProps } from './utils/rhf-inputs/ag-grid-table-rhf/custom-ag-grid-table';
+import { BottomRightButtonsProps } from './components/react-hook-form/ag-grid-table-rhf/bottom-right-buttons';
+import { CustomAgGridTableProps } from './components/react-hook-form/ag-grid-table-rhf/custom-ag-grid-table';
 
 /**
  * Section to export generated type declarations
@@ -167,17 +167,17 @@ export {
     DEFAULT_RANGE_VALUE,
     getRangeInputDataForm,
     getRangeInputSchema,
-} from './utils/rhf-inputs/range-input';
-export { InputWithPopupConfirmation } from './utils/rhf-inputs/select-inputs/input-with-popup-confirmation';
-export { MuiSelectInput } from './utils/rhf-inputs/select-inputs/mui-select-input';
+} from './components/react-hook-form/range-input.tsx';
+export { InputWithPopupConfirmation } from './components/react-hook-form/select-inputs/input-with-popup-confirmation';
+export { MuiSelectInput } from './components/react-hook-form/select-inputs/mui-select-input';
 export {
     CountriesInput,
     getSystemLanguage,
     getComputedLanguage,
-} from './utils/rhf-inputs/select-inputs/countries-input';
-export { MultipleAutocompleteInput } from './utils/rhf-inputs/autocomplete-inputs/multiple-autocomplete-input';
-export { CsvUploader } from './utils/rhf-inputs/ag-grid-table-rhf/csv-uploader/csv-uploader';
-export { UniqueNameInput } from './utils/rhf-inputs/unique-name-input';
+} from './components/react-hook-form/select-inputs/countries-input';
+export { MultipleAutocompleteInput } from './components/react-hook-form/autocomplete-inputs/multiple-autocomplete-input';
+export { CsvUploader } from './components/react-hook-form/ag-grid-table-rhf/csv-uploader/csv-uploader';
+export { UniqueNameInput } from './components/react-hook-form/unique-name-input.tsx';
 export {
     ExpandingTextFieldProps,
     ExpandingTextField,
@@ -374,4 +374,4 @@ export const CriteriaBasedForm: FunctionComponent<CriteriaBasedFormProps>;
 export const PopupConfirmationDialog: FunctionComponent<PopupConfirmationDialogProps>;
 export const BottomRightButtons: FunctionComponent<BottomRightButtonsProps>;
 export const CustomAgGridTable: FunctionComponent<CustomAgGridTableProps>;
-export { ROW_DRAGGING_SELECTION_COLUMN_DEF } from './utils/rhf-inputs/ag-grid-table-rhf/custom-ag-grid-table';
+export { ROW_DRAGGING_SELECTION_COLUMN_DEF } from './components/react-hook-form/ag-grid-table-rhf/custom-ag-grid-table';

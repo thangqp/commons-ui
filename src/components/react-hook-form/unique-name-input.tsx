@@ -6,17 +6,17 @@
  */
 
 import { ChangeEvent, FunctionComponent, useCallback, useEffect } from 'react';
-import { useDebounce } from '../../hooks/useDebounce';
+import { useDebounce } from '../../hooks/useDebounce.ts';
 import { FormattedMessage } from 'react-intl';
 import { InputAdornment, TextFieldProps } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
 import { useController, useFormContext } from 'react-hook-form';
 import CircularProgress from '@mui/material/CircularProgress';
 import TextField from '@mui/material/TextField';
-import { FieldConstants } from '../../components/filter/constants/field-constants';
-import { ElementType } from '../ElementType';
+import { FieldConstants } from '../filter/constants/field-constants.ts';
+import { ElementType } from '../../utils/ElementType.ts';
 import { UUID } from 'crypto';
-import { elementExistsType } from '../../components/filter/criteria-based/criteria-based-filter-edition-dialog';
+import { elementExistsType } from '../filter/criteria-based/criteria-based-filter-edition-dialog.tsx';
 
 interface UniqueNameInputProps {
     name: string;

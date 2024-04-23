@@ -7,25 +7,11 @@
 
 import { ValueEditorProps } from 'react-querybuilder';
 import { MaterialValueEditor } from '@react-querybuilder/material';
+import useConvertValue from './use-convert-value.ts';
 import { Autocomplete, TextField } from '@mui/material';
-import useConvertValue from './use-convert-value';
-import useValid from './use-valid';
-import { useLocalizedCountries } from '../../hooks/localized-countries-hook';
-import { useCustomFormContext } from '../../components/react-hook-form/provider/use-custom-form-context';
-import { useMemo } from 'react';
+import useValid from './use-valid.ts';
 
-const CountryValueEditor = (props: ValueEditorProps) => {
-    const { language } = useCustomFormContext();
-    const { translate, countryCodes } = useLocalizedCountries(language);
-
-    const countriesList = useMemo(
-        () =>
-            countryCodes.map((country: string) => {
-                return { name: country, label: translate(country) };
-            }),
-        [countryCodes, translate]
-    );
-    // When we switch to 'in' operator, we need to switch the input value to an array and vice versa
+const TextValueEditor = (props: ValueEditorProps) => {
     useConvertValue(props);
 
     const valid = useValid(props);
@@ -35,7 +21,6 @@ const CountryValueEditor = (props: ValueEditorProps) => {
         return (
             <MaterialValueEditor
                 {...props}
-                values={countriesList}
                 title={undefined} // disable the tooltip
             />
         );
@@ -43,8 +28,8 @@ const CountryValueEditor = (props: ValueEditorProps) => {
         return (
             <Autocomplete
                 value={props.value}
-                options={countryCodes}
-                getOptionLabel={(code: string) => translate(code)}
+                freeSolo
+                options={[]}
                 onChange={(event, value: any) => props.handleOnChange(value)}
                 multiple
                 fullWidth
@@ -55,4 +40,4 @@ const CountryValueEditor = (props: ValueEditorProps) => {
         );
     }
 };
-export default CountryValueEditor;
+export default TextValueEditor;

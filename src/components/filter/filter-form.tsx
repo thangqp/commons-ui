@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { UniqueNameInput } from '../../utils/rhf-inputs/unique-name-input';
+import { UniqueNameInput } from '../react-hook-form/unique-name-input.tsx';
 import { FieldConstants } from './constants/field-constants';
 import CriteriaBasedFilterForm from './criteria-based/criteria-based-filter-form';
 import ExplicitNamingFilterForm from './explicit-naming/explicit-naming-filter-form';

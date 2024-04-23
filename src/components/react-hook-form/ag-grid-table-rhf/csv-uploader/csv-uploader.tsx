@@ -18,8 +18,8 @@ import CsvDownloader from 'react-csv-downloader';
 import Alert from '@mui/material/Alert';
 import { DialogContentText } from '@mui/material';
 import { useWatch } from 'react-hook-form';
-import { CancelButton } from '../../../..';
-import { FieldConstants } from '../../../../components/filter/constants/field-constants';
+import { CancelButton } from '../../../../index';
+import { FieldConstants } from '../../../filter/constants/field-constants.ts';
 
 interface OwnProps {
     name: string;

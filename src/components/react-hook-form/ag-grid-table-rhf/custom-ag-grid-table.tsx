@@ -11,9 +11,9 @@ import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { Grid, useTheme } from '@mui/material';
-import BottomRightButtons from './bottom-right-buttons';
+import BottomRightButtons from './bottom-right-buttons.tsx';
 import { useIntl } from 'react-intl';
-import { FieldConstants } from '../../../components/filter/constants/field-constants';
+import { FieldConstants } from '../../filter/constants/field-constants.ts';
 
 export const ROW_DRAGGING_SELECTION_COLUMN_DEF = [
     {
