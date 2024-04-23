@@ -14,10 +14,12 @@ import React, {
 import { FormattedMessage } from 'react-intl';
 import { useController } from 'react-hook-form';
 
-export type ErrorMessage = {
+export type ErrorMessage =
+    | {
           id: string;
           value: string;
-      } | string;
+      }
+    | string;
 
 export interface ErrorInputProps {
     name: string;
