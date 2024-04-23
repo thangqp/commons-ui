@@ -167,7 +167,7 @@ export {
     DEFAULT_RANGE_VALUE,
     getRangeInputDataForm,
     getRangeInputSchema,
-} from './components/react-hook-form/range-input.tsx';
+} from './components/react-hook-form/range-input';
 export { InputWithPopupConfirmation } from './components/react-hook-form/select-inputs/input-with-popup-confirmation';
 export { MuiSelectInput } from './components/react-hook-form/select-inputs/mui-select-input';
 export {
@@ -177,7 +177,7 @@ export {
 } from './components/react-hook-form/select-inputs/countries-input';
 export { MultipleAutocompleteInput } from './components/react-hook-form/autocomplete-inputs/multiple-autocomplete-input';
 export { CsvUploader } from './components/react-hook-form/ag-grid-table-rhf/csv-uploader/csv-uploader';
-export { UniqueNameInput } from './components/react-hook-form/unique-name-input.tsx';
+export { UniqueNameInput } from './components/react-hook-form/unique-name-input';
 export {
     ExpandingTextFieldProps,
     ExpandingTextField,
