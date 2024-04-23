@@ -14,6 +14,11 @@ import React, {
 import { FormattedMessage } from 'react-intl';
 import { useController } from 'react-hook-form';
 
+export type ErrorMessage = {
+          id: string;
+          value: string;
+      } | string;
+
 export interface ErrorInputProps {
     name: string;
     InputField: ({
@@ -36,7 +41,7 @@ const ErrorInput: FunctionComponent<ErrorInputProps> = ({
 
     const errorRef: MutableRefObject<any> = useRef(null);
 
-    const errorProps = (errorMsg: string | { id: string; value: string }) => {
+    const errorProps = (errorMsg: ErrorMessage) => {
         if (typeof errorMsg === 'string') {
             return {
                 id: errorMsg,
