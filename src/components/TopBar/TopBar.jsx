@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import {
@@ -34,8 +34,6 @@ import {
     Brightness3 as Brightness3Icon,
     Computer as ComputerIcon,
     ExitToApp as ExitToAppIcon,
-    Fullscreen as FullscreenIcon,
-    FullscreenExit as FullscreenExitIcon,
     HelpOutline as HelpOutlineIcon,
     Person as PersonIcon,
     Settings as SettingsIcon,
@@ -43,7 +41,6 @@ import {
 } from '@mui/icons-material';
 import { styled } from '@mui/system';
 import PropTypes from 'prop-types';
-import FullScreen, { fullScreenSupported } from 'react-request-fullscreen';
 
 import GridLogo from './GridLogo';
 import AboutDialog from './AboutDialog';
@@ -176,8 +173,6 @@ const TopBar = ({
 }) => {
     const [anchorElSettingsMenu, setAnchorElSettingsMenu] = useState(null);
     const [anchorElAppsMenu, setAnchorElAppsMenu] = useState(null);
-    const fullScreenRef = useRef(null);
-    const [isFullScreen, setIsFullScreen] = useState(false);
 
     const handleToggleSettingsMenu = (event) => {
         setAnchorElSettingsMenu(event.currentTarget);
@@ -201,16 +196,6 @@ const TopBar = ({
             onParametersClick();
         }
     };
-
-    function onFullScreenChange(isFullScreenValue) {
-        setAnchorElSettingsMenu(null);
-        setIsFullScreen(isFullScreen);
-    }
-
-    function requestOrExitFullScreen() {
-        setAnchorElSettingsMenu(null);
-        fullScreenRef.current.fullScreen();
-    }
 
     const abbreviationFromUserName = (name) => {
         const tab = name.split(' ').map((x) => x.charAt(0));
@@ -263,13 +248,6 @@ const TopBar = ({
 
     return (
         <AppBar position="static" color="default" sx={styles.appBar}>
-            <FullScreen
-                ref={fullScreenRef}
-                onFullScreenChange={onFullScreenChange}
-                onFullScreenError={(e) =>
-                    console.debug('full screen error : ' + e.message)
-                }
-            />
             <Toolbar>
                 {logo_clickable}
                 <Box sx={styles.grow}>{children}</Box>
@@ -611,57 +589,6 @@ const TopBar = ({
                                                 </Typography>
                                             </ListItemText>
                                         </StyledMenuItem>
-
-                                        {/* Full screen */}
-                                        {fullScreenSupported() && (
-                                            <StyledMenuItem
-                                                onClick={
-                                                    requestOrExitFullScreen
-                                                }
-                                            >
-                                                {isFullScreen ? (
-                                                    <>
-                                                        <CustomListItemIcon>
-                                                            <FullscreenExitIcon fontSize="small" />
-                                                        </CustomListItemIcon>
-                                                        <ListItemText>
-                                                            <Typography
-                                                                sx={
-                                                                    styles.sizeLabel
-                                                                }
-                                                            >
-                                                                <FormattedMessage
-                                                                    id="top-bar/exitFullScreen"
-                                                                    defaultMessage={
-                                                                        'Exit full screen mode'
-                                                                    }
-                                                                />
-                                                            </Typography>
-                                                        </ListItemText>
-                                                    </>
-                                                ) : (
-                                                    <>
-                                                        <CustomListItemIcon>
-                                                            <FullscreenIcon fontSize="small" />
-                                                        </CustomListItemIcon>
-                                                        <ListItemText>
-                                                            <Typography
-                                                                sx={
-                                                                    styles.sizeLabel
-                                                                }
-                                                            >
-                                                                <FormattedMessage
-                                                                    id="top-bar/goFullScreen"
-                                                                    defaultMessage={
-                                                                        'Full screen'
-                                                                    }
-                                                                />
-                                                            </Typography>
-                                                        </ListItemText>
-                                                    </>
-                                                )}
-                                            </StyledMenuItem>
-                                        )}
 
                                         {/* Loggout */}
                                         <StyledMenuItem onClick={onLogoutClick}>

@@ -126,8 +126,8 @@ export { UserManagerMock } from './utils/UserManagerMock';
 
 export {
     ExpandingTextFieldProps,
-    ExpandingTextField,
-} from './components/react-hook-form/expanding-text-field';
+    default as ExpandingTextField,
+} from './components/react-hook-form/ExpandingTextField';
 
 export { ElementType } from './utils/ElementType';
 

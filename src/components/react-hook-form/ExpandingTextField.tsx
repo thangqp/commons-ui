@@ -11,7 +11,7 @@ import { useWatch } from 'react-hook-form';
 import { TextInput, TextInputProps } from '../..';
 import { useCustomFormContext } from './provider/use-custom-form-context';
 
-interface ExpandingTextFieldProps extends TextInputProps {
+export interface ExpandingTextFieldProps extends TextInputProps {
     name: string;
     maxCharactersNumber?: number;
     rows?: number;
