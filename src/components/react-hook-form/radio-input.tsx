@@ -17,7 +17,7 @@ import { FormattedMessage } from 'react-intl';
 import { useController } from 'react-hook-form';
 import FieldLabel from './utils/field-label';
 
-type Options = Array<{
+type RadioOptions = Array<{
     id: string;
     label: string;
 }>;
@@ -26,7 +26,7 @@ interface RadioInputProps {
     name: string;
     label?: string;
     id?: string;
-    options: Options;
+    options: RadioOptions;
     formProps?: Omit<RadioGroupProps, 'value'>;
 }
 

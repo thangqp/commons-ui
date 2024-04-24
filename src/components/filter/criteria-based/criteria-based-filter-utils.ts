@@ -13,9 +13,9 @@ import {
     PROPERTY_VALUES_1,
     PROPERTY_VALUES_2,
 } from './filter-property';
-import { PredefinedProperties } from '../../../hooks/predefined-properties-hook';
 import { getCriteriaBasedFormData } from '../utils/criteria-based-utils';
 import { FilterType } from '../constants/filter-constants';
+import { PredefinedProperties } from '../../../utils/types';
 
 /**
  * Transform

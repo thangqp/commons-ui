@@ -8,13 +8,12 @@
 import TextInput, { TextInputProps } from '../text-input';
 import { isFloatNumber } from './utils';
 import { FunctionComponent } from 'react';
+import { Input } from '../../../utils/types';
 
 export type FloatInputProps = Omit<
     TextInputProps,
     'outputTransform' | 'inputTransform' | 'acceptValue' // already defined in FloatInput
 >;
-
-export type Input = string | number;
 
 // toLocaleString never uses exponential notation unlike toString.  Avoiding
 // exponential notation makes in place normalizing of numbers after each

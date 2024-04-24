@@ -12,7 +12,8 @@ import { useFormContext, useWatch } from 'react-hook-form';
 import AutocompleteInput from '../../react-hook-form/autocomplete-input';
 import MultipleAutocompleteInput from '../../react-hook-form/autocomplete-inputs/multiple-autocomplete-input';
 import { FieldConstants } from '../constants/field-constants';
-import { PredefinedProperties } from '../../../hooks/predefined-properties-hook.ts';
+
+import { PredefinedProperties } from '../../../utils/types';
 
 export const PROPERTY_NAME = 'name_property';
 export const PROPERTY_VALUES = 'prop_values';

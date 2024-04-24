@@ -13,7 +13,8 @@ import {
     TextField,
     TextFieldProps,
 } from '@mui/material';
-import { Input } from '../numbers/float-input';
+
+import { Input } from '../../../utils/types';
 
 export type TextFieldWithAdornmentProps = TextFieldProps & {
     // variant already included in TextFieldProps

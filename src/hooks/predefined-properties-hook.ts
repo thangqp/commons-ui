@@ -11,16 +11,10 @@ import {
     useEffect,
     useState,
 } from 'react';
-import {
-    EquipmentType,
-    mapEquipmentTypeForPredefinedProperties,
-} from '../utils/equipment-types-for-predefined-properties-mapper';
+import { mapEquipmentTypeForPredefinedProperties } from '../utils/equipment-types-for-predefined-properties-mapper';
 import { useSnackMessage } from './useSnackMessage';
 import { FilterContext } from '../components/filter/filter-context';
-
-export type PredefinedProperties = {
-    [propertyName: string]: string[];
-};
+import { EquipmentType, PredefinedProperties } from '../utils/types';
 
 interface Metadata {
     name: string;

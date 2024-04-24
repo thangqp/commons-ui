@@ -20,10 +20,10 @@ import { importExpertRules } from './expert-filter-utils';
 import { UUID } from 'crypto';
 import { elementExistsType } from '../criteria-based/criteria-based-filter-edition-dialog';
 import { MergedFormContextProps } from '../../react-hook-form/provider/custom-form-provider';
-import { ElementAttributes } from '../../DirectoryItemSelector/directory-item-selector';
 import { FilterContext } from '../filter-context';
 import { FilterType } from '../constants/filter-constants';
 import { FetchStatus } from '../../../utils/FetchStatus';
+import { ElementAttributes } from '../../../utils/types';
 
 const formSchema = yup
     .object()

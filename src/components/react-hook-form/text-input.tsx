@@ -25,7 +25,8 @@ import {
     isFieldRequired,
 } from './utils/functions';
 import { useCustomFormContext } from './provider/use-custom-form-context';
-import { Input } from './numbers/float-input';
+
+import { Input } from '../../utils/types';
 
 export interface TextInputProps {
     name: string;

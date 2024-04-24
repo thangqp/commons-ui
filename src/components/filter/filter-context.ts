@@ -6,10 +6,10 @@
  */
 import { createContext } from 'react';
 import { UUID } from 'crypto';
-import { ElementAttributes } from '../DirectoryItemSelector/directory-item-selector';
 import { StudyMetadata } from '../../hooks/predefined-properties-hook';
+import { ElementAttributes } from '../../utils/types';
 
-export type FilterContextProps = {
+interface FilterContextProps {
     fetchDirectoryContent?: (
         directoryUuid: UUID,
         elementTypes: string[]
@@ -21,7 +21,7 @@ export type FilterContextProps = {
         equipmentTypes?: string[]
     ) => Promise<ElementAttributes[]>;
     fetchAppsAndUrls?: () => Promise<StudyMetadata[]>;
-};
+}
 export const FilterContext = createContext<FilterContextProps>({
     fetchDirectoryContent: undefined,
     fetchRootFolders: undefined,

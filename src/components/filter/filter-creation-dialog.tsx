@@ -37,9 +37,9 @@ import { UUID } from 'crypto';
 import { MergedFormContextProps } from '../react-hook-form/provider/custom-form-provider';
 import { StudyMetadata } from '../../hooks/predefined-properties-hook.ts';
 
-import { ElementAttributes } from '../DirectoryItemSelector/directory-item-selector';
 import { FilterContext } from './filter-context';
 import { FilterType } from './constants/filter-constants';
+import { ElementAttributes } from '../../utils/types';
 
 const emptyFormData = {
     [FieldConstants.NAME]: '',

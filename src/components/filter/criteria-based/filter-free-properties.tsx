@@ -21,7 +21,8 @@ import FilterProperty, {
 import AddIcon from '@mui/icons-material/Add';
 import { FunctionComponent, useMemo } from 'react';
 import { Hvdc, Line } from '../constants/equipment-types';
-import { PredefinedProperties } from '../../../hooks/predefined-properties-hook';
+
+import { PredefinedProperties } from '../../../utils/types';
 
 interface FilterFreePropertiesProps {
     freePropertiesType: FreePropertiesTypes;

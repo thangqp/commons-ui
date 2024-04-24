@@ -22,6 +22,7 @@ import {
 } from '../TreeViewFinder/TreeViewFinder';
 import { UUID } from 'crypto';
 import { useSnackMessage } from '../../hooks/useSnackMessage';
+import { ElementAttributes } from '../../utils/types';
 
 const styles = {
     icon: (theme: Theme) => ({
@@ -29,12 +30,6 @@ const styles = {
         width: '18px',
         height: '18px',
     }),
-};
-
-export type ElementAttributes = {
-    elementUuid: UUID;
-    elementName: string;
-    type: keyof typeof ElementType;
 };
 
 interface DirectoryItemSelectorProps extends TreeViewFinderProps {

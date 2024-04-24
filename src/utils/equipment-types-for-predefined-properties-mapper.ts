@@ -4,45 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import {
-    Battery,
-    BusBar,
-    DanglingLine,
-    Generator,
-    Hvdc,
-    LCC,
-    Line,
-    Load,
-    ShuntCompensator,
-    Substation,
-    SVC,
-    ThreeWindingTransfo,
-    TwoWindingTransfo,
-    VoltageLevel,
-    VSC,
-} from '../components/filter/constants/equipment-types.ts';
-
-export type Equipment =
-    | typeof Substation
-    | typeof Line
-    | typeof Generator
-    | typeof Load
-    | typeof Battery
-    | typeof SVC
-    | typeof DanglingLine
-    | typeof LCC
-    | typeof VSC
-    | typeof Hvdc
-    | typeof BusBar
-    | typeof TwoWindingTransfo
-    | typeof ThreeWindingTransfo
-    | typeof ShuntCompensator
-    | typeof VoltageLevel
-    | typeof Substation;
-
-export type EquipmentType = {
-    [Type in Equipment['type']]: Type;
-}[Equipment['type']];
+import { EquipmentType } from './types';
 
 export const mapEquipmentTypeForPredefinedProperties = (
     type: EquipmentType

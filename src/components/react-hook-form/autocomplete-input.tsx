@@ -21,6 +21,7 @@ import {
 import FieldLabel from './utils/field-label';
 import { useCustomFormContext } from './provider/use-custom-form-context';
 import { FunctionComponent } from 'react';
+import { Option } from '../../utils/types';
 
 export interface AutocompleteInputProps
     extends Omit<
@@ -47,13 +48,6 @@ export interface AutocompleteInputProps
         'value' | 'onChange' | 'inputRef' | 'inputProps' | 'InputProps'
     >;
 }
-
-export type Option =
-    | {
-          id: string;
-          label: string;
-      }
-    | string;
 
 const AutocompleteInput: FunctionComponent<AutocompleteInputProps> = ({
     name,
