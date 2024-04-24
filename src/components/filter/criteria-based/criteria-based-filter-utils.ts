@@ -15,7 +15,7 @@ import {
 } from './filter-property';
 import { getCriteriaBasedFormData } from '../utils/criteria-based-utils';
 import { FilterType } from '../constants/filter-constants';
-import { PredefinedProperties } from '../../../utils/types';
+import { PredefinedProperties } from '../../../types';
 
 /**
  * Transform

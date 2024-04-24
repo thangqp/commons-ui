@@ -10,7 +10,7 @@ import AutocompleteInput, {
 } from '../autocomplete-input';
 import { useIntl } from 'react-intl';
 import { FunctionComponent } from 'react';
-import { Option } from '../../../utils/types';
+import { Option } from '../../../types';
 
 export interface SelectInputProps
     extends Omit<

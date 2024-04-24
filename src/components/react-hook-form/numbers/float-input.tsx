@@ -8,7 +8,7 @@
 import TextInput, { TextInputProps } from '../text-input';
 import { isFloatNumber } from './utils';
 import { FunctionComponent } from 'react';
-import { Input } from '../../../utils/types';
+import { Input } from '../../../types';
 
 export type FloatInputProps = Omit<
     TextInputProps,
