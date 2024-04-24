@@ -33,7 +33,7 @@ export interface ErrorInputProps {
 const ErrorInput: FunctionComponent<ErrorInputProps> = ({
     name,
     InputField,
-}: ErrorInputProps) => {
+}) => {
     const {
         fieldState: { error },
         formState: { isSubmitting },

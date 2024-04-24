@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useCallback, useMemo } from 'react';
+import { FunctionComponent, useCallback, useMemo } from 'react';
 
 import Grid from '@mui/material/Grid';
 import type { RuleGroupTypeAny } from 'react-querybuilder';
@@ -123,7 +123,7 @@ export function getExpertFilterEmptyFormData() {
     };
 }
 
-function ExpertFilterForm() {
+const ExpertFilterForm: FunctionComponent = () => {
     const intl = useIntl();
 
     const { getValues, setValue } = useFormContext();
@@ -175,6 +175,6 @@ function ExpertFilterForm() {
                 )}
         </Grid>
     );
-}
+};
 
 export default ExpertFilterForm;

@@ -8,7 +8,7 @@ import { useWatch } from 'react-hook-form';
 import FloatInput from './numbers/float-input.tsx';
 import yup from '../../utils/yup-config.ts';
 import { FormattedMessage } from 'react-intl';
-import { useMemo } from 'react';
+import { FunctionComponent, useMemo } from 'react';
 import InputLabel from '@mui/material/InputLabel';
 import { Grid } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
@@ -67,7 +67,12 @@ export const getRangeInputSchema = (name: string) => ({
     ),
 });
 
-const RangeInput = ({ name, label }: { name: string; label: string }) => {
+interface RangeInputProps {
+    name: string;
+    label: string;
+}
+
+const RangeInput: FunctionComponent<RangeInputProps> = ({ name, label }) => {
     const watchOperationType = useWatch({
         name: `${name}.${FieldConstants.OPERATION_TYPE}`,
     });

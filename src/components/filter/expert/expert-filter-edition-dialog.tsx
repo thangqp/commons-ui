@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useCallback, useEffect, useState } from 'react';
+import { FunctionComponent, useCallback, useEffect, useState } from 'react';
 import { FieldConstants } from '../constants/field-constants';
 import { noSelectionForCopy } from '../constants/equipment-types';
 import { useForm } from 'react-hook-form';
@@ -23,7 +23,7 @@ import { MergedFormContextProps } from '../../react-hook-form/provider/custom-fo
 import { ElementAttributes } from '../../DirectoryItemSelector/directory-item-selector';
 import { FilterContext } from '../filter-context';
 import { FilterType } from '../constants/filter-constants';
-import { FetchStatus } from '../../../utils/FetchStatus.ts';
+import { FetchStatus } from '../../../utils/FetchStatus';
 
 const formSchema = yup
     .object()
@@ -68,7 +68,9 @@ export interface ExpertFilterEditionDialogProps {
     ) => Promise<ElementAttributes[]>;
 }
 
-export const ExpertFilterEditionDialog = ({
+export const ExpertFilterEditionDialog: FunctionComponent<
+    ExpertFilterEditionDialogProps
+> = ({
     id,
     name,
     titleId,
@@ -86,7 +88,7 @@ export const ExpertFilterEditionDialog = ({
     fetchDirectoryContent,
     fetchRootFolders,
     fetchElementsInfos,
-}: ExpertFilterEditionDialogProps) => {
+}) => {
     const { snackError } = useSnackMessage();
     const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
 

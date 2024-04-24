@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { useCallback, useMemo } from 'react';
+import { FunctionComponent, useCallback, useMemo } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 import Grid from '@mui/material/Grid';
@@ -27,7 +27,7 @@ interface FilterPropertyProps {
     propertyType: string;
 }
 
-function FilterProperty(props: FilterPropertyProps) {
+const FilterProperty: FunctionComponent<FilterPropertyProps> = (props) => {
     const { setValue } = useFormContext();
 
     const watchName = useWatch({
@@ -85,6 +85,6 @@ function FilterProperty(props: FilterPropertyProps) {
             </Grid>
         </Grid>
     );
-}
+};
 
 export default FilterProperty;

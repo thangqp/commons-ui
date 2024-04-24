@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useCallback, useEffect, useState } from 'react';
+import { FunctionComponent, useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { saveExplicitNamingFilter } from '../utils/filters-utils';
 import { useForm } from 'react-hook-form';
@@ -59,7 +59,9 @@ interface ExplicitNamingFilterEditionDialogProps {
     language?: string;
 }
 
-const ExplicitNamingFilterEditionDialog = ({
+const ExplicitNamingFilterEditionDialog: FunctionComponent<
+    ExplicitNamingFilterEditionDialogProps
+> = ({
     id,
     name,
     titleId,
@@ -74,7 +76,7 @@ const ExplicitNamingFilterEditionDialog = ({
     activeDirectory,
     elementExists,
     language,
-}: ExplicitNamingFilterEditionDialogProps) => {
+}) => {
     const { snackError } = useSnackMessage();
     const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
 

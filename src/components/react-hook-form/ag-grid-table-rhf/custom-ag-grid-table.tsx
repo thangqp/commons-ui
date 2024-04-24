@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useCallback, useEffect, useState } from 'react';
+import { FunctionComponent, useCallback, useEffect, useState } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
@@ -101,7 +101,7 @@ export interface CustomAgGridTableProps {
     stopEditingWhenCellsLoseFocus: boolean;
 }
 
-export const CustomAgGridTable = ({
+export const CustomAgGridTable: FunctionComponent<CustomAgGridTableProps> = ({
     name,
     columnDefs,
     makeDefaultRowData,
@@ -114,7 +114,7 @@ export const CustomAgGridTable = ({
     alwaysShowVerticalScroll,
     stopEditingWhenCellsLoseFocus,
     ...props
-}: CustomAgGridTableProps) => {
+}) => {
     const theme: any = useTheme();
     const [gridApi, setGridApi] = useState<any>(null);
     const [selectedRows, setSelectedRows] = useState([]);

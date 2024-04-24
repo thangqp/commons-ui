@@ -11,7 +11,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import { useCSVReader } from 'react-papaparse';
 import Button from '@mui/material/Button';
-import React, { useMemo, useState } from 'react';
+import React, { FunctionComponent, useMemo, useState } from 'react';
 import Grid from '@mui/material/Grid';
 import { FormattedMessage, useIntl } from 'react-intl';
 import CsvDownloader from 'react-csv-downloader';
@@ -21,7 +21,7 @@ import { useWatch } from 'react-hook-form';
 import { CancelButton } from '../../../../index';
 import { FieldConstants } from '../../../filter/constants/field-constants.ts';
 
-interface OwnProps {
+interface CsvUploaderProps {
     name: string;
     onClose: () => void;
     open: true;
@@ -34,7 +34,7 @@ interface OwnProps {
     useFieldArrayOutput: any;
 }
 
-const CsvUploader = ({
+const CsvUploader: FunctionComponent<CsvUploaderProps> = ({
     name,
     onClose,
     open,
@@ -45,7 +45,7 @@ const CsvUploader = ({
     validateData = (_rows) => true,
     getDataFromCsv,
     useFieldArrayOutput,
-}: OwnProps) => {
+}) => {
     const watchTableValues = useWatch({ name });
     const { append, replace } = useFieldArrayOutput;
     const [createError, setCreateError] = React.useState('');

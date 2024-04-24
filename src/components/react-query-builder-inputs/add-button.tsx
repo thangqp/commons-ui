@@ -9,14 +9,16 @@ import { ActionWithRulesAndAddersProps } from 'react-querybuilder';
 import { Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/ControlPoint';
 import { FormattedMessage } from 'react-intl';
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 
 interface ActionWithRulesAndAddersWithLabelProps
     extends ActionWithRulesAndAddersProps {
     label: string;
 }
 
-const AddButton = (props: ActionWithRulesAndAddersWithLabelProps) => (
+const AddButton: FunctionComponent<ActionWithRulesAndAddersWithLabelProps> = (
+    props
+) => (
     <span>
         <Button
             startIcon={<AddIcon />}

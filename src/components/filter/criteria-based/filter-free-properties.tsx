@@ -19,19 +19,19 @@ import FilterProperty, {
     PROPERTY_VALUES_2,
 } from './filter-property';
 import AddIcon from '@mui/icons-material/Add';
-import { useMemo } from 'react';
+import { FunctionComponent, useMemo } from 'react';
 import { Hvdc, Line } from '../constants/equipment-types';
-import { PredefinedProperties } from '../../../hooks/predefined-properties-hook.ts';
+import { PredefinedProperties } from '../../../hooks/predefined-properties-hook';
 
 interface FilterFreePropertiesProps {
     freePropertiesType: FreePropertiesTypes;
     predefined: PredefinedProperties;
 }
 
-function FilterFreeProperties({
+const FilterFreeProperties: FunctionComponent<FilterFreePropertiesProps> = ({
     freePropertiesType,
     predefined,
-}: FilterFreePropertiesProps) {
+}) => {
     const watchEquipmentType = useWatch({
         name: FieldConstants.EQUIPMENT_TYPE,
     });
@@ -103,6 +103,6 @@ function FilterFreeProperties({
             </Grid>
         </>
     );
-}
+};
 
 export default FilterFreeProperties;

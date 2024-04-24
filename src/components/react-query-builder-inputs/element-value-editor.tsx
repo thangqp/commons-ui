@@ -5,12 +5,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { useContext, useEffect } from 'react';
+import React, { FunctionComponent, useContext, useEffect } from 'react';
 import { validate as uuidValidate } from 'uuid';
 import { DirectoryItemsInput, useCustomFormContext } from '../../index';
 import { FilterContext } from '../filter/filter-context.ts';
 
-const ElementValueEditor = (props: {
+interface ElementValueEditorProps {
     name: string;
     elementType: string;
     equipmentTypes?: string[];
@@ -19,7 +19,11 @@ const ElementValueEditor = (props: {
     onChange?: (e: any) => void;
     itemFilter?: any;
     defaultValue?: any;
-}) => {
+}
+
+const ElementValueEditor: FunctionComponent<ElementValueEditorProps> = (
+    props
+) => {
     const { setValue } = useCustomFormContext();
     const { fetchElementsInfos } = useContext(FilterContext);
 

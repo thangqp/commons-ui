@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { ReactElement } from 'react';
+import { FunctionComponent, ReactElement } from 'react';
 import {
     IconButton,
     InputAdornment,
@@ -48,7 +48,7 @@ export interface TextInputProps {
     >;
 }
 
-const TextInput = ({
+const TextInput: FunctionComponent<TextInputProps> = ({
     name,
     label,
     labelValues, // this prop is used to add a value to label. this value is displayed without being translated
@@ -61,7 +61,7 @@ const TextInput = ({
     previousValue,
     clearable,
     formProps,
-}: TextInputProps) => {
+}) => {
     const { validationSchema, getValues, removeOptional } =
         useCustomFormContext();
     const {

@@ -10,6 +10,7 @@ import AutocompleteInput, {
     Option,
 } from '../autocomplete-input';
 import { useIntl } from 'react-intl';
+import { FunctionComponent } from 'react';
 
 export interface SelectInputProps
     extends Omit<
@@ -19,7 +20,7 @@ export interface SelectInputProps
     options: Option[];
 }
 
-const SelectInput = (props: SelectInputProps) => {
+const SelectInput: FunctionComponent<SelectInputProps> = (props) => {
     const intl = useIntl();
 
     const inputTransform = (value: Option) => {

@@ -6,14 +6,14 @@
  */
 
 import { ValueEditorProps } from 'react-querybuilder';
-import { useMemo } from 'react';
+import { FunctionComponent, useMemo } from 'react';
 import { MaterialValueEditor } from '@react-querybuilder/material';
 import { useIntl } from 'react-intl';
 import useConvertValue from './use-convert-value.ts';
 import { Autocomplete, TextField } from '@mui/material';
 import useValid from './use-valid.ts';
 
-const TranslatedValueEditor = (props: ValueEditorProps) => {
+const TranslatedValueEditor: FunctionComponent<ValueEditorProps> = (props) => {
     const intl = useIntl();
 
     const translatedValues = useMemo(() => {

@@ -10,7 +10,7 @@ import { ArrowCircleDown, ArrowCircleUp, Upload } from '@mui/icons-material';
 import AddIcon from '@mui/icons-material/ControlPoint';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CsvUploader from './csv-uploader/csv-uploader.tsx';
-import { useState } from 'react';
+import { FunctionComponent, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { styled } from '@mui/material/styles';
 import ErrorInput from '../error-management/error-input.tsx';
@@ -36,7 +36,7 @@ export interface BottomRightButtonsProps {
     csvProps: any;
 }
 
-const BottomRightButtons = ({
+const BottomRightButtons: FunctionComponent<BottomRightButtonsProps> = ({
     name,
     disableUp,
     disableDown,
@@ -47,7 +47,7 @@ const BottomRightButtons = ({
     handleMoveRowDown,
     useFieldArrayOutput,
     csvProps,
-}: BottomRightButtonsProps) => {
+}) => {
     const [uploaderOpen, setUploaderOpen] = useState(false);
     const intl = useIntl();
 

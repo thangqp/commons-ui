@@ -7,6 +7,7 @@
 
 import {
     Dispatch,
+    FunctionComponent,
     SetStateAction,
     useCallback,
     useEffect,
@@ -77,7 +78,9 @@ interface CriteriaBasedFilterEditionDialogProps {
     language?: string;
 }
 
-export const CriteriaBasedFilterEditionDialog = ({
+export const CriteriaBasedFilterEditionDialog: FunctionComponent<
+    CriteriaBasedFilterEditionDialogProps
+> = ({
     id,
     name,
     titleId,
@@ -91,7 +94,7 @@ export const CriteriaBasedFilterEditionDialog = ({
     activeDirectory,
     elementExists,
     language,
-}: CriteriaBasedFilterEditionDialogProps) => {
+}) => {
     const { snackError } = useSnackMessage();
     const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
 

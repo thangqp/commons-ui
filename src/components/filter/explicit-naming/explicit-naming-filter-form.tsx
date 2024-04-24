@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { useCallback, useMemo } from 'react';
+import { FunctionComponent, useCallback, useMemo } from 'react';
 import { FieldConstants } from '../constants/field-constants';
 import yup from '../../../utils/yup-config';
 import CustomAgGridTable, {
@@ -19,9 +19,9 @@ import { Generator, Load } from '../constants/equipment-types';
 import { NumericEditor } from '../../react-hook-form/ag-grid-table-rhf/cell-editors/numericEditor';
 import InputWithPopupConfirmation from '../../react-hook-form/select-inputs/input-with-popup-confirmation';
 import { v4 as uuid4 } from 'uuid';
-import { FILTER_EQUIPMENTS } from '../constants/criteria-based-constants';
 import { toFloatOrNullValue } from '../../react-hook-form/utils/functions';
 import { DISTRIBUTION_KEY, FilterType } from '../constants/filter-constants';
+import { FILTER_EQUIPMENTS } from '../utils/criteria-based-utils.ts';
 
 export const FILTER_EQUIPMENTS_ATTRIBUTES = 'filterEquipmentsAttributes';
 
@@ -106,7 +106,7 @@ export function getExplicitNamingFilterEmptyFormData() {
     };
 }
 
-function ExplicitNamingFilterForm() {
+const ExplicitNamingFilterForm: FunctionComponent = () => {
     const intl = useIntl();
 
     const { getValues, setValue } = useFormContext();
@@ -229,6 +229,6 @@ function ExplicitNamingFilterForm() {
             )}
         </Grid>
     );
-}
+};
 
 export default ExplicitNamingFilterForm;

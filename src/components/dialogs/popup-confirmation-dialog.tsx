@@ -13,6 +13,7 @@ import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import { FormattedMessage } from 'react-intl';
 import CancelButton from '../react-hook-form/utils/cancel-button';
+import { FunctionComponent } from 'react';
 
 export interface PopupConfirmationDialogProps {
     message: string;
@@ -22,7 +23,9 @@ export interface PopupConfirmationDialogProps {
     handlePopupConfirmation: () => void;
 }
 
-const PopupConfirmationDialog = ({
+const PopupConfirmationDialog: FunctionComponent<
+    PopupConfirmationDialogProps
+> = ({
     message,
     validateButtonLabel,
     openConfirmationPopup,

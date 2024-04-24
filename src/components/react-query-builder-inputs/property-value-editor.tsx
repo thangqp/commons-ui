@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useCallback, useEffect, useMemo } from 'react';
+import { FunctionComponent, useCallback, useEffect, useMemo } from 'react';
 import Grid from '@mui/material/Grid';
 import { Autocomplete, MenuItem, Select, TextField } from '@mui/material';
 import { ValueEditorProps } from 'react-querybuilder';
@@ -23,7 +23,9 @@ interface ExpertFilterPropertyProps {
     valueEditorProps: ValueEditorProps;
 }
 
-function PropertyValueEditor(props: ExpertFilterPropertyProps) {
+const PropertyValueEditor: FunctionComponent<ExpertFilterPropertyProps> = (
+    props
+) => {
     const { equipmentType, valueEditorProps } = props;
     const valid = useValid(valueEditorProps);
     const intl = useIntl();
@@ -129,6 +131,6 @@ function PropertyValueEditor(props: ExpertFilterPropertyProps) {
             </Grid>
         </Grid>
     );
-}
+};
 
 export default PropertyValueEditor;

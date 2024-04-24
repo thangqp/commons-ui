@@ -12,9 +12,9 @@ import useConvertValue from './use-convert-value.ts';
 import useValid from './use-valid.ts';
 import { useLocalizedCountries } from '../../hooks/localized-countries-hook';
 import { useCustomFormContext } from '../react-hook-form/provider/use-custom-form-context.ts';
-import { useMemo } from 'react';
+import { FunctionComponent, useMemo } from 'react';
 
-const CountryValueEditor = (props: ValueEditorProps) => {
+const CountryValueEditor: FunctionComponent<ValueEditorProps> = (props) => {
     const { language } = useCustomFormContext();
     const { translate, countryCodes } = useLocalizedCountries(language);
 

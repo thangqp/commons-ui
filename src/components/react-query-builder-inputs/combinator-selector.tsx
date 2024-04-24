@@ -6,11 +6,13 @@
  */
 
 import { CombinatorSelectorProps } from 'react-querybuilder';
-import { useCallback, useState } from 'react';
+import { FunctionComponent, useCallback, useState } from 'react';
 import PopupConfirmationDialog from '../dialogs/popup-confirmation-dialog';
 import { MaterialValueSelector } from '@react-querybuilder/material';
 
-const CombinatorSelector = (props: CombinatorSelectorProps) => {
+const CombinatorSelector: FunctionComponent<CombinatorSelectorProps> = (
+    props
+) => {
     const [tempCombinator, setTempCombinator] = useState(props.value);
     const [openPopup, setOpenPopup] = useState(false);
 

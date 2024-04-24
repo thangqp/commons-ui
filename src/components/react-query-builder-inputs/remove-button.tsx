@@ -14,8 +14,9 @@ import {
     getNumberOfSiblings,
     recursiveRemove,
 } from '../filter/expert/expert-filter-utils.ts';
+import { FunctionComponent } from 'react';
 
-const RemoveButton = (props: ActionWithRulesProps) => {
+const RemoveButton: FunctionComponent<ActionWithRulesProps> = (props) => {
     const {
         field: { value: query, onChange },
     } = useController({ name: EXPERT_FILTER_QUERY });

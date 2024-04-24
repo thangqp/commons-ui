@@ -30,10 +30,6 @@ export { default as CustomAgGridTable } from './components/react-hook-form/ag-gr
 export { ROW_DRAGGING_SELECTION_COLUMN_DEF } from './components/react-hook-form/ag-grid-table-rhf/custom-ag-grid-table';
 
 export {
-    CONTINGENCY_LIST_EQUIPMENTS,
-    FILTER_EQUIPMENTS,
-} from './components/filter/constants/criteria-based-constants';
-export {
     getCriteriaBasedFormData,
     getCriteriaBasedSchema,
 } from './components/filter/utils/criteria-based-utils';
@@ -204,3 +200,5 @@ export { default as MultipleAutocompleteInput } from './components/react-hook-fo
 export { default as CsvUploader } from './components/react-hook-form/ag-grid-table-rhf/csv-uploader/csv-uploader';
 export { UniqueNameInput } from './components/react-hook-form/unique-name-input';
 export { UserManagerMock } from './utils/UserManagerMock';
+export { FILTER_EQUIPMENTS } from './components/filter/utils/criteria-based-utils';
+export { CONTINGENCY_LIST_EQUIPMENTS } from './components/filter/utils/criteria-based-utils';

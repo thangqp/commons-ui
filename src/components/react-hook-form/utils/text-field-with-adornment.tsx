@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useCallback, useState } from 'react';
+import { FunctionComponent, useCallback, useState } from 'react';
 import { Clear as ClearIcon } from '@mui/icons-material';
 import {
     IconButton,
@@ -23,7 +23,9 @@ export type TextFieldWithAdornmentProps = TextFieldProps & {
     handleClearValue?: () => void;
 };
 
-const TextFieldWithAdornment = (props: TextFieldWithAdornmentProps) => {
+const TextFieldWithAdornment: FunctionComponent<TextFieldWithAdornmentProps> = (
+    props
+) => {
     const {
         adornmentPosition,
         adornmentText,

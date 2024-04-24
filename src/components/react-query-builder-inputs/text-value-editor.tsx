@@ -10,8 +10,9 @@ import { MaterialValueEditor } from '@react-querybuilder/material';
 import useConvertValue from './use-convert-value.ts';
 import { Autocomplete, TextField } from '@mui/material';
 import useValid from './use-valid.ts';
+import { FunctionComponent } from 'react';
 
-const TextValueEditor = (props: ValueEditorProps) => {
+const TextValueEditor: FunctionComponent<ValueEditorProps> = (props) => {
     useConvertValue(props);
 
     const valid = useValid(props);

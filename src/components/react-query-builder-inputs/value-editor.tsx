@@ -6,7 +6,7 @@
  */
 
 import { ValueEditorProps } from 'react-querybuilder';
-import React, { useCallback } from 'react';
+import React, { FunctionComponent, useCallback } from 'react';
 import { MaterialValueEditor } from '@react-querybuilder/material';
 
 import CountryValueEditor from './country-value-editor.tsx';
@@ -42,7 +42,7 @@ const styles = {
     },
 };
 
-const ValueEditor = (props: ValueEditorProps) => {
+const ValueEditor: FunctionComponent<ValueEditorProps> = (props) => {
     const formContext = useFormContext();
     const { getValues } = formContext;
 

@@ -67,7 +67,7 @@ const AutocompleteInput: FunctionComponent<AutocompleteInputProps> = ({
     onChangeCallback, // method called when input value is changing
     formProps,
     ...props
-}: AutocompleteInputProps) => {
+}) => {
     const { validationSchema, getValues, removeOptional } =
         useCustomFormContext();
     const {

@@ -17,11 +17,6 @@ import type {
 import { UseSnackMessageReturn } from './hooks/useSnackMessage';
 import { AutocompleteInputProps } from './components/react-hook-form/autocomplete-input';
 import { ErrorInputProps } from './components/react-hook-form/error-management/error-input';
-import { IDescriptionModificationDialog } from './components/dialogs/description-modification-dialog';
-import { CriteriaBasedFormProps } from './components/filter/criteria-based/criteria-based-form';
-import { PopupConfirmationDialogProps } from './components/dialogs/popup-confirmation-dialog';
-import { BottomRightButtonsProps } from './components/react-hook-form/ag-grid-table-rhf/bottom-right-buttons';
-import { CustomAgGridTableProps } from './components/react-hook-form/ag-grid-table-rhf/custom-ag-grid-table';
 
 /**
  * Section to export generated type declarations
@@ -87,10 +82,6 @@ export {
     RESET_AUTHENTICATION_ROUTER_ERROR,
     SHOW_AUTH_INFO_LOGIN,
 } from './utils/actions';
-export {
-    CONTINGENCY_LIST_EQUIPMENTS,
-    FILTER_EQUIPMENTS,
-} from './components/filter/constants/criteria-based-constants';
 export {
     getCriteriaBasedFormData,
     getCriteriaBasedSchema,
@@ -227,8 +218,6 @@ export function logout(
 ): Promise<any | undefined>;
 
 export const DARK_THEME: string, LIGHT_THEME: string;
-
-type Input = string | number;
 
 interface SnackInputs {
     messageTxt?: string;
@@ -368,10 +357,6 @@ interface OverflowableTextProps {
 }
 
 export const OverflowableText: FunctionComponent<OverflowableTextProps>;
-export const CustomMuiDialog: FunctionComponent<ICustomMuiDialog>;
-export const DescriptionModificationDialog: FunctionComponent<IDescriptionModificationDialog>;
-export const CriteriaBasedForm: FunctionComponent<CriteriaBasedFormProps>;
-export const PopupConfirmationDialog: FunctionComponent<PopupConfirmationDialogProps>;
-export const BottomRightButtons: FunctionComponent<BottomRightButtonsProps>;
-export const CustomAgGridTable: FunctionComponent<CustomAgGridTableProps>;
 export { ROW_DRAGGING_SELECTION_COLUMN_DEF } from './components/react-hook-form/ag-grid-table-rhf/custom-ag-grid-table';
+export { FILTER_EQUIPMENTS } from './components/filter/utils/criteria-based-utils';
+export { CONTINGENCY_LIST_EQUIPMENTS } from './components/filter/utils/criteria-based-utils';

@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useCallback } from 'react';
+import { FunctionComponent, useCallback } from 'react';
 import {
     saveCriteriaBasedFilter,
     saveExpertFilter,
@@ -93,7 +93,7 @@ export interface FilterCreationDialogProps {
     ) => Promise<ElementAttributes[]>;
 }
 
-const FilterCreationDialog = ({
+const FilterCreationDialog: FunctionComponent<FilterCreationDialogProps> = ({
     open,
     onClose,
     activeDirectory,
@@ -105,7 +105,7 @@ const FilterCreationDialog = ({
     fetchDirectoryContent,
     fetchRootFolders,
     fetchElementsInfos,
-}: FilterCreationDialogProps) => {
+}) => {
     const { snackError } = useSnackMessage();
 
     const formMethods = {
