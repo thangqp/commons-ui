@@ -7,16 +7,11 @@
 
 import { FunctionComponent, ReactElement } from 'react';
 import type {
-    ButtonProps,
     CheckboxProps,
-    RadioGroupProps,
     SwitchProps,
     SxProps,
     TextFieldProps,
 } from '@mui/material';
-import { UseSnackMessageReturn } from './hooks/useSnackMessage';
-import { AutocompleteInputProps } from './components/react-hook-form/autocomplete-input';
-import { ErrorInputProps } from './components/react-hook-form/error-management/error-input';
 
 /**
  * Section to export generated type declarations
@@ -55,8 +50,6 @@ export {
     dispatchUser,
     getPreLoginPath,
 } from './utils/AuthService';
-
-export { getFileIcon } from './utils/ElementIcon';
 
 export {
     DEFAULT_CELL_PADDING,
@@ -119,6 +112,21 @@ export { useCustomFormContext } from './components/react-hook-form/provider/use-
 export { default as CustomFormProvider } from './components/react-hook-form/provider/custom-form-provider';
 export { default as SliderInput } from './components/react-hook-form/slider-input';
 export { default as TextFieldWithAdornment } from './components/react-hook-form/utils/text-field-with-adornment';
+export { default as SelectInput } from './components/react-hook-form/select-inputs/select-input';
+export { default as ErrorInput } from './components/react-hook-form/error-management/error-input';
+export { default as AutocompleteInput } from './components/react-hook-form/autocomplete-input';
+export { default as TextInput } from './components/react-hook-form/text-input';
+export { default as FloatInput } from './components/react-hook-form/numbers/float-input';
+export { default as RadioInput } from './components/react-hook-form/radio-input';
+export { default as SubmitButton } from './components/react-hook-form/utils/submit-button';
+export { default as CancelButton } from './components/react-hook-form/utils/cancel-button';
+export { default as FieldLabel } from './components/react-hook-form/utils/field-label';
+export { default as FilterCreationDialog } from './components/filter/filter-creation-dialog';
+export { default as ExpertFilterEditionDialog } from './components/filter/expert/expert-filter-edition-dialog';
+export { default as ExplicitNamingFilterEditionDialog } from './components/filter/explicit-naming/explicit-naming-filter-edition-dialog';
+export { default as CriteriaBasedFilterEditionDialog } from './components/filter/criteria-based/criteria-based-filter-edition-dialog';
+export { default as ExpandingTextField } from './components/react-hook-form/expanding-text-field';
+export { default as CustomMuiDialog } from './components/dialogs/custom-mui-dialog';
 export {
     genHelperPreviousValue,
     genHelperError,
@@ -139,14 +147,6 @@ export {
     isObjectEmpty,
 } from './utils/functions';
 
-export {
-    DirectoryItemSelectorProps,
-    DirectoryItemSelector,
-} from './components/DirectoryItemSelector/directory-item-selector';
-export { FilterCreationDialog } from './components/filter/filter-creation-dialog';
-export { ExpertFilterEditionDialog } from './components/filter/expert/expert-filter-edition-dialog';
-export { ExplicitNamingFilterEditionDialog } from './components/filter/explicit-naming/explicit-naming-filter-edition-dialog';
-export { CriteriaBasedFilterEditionDialog } from './components/filter/criteria-based/criteria-based-filter-edition-dialog';
 export { ElementType, getFileIcon } from './utils/ElementType';
 export {
     saveExplicitNamingFilter,
@@ -169,10 +169,6 @@ export {
 export { MultipleAutocompleteInput } from './components/react-hook-form/autocomplete-inputs/multiple-autocomplete-input';
 export { CsvUploader } from './components/react-hook-form/ag-grid-table-rhf/csv-uploader/csv-uploader';
 export { UniqueNameInput } from './components/react-hook-form/unique-name-input';
-export {
-    ExpandingTextFieldProps,
-    ExpandingTextField,
-} from './components/react-hook-form/expanding-text-field';
 
 export {
     Line,
@@ -204,6 +200,8 @@ export {
     microUnitToUnit,
 } from './utils/conversion-utils';
 
+export { useSnackMessage } from './hooks/useSnackMessage';
+export { useDebounce } from './hooks/useDebounce';
 export { ROW_DRAGGING_SELECTION_COLUMN_DEF } from './components/react-hook-form/ag-grid-table-rhf/custom-ag-grid-table';
 export { FILTER_EQUIPMENTS } from './components/filter/utils/criteria-based-utils';
 export { CONTINGENCY_LIST_EQUIPMENTS } from './components/filter/utils/criteria-based-utils';
@@ -221,86 +219,14 @@ export function logout(
     userManagerInstance: any
 ): Promise<any | undefined>;
 
-export const DARK_THEME: string, LIGHT_THEME: string;
-
-interface SnackInputs {
-    messageTxt?: string;
-    messageId?: string;
-    messageValues?: Record<string, string>;
-    headerTxt?: string;
-    headerId?: string;
-    headerValues?: Record<string, string>;
-}
-
-export function useSnackMessage(): UseSnackMessageReturn;
-
-export const AutocompleteInput: FunctionComponent<AutocompleteInputProps>;
-
-export const ErrorInput: FunctionComponent<ErrorInputProps>;
-
-export const SelectInput: FunctionComponent<SelectInputProps>;
-
 export const MidFormError: FunctionComponent;
-
 export const FieldErrorAlert: FunctionComponent;
-
-type TextFieldWithAdornmentProps = TextFieldProps & {
-    // variant already included in TextFieldProps
-    value: Input; // we override the default type of TextFieldProps which is unknown
-    adornmentPosition: string;
-    adornmentText: string;
-    handleClearValue?: () => void;
-};
-
-export interface TextInputProps {
-    name: string;
-    label?: string;
-    labelValues?: any; // it's for values from https://formatjs.io/docs/react-intl/components/#formattedmessage
-    id?: string;
-    adornment?: {
-        position: string;
-        text: string;
-    };
-    customAdornment?: ReactElement | null;
-    outputTransform?: (value: string) => Input;
-    inputTransform?: (value: Input) => string;
-    acceptValue?: (value: string) => boolean;
-    previousValue?: Input;
-    clearable?: boolean;
-    formProps?: Omit<
-        TextFieldWithAdornmentProps | TextFieldProps,
-        'value' | 'onChange' | 'inputRef' | 'inputProps' | 'InputProps'
-    >;
-}
-
-export const TextInput: FunctionComponent<TextInputProps>;
-
-export const FloatInput: FunctionComponent<
-    Omit<
-        TextInputProps,
-        'outputTransform' | 'inputTransform' | 'acceptValue' // already defined in FloatInput
-    >
->;
-
 export const IntegerInput: FunctionComponent<
     Omit<
         TextInputProps,
         'outputTransform' | 'inputTransform' | 'acceptValue' // already defined in IntegerInput
     >
 >;
-
-interface RadioInputProps {
-    name: string;
-    label?: string;
-    id?: string;
-    options: Array<{
-        id: string;
-        label: string;
-    }>;
-    formProps?: Omit<RadioGroupProps, 'value'>;
-}
-
-export const RadioInput: FunctionComponent<RadioInputProps>;
 
 interface SwitchInputProps {
     name: string;
@@ -317,20 +243,6 @@ interface CheckboxInputProps {
 }
 
 export const CheckboxInput: FunctionComponent<CheckboxInputProps>;
-
-export const SubmitButton: FunctionComponent<ButtonProps>;
-
-type CancelButtonProps = ButtonProps & {
-    color?: string;
-};
-
-export const CancelButton: FunctionComponent<CancelButtonProps>;
-
-export const FieldLabel: FunctionComponent<{
-    label: string;
-    optional?: boolean;
-    values?: any; // it's for values from https://formatjs.io/docs/react-intl/components/#formattedmessage
-}>;
 
 interface Parameters {
     name: string;
@@ -349,11 +261,6 @@ interface FlatParametersProps extends Pick<TextFieldProps, 'variant'> {
 }
 
 export const FlatParameters: FunctionComponent<FlatParametersProps>;
-
-export function useDebounce(
-    debouncedFunction: (...args: any[]) => void,
-    debounceDelay: number
-): (...args: any[]) => void;
 
 interface OverflowableTextProps {
     sx?: SxProps;

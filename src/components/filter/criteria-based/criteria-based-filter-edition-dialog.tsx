@@ -25,10 +25,10 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { criteriaBasedFilterSchema } from './criteria-based-filter-form';
 import yup from '../../../utils/yup-config';
 import { FilterForm } from '../filter-form';
-import { ElementType } from '../../..';
 import { UUID } from 'crypto';
 import { FilterType } from '../constants/filter-constants';
 import { FetchStatus } from '../../../utils/FetchStatus.ts';
+import { ElementType } from '../../../utils/ElementType.ts';
 
 export type SelectionCopy = {
     sourceItemUuid: UUID | null;

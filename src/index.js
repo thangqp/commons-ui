@@ -89,13 +89,13 @@ export {
     DEFAULT_ROW_HEIGHT,
 } from './components/MuiVirtualizedTable/MuiVirtualizedTable';
 
-export { DARK_THEME, LIGHT_THEME } from './components/TopBar/TopBar';
-
 export {
+    DARK_THEME,
+    LIGHT_THEME,
     LANG_SYSTEM,
     LANG_ENGLISH,
     LANG_FRENCH,
-} from './components/TopBar/TopBar.jsx';
+} from './components/TopBar/TopBar';
 
 export {
     USER,
