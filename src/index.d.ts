@@ -204,6 +204,10 @@ export {
     microUnitToUnit,
 } from './utils/conversion-utils';
 
+export { ROW_DRAGGING_SELECTION_COLUMN_DEF } from './components/react-hook-form/ag-grid-table-rhf/custom-ag-grid-table';
+export { FILTER_EQUIPMENTS } from './components/filter/utils/criteria-based-utils';
+export { CONTINGENCY_LIST_EQUIPMENTS } from './components/filter/utils/criteria-based-utils';
+
 /**
  * Section to export manual type declarations of .js and .jsx files
  */
@@ -357,6 +361,3 @@ interface OverflowableTextProps {
 }
 
 export const OverflowableText: FunctionComponent<OverflowableTextProps>;
-export { ROW_DRAGGING_SELECTION_COLUMN_DEF } from './components/react-hook-form/ag-grid-table-rhf/custom-ag-grid-table';
-export { FILTER_EQUIPMENTS } from './components/filter/utils/criteria-based-utils';
-export { CONTINGENCY_LIST_EQUIPMENTS } from './components/filter/utils/criteria-based-utils';

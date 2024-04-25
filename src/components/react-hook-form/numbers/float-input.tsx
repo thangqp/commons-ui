@@ -48,6 +48,10 @@ const FloatInput: FunctionComponent<FloatInputProps> = (
             // numbers when the data doesn't come from a user edit in the form,
             // but from data persisted as a float.
             return normalizeFixed(value);
+
+            //We explicitly test for string type for code clarity, it enables
+            // use to avoid casting the value variable from 'number | string'
+            // to 'string' on multiple statements
         } else if (typeof value == 'string') {
             // The user is editing, leave as is because we already did what we
             // need to do in outputTransform after the previous keystroke.
