@@ -7,7 +7,7 @@
 import { createContext } from 'react';
 import { UUID } from 'crypto';
 import { StudyMetadata } from '../../hooks/predefined-properties-hook';
-import { ElementAttributes } from '../../types';
+import { ElementAttributes } from '../../utils/types.ts';
 
 interface FilterContextProps {
     fetchDirectoryContent?: (

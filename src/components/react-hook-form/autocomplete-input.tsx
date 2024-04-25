@@ -21,7 +21,7 @@ import {
 import FieldLabel from './utils/field-label';
 import { useCustomFormContext } from './provider/use-custom-form-context';
 import { FunctionComponent } from 'react';
-import { Option } from '../../types';
+import { Option } from '../../utils/types.ts';
 
 export interface AutocompleteInputProps
     extends Omit<

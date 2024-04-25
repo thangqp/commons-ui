@@ -14,7 +14,7 @@ import {
     TextFieldProps,
 } from '@mui/material';
 
-import { Input } from '../../../types';
+import { Input } from '../../../utils/types.ts';
 
 export type TextFieldWithAdornmentProps = TextFieldProps & {
     // variant already included in TextFieldProps

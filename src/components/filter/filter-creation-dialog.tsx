@@ -39,7 +39,7 @@ import { StudyMetadata } from '../../hooks/predefined-properties-hook.ts';
 
 import { FilterContext } from './filter-context';
 import { FilterType } from './constants/filter-constants';
-import { ElementAttributes } from '../../types';
+import { ElementAttributes } from '../../utils/types.ts';
 
 const emptyFormData = {
     [FieldConstants.NAME]: '',
