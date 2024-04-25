@@ -121,6 +121,7 @@ export { default as RadioInput } from './components/react-hook-form/radio-input'
 export { default as SubmitButton } from './components/react-hook-form/utils/submit-button';
 export { default as CancelButton } from './components/react-hook-form/utils/cancel-button';
 export { default as FieldLabel } from './components/react-hook-form/utils/field-label';
+export { default as FieldErrorAlert } from './components/react-hook-form/error-management/field-error-alert';
 export { default as FilterCreationDialog } from './components/filter/filter-creation-dialog';
 export { default as ExpertFilterEditionDialog } from './components/filter/expert/expert-filter-edition-dialog';
 export { default as ExplicitNamingFilterEditionDialog } from './components/filter/explicit-naming/explicit-naming-filter-edition-dialog';
@@ -220,7 +221,7 @@ export function logout(
 ): Promise<any | undefined>;
 
 export const MidFormError: FunctionComponent;
-export const FieldErrorAlert: FunctionComponent;
+
 export const IntegerInput: FunctionComponent<
     Omit<
         TextInputProps,
