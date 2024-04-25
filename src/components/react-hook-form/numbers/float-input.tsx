@@ -49,7 +49,7 @@ const FloatInput: FunctionComponent<FloatInputProps> = (
             // but from data persisted as a float.
             return normalizeFixed(value);
 
-            //We explicitly test for string type for code clarity, it enables
+            //We explicitly test for 'string' type for code clarity, it enables
             // use to avoid casting the value variable from 'number | string'
             // to 'string' on multiple statements
         } else if (typeof value == 'string') {
