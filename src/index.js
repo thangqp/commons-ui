@@ -124,5 +124,6 @@ export {
 } from './components/react-hook-form/utils/functions';
 export { default as DirectoryItemsInput } from './components/react-hook-form/directory-items-input';
 export { default as DirectoryItemSelector } from './components/DirectoryItemSelector/directory-item-selector';
+export { default as CustomAGGrid } from './components/CustomAGGrid/custom-aggrid';
 export { RawReadOnlyInput } from './components/react-hook-form/raw-read-only-input';
 export { UserManagerMock } from './utils/UserManagerMock';
