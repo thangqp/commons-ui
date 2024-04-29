@@ -15,7 +15,7 @@ interface CountryInputProps {
     label: string;
 }
 
-export const CountriesInput: FunctionComponent<CountryInputProps> = ({
+const CountriesInput: FunctionComponent<CountryInputProps> = ({
     name,
     label,
 }) => {

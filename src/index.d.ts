@@ -12,6 +12,7 @@ import type {
     SxProps,
     TextFieldProps,
 } from '@mui/material';
+import { TextInputProps } from './components/react-hook-form/text-input';
 
 /**
  * Section to export generated type declarations
@@ -126,7 +127,7 @@ export { default as FilterCreationDialog } from './components/filter/filter-crea
 export { default as ExpertFilterEditionDialog } from './components/filter/expert/expert-filter-edition-dialog';
 export { default as ExplicitNamingFilterEditionDialog } from './components/filter/explicit-naming/explicit-naming-filter-edition-dialog';
 export { default as CriteriaBasedFilterEditionDialog } from './components/filter/criteria-based/criteria-based-filter-edition-dialog';
-export { default as ExpandingTextField } from './components/react-hook-form/expanding-text-field';
+export { default as ExpandingTextField } from './components/react-hook-form/ExpandingTextField';
 export { default as CustomMuiDialog } from './components/dialogs/custom-mui-dialog';
 export {
     genHelperPreviousValue,
@@ -148,27 +149,29 @@ export {
     isObjectEmpty,
 } from './utils/functions';
 
-export { ElementType, getFileIcon } from './utils/ElementType';
+export { ElementType } from './utils/ElementType';
+export { getFileIcon } from './utils/ElementIcon';
+
 export {
     saveExplicitNamingFilter,
     saveCriteriaBasedFilter,
     saveExpertFilter,
 } from './components/filter/utils/filters-utils';
 export {
-    RangeInput,
+    default as RangeInput,
     DEFAULT_RANGE_VALUE,
     getRangeInputDataForm,
     getRangeInputSchema,
 } from './components/react-hook-form/range-input';
-export { InputWithPopupConfirmation } from './components/react-hook-form/select-inputs/input-with-popup-confirmation';
-export { MuiSelectInput } from './components/react-hook-form/select-inputs/mui-select-input';
+export { default as InputWithPopupConfirmation } from './components/react-hook-form/select-inputs/input-with-popup-confirmation';
+export { default as MuiSelectInput } from './components/react-hook-form/select-inputs/mui-select-input';
+export { default as CountriesInput } from './components/react-hook-form/select-inputs/countries-input';
 export {
-    CountriesInput,
     getSystemLanguage,
     getComputedLanguage,
-} from './components/react-hook-form/select-inputs/countries-input';
-export { MultipleAutocompleteInput } from './components/react-hook-form/autocomplete-inputs/multiple-autocomplete-input';
-export { CsvUploader } from './components/react-hook-form/ag-grid-table-rhf/csv-uploader/csv-uploader';
+} from './hooks/localized-countries-hook';
+export { default as MultipleAutocompleteInput } from './components/react-hook-form/autocomplete-inputs/multiple-autocomplete-input';
+export { default as CsvUploader } from './components/react-hook-form/ag-grid-table-rhf/csv-uploader/csv-uploader';
 export { UniqueNameInput } from './components/react-hook-form/unique-name-input';
 
 export {
