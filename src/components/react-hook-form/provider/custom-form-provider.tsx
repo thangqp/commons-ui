@@ -8,10 +8,12 @@
 import React, { createContext, PropsWithChildren } from 'react';
 import { FormProvider, UseFormReturn } from 'react-hook-form';
 import * as yup from 'yup';
+import { getSystemLanguage } from '../../../hooks/localized-countries-hook';
 
 type CustomFormContextProps = {
     removeOptional?: boolean;
     validationSchema: yup.AnySchema;
+    language?: string;
 };
 
 export type MergedFormContextProps = UseFormReturn<any> &
@@ -22,11 +24,17 @@ type CustomFormProviderProps = PropsWithChildren<MergedFormContextProps>;
 export const CustomFormContext = createContext<CustomFormContextProps>({
     removeOptional: false,
     validationSchema: yup.object(),
+    language: getSystemLanguage(),
 });
 
 const CustomFormProvider = (props: CustomFormProviderProps) => {
-    const { validationSchema, removeOptional, children, ...formMethods } =
-        props;
+    const {
+        validationSchema,
+        removeOptional,
+        language,
+        children,
+        ...formMethods
+    } = props;
 
     return (
         <FormProvider {...formMethods}>
@@ -34,6 +42,7 @@ const CustomFormProvider = (props: CustomFormProviderProps) => {
                 value={{
                     validationSchema: validationSchema,
                     removeOptional: removeOptional,
+                    language: language,
                 }}
             >
                 {children}

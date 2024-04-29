@@ -14,14 +14,15 @@ import {
 } from 'react';
 import { getFileIcon } from '../../utils/ElementIcon';
 import { ElementType } from '../../utils/ElementType';
-import { useSnackMessage } from '../../hooks/useSnackMessage.js';
+import { SxProps, Theme } from '@mui/material';
 import {
     default as TreeViewFinder,
     TreeViewFinderNodeProps,
     TreeViewFinderProps,
 } from '../TreeViewFinder/TreeViewFinder';
-import { Theme } from '@mui/material';
 import { UUID } from 'crypto';
+import { useSnackMessage } from '../../hooks/useSnackMessage';
+import { ElementAttributes } from '../../utils/types.ts';
 
 const styles = {
     icon: (theme: Theme) => ({
@@ -36,16 +37,25 @@ interface DirectoryItemSelectorProps extends TreeViewFinderProps {
     types: string[];
     equipmentTypes?: string[];
     itemFilter?: any;
-    fetchDirectoryContent: (
+    fetchDirectoryContent?: (
         directoryUuid: UUID,
         elementTypes: string[]
-    ) => Promise<any>;
-    fetchRootFolders: (types: string[]) => Promise<any>;
-    fetchElementsInfos: (
+    ) => Promise<ElementAttributes[]>;
+    fetchRootFolders?: (types: string[]) => Promise<ElementAttributes[]>;
+    fetchElementsInfos?: (
         ids: UUID[],
         elementTypes: string[],
         equipmentTypes: string[]
-    ) => Promise<any>;
+    ) => Promise<ElementAttributes[]>;
+    classes?: any;
+    contentText?: string;
+    defaultExpanded?: string[];
+    defaultSelected?: string[];
+    validationButtonText?: string;
+    className?: string;
+    cancelButtonProps?: any;
+    onlyLeaves?: boolean;
+    multiselect?: boolean;
     expanded?: UUID[];
 }
 
@@ -80,7 +90,7 @@ const DirectoryItemSelector: FunctionComponent<DirectoryItemSelectorProps> = ({
                 id: e.elementUuid,
                 name: e.elementName,
                 specificMetadata: e.specificMetadata,
-                icon: getFileIcon(e.type, styles.icon),
+                icon: getFileIcon(e.type, styles.icon as SxProps),
                 children:
                     e.type === ElementType.DIRECTORY
                         ? convertChildren(e.children)
@@ -99,7 +109,7 @@ const DirectoryItemSelector: FunctionComponent<DirectoryItemSelectorProps> = ({
                 return {
                     id: e.elementUuid,
                     name: e.elementName,
-                    icon: getFileIcon(e.type, styles.icon),
+                    icon: getFileIcon(e.type, styles.icon as SxProps),
                     children:
                         e.type === ElementType.DIRECTORY
                             ? convertChildren(
@@ -132,67 +142,77 @@ const DirectoryItemSelector: FunctionComponent<DirectoryItemSelectorProps> = ({
     );
 
     const updateRootDirectories = useCallback(() => {
-        fetchRootFolders(types)
-            .then((data) => {
-                let [nrs, mdr] = updatedTree(
-                    rootsRef.current,
-                    nodeMap.current,
-                    null,
-                    data
-                );
-                setRootDirectories(nrs);
-                nodeMap.current = mdr;
-                setData(convertRoots(nrs));
-            })
-            .catch((error) => {
-                snackError({
-                    messageTxt: error.message,
-                    headerId: 'DirectoryItemSelector',
+        fetchRootFolders &&
+            fetchRootFolders(types)
+                .then((data) => {
+                    let [nrs, mdr] = updatedTree(
+                        rootsRef.current,
+                        nodeMap.current,
+                        null,
+                        data
+                    );
+                    setRootDirectories(nrs);
+                    nodeMap.current = mdr;
+                    setData(convertRoots(nrs));
+                })
+                .catch((error) => {
+                    snackError({
+                        messageTxt: error.message,
+                        headerId: 'DirectoryItemSelector',
+                    });
                 });
-            });
     }, [convertRoots, types, snackError, fetchRootFolders]);
 
     const fetchDirectory = useCallback(
         (nodeId: UUID): void => {
-            fetchDirectoryContent(nodeId, types)
-                .then((children) => {
-                    const childrenMatchedTypes = children.filter((item: any) =>
-                        contentFilter().has(item.type)
-                    );
+            fetchDirectoryContent &&
+                fetchDirectoryContent(nodeId, types)
+                    .then((children) => {
+                        const childrenMatchedTypes = children.filter(
+                            (item: any) => contentFilter().has(item.type)
+                        );
 
-                    if (
-                        childrenMatchedTypes.length > 0 &&
-                        equipmentTypes &&
-                        equipmentTypes.length > 0
-                    ) {
-                        fetchElementsInfos(
-                            childrenMatchedTypes.map((e: any) => e.elementUuid),
-                            types,
-                            equipmentTypes
-                        ).then((childrenWithMetadata) => {
-                            const children = itemFilter
-                                ? childrenWithMetadata.filter((val: any) => {
-                                      // Accept every directory
-                                      if (val.type === ElementType.DIRECTORY) {
-                                          return true;
-                                      }
-                                      // otherwise filter with the custom itemFilter func
-                                      return itemFilter(val);
-                                  })
-                                : childrenWithMetadata;
+                        if (
+                            childrenMatchedTypes.length > 0 &&
+                            equipmentTypes &&
+                            equipmentTypes.length > 0
+                        ) {
+                            fetchElementsInfos &&
+                                fetchElementsInfos(
+                                    childrenMatchedTypes.map(
+                                        (e: any) => e.elementUuid
+                                    ),
+                                    types,
+                                    equipmentTypes
+                                ).then((childrenWithMetadata) => {
+                                    const children = itemFilter
+                                        ? childrenWithMetadata.filter(
+                                              (val: any) => {
+                                                  // Accept every directory
+                                                  if (
+                                                      val.type ===
+                                                      ElementType.DIRECTORY
+                                                  ) {
+                                                      return true;
+                                                  }
+                                                  // otherwise filter with the custom itemFilter func
+                                                  return itemFilter(val);
+                                              }
+                                          )
+                                        : childrenWithMetadata;
+                                    // update directory content
+                                    addToDirectory(nodeId, children);
+                                });
+                        } else {
                             // update directory content
-                            addToDirectory(nodeId, children);
-                        });
-                    } else {
-                        // update directory content
-                        addToDirectory(nodeId, childrenMatchedTypes);
-                    }
-                })
-                .catch((error) => {
-                    console.warn(
-                        `Could not update subs (and content) of '${nodeId}' : ${error.message}`
-                    );
-                });
+                            addToDirectory(nodeId, childrenMatchedTypes);
+                        }
+                    })
+                    .catch((error) => {
+                        console.warn(
+                            `Could not update subs (and content) of '${nodeId}' : ${error.message}`
+                        );
+                    });
         },
         [
             types,
