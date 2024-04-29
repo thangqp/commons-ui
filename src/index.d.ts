@@ -93,6 +93,8 @@ export { default as element_search_en } from './components/translations/element-
 export { default as element_search_fr } from './components/translations/element-search-fr';
 export { default as equipment_search_en } from './components/translations/equipment-search-en';
 export { default as equipment_search_fr } from './components/translations/equipment-search-fr';
+export { default as filter_en } from './components/translations/filter-en';
+export { default as filter_fr } from './components/translations/filter-fr';
 export { default as card_error_boundary_en } from './components/translations/card-error-boundary-en';
 export { default as card_error_boundary_fr } from './components/translations/card-error-boundary-fr';
 export { default as flat_parameters_en } from './components/translations/flat-parameters-en';
