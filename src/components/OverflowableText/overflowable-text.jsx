@@ -15,6 +15,8 @@ const overflowStyle = {
         whiteSpace: 'pre',
         textOverflow: 'ellipsis',
         overflow: 'hidden',
+        lineHeight: 'initial',
+        verticalAlign: 'middle',
     },
     tooltip: {
         whiteSpace: 'pre',
