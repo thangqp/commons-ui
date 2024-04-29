@@ -338,7 +338,7 @@ export const queryValidator: QueryValidator = (query) => {
                 rule.operator === OPERATOR_OPTIONS.NOT_EXISTS.name)
         ) {
             // In the case of (NOT_)EXISTS operator, because we do not have a second value to evaluate, we force a valid result.
-              result[rule.id] = {
+            result[rule.id] = {
                 valid: true,
                 reasons: undefined,
             };
