@@ -1,0 +1,84 @@
+/**
+ * Copyright (c) 2023, RTE (http://www.rte-france.com)
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
+import { UniqueNameInput } from '../react-hook-form/unique-name-input.tsx';
+import { FieldConstants } from './constants/field-constants';
+import CriteriaBasedFilterForm from './criteria-based/criteria-based-filter-form';
+import ExplicitNamingFilterForm from './explicit-naming/explicit-naming-filter-form';
+import React, { FunctionComponent } from 'react';
+import { useFormContext, useWatch } from 'react-hook-form';
+import ExpertFilterForm from './expert/expert-filter-form';
+import { Box, Grid } from '@mui/material';
+import RadioInput from '../react-hook-form/radio-input';
+import { ElementType } from '../../utils/ElementType';
+import { UUID } from 'crypto';
+import { elementExistsType } from './criteria-based/criteria-based-filter-edition-dialog';
+import ExpandingTextField from '../react-hook-form/ExpandingTextField';
+import { FilterType } from './constants/filter-constants';
+
+interface FilterFormProps {
+    creation?: boolean;
+    activeDirectory?: UUID;
+    elementExists?: elementExistsType;
+}
+
+export const FilterForm: FunctionComponent<FilterFormProps> = (props) => {
+    const { setValue } = useFormContext();
+
+    const filterType = useWatch({ name: FieldConstants.FILTER_TYPE });
+
+    // We do this because setValue don't set the field dirty
+    const handleChange = (
+        _event: React.ChangeEvent<HTMLInputElement>,
+        value: string
+    ) => {
+        setValue(FieldConstants.FILTER_TYPE, value);
+    };
+
+    return (
+        <Grid container spacing={2}>
+            <Grid item xs={12}>
+                <UniqueNameInput
+                    name={FieldConstants.NAME}
+                    label={'nameProperty'}
+                    elementType={ElementType.FILTER}
+                    autoFocus={props.creation}
+                    activeDirectory={props.activeDirectory}
+                    elementExists={props.elementExists}
+                />
+            </Grid>
+            {props.creation && (
+                <>
+                    <Grid item xs={12}>
+                        <Box>
+                            <ExpandingTextField
+                                name={FieldConstants.DESCRIPTION}
+                                label={'descriptionProperty'}
+                                minRows={3}
+                                rows={5}
+                            />
+                        </Box>
+                    </Grid>
+                    <Grid item>
+                        <RadioInput
+                            name={FieldConstants.FILTER_TYPE}
+                            options={Object.values(FilterType)}
+                            formProps={{ onChange: handleChange }} // need to override this in order to do not activate the validate button when changing the filter type
+                        />
+                    </Grid>
+                </>
+            )}
+            {filterType === FilterType.CRITERIA_BASED.id && (
+                <CriteriaBasedFilterForm />
+            )}
+            {filterType === FilterType.EXPLICIT_NAMING.id && (
+                <ExplicitNamingFilterForm />
+            )}
+            {filterType === FilterType.EXPERT.id && <ExpertFilterForm />}
+        </Grid>
+    );
+};
