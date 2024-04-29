@@ -198,10 +198,6 @@ export {
 export { default as InputWithPopupConfirmation } from './components/react-hook-form/select-inputs/input-with-popup-confirmation';
 export { default as MuiSelectInput } from './components/react-hook-form/select-inputs/mui-select-input';
 export { default as CountriesInput } from './components/react-hook-form/select-inputs/countries-input';
-export {
-    getSystemLanguage,
-    getComputedLanguage,
-} from './hooks/localized-countries-hook';
 export { default as MultipleAutocompleteInput } from './components/react-hook-form/autocomplete-inputs/multiple-autocomplete-input';
 export { default as CsvUploader } from './components/react-hook-form/ag-grid-table-rhf/csv-uploader/csv-uploader';
 export { UniqueNameInput } from './components/react-hook-form/unique-name-input';

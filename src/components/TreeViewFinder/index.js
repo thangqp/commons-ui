@@ -5,7 +5,3 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 export { default, generateTreeViewFinderClass } from './TreeViewFinder';
-export type {
-    TreeViewFinderProps,
-    TreeViewFinderNodeProps,
-} from './TreeViewFinder';
