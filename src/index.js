@@ -30,11 +30,6 @@ export { default as CustomAgGridTable } from './components/react-hook-form/ag-gr
 export { ROW_DRAGGING_SELECTION_COLUMN_DEF } from './components/react-hook-form/ag-grid-table-rhf/custom-ag-grid-table';
 
 export {
-    getCriteriaBasedFormData,
-    getCriteriaBasedSchema,
-} from './components/filter/utils/criteria-based-utils';
-
-export {
     Line,
     Generator,
     Load,
@@ -208,3 +203,8 @@ export { UniqueNameInput } from './components/react-hook-form/unique-name-input'
 export { UserManagerMock } from './utils/UserManagerMock';
 export { FILTER_EQUIPMENTS } from './components/filter/utils/criteria-based-utils';
 export { CONTINGENCY_LIST_EQUIPMENTS } from './components/filter/utils/criteria-based-utils';
+
+export {
+    getCriteriaBasedFormData,
+    getCriteriaBasedSchema,
+} from './components/filter/criteria-based/criteria-based-filter-utils';

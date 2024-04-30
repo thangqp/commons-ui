@@ -76,10 +76,6 @@ export {
     RESET_AUTHENTICATION_ROUTER_ERROR,
     SHOW_AUTH_INFO_LOGIN,
 } from './utils/actions';
-export {
-    getCriteriaBasedFormData,
-    getCriteriaBasedSchema,
-} from './components/filter/utils/criteria-based-utils';
 export { default as report_viewer_en } from './components/translations/report-viewer-en';
 export { default as report_viewer_fr } from './components/translations/report-viewer-fr';
 export { default as login_en } from './components/translations/login-en';
@@ -274,3 +270,8 @@ interface OverflowableTextProps {
 }
 
 export const OverflowableText: FunctionComponent<OverflowableTextProps>;
+
+export {
+    getCriteriaBasedFormData,
+    getCriteriaBasedSchema,
+} from './components/filter/criteria-based/criteria-based-filter-utils';
