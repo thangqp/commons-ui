@@ -14,6 +14,7 @@ import CriteriaBasedForm from './criteria-based-form';
 import Grid from '@mui/material/Grid';
 import { FunctionComponent } from 'react';
 import {
+    FILTER_EQUIPMENTS,
     getCriteriaBasedFormData,
     getCriteriaBasedSchema,
 } from '../utils/criteria-based-utils';
@@ -33,6 +34,7 @@ const CriteriaBasedFilterForm: FunctionComponent = () => {
     return (
         <Grid container item spacing={1}>
             <CriteriaBasedForm
+                equipments={FILTER_EQUIPMENTS}
                 defaultValues={
                     criteriaBasedFilterEmptyFormData[
                         FieldConstants.CRITERIA_BASED

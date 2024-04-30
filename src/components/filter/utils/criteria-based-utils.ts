@@ -133,7 +133,7 @@ type CriteriaFormField = {
         name: string;
     };
 };
-type CriteriaFormEquipment = {
+export type CriteriaFormEquipment = {
     id: string;
     label: string;
     fields: CriteriaFormField[];
