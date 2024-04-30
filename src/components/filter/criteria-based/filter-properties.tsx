@@ -18,7 +18,7 @@ import {
     Substation,
     TwoWindingTransfo,
     VoltageLevel,
-} from '../constants/equipment-types';
+} from '../../../utils/equipment-types';
 import { areArrayElementsUnique } from '../../../utils/functions';
 import { FieldConstants } from '../constants/field-constants';
 import yup from '../../../utils/yup-config';

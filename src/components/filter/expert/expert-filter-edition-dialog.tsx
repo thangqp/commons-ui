@@ -7,7 +7,7 @@
 
 import { FunctionComponent, useCallback, useEffect, useState } from 'react';
 import { FieldConstants } from '../constants/field-constants';
-import { noSelectionForCopy } from '../constants/equipment-types';
+import { noSelectionForCopy } from '../../../utils/equipment-types';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
@@ -15,7 +15,7 @@ import CustomMuiDialog from '../../dialogs/custom-mui-dialog';
 import yup from '../../../utils/yup-config';
 import { FilterForm } from '../filter-form';
 import { EXPERT_FILTER_QUERY, expertFilterSchema } from './expert-filter-form';
-import { saveExpertFilter } from '../utils/filters-utils';
+import { saveExpertFilter } from '../utils/filter-api';
 import { importExpertRules } from './expert-filter-utils';
 import { UUID } from 'crypto';
 import { elementExistsType } from '../criteria-based/criteria-based-filter-edition-dialog';

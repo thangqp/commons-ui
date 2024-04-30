@@ -11,7 +11,7 @@ import { Grid } from '@mui/material';
 import SelectInput from '../../react-hook-form/select-inputs/select-input';
 import InputWithPopupConfirmation from '../../react-hook-form/select-inputs/input-with-popup-confirmation';
 import { FunctionComponent } from 'react';
-import { FILTER_EQUIPMENTS } from '../utils/criteria-based-utils.ts';
+import { FILTER_EQUIPMENTS } from '../utils/filter-form-utils';
 
 export interface CriteriaBasedFormProps {
     defaultValues: Record<string, any>;

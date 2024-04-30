@@ -7,7 +7,7 @@
 
 import { FieldConstants } from '../constants/field-constants';
 import { frontToBackTweak } from '../criteria-based/criteria-based-filter-utils';
-import { Generator, Load } from '../constants/equipment-types';
+import { Generator, Load } from '../../../utils/equipment-types';
 import { exportExpertRules } from '../expert/expert-filter-utils';
 import { UUID } from 'crypto';
 import { DISTRIBUTION_KEY, FilterType } from '../constants/filter-constants';

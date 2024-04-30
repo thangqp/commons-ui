@@ -154,7 +154,7 @@ export {
     saveExplicitNamingFilter,
     saveCriteriaBasedFilter,
     saveExpertFilter,
-} from './components/filter/utils/filters-utils';
+} from './components/filter/utils/filter-api';
 export {
     default as RangeInput,
     DEFAULT_RANGE_VALUE,
@@ -189,7 +189,7 @@ export {
     VoltageLevel,
     Substation,
     noSelectionForCopy,
-} from './components/filter/constants/equipment-types';
+} from './utils/equipment-types';
 
 export { FieldConstants } from './components/filter/constants/field-constants';
 
@@ -205,8 +205,10 @@ export {
 export { useSnackMessage } from './hooks/useSnackMessage';
 export { useDebounce } from './hooks/useDebounce';
 export { ROW_DRAGGING_SELECTION_COLUMN_DEF } from './components/react-hook-form/ag-grid-table-rhf/custom-ag-grid-table';
-export { FILTER_EQUIPMENTS } from './components/filter/utils/criteria-based-utils';
-export { CONTINGENCY_LIST_EQUIPMENTS } from './components/filter/utils/criteria-based-utils';
+export {
+    FILTER_EQUIPMENTS,
+    CONTINGENCY_LIST_EQUIPMENTS,
+} from './components/filter/utils/filter-form-utils';
 
 /**
  * Section to export manual type declarations of .js and .jsx files

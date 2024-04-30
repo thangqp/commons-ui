@@ -24,7 +24,7 @@ import {
 import {
     Substation,
     VoltageLevel,
-} from '../filter/constants/equipment-types.ts';
+} from '../../utils/equipment-types.ts';
 import ElementValueEditor from './element-value-editor.tsx';
 import { ElementType } from '../../utils/ElementType.ts';
 import PropertyValueEditor from './property-value-editor.tsx';

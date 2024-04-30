@@ -15,13 +15,13 @@ import { useFormContext, useWatch } from 'react-hook-form';
 import Grid from '@mui/material/Grid';
 import SelectInput from '../../react-hook-form/select-inputs/select-input';
 import { ValueParserParams } from 'ag-grid-community';
-import { Generator, Load } from '../constants/equipment-types';
+import { Generator, Load } from '../../../utils/equipment-types';
 import { NumericEditor } from '../../react-hook-form/ag-grid-table-rhf/cell-editors/numericEditor';
 import InputWithPopupConfirmation from '../../react-hook-form/select-inputs/input-with-popup-confirmation';
 import { v4 as uuid4 } from 'uuid';
 import { toFloatOrNullValue } from '../../react-hook-form/utils/functions';
 import { DISTRIBUTION_KEY, FilterType } from '../constants/filter-constants';
-import { FILTER_EQUIPMENTS } from '../utils/criteria-based-utils.ts';
+import { FILTER_EQUIPMENTS } from '../utils/filter-form-utils';
 
 export const FILTER_EQUIPMENTS_ATTRIBUTES = 'filterEquipmentsAttributes';
 

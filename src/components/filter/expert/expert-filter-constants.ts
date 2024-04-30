@@ -19,6 +19,7 @@ export enum RULES {
     INCORRECT_RULE = 'incorrectRule',
     BETWEEN_RULE = 'betweenRule',
 }
+
 export const EXPERT_FILTER_EQUIPMENTS = {
     SUBSTATION: {
         id: 'SUBSTATION',

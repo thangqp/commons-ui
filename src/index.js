@@ -46,7 +46,7 @@ export {
     VoltageLevel,
     Substation,
     noSelectionForCopy,
-} from './components/filter/constants/equipment-types';
+} from './utils/equipment-types';
 
 export { FieldConstants } from './components/filter/constants/field-constants';
 
@@ -183,7 +183,7 @@ export {
     saveExplicitNamingFilter,
     saveCriteriaBasedFilter,
     saveExpertFilter,
-} from './components/filter/utils/filters-utils';
+} from './components/filter/utils/filter-api';
 export {
     default as RangeInput,
     DEFAULT_RANGE_VALUE,
@@ -201,8 +201,10 @@ export { default as MultipleAutocompleteInput } from './components/react-hook-fo
 export { default as CsvUploader } from './components/react-hook-form/ag-grid-table-rhf/csv-uploader/csv-uploader';
 export { UniqueNameInput } from './components/react-hook-form/unique-name-input';
 export { UserManagerMock } from './utils/UserManagerMock';
-export { FILTER_EQUIPMENTS } from './components/filter/utils/criteria-based-utils';
-export { CONTINGENCY_LIST_EQUIPMENTS } from './components/filter/utils/criteria-based-utils';
+export {
+    FILTER_EQUIPMENTS,
+    CONTINGENCY_LIST_EQUIPMENTS,
+} from './components/filter/utils/filter-form-utils';
 
 export {
     getCriteriaBasedFormData,

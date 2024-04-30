@@ -19,7 +19,7 @@ import {
     fields,
     OPERATOR_OPTIONS,
     RULES,
-} from '../constants/expert-filter-constants';
+} from './expert-filter-constants';
 import * as yup from 'yup';
 
 import { FieldType } from './expert-filter.type';
