@@ -7,6 +7,7 @@
 
 import { FunctionComponent, useCallback } from 'react';
 import yup from '../../utils/yup-config';
+import { FieldConstants } from '../filter/constants/field-constants';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useSnackMessage } from '../../hooks/useSnackMessage';
@@ -25,10 +26,10 @@ export interface IDescriptionModificationDialog {
     ) => Promise<void>;
 }
 
-const DESCRIPTION = 'description';
-
 const schema = yup.object().shape({
-    [DESCRIPTION]: yup.string().max(500, 'descriptionLimitError'),
+    [FieldConstants.DESCRIPTION]: yup
+        .string()
+        .max(500, 'descriptionLimitError'),
 });
 
 const DescriptionModificationDialog: FunctionComponent<
@@ -37,7 +38,7 @@ const DescriptionModificationDialog: FunctionComponent<
     const { snackError } = useSnackMessage();
 
     const emptyFormData = {
-        [DESCRIPTION]: description ?? '',
+        [FieldConstants.DESCRIPTION]: description ?? '',
     };
 
     const methods = useForm({
@@ -49,7 +50,7 @@ const DescriptionModificationDialog: FunctionComponent<
 
     const onCancel = () => {
         reset({
-            [DESCRIPTION]: '',
+            [FieldConstants.DESCRIPTION]: '',
         });
         onClose();
     };
@@ -57,7 +58,8 @@ const DescriptionModificationDialog: FunctionComponent<
     const onSubmit = useCallback(
         (data: { description: string }) => {
             updateElement(elementUuid, {
-                [DESCRIPTION]: data[DESCRIPTION].trim(),
+                [FieldConstants.DESCRIPTION]:
+                    data[FieldConstants.DESCRIPTION].trim(),
             }).catch((error: any) => {
                 snackError({
                     messageTxt: error.message,
@@ -80,7 +82,7 @@ const DescriptionModificationDialog: FunctionComponent<
         >
             <Box paddingTop={1}>
                 <ExpandingTextField
-                    name={DESCRIPTION}
+                    name={FieldConstants.DESCRIPTION}
                     label={'descriptionProperty'}
                     minRows={3}
                     rows={5}
