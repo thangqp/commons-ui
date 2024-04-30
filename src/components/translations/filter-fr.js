@@ -15,6 +15,7 @@ const filter_fr = {
     beginsWith: 'commence par',
     endsWith: 'finit par',
     exists: 'existe',
+    not_exists: "n'existe pas",
     between: 'entre',
     in: 'dans',
     isPartOf: 'fait partie de',
