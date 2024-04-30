@@ -28,7 +28,7 @@ export function useSnackMessage() {
    */
     const snackError = useCallback(
         (snackInputs) =>
-            makeSnackbar(snackInputs, intlRef, enqueueSnackbar, 'error', true),
+            makeSnackbar(snackInputs, intlRef, enqueueSnackbar, 'error'),
         [enqueueSnackbar, intlRef]
     );
 
