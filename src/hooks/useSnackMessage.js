@@ -23,6 +23,7 @@ export function useSnackMessage() {
               headerTxt,
               headerId,
               headerValues,
+              persistent
             }
    */
     const snackError = useCallback(
@@ -34,33 +35,21 @@ export function useSnackMessage() {
     /* see snackError */
     const snackWarning = useCallback(
         (snackInputs) =>
-            makeSnackbar(
-                snackInputs,
-                intlRef,
-                enqueueSnackbar,
-                'warning',
-                true
-            ),
+            makeSnackbar(snackInputs, intlRef, enqueueSnackbar, 'warning'),
         [enqueueSnackbar, intlRef]
     );
 
     /* see snackError */
     const snackInfo = useCallback(
         (snackInputs) =>
-            makeSnackbar(snackInputs, intlRef, enqueueSnackbar, 'info', false),
+            makeSnackbar(snackInputs, intlRef, enqueueSnackbar, 'info'),
         [enqueueSnackbar, intlRef]
     );
 
     return { snackError, snackInfo, snackWarning };
 }
 
-function makeSnackbar(
-    snackInputs,
-    intlRef,
-    enqueueSnackbar,
-    level,
-    persistent
-) {
+function makeSnackbar(snackInputs, intlRef, enqueueSnackbar, level) {
     const message = checkAndTranslateIfNecessary(
         snackInputs.messageTxt,
         snackInputs.messageId,
@@ -78,7 +67,7 @@ function makeSnackbar(
         header,
         enqueueSnackbar,
         level,
-        persistent
+        snackInputs.persistent ? snackInputs.persistent : false
     );
 }
 
