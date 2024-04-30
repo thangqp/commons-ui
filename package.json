@@ -29,8 +29,8 @@
         "licenses-check": "license-checker --summary --excludePrivatePackages --production --onlyAllow \"$( jq -r .onlyAllow[] license-checker-config.json | tr '\n' ';')\" --excludePackages \"$( jq -r .excludePackages[] license-checker-config.json | tr '\n' ';')\""
     },
     "dependencies": {
-        "@react-querybuilder/material": "^7.2.0",
         "@react-querybuilder/dnd": "^7.2.0",
+        "@react-querybuilder/material": "^7.2.0",
         "autosuggest-highlight": "^3.3.4",
         "clsx": "^2.1.0",
         "jwt-decode": "^4.0.0",
@@ -39,11 +39,11 @@
         "oidc-client": "^1.11.5",
         "prop-types": "^15.8.1",
         "react-csv-downloader": "^3.1.0",
-        "react-virtualized": "^9.22.5",
-        "uuid": "^9.0.1",
         "react-dnd": "^16.0.1",
         "react-dnd-html5-backend": "^16.0.1",
-        "react-querybuilder": "^7.2.0"
+        "react-querybuilder": "^7.2.0",
+        "react-virtualized": "^9.22.5",
+        "uuid": "^9.0.1"
     },
     "peerDependencies": {
         "@emotion/react": "^11.11.4",
@@ -80,6 +80,7 @@
         "@types/autosuggest-highlight": "^3.2.3",
         "@types/eslint": "^8.56.7",
         "@types/eslint-config-prettier": "^6.11.3",
+        "@types/json-logic-js": "^2.0.7",
         "@types/license-checker": "^25.0.6",
         "@types/node": "^18.19.31",
         "@types/prop-types": "^15.7.12",
