@@ -11,7 +11,7 @@ import { useIntlRef } from './useIntlRef';
 
 export function useSnackMessage() {
     const intlRef = useIntlRef();
-    const { enqueueSnackbar } = useSnackbar();
+    const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
     /*
         There is two kind of messages : the message itself (bottom of snackbar), and the header (top of snackbar).
@@ -46,7 +46,7 @@ export function useSnackMessage() {
         [enqueueSnackbar, intlRef]
     );
 
-    return { snackError, snackInfo, snackWarning };
+    return { snackError, snackInfo, snackWarning, closeSnackbar };
 }
 
 function makeSnackbar(snackInputs, intlRef, enqueueSnackbar, level) {
@@ -62,7 +62,7 @@ function makeSnackbar(snackInputs, intlRef, enqueueSnackbar, level) {
         snackInputs.headerValues,
         intlRef
     );
-    displayMessageWithSnackbar(
+    return displayMessageWithSnackbar(
         message,
         header,
         enqueueSnackbar,
@@ -109,7 +109,7 @@ function displayMessageWithSnackbar(
         }
         fullMessage += message;
     }
-    enqueueSnackbar(fullMessage, {
+    return enqueueSnackbar(fullMessage, {
         variant: level,
         persist: persistent,
         style: { whiteSpace: 'pre-line' },
