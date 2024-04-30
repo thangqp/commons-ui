@@ -15,6 +15,7 @@ const filter_en = {
     beginsWith: 'begins with',
     endsWith: 'ends with',
     exists: 'exists',
+    not_exists: 'not exists',
     between: 'between',
     in: 'in',
     isPartOf: 'is part of',
