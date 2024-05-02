@@ -13,7 +13,7 @@ import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { Grid, useTheme } from '@mui/material';
 import BottomRightButtons from './bottom-right-buttons.tsx';
 import { useIntl } from 'react-intl';
-import { FieldConstants } from '../../../utils/field-constants';
+import { FieldConstants } from '../../../../utils/field-constants';
 
 export const ROW_DRAGGING_SELECTION_COLUMN_DEF = [
     {

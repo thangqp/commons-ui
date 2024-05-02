@@ -18,8 +18,8 @@ import CsvDownloader from 'react-csv-downloader';
 import Alert from '@mui/material/Alert';
 import { DialogContentText } from '@mui/material';
 import { useWatch } from 'react-hook-form';
-import { CancelButton } from '../../../../index';
-import { FieldConstants } from '../../../../utils/field-constants';
+import { CancelButton } from '../../../../../index';
+import { FieldConstants } from '../../../../../utils/field-constants';
 
 interface CsvUploaderProps {
     name: string;

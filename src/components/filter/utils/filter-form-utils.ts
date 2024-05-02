@@ -5,10 +5,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { FieldConstants } from '../../../utils/field-constants';
-import RangeInput from '../../react-hook-form/range-input';
+import RangeInput from '../../inputs/react-hook-form/range-input';
 import { FunctionComponent } from 'react';
-import CountriesInput from '../../react-hook-form/select-inputs/countries-input.tsx';
-import SelectInput from '../../react-hook-form/select-inputs/select-input.tsx';
+import CountriesInput from '../../inputs/react-hook-form/select-inputs/countries-input.tsx';
+import SelectInput from '../../inputs/react-hook-form/select-inputs/select-input.tsx';
 
 const countries = {
     renderer: CountriesInput,

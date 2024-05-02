@@ -27,8 +27,8 @@ import { v4 as uuid4 } from 'uuid';
 import { useIntl } from 'react-intl';
 import { FieldConstants } from '../../../utils/field-constants';
 import CustomReactQueryBuilder from '../../react-query-builder-inputs/custom-react-query-builder';
-import InputWithPopupConfirmation from '../../react-hook-form/select-inputs/input-with-popup-confirmation';
-import SelectInput from '../../react-hook-form/select-inputs/select-input';
+import InputWithPopupConfirmation from '../../inputs/react-hook-form/select-inputs/input-with-popup-confirmation';
+import SelectInput from '../../inputs/react-hook-form/select-inputs/select-input';
 import { FilterType } from '../constants/filter-constants';
 
 yup.setLocale({

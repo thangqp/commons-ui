@@ -19,7 +19,7 @@ import { saveExpertFilter } from '../utils/filter-api';
 import { importExpertRules } from './expert-filter-utils';
 import { UUID } from 'crypto';
 import { elementExistsType } from '../criteria-based/criteria-based-filter-edition-dialog';
-import { MergedFormContextProps } from '../../react-hook-form/provider/custom-form-provider';
+import { MergedFormContextProps } from '../../inputs/react-hook-form/provider/custom-form-provider';
 import { FilterContext } from '../filter-context';
 import { FilterType } from '../constants/filter-constants';
 import { FetchStatus } from '../../../utils/FetchStatus';

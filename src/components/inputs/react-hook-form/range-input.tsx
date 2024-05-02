@@ -6,14 +6,14 @@
  */
 import { useWatch } from 'react-hook-form';
 import FloatInput from './numbers/float-input.tsx';
-import yup from '../../utils/yup-config.ts';
+import yup from '../../../utils/yup-config.ts';
 import { FormattedMessage } from 'react-intl';
 import { FunctionComponent, useMemo } from 'react';
 import InputLabel from '@mui/material/InputLabel';
 import { Grid } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import MuiSelectInput from './select-inputs/mui-select-input.tsx';
-import { FieldConstants } from '../../utils/field-constants';
+import { FieldConstants } from '../../../utils/field-constants';
 
 const style = {
     inputLegend: (theme: any) => ({

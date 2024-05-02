@@ -20,7 +20,7 @@ import {
     DEFAULT_RANGE_VALUE,
     getRangeInputDataForm,
     getRangeInputSchema,
-} from '../../react-hook-form/range-input';
+} from '../../inputs/react-hook-form/range-input';
 
 export const getCriteriaBasedSchema = (extraFields: any) => ({
     [FieldConstants.CRITERIA_BASED]: yup.object().shape({

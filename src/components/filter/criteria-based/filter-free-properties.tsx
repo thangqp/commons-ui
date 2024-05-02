@@ -5,8 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import ErrorInput from '../../react-hook-form/error-management/error-input';
-import FieldErrorAlert from '../../react-hook-form/error-management/field-error-alert';
+import ErrorInput from '../../inputs/react-hook-form/error-management/error-input';
+import FieldErrorAlert from '../../inputs/react-hook-form/error-management/field-error-alert';
 import { Button, Grid, ListItem } from '@mui/material';
 import { FieldConstants } from '../../../utils/field-constants';
 import { useFieldArray, useWatch } from 'react-hook-form';
