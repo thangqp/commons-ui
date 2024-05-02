@@ -6,15 +6,13 @@
  */
 
 import type { FunctionComponent, ReactElement } from 'react';
-import type { AutocompleteProps } from '@mui/material/Autocomplete/Autocomplete';
 import type {
-    ButtonProps,
     CheckboxProps,
-    RadioGroupProps,
     SwitchProps,
     SxProps,
     TextFieldProps,
 } from '@mui/material';
+import { TextInputProps } from './components/react-hook-form/text-input';
 
 /**
  * Section to export generated type declarations
@@ -54,8 +52,6 @@ export {
     getPreLoginPath,
 } from './utils/AuthService';
 
-export { getFileIcon } from './utils/ElementIcon';
-
 export {
     DEFAULT_CELL_PADDING,
     DEFAULT_HEADER_HEIGHT,
@@ -80,6 +76,10 @@ export {
     RESET_AUTHENTICATION_ROUTER_ERROR,
     SHOW_AUTH_INFO_LOGIN,
 } from './utils/actions';
+export {
+    getCriteriaBasedFormData,
+    getCriteriaBasedSchema,
+} from './components/filter/utils/criteria-based-utils';
 export { default as report_viewer_en } from './components/translations/report-viewer-en';
 export { default as report_viewer_fr } from './components/translations/report-viewer-fr';
 export { default as login_en } from './components/translations/login-en';
@@ -94,6 +94,8 @@ export { default as element_search_en } from './components/translations/element-
 export { default as element_search_fr } from './components/translations/element-search-fr';
 export { default as equipment_search_en } from './components/translations/equipment-search-en';
 export { default as equipment_search_fr } from './components/translations/equipment-search-fr';
+export { default as filter_en } from './components/translations/filter-en';
+export { default as filter_fr } from './components/translations/filter-fr';
 export { default as card_error_boundary_en } from './components/translations/card-error-boundary-en';
 export { default as card_error_boundary_fr } from './components/translations/card-error-boundary-fr';
 export { default as flat_parameters_en } from './components/translations/flat-parameters-en';
@@ -108,27 +110,107 @@ export { default as directory_items_input_fr } from './components/translations/d
 export { TagRenderer } from './components/ElementSearchDialog';
 export { EquipmentItem } from './components/ElementSearchDialog/equipment-item';
 export { useIntlRef } from './hooks/useIntlRef';
+export { default as SelectClearable } from './components/inputs/select-clearable';
 export { useCustomFormContext } from './components/react-hook-form/provider/use-custom-form-context';
 export { default as CustomFormProvider } from './components/react-hook-form/provider/custom-form-provider';
 export { default as SliderInput } from './components/react-hook-form/slider-input';
 export { default as TextFieldWithAdornment } from './components/react-hook-form/utils/text-field-with-adornment';
+export { default as SelectInput } from './components/react-hook-form/select-inputs/select-input';
+export { default as ErrorInput } from './components/react-hook-form/error-management/error-input';
+export { default as AutocompleteInput } from './components/react-hook-form/autocomplete-input';
+export { default as TextInput } from './components/react-hook-form/text-input';
+export { default as FloatInput } from './components/react-hook-form/numbers/float-input';
+export { default as RadioInput } from './components/react-hook-form/radio-input';
+export { default as SubmitButton } from './components/react-hook-form/utils/submit-button';
+export { default as CancelButton } from './components/react-hook-form/utils/cancel-button';
+export { default as FieldLabel } from './components/react-hook-form/utils/field-label';
+export { default as FieldErrorAlert } from './components/react-hook-form/error-management/field-error-alert';
+export { default as FilterCreationDialog } from './components/filter/filter-creation-dialog';
+export { default as ExpertFilterEditionDialog } from './components/filter/expert/expert-filter-edition-dialog';
+export { default as ExplicitNamingFilterEditionDialog } from './components/filter/explicit-naming/explicit-naming-filter-edition-dialog';
+export { default as CriteriaBasedFilterEditionDialog } from './components/filter/criteria-based/criteria-based-filter-edition-dialog';
+export { default as ExpandingTextField } from './components/react-hook-form/ExpandingTextField';
+export { default as CustomMuiDialog } from './components/dialogs/custom-mui-dialog';
 export {
     genHelperPreviousValue,
     genHelperError,
     identity,
     isFieldRequired,
+    gridItem,
+    isFloatNumber,
+    toFloatOrNullValue,
 } from './components/react-hook-form/utils/functions';
 export { default as DirectoryItemsInput } from './components/react-hook-form/directory-items-input';
 export { default as DirectoryItemSelector } from './components/DirectoryItemSelector/directory-item-selector';
 export { RawReadOnlyInput } from './components/react-hook-form/raw-read-only-input';
 export { UserManagerMock } from './utils/UserManagerMock';
-
 export {
-    ExpandingTextFieldProps,
-    ExpandingTextField,
-} from './components/react-hook-form/expanding-text-field';
+    keyGenerator,
+    areArrayElementsUnique,
+    mergeSx,
+    isObjectEmpty,
+} from './utils/functions';
 
 export { ElementType } from './utils/ElementType';
+export { getFileIcon } from './utils/ElementIcon';
+
+export {
+    saveExplicitNamingFilter,
+    saveCriteriaBasedFilter,
+    saveExpertFilter,
+} from './components/filter/utils/filters-utils';
+export {
+    default as RangeInput,
+    DEFAULT_RANGE_VALUE,
+    getRangeInputDataForm,
+    getRangeInputSchema,
+} from './components/react-hook-form/range-input';
+export { default as InputWithPopupConfirmation } from './components/react-hook-form/select-inputs/input-with-popup-confirmation';
+export { default as MuiSelectInput } from './components/react-hook-form/select-inputs/mui-select-input';
+export { default as CountriesInput } from './components/react-hook-form/select-inputs/countries-input';
+export {
+    getSystemLanguage,
+    getComputedLanguage,
+} from './hooks/localized-countries-hook';
+export { default as MultipleAutocompleteInput } from './components/react-hook-form/autocomplete-inputs/multiple-autocomplete-input';
+export { default as CsvUploader } from './components/react-hook-form/ag-grid-table-rhf/csv-uploader/csv-uploader';
+export { UniqueNameInput } from './components/react-hook-form/unique-name-input';
+
+export {
+    Line,
+    Generator,
+    Load,
+    Battery,
+    SVC,
+    DanglingLine,
+    LCC,
+    VSC,
+    Hvdc,
+    BusBar,
+    TwoWindingTransfo,
+    ThreeWindingTransfo,
+    ShuntCompensator,
+    VoltageLevel,
+    Substation,
+    noSelectionForCopy,
+} from './components/filter/constants/equipment-types';
+
+export { FieldConstants } from './components/filter/constants/field-constants';
+
+export {
+    GRIDSUITE_DEFAULT_PRECISION,
+    roundToPrecision,
+    roundToDefaultPrecision,
+    isBlankOrEmpty,
+    unitToMicroUnit,
+    microUnitToUnit,
+} from './utils/conversion-utils';
+
+export { useSnackMessage } from './hooks/useSnackMessage';
+export { useDebounce } from './hooks/useDebounce';
+export { ROW_DRAGGING_SELECTION_COLUMN_DEF } from './components/react-hook-form/ag-grid-table-rhf/custom-ag-grid-table';
+export { FILTER_EQUIPMENTS } from './components/filter/utils/criteria-based-utils';
+export { CONTINGENCY_LIST_EQUIPMENTS } from './components/filter/utils/criteria-based-utils';
 
 /**
  * Section to export manual type declarations of .js and .jsx files
@@ -143,109 +225,7 @@ export function logout(
     userManagerInstance: any
 ): Promise<any | undefined>;
 
-interface SnackInputs {
-    messageTxt?: string;
-    messageId?: string;
-    messageValues?: Record<string, string>;
-    headerTxt?: string;
-    headerId?: string;
-    headerValues?: Record<string, string>;
-}
-
-interface UseSnackMessageReturn {
-    snackError: (snackInputs: SnackInputs) => void;
-    snackWarning: (snackInputs: SnackInputs) => void;
-    snackInfo: (snackInputs: SnackInputs) => void;
-}
-
-export function useSnackMessage(): UseSnackMessageReturn;
-
-type Input = string | number;
-type Option = string | { id: string; label: string };
-
-interface AutocompleteInputProps
-    extends Omit<
-        AutocompleteProps<
-            Option,
-            boolean | undefined,
-            boolean | undefined,
-            boolean | undefined
-        >,
-        // we already defined them in our custom Autocomplete
-        'value' | 'onChange' | 'renderInput'
-    > {
-    name: string;
-    options: Option[];
-    label?: string;
-    outputTransform?: (value: Option) => Option;
-    inputTransform?: (value: Option) => Option;
-    readOnly?: boolean;
-    previousValue?: string;
-    allowNewValue?: boolean;
-    onChangeCallback?: () => void;
-    formProps?: Omit<
-        TextFieldProps,
-        'value' | 'onChange' | 'inputRef' | 'inputProps' | 'InputProps'
-    >;
-}
-
-export const AutocompleteInput: FunctionComponent<AutocompleteInputProps>;
-
-interface ErrorInputProps {
-    name: string;
-    InputField?: FunctionComponent;
-}
-
-export const ErrorInput: FunctionComponent<ErrorInputProps>;
-
-export const SelectInput: FunctionComponent<
-    Omit<
-        AutocompleteInputProps,
-        'outputTransform' | 'inputTransform' | 'readOnly' | 'getOptionLabel' // already defined in SelectInput
-    >
->;
-
 export const MidFormError: FunctionComponent;
-
-export const FieldErrorAlert: FunctionComponent;
-
-type TextFieldWithAdornmentProps = TextFieldProps & {
-    // variant already included in TextFieldProps
-    value: Input; // we override the default type of TextFieldProps which is unknown
-    adornmentPosition: string;
-    adornmentText: string;
-    handleClearValue?: () => void;
-};
-
-export interface TextInputProps {
-    name: string;
-    label?: string;
-    labelValues?: any; // it's for values from https://formatjs.io/docs/react-intl/components/#formattedmessage
-    id?: string;
-    adornment?: {
-        position: string;
-        text: string;
-    };
-    customAdornment?: ReactElement | null;
-    outputTransform?: (value: string) => Input;
-    inputTransform?: (value: Input) => string;
-    acceptValue?: (value: string) => boolean;
-    previousValue?: Input;
-    clearable?: boolean;
-    formProps?: Omit<
-        TextFieldWithAdornmentProps | TextFieldProps,
-        'value' | 'onChange' | 'inputRef' | 'inputProps' | 'InputProps'
-    >;
-}
-
-export const TextInput: FunctionComponent<TextInputProps>;
-
-export const FloatInput: FunctionComponent<
-    Omit<
-        TextInputProps,
-        'outputTransform' | 'inputTransform' | 'acceptValue' // already defined in FloatInput
-    >
->;
 
 export const IntegerInput: FunctionComponent<
     Omit<
@@ -253,19 +233,6 @@ export const IntegerInput: FunctionComponent<
         'outputTransform' | 'inputTransform' | 'acceptValue' // already defined in IntegerInput
     >
 >;
-
-interface RadioInputProps {
-    name: string;
-    label?: string;
-    id?: string;
-    options: Array<{
-        id: string;
-        label: string;
-    }>;
-    formProps?: Omit<RadioGroupProps, 'value'>;
-}
-
-export const RadioInput: FunctionComponent<RadioInputProps>;
 
 interface SwitchInputProps {
     name: string;
@@ -282,20 +249,6 @@ interface CheckboxInputProps {
 }
 
 export const CheckboxInput: FunctionComponent<CheckboxInputProps>;
-
-export const SubmitButton: FunctionComponent<ButtonProps>;
-
-type CancelButtonProps = ButtonProps & {
-    color?: string;
-};
-
-export const CancelButton: FunctionComponent<CancelButtonProps>;
-
-export const FieldLabel: FunctionComponent<{
-    label: string;
-    optional?: boolean;
-    values?: any; // it's for values from https://formatjs.io/docs/react-intl/components/#formattedmessage
-}>;
 
 interface Parameters {
     name: string;
@@ -314,11 +267,6 @@ interface FlatParametersProps extends Pick<TextFieldProps, 'variant'> {
 }
 
 export const FlatParameters: FunctionComponent<FlatParametersProps>;
-
-export function useDebounce(
-    debouncedFunction: (...args: any[]) => void,
-    debounceDelay: number
-): (...args: any[]) => void;
 
 interface OverflowableTextProps {
     sx?: SxProps;

@@ -8,8 +8,8 @@
 import { FunctionComponent, useState } from 'react';
 import { TextFieldProps, Theme, Typography } from '@mui/material';
 import { useWatch } from 'react-hook-form';
-import { TextInput, TextInputProps } from '../..';
 import { useCustomFormContext } from './provider/use-custom-form-context';
+import TextInput, { TextInputProps } from './text-input';
 
 interface ExpandingTextFieldProps extends TextInputProps {
     name: string;

@@ -15,12 +15,14 @@ import RadioInput from '../../src/components/react-hook-form/radio-input';
 import SliderInput from '../../src/components/react-hook-form/slider-input';
 import FloatInput from '../../src/components/react-hook-form/numbers/float-input';
 import IntegerInput from '../../src/components/react-hook-form/numbers/integer-input';
-import SelectInput from '../../src/components/react-hook-form/select-input';
+import SelectInput from '../../src/components/react-hook-form/select-inputs/select-input';
 import CheckboxInput from '../../src/components/react-hook-form/booleans/checkbox-input';
 import SwitchInput from '../../src/components/react-hook-form/booleans/switch-input';
 import SubmitButton from '../../src/components/react-hook-form/utils/submit-button';
 import ExpandingTextField from '../../src/components/react-hook-form/ExpandingTextField';
 import CustomFormProvider from '../../src/components/react-hook-form/provider/custom-form-provider';
+import SelectClearable from '../../src/components/inputs/select-clearable';
+import { useState } from 'react';
 
 const AUTOCOMPLETE_INPUT = 'autocomplete';
 const TEXT_INPUT = 'text';
@@ -106,6 +108,8 @@ export function InputsTab() {
         console.error('Error during validation : ', errors);
     }
 
+    const [selectValue, setSelectValue] = useState();
+
     return (
         <CustomFormProvider validationSchema={formSchema} {...formMethods}>
             <Box
@@ -148,6 +152,14 @@ export function InputsTab() {
                     <Grid item xs={gridSize}>
                         <SelectInput
                             name={SELECT_INPUT}
+                            label={'inputs/select'}
+                            options={options}
+                        />
+                    </Grid>
+                    <Grid item xs={gridSize}>
+                        <SelectClearable
+                            value={selectValue}
+                            onChange={setSelectValue}
                             label={'inputs/select'}
                             options={options}
                         />
