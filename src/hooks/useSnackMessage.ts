@@ -9,20 +9,20 @@ import React, { useCallback } from 'react';
 import {
     BaseVariant,
     EnqueueSnackbar,
+    OptionsObject,
     SnackbarKey,
     useSnackbar,
 } from 'notistack';
 import { useIntlRef } from './useIntlRef';
 import { IntlShape } from 'react-intl';
 
-interface SnackInputs {
+interface SnackInputs extends OptionsObject {
     messageTxt?: string;
     messageId?: string;
     messageValues?: { [key: string]: string };
     headerTxt?: string;
     headerId?: string;
     headerValues?: Record<string, string>;
-    persistent?: boolean;
 }
 
 export interface UseSnackMessageReturn {
@@ -46,7 +46,8 @@ export function useSnackMessage(): UseSnackMessageReturn {
               headerTxt,
               headerId,
               headerValues,
-              persistent
+              key?, // optional key to close the snackbar
+              persist
             }
    */
     const snackError = useCallback(
@@ -90,14 +91,12 @@ function makeSnackbar(
         snackInputs.headerId,
         snackInputs.headerValues
     );
+
     if (message !== null && header !== null) {
-        displayMessageWithSnackbar(
-            message,
-            header,
-            enqueueSnackbar,
-            level,
-            snackInputs.persistent ? snackInputs.persistent : false
-        );
+        displayMessageWithSnackbar(message, header, enqueueSnackbar, level, {
+            key: snackInputs.key,
+            persist: snackInputs.persist,
+        });
     }
 }
 
@@ -132,7 +131,7 @@ function displayMessageWithSnackbar(
     header: string,
     enqueueSnackbar: EnqueueSnackbar,
     level: BaseVariant,
-    persistent: boolean
+    enqueOption: OptionsObject
 ) {
     let fullMessage = '';
     if (header) {
@@ -146,7 +145,7 @@ function displayMessageWithSnackbar(
     }
     return enqueueSnackbar(fullMessage, {
         variant: level,
-        persist: persistent,
+        ...enqueOption,
         style: { whiteSpace: 'pre-line' },
     });
 }
