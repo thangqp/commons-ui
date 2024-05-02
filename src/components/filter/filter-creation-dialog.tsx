@@ -10,7 +10,7 @@ import {
     saveCriteriaBasedFilter,
     saveExpertFilter,
     saveExplicitNamingFilter,
-} from './utils/filters-utils';
+} from './utils/filter-api';
 import { Resolver, useForm } from 'react-hook-form';
 import { useSnackMessage } from '../../hooks/useSnackMessage';
 import CustomMuiDialog from '../dialogs/custom-mui-dialog';
