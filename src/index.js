@@ -25,9 +25,9 @@ export { default as CustomMuiDialog } from './components/dialogs/custom-mui-dial
 export { default as DescriptionModificationDialog } from './components/dialogs/description-modification-dialog';
 export { default as CriteriaBasedForm } from './components/filter/criteria-based/criteria-based-form';
 export { default as PopupConfirmationDialog } from './components/dialogs/popup-confirmation-dialog';
-export { default as BottomRightButtons } from './components/react-hook-form/ag-grid-table-rhf/bottom-right-buttons';
-export { default as CustomAgGridTable } from './components/react-hook-form/ag-grid-table-rhf/custom-ag-grid-table';
-export { ROW_DRAGGING_SELECTION_COLUMN_DEF } from './components/react-hook-form/ag-grid-table-rhf/custom-ag-grid-table';
+export { default as BottomRightButtons } from './components/react-hook-form/ag-grid-table/bottom-right-buttons';
+export { default as CustomAgGridTable } from './components/react-hook-form/ag-grid-table/custom-ag-grid-table';
+export { ROW_DRAGGING_SELECTION_COLUMN_DEF } from './components/react-hook-form/ag-grid-table/custom-ag-grid-table';
 
 export {
     Line,
@@ -198,7 +198,7 @@ export {
     getComputedLanguage,
 } from './hooks/localized-countries-hook';
 export { default as MultipleAutocompleteInput } from './components/react-hook-form/autocomplete-inputs/multiple-autocomplete-input';
-export { default as CsvUploader } from './components/react-hook-form/ag-grid-table-rhf/csv-uploader/csv-uploader';
+export { default as CsvUploader } from './components/react-hook-form/ag-grid-table/csv-uploader/csv-uploader';
 export { UniqueNameInput } from './components/react-hook-form/unique-name-input';
 export { UserManagerMock } from './utils/UserManagerMock';
 export {

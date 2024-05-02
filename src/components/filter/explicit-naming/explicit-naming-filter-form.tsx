@@ -9,14 +9,14 @@ import { FieldConstants } from '../../../utils/field-constants';
 import yup from '../../../utils/yup-config';
 import CustomAgGridTable, {
     ROW_DRAGGING_SELECTION_COLUMN_DEF,
-} from '../../react-hook-form/ag-grid-table-rhf/custom-ag-grid-table';
+} from '../../react-hook-form/ag-grid-table/custom-ag-grid-table';
 import { useIntl } from 'react-intl';
 import { useFormContext, useWatch } from 'react-hook-form';
 import Grid from '@mui/material/Grid';
 import SelectInput from '../../react-hook-form/select-inputs/select-input';
 import { ValueParserParams } from 'ag-grid-community';
 import { Generator, Load } from '../../../utils/equipment-types';
-import { NumericEditor } from '../../react-hook-form/ag-grid-table-rhf/cell-editors/numericEditor';
+import { NumericEditor } from '../../react-hook-form/ag-grid-table/cell-editors/numericEditor';
 import InputWithPopupConfirmation from '../../react-hook-form/select-inputs/input-with-popup-confirmation';
 import { v4 as uuid4 } from 'uuid';
 import { toFloatOrNullValue } from '../../react-hook-form/utils/functions';

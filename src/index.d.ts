@@ -169,7 +169,7 @@ export {
     getComputedLanguage,
 } from './hooks/localized-countries-hook';
 export { default as MultipleAutocompleteInput } from './components/react-hook-form/autocomplete-inputs/multiple-autocomplete-input';
-export { default as CsvUploader } from './components/react-hook-form/ag-grid-table-rhf/csv-uploader/csv-uploader';
+export { default as CsvUploader } from './components/react-hook-form/ag-grid-table/csv-uploader/csv-uploader';
 export { UniqueNameInput } from './components/react-hook-form/unique-name-input';
 
 export {
@@ -204,7 +204,7 @@ export {
 
 export { useSnackMessage } from './hooks/useSnackMessage';
 export { useDebounce } from './hooks/useDebounce';
-export { ROW_DRAGGING_SELECTION_COLUMN_DEF } from './components/react-hook-form/ag-grid-table-rhf/custom-ag-grid-table';
+export { ROW_DRAGGING_SELECTION_COLUMN_DEF } from './components/react-hook-form/ag-grid-table/custom-ag-grid-table';
 export {
     FILTER_EQUIPMENTS,
     CONTINGENCY_LIST_EQUIPMENTS,
