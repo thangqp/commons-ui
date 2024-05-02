@@ -21,10 +21,7 @@ import {
     FieldType,
     OperatorType,
 } from '../filter/expert/expert-filter.type.ts';
-import {
-    Substation,
-    VoltageLevel,
-} from '../../utils/equipment-types.ts';
+import { Substation, VoltageLevel } from '../../utils/equipment-types.ts';
 import ElementValueEditor from './element-value-editor.tsx';
 import { ElementType } from '../../utils/ElementType.ts';
 import PropertyValueEditor from './property-value-editor.tsx';

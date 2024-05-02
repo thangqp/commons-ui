@@ -25,7 +25,7 @@ import ValueEditor from './value-editor.tsx';
 import ValueSelector from './value-selector.tsx';
 import { useCallback, useMemo } from 'react';
 
-import { COMBINATOR_OPTIONS } from '../filter/constants/expert-filter-constants.ts';
+import { COMBINATOR_OPTIONS } from '../filter/expert/expert-filter-constants.ts';
 import ErrorInput from '../react-hook-form/error-management/error-input.tsx';
 import FieldErrorAlert from '../react-hook-form/error-management/field-error-alert.tsx';
 import {
