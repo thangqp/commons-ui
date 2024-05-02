@@ -11,7 +11,7 @@ import Grid from '@mui/material/Grid';
 import { useFormContext, useWatch } from 'react-hook-form';
 import AutocompleteInput from '../../react-hook-form/autocomplete-input';
 import MultipleAutocompleteInput from '../../react-hook-form/autocomplete-inputs/multiple-autocomplete-input';
-import { FieldConstants } from '../constants/field-constants';
+import { FieldConstants } from '../../../utils/field-constants';
 
 import { PredefinedProperties } from '../../../utils/types.ts';
 

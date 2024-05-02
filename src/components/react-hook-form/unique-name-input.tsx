@@ -13,7 +13,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import { useController, useFormContext } from 'react-hook-form';
 import CircularProgress from '@mui/material/CircularProgress';
 import TextField from '@mui/material/TextField';
-import { FieldConstants } from '../filter/constants/field-constants.ts';
+import { FieldConstants } from '../../utils/field-constants';
 import { ElementType } from '../../utils/ElementType.ts';
 import { UUID } from 'crypto';
 import { elementExistsType } from '../filter/criteria-based/criteria-based-filter-edition-dialog';

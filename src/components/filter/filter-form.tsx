@@ -6,7 +6,7 @@
  */
 
 import { UniqueNameInput } from '../react-hook-form/unique-name-input.tsx';
-import { FieldConstants } from './constants/field-constants';
+import { FieldConstants } from '../../utils/field-constants';
 import CriteriaBasedFilterForm from './criteria-based/criteria-based-filter-form';
 import ExplicitNamingFilterForm from './explicit-naming/explicit-naming-filter-form';
 import React, { FunctionComponent } from 'react';

@@ -23,7 +23,7 @@ import {
     FILTER_EQUIPMENTS_ATTRIBUTES,
     getExplicitNamingFilterEmptyFormData,
 } from './explicit-naming/explicit-naming-filter-form';
-import { FieldConstants } from './constants/field-constants';
+import { FieldConstants } from '../../utils/field-constants';
 import yup from '../../utils/yup-config';
 import { FilterForm } from './filter-form';
 import {

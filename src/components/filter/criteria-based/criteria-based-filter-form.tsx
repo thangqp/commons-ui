@@ -8,7 +8,7 @@ import FilterProperties, {
     filterPropertiesYupSchema,
     FreePropertiesTypes,
 } from './filter-properties';
-import { FieldConstants } from '../constants/field-constants';
+import { FieldConstants } from '../../../utils/field-constants';
 import yup from '../../../utils/yup-config';
 import CriteriaBasedForm from './criteria-based-form';
 import Grid from '@mui/material/Grid';

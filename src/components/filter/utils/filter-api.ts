@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { FieldConstants } from '../constants/field-constants';
+import { FieldConstants } from '../../../utils/field-constants';
 import { frontToBackTweak } from '../criteria-based/criteria-based-filter-utils';
 import { Generator, Load } from '../../../utils/equipment-types';
 import { exportExpertRules } from '../expert/expert-filter-utils';

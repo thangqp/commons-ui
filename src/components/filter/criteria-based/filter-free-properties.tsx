@@ -8,7 +8,7 @@
 import ErrorInput from '../../react-hook-form/error-management/error-input';
 import FieldErrorAlert from '../../react-hook-form/error-management/field-error-alert';
 import { Button, Grid, ListItem } from '@mui/material';
-import { FieldConstants } from '../constants/field-constants';
+import { FieldConstants } from '../../../utils/field-constants';
 import { useFieldArray, useWatch } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 import { FreePropertiesTypes } from './filter-properties';

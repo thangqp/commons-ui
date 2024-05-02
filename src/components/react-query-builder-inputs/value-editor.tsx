@@ -15,7 +15,7 @@ import TextValueEditor from './text-value-editor.tsx';
 import Box from '@mui/material/Box';
 
 import { useFormContext } from 'react-hook-form';
-import { FieldConstants } from '../filter/constants/field-constants.ts';
+import { FieldConstants } from '../../utils/field-constants';
 import {
     DataType,
     FieldType,

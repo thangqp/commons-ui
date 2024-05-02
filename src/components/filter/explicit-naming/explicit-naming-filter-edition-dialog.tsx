@@ -17,7 +17,7 @@ import {
     explicitNamingFilterSchema,
     FILTER_EQUIPMENTS_ATTRIBUTES,
 } from './explicit-naming-filter-form';
-import { FieldConstants } from '../constants/field-constants';
+import { FieldConstants } from '../../../utils/field-constants';
 
 import { FilterForm } from '../filter-form';
 import { v4 as uuid4 } from 'uuid';

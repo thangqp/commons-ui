@@ -19,7 +19,7 @@ import Alert from '@mui/material/Alert';
 import { DialogContentText } from '@mui/material';
 import { useWatch } from 'react-hook-form';
 import { CancelButton } from '../../../../index';
-import { FieldConstants } from '../../../filter/constants/field-constants.ts';
+import { FieldConstants } from '../../../../utils/field-constants';
 
 interface CsvUploaderProps {
     name: string;

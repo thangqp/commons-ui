@@ -7,7 +7,7 @@
 
 import { FunctionComponent, useCallback } from 'react';
 import yup from '../../utils/yup-config';
-import { FieldConstants } from '../filter/constants/field-constants';
+import { FieldConstants } from '../../utils/field-constants';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useSnackMessage } from '../../hooks/useSnackMessage';

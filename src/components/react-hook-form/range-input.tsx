@@ -13,7 +13,7 @@ import InputLabel from '@mui/material/InputLabel';
 import { Grid } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import MuiSelectInput from './select-inputs/mui-select-input.tsx';
-import { FieldConstants } from '../filter/constants/field-constants.ts';
+import { FieldConstants } from '../../utils/field-constants';
 
 const style = {
     inputLegend: (theme: any) => ({

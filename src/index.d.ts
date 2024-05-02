@@ -191,7 +191,7 @@ export {
     noSelectionForCopy,
 } from './utils/equipment-types';
 
-export { FieldConstants } from './components/filter/constants/field-constants';
+export { FieldConstants } from './utils/field-constants';
 
 export {
     GRIDSUITE_DEFAULT_PRECISION,
