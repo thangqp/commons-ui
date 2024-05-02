@@ -7,7 +7,7 @@
 
 import AutocompleteInput, {
     AutocompleteInputProps,
-} from '../autocomplete-input';
+} from '../autocomplete-inputs/autocomplete-input';
 import { useIntl } from 'react-intl';
 import { FunctionComponent } from 'react';
 import { Option } from '../../../utils/types.ts';

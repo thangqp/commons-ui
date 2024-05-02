@@ -9,7 +9,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 import Grid from '@mui/material/Grid';
 import { useFormContext, useWatch } from 'react-hook-form';
-import AutocompleteInput from '../../react-hook-form/autocomplete-input';
+import AutocompleteInput from '../../react-hook-form/autocomplete-inputs/autocomplete-input';
 import MultipleAutocompleteInput from '../../react-hook-form/autocomplete-inputs/multiple-autocomplete-input';
 import { FieldConstants } from '../../../utils/field-constants';
 

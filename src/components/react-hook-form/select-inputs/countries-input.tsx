@@ -6,7 +6,7 @@
  */
 import { FunctionComponent } from 'react';
 import { Chip } from '@mui/material';
-import AutocompleteInput from '../autocomplete-input.tsx';
+import AutocompleteInput from '../autocomplete-inputs/autocomplete-input';
 import { useLocalizedCountries } from '../../../hooks/localized-countries-hook';
 import { useCustomFormContext } from '../provider/use-custom-form-context.ts';
 

@@ -9,7 +9,7 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { Box, Grid } from '@mui/material';
-import AutocompleteInput from '../../src/components/react-hook-form/autocomplete-input';
+import AutocompleteInput from '../../src/components/react-hook-form/autocomplete-inputs/autocomplete-input';
 import TextInput from '../../src/components/react-hook-form/text-input';
 import RadioInput from '../../src/components/react-hook-form/radio-input';
 import SliderInput from '../../src/components/react-hook-form/slider-input';

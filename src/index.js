@@ -139,7 +139,7 @@ export { useDebounce } from './hooks/useDebounce';
 export { default as SelectClearable } from './components/inputs/select-clearable';
 export { useCustomFormContext } from './components/react-hook-form/provider/use-custom-form-context';
 export { default as CustomFormProvider } from './components/react-hook-form/provider/custom-form-provider';
-export { default as AutocompleteInput } from './components/react-hook-form/autocomplete-input';
+export { default as AutocompleteInput } from './components/react-hook-form/autocomplete-inputs/autocomplete-input';
 export { default as TextInput } from './components/react-hook-form/text-input';
 export { default as ExpandingTextField } from './components/react-hook-form/ExpandingTextField';
 export { default as RadioInput } from './components/react-hook-form/radio-input';

@@ -113,7 +113,7 @@ export { default as SliderInput } from './components/react-hook-form/slider-inpu
 export { default as TextFieldWithAdornment } from './components/react-hook-form/utils/text-field-with-adornment';
 export { default as SelectInput } from './components/react-hook-form/select-inputs/select-input';
 export { default as ErrorInput } from './components/react-hook-form/error-management/error-input';
-export { default as AutocompleteInput } from './components/react-hook-form/autocomplete-input';
+export { default as AutocompleteInput } from './components/react-hook-form/autocomplete-inputs/autocomplete-input';
 export { default as TextInput } from './components/react-hook-form/text-input';
 export { default as FloatInput } from './components/react-hook-form/numbers/float-input';
 export { default as RadioInput } from './components/react-hook-form/radio-input';
