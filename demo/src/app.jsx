@@ -241,6 +241,41 @@ function SnackInfoButton() {
     );
 }
 
+function PermanentSnackButton() {
+    const { snackInfo, closeSnackbar } = useSnackMessage();
+    const [snackKey, setSnackKey] = useState(undefined);
+    return (
+        <>
+            <Button
+                variant="contained"
+                color="info"
+                style={{ float: 'left', margin: '5px' }}
+                onClick={() => {
+                    const key = snackInfo({
+                        messageTxt: 'Snack info message',
+                        headerTxt: 'Header',
+                        persistent: true,
+                    });
+                    setSnackKey(key);
+                }}
+            >
+                permanent snack
+            </Button>
+            <Button
+                variant="contained"
+                color="info"
+                style={{ float: 'left', margin: '5px' }}
+                onClick={() => {
+                    closeSnackbar(snackKey);
+                    setSnackKey(undefined);
+                }}
+            >
+                close snack
+            </Button>
+        </>
+    );
+}
+
 const validateUser = (user) => {
     // change to false to simulate user unauthorized access
     return new Promise((resolve) =>
@@ -535,9 +570,11 @@ const AppContent = ({ language, onLanguageClick }) => {
             {testIcons()}
             <hr />
 
+            <PermanentSnackButton />
             <SnackErrorButton />
             <SnackWarningButton />
             <SnackInfoButton />
+
             <Button
                 variant="contained"
                 style={{
