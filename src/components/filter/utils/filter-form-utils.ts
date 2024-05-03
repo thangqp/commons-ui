@@ -74,57 +74,56 @@ const energySource = {
         ],
     },
 };
-type FilterFormField = {
+type FormField = {
     renderer: FunctionComponent<any>;
     props: {
         label: string;
         name: string;
     };
 };
-type FilterFormEquipment = {
+type FormEquipment = {
     id: string;
     label: string;
-    fields: FilterFormField[];
+    fields: FormField[];
 };
-export const CONTINGENCY_LIST_EQUIPMENTS: Record<string, FilterFormEquipment> =
-    {
-        LINE: {
-            id: 'LINE',
-            label: 'Lines',
-            fields: [countries1, countries2, nominalVoltage1, nominalVoltage2],
-        },
-        TWO_WINDINGS_TRANSFORMER: {
-            id: 'TWO_WINDINGS_TRANSFORMER',
-            label: 'TwoWindingsTransformers',
-            fields: [countries, nominalVoltage1, nominalVoltage2],
-        },
-        GENERATOR: {
-            id: 'GENERATOR',
-            label: 'Generators',
-            fields: [countries, nominalVoltage],
-        },
-        SHUNT_COMPENSATOR: {
-            id: 'SHUNT_COMPENSATOR',
-            label: 'ShuntCompensators',
-            fields: [countries, nominalVoltage],
-        },
-        HVDC_LINE: {
-            id: 'HVDC_LINE',
-            label: 'HvdcLines',
-            fields: [countries1, countries2, nominalVoltage],
-        },
-        BUSBAR_SECTION: {
-            id: 'BUSBAR_SECTION',
-            label: 'BusBarSections',
-            fields: [countries, nominalVoltage],
-        },
-        DANGLING_LINE: {
-            id: 'DANGLING_LINE',
-            label: 'DanglingLines',
-            fields: [countries, nominalVoltage],
-        },
-    };
-export const FILTER_EQUIPMENTS: Record<string, FilterFormEquipment> = {
+export const CONTINGENCY_LIST_EQUIPMENTS: Record<string, FormEquipment> = {
+    LINE: {
+        id: 'LINE',
+        label: 'Lines',
+        fields: [countries1, countries2, nominalVoltage1, nominalVoltage2],
+    },
+    TWO_WINDINGS_TRANSFORMER: {
+        id: 'TWO_WINDINGS_TRANSFORMER',
+        label: 'TwoWindingsTransformers',
+        fields: [countries, nominalVoltage1, nominalVoltage2],
+    },
+    GENERATOR: {
+        id: 'GENERATOR',
+        label: 'Generators',
+        fields: [countries, nominalVoltage],
+    },
+    SHUNT_COMPENSATOR: {
+        id: 'SHUNT_COMPENSATOR',
+        label: 'ShuntCompensators',
+        fields: [countries, nominalVoltage],
+    },
+    HVDC_LINE: {
+        id: 'HVDC_LINE',
+        label: 'HvdcLines',
+        fields: [countries1, countries2, nominalVoltage],
+    },
+    BUSBAR_SECTION: {
+        id: 'BUSBAR_SECTION',
+        label: 'BusBarSections',
+        fields: [countries, nominalVoltage],
+    },
+    DANGLING_LINE: {
+        id: 'DANGLING_LINE',
+        label: 'DanglingLines',
+        fields: [countries, nominalVoltage],
+    },
+};
+export const FILTER_EQUIPMENTS: Record<string, FormEquipment> = {
     ...CONTINGENCY_LIST_EQUIPMENTS,
     THREE_WINDINGS_TRANSFORMER: {
         id: 'THREE_WINDINGS_TRANSFORMER',
