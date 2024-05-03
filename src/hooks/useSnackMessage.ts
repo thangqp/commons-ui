@@ -5,17 +5,17 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { useCallback } from 'react';
+import { MutableRefObject, useCallback } from 'react';
 import {
     BaseVariant,
     OptionsObject,
-    SnackbarKey,
+    closeSnackbar,
     useSnackbar,
 } from 'notistack';
 import { useIntlRef } from './useIntlRef';
 import { IntlShape } from 'react-intl';
 
-interface SnackInputs extends OptionsObject {
+interface SnackInputs extends Omit<OptionsObject, 'variant' | 'style'> {
     messageTxt?: string;
     messageId?: string;
     messageValues?: { [key: string]: string };
@@ -28,7 +28,7 @@ export interface UseSnackMessageReturn {
     snackError: (snackInputs: SnackInputs) => void;
     snackWarning: (snackInputs: SnackInputs) => void;
     snackInfo: (snackInputs: SnackInputs) => void;
-    closeSnackbar: (key?: SnackbarKey) => void;
+    closeSnackbar: typeof closeSnackbar;
 }
 
 export function useSnackMessage(): UseSnackMessageReturn {
@@ -38,6 +38,9 @@ export function useSnackMessage(): UseSnackMessageReturn {
     const enqueue = useCallback(
         (snackInputs: SnackInputs, variant: BaseVariant) => {
             const message = makeMessage(intlRef, snackInputs);
+            if (message === null) {
+                return;
+            }
             return enqueueSnackbar(message, {
                 ...snackInputs,
                 variant: variant,
@@ -82,7 +85,7 @@ export function useSnackMessage(): UseSnackMessageReturn {
 }
 
 function checkAndTranslateIfNecessary(
-    intlRef: React.MutableRefObject<IntlShape>,
+    intlRef: MutableRefObject<IntlShape>,
     txt?: string,
     id?: string,
     values?: any
@@ -108,9 +111,9 @@ function checkInputs(txt?: string, id?: string, values?: any) {
 }
 
 function makeMessage(
-    intlRef: React.MutableRefObject<IntlShape>,
+    intlRef: MutableRefObject<IntlShape>,
     snackInputs: SnackInputs
-): string {
+): string | null {
     const message = checkAndTranslateIfNecessary(
         intlRef,
         snackInputs.messageTxt,
@@ -123,15 +126,19 @@ function makeMessage(
         snackInputs.headerId,
         snackInputs.headerValues
     );
-    let fullMessage = '';
-    if (header) {
-        fullMessage += header;
-    }
-    if (message) {
+    if (message !== null && header !== null) {
+        let fullMessage = '';
         if (header) {
-            fullMessage += '\n\n';
+            fullMessage += header;
         }
-        fullMessage += message;
+        if (message) {
+            if (header) {
+                fullMessage += '\n\n';
+            }
+            fullMessage += message;
+        }
+        return fullMessage;
+    } else {
+        return null;
     }
-    return fullMessage;
 }
