@@ -37,8 +37,8 @@ export interface AutocompleteInputProps
     name: string;
     options: Option[];
     label?: string;
-    outputTransform?: (value: Option) => Option;
-    inputTransform?: (value: Option | any) => Option | null;
+    outputTransform?: (value: Option | null) => Option | null;
+    inputTransform?: (value: Option | null) => Option | null;
     readOnly?: boolean;
     previousValue?: string;
     allowNewValue?: boolean;
@@ -94,7 +94,7 @@ const AutocompleteInput: FunctionComponent<AutocompleteInputProps> = ({
 
     return (
         <Autocomplete
-            value={inputTransform(value || '')}
+            value={inputTransform(value)}
             onChange={(_, data) => handleChange(data as Option)}
             {...(allowNewValue && {
                 freeSolo: true,

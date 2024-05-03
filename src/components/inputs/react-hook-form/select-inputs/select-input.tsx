@@ -23,7 +23,10 @@ export interface SelectInputProps
 const SelectInput: FunctionComponent<SelectInputProps> = (props) => {
     const intl = useIntl();
 
-    const inputTransform = (value: Option) => {
+    const inputTransform = (value: Option | null) => {
+        if (value === null) {
+            return null;
+        }
         if (typeof value === 'string') {
             return (
                 props.options.find(
@@ -40,7 +43,7 @@ const SelectInput: FunctionComponent<SelectInputProps> = (props) => {
         );
     };
 
-    const outputTransform = (value: Option) => {
+    const outputTransform = (value: Option | null) => {
         if (typeof value === 'string') {
             return value;
         }
