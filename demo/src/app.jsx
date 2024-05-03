@@ -258,7 +258,7 @@ function PermanentSnackButton() {
                     const key = snackInfo({
                         messageTxt: 'Snack info message',
                         headerTxt: 'Header',
-                        persistent: true,
+                        persist: true,
                     });
                     setSnackKey(key);
                 }}
