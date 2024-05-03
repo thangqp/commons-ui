@@ -77,7 +77,7 @@ function makeSnackbar(
     snackInputs: SnackInputs,
     intlRef: React.MutableRefObject<IntlShape>,
     enqueueSnackbar: EnqueueSnackbar,
-    level: BaseVariant
+    variant: BaseVariant
 ) {
     const message = checkAndTranslateIfNecessary(
         intlRef,
@@ -93,7 +93,7 @@ function makeSnackbar(
     );
 
     if (message !== null && header !== null) {
-        displayMessageWithSnackbar(message, header, enqueueSnackbar, level, {
+        displayMessageWithSnackbar(message, header, enqueueSnackbar, variant, {
             key: snackInputs.key,
             persist: snackInputs.persist,
         });
@@ -130,8 +130,8 @@ function displayMessageWithSnackbar(
     message: string,
     header: string,
     enqueueSnackbar: EnqueueSnackbar,
-    level: BaseVariant,
-    enqueOption: OptionsObject
+    variant: BaseVariant,
+    enqueueOptions: OptionsObject
 ) {
     let fullMessage = '';
     if (header) {
@@ -144,8 +144,8 @@ function displayMessageWithSnackbar(
         fullMessage += message;
     }
     return enqueueSnackbar(fullMessage, {
-        variant: level,
-        ...enqueOption,
+        ...enqueueOptions,
+        variant: variant,
         style: { whiteSpace: 'pre-line' },
     });
 }
