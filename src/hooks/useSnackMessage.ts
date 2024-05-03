@@ -8,7 +8,6 @@
 import React, { useCallback } from 'react';
 import {
     BaseVariant,
-    EnqueueSnackbar,
     OptionsObject,
     SnackbarKey,
     useSnackbar,
