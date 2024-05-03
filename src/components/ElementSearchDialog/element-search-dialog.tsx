@@ -57,14 +57,6 @@ const ElementSearchDialog = (props: ElementSearchDialogProps) => {
             : searchTerm;
     }, [searchTerm, searchTermDisabled, searchTermDisableReason]);
 
-    const handleSearchTermChange = (term: string) => {
-        if (term) {
-            onSearchTermChange(term);
-        } else {
-            onSearchTermChange('');
-        }
-    };
-
     const handleClose = useCallback(() => {
         onSearchTermChange('');
         onClose();
@@ -92,7 +84,7 @@ const ElementSearchDialog = (props: ElementSearchDialogProps) => {
                         // if reason is equal to "reset", it means it programmatically changed (by selecting a result)
                         // we don't want to change "searchTerm" when clicking a result
                         if (!searchTermDisabled && reason !== 'reset') {
-                            handleSearchTermChange(value);
+                            onSearchTermChange(value);
                         }
                     }}
                     onChange={(
@@ -148,7 +140,7 @@ const ElementSearchDialog = (props: ElementSearchDialogProps) => {
                             autoFocus={true}
                             {...params}
                             label={
-                                searchingLabel ||
+                                searchingLabel ??
                                 intl.formatMessage({
                                     id: 'element_search/label',
                                 })
@@ -166,7 +158,7 @@ const ElementSearchDialog = (props: ElementSearchDialogProps) => {
                                     </>
                                 ),
                             }}
-                            value={displayedValue ?? null}
+                            value={displayedValue ?? ''}
                         />
                     )}
                     disabled={searchTermDisabled}
