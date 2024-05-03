@@ -168,18 +168,4 @@ const ElementSearchDialog = (props: ElementSearchDialogProps) => {
     );
 };
 
-ElementSearchDialog.propTypes = {
-    open: PropTypes.bool.isRequired,
-    onClose: PropTypes.func.isRequired,
-    searchingLabel: PropTypes.string,
-    searchTerm: PropTypes.string.isRequired,
-    onSearchTermChange: PropTypes.func.isRequired,
-    onSelectionChange: PropTypes.func.isRequired,
-    elementsFound: PropTypes.array.isRequired,
-    renderElement: PropTypes.func.isRequired,
-    searchTermDisabled: PropTypes.bool,
-    searchTermDisableReason: PropTypes.string,
-    isLoading: PropTypes.bool,
-};
-
 export default ElementSearchDialog;
