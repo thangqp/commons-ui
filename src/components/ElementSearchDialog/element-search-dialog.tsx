@@ -14,7 +14,6 @@ import {
     AutocompleteInputChangeReason,
     AutocompleteChangeReason,
 } from '@mui/material';
-import PropTypes from 'prop-types';
 import { Search, SearchOff } from '@mui/icons-material';
 import { useIntl } from 'react-intl';
 import { EquipmentInfos } from '../../index';
