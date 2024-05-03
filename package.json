@@ -19,7 +19,7 @@
         "start": "vite demo/ --config vite.config.mts",
         "start:open": "vite demo/ --config vite.config.mts --open",
         "build": "tsc && vite build",
-        "build:prune": "npm install && tsc && vite build && npm prune --production",
+        "build:pack": "tsc && vite build && npm pack",
         "prepublishOnly": "npm run build",
         "test": "jest",
         "test:coverage": "jest --coverage",
