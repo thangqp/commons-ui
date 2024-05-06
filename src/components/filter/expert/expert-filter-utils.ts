@@ -30,7 +30,7 @@ import {
     FIELDS_OPTIONS,
     OPERATOR_OPTIONS,
     RULES,
-} from '../constants/expert-filter-constants';
+} from './expert-filter-constants';
 import {
     isBlankOrEmpty,
     microUnitToUnit,

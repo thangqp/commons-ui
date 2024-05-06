@@ -38,7 +38,7 @@ import {
     ChevronRight as ChevronRightIcon,
     ExpandMore as ExpandMoreIcon,
 } from '@mui/icons-material';
-import CancelButton from '../react-hook-form/utils/cancel-button';
+import CancelButton from '../inputs/react-hook-form/utils/cancel-button';
 
 // As a bunch of individual variables to try to make it easier
 // to track that they are all used. Not sure, maybe group them in an object ?

@@ -9,7 +9,7 @@ import type { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 import { Autocomplete, TextField } from '@mui/material';
 import { AutocompleteProps } from '@mui/material/Autocomplete/Autocomplete';
-import FieldLabel from '../react-hook-form/utils/field-label';
+import FieldLabel from '../inputs/react-hook-form/utils/field-label';
 
 type SelectOption = { id: string; label?: string };
 

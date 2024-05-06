@@ -8,7 +8,7 @@ import FilterProperties, {
     filterPropertiesYupSchema,
     FreePropertiesTypes,
 } from './filter-properties';
-import { FieldConstants } from '../constants/field-constants';
+import { FieldConstants } from '../../../utils/field-constants';
 import yup from '../../../utils/yup-config';
 import CriteriaBasedForm from './criteria-based-form';
 import Grid from '@mui/material/Grid';
@@ -16,7 +16,7 @@ import { FunctionComponent } from 'react';
 import {
     getCriteriaBasedFormData,
     getCriteriaBasedSchema,
-} from '../utils/criteria-based-utils';
+} from './criteria-based-filter-utils';
 
 export const criteriaBasedFilterSchema = getCriteriaBasedSchema({
     [FieldConstants.ENERGY_SOURCE]: yup.string().nullable(),
