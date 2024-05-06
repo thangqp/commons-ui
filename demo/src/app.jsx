@@ -95,7 +95,7 @@ import { searchEquipments } from '../data/EquipmentSearchBar';
 import { EquipmentItem } from '../../src/components/ElementSearchDialog/equipment-item';
 import OverflowableText from '../../src/components/OverflowableText';
 
-import { setShowAuthenticationRouterLogin } from '../../src/utils/actions';
+import { setShowAuthenticationRouterLogin } from '../../src/redux/actions';
 import { TableTab } from './TableTab';
 import { FlatParametersTab } from './FlatParametersTab';
 

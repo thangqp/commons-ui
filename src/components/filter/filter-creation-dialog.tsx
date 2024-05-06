@@ -40,6 +40,8 @@ import { StudyMetadata } from '../../hooks/predefined-properties-hook.ts';
 import { FilterContext } from './filter-context';
 import { FilterType } from './constants/filter-constants';
 import { ElementAttributes } from '../../utils/types.ts';
+import { useSelector } from 'react-redux';
+import { CommonReduxState } from '../../redux/reducer.type';
 
 const emptyFormData = {
     [FieldConstants.NAME]: '',
@@ -71,13 +73,6 @@ export interface FilterCreationDialogProps {
     open: boolean;
     onClose: () => void;
     activeDirectory?: UUID;
-    createFilter: (
-        filter: any,
-        name: string,
-        description: string,
-        activeDirectory: any
-    ) => Promise<void>;
-    saveFilter: (filter: any, name: string) => Promise<void>;
     fetchAppsAndUrls: () => Promise<StudyMetadata[]>;
     elementExists?: elementExistsType;
     language?: string;
@@ -97,8 +92,6 @@ const FilterCreationDialog: FunctionComponent<FilterCreationDialogProps> = ({
     open,
     onClose,
     activeDirectory,
-    createFilter,
-    saveFilter,
     fetchAppsAndUrls,
     elementExists,
     language,
@@ -107,6 +100,10 @@ const FilterCreationDialog: FunctionComponent<FilterCreationDialogProps> = ({
     fetchElementsInfos,
 }) => {
     const { snackError } = useSnackMessage();
+
+    const userToken = useSelector(
+        (state: CommonReduxState) => state.user.id_token
+    );
 
     const formMethods = {
         ...useForm({
@@ -142,9 +139,8 @@ const FilterCreationDialog: FunctionComponent<FilterCreationDialogProps> = ({
                         });
                     },
                     onClose,
-                    createFilter,
-                    saveFilter,
-                    activeDirectory
+                    activeDirectory,
+                    userToken
                 );
             } else if (
                 filterForm[FieldConstants.FILTER_TYPE] ===
@@ -159,7 +155,7 @@ const FilterCreationDialog: FunctionComponent<FilterCreationDialogProps> = ({
                             messageTxt: error,
                         });
                     },
-                    createFilter
+                    userToken
                 );
             } else if (
                 filterForm[FieldConstants.FILTER_TYPE] === FilterType.EXPERT.id
@@ -178,12 +174,11 @@ const FilterCreationDialog: FunctionComponent<FilterCreationDialogProps> = ({
                             messageTxt: error,
                         });
                     },
-                    createFilter,
-                    saveFilter
+                    userToken
                 );
             }
         },
-        [activeDirectory, snackError, onClose, createFilter, saveFilter]
+        [activeDirectory, snackError, onClose, userToken]
     );
 
     return (

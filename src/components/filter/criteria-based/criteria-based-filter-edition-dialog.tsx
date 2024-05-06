@@ -29,6 +29,9 @@ import { UUID } from 'crypto';
 import { FilterType } from '../constants/filter-constants';
 import { FetchStatus } from '../../../utils/FetchStatus.ts';
 import { ElementType } from '../../../utils/ElementType.ts';
+import { saveFilter } from '../../../services/explore';
+import { useSelector } from 'react-redux';
+import { CommonReduxState } from '../../../redux/reducer.type';
 
 export type SelectionCopy = {
     sourceItemUuid: UUID | null;
@@ -68,7 +71,6 @@ interface CriteriaBasedFilterEditionDialogProps {
     onClose: () => void;
     broadcastChannel: BroadcastChannel;
     getFilterById: (id: string) => Promise<any>;
-    saveFilter: (value: any, t: Record<string, any>) => Promise<void>;
     selectionForCopy: SelectionCopy;
     setSelelectionForCopy: (
         selection: SelectionCopy
@@ -78,7 +80,7 @@ interface CriteriaBasedFilterEditionDialogProps {
     language?: string;
 }
 
-export const CriteriaBasedFilterEditionDialog: FunctionComponent<
+const CriteriaBasedFilterEditionDialog: FunctionComponent<
     CriteriaBasedFilterEditionDialogProps
 > = ({
     id,
@@ -88,7 +90,6 @@ export const CriteriaBasedFilterEditionDialog: FunctionComponent<
     onClose,
     broadcastChannel,
     getFilterById,
-    saveFilter,
     selectionForCopy,
     setSelelectionForCopy,
     activeDirectory,
@@ -96,6 +97,11 @@ export const CriteriaBasedFilterEditionDialog: FunctionComponent<
     language,
 }) => {
     const { snackError } = useSnackMessage();
+
+    const userToken = useSelector(
+        (state: CommonReduxState) => state.user.id_token
+    );
+
     const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
 
     // default values are set via reset when we fetch data
@@ -142,7 +148,8 @@ export const CriteriaBasedFilterEditionDialog: FunctionComponent<
         (filterForm: any) => {
             saveFilter(
                 frontToBackTweak(id, filterForm),
-                filterForm[FieldConstants.NAME]
+                filterForm[FieldConstants.NAME],
+                userToken
             )
                 .then(() => {
                     if (selectionForCopy.sourceItemUuid === id) {
@@ -163,8 +170,8 @@ export const CriteriaBasedFilterEditionDialog: FunctionComponent<
             id,
             selectionForCopy.sourceItemUuid,
             snackError,
-            saveFilter,
             setSelelectionForCopy,
+            userToken,
         ]
     );
 

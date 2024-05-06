@@ -26,6 +26,8 @@ import { UUID } from 'crypto';
 import { elementExistsType } from '../criteria-based/criteria-based-filter-edition-dialog';
 import { FilterType } from '../constants/filter-constants';
 import { FetchStatus } from '../../../utils/FetchStatus.ts';
+import { useSelector } from 'react-redux';
+import { CommonReduxState } from '../../../redux/reducer.type';
 
 const formSchema = yup
     .object()
@@ -47,13 +49,6 @@ interface ExplicitNamingFilterEditionDialogProps {
     selectionForCopy: any;
     setSelectionForCopy: (selection: any) => void;
     getFilterById: (id: string) => Promise<any>;
-    createFilter: (
-        filter: any,
-        name: string,
-        description: string,
-        activeDirectory: any
-    ) => Promise<void>;
-    saveFilter: (filter: any, name: string) => Promise<void>;
     activeDirectory?: UUID;
     elementExists?: elementExistsType;
     language?: string;
@@ -71,14 +66,16 @@ const ExplicitNamingFilterEditionDialog: FunctionComponent<
     selectionForCopy,
     setSelectionForCopy,
     getFilterById,
-    createFilter,
-    saveFilter,
     activeDirectory,
     elementExists,
     language,
 }) => {
     const { snackError } = useSnackMessage();
     const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
+
+    const userToken = useSelector(
+        (state: CommonReduxState) => state.user.id_token
+    );
 
     // default values are set via reset when we fetch data
     const formMethods = {
@@ -141,8 +138,8 @@ const ExplicitNamingFilterEditionDialog: FunctionComponent<
                     });
                 },
                 onClose,
-                createFilter,
-                saveFilter
+                undefined,
+                userToken
             );
             if (selectionForCopy.sourceItemUuid === id) {
                 setSelectionForCopy(noSelectionForCopy);
@@ -157,9 +154,8 @@ const ExplicitNamingFilterEditionDialog: FunctionComponent<
             selectionForCopy,
             onClose,
             snackError,
-            createFilter,
-            saveFilter,
             setSelectionForCopy,
+            userToken,
         ]
     );
 
