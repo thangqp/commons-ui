@@ -9,7 +9,6 @@
         "target": "es6",
         "lib": ["dom", "dom.iterable", "esnext"],
         "allowJs": true,
-        "skipLibCheck": true, // otherwise it checks .d.ts files we import from node_modules and react-request-fullscreen contains an error
         "strict": true,
         "forceConsistentCasingInFileNames": true,
         "noFallthroughCasesInSwitch": true,

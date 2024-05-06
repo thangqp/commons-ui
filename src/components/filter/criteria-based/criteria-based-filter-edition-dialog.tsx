@@ -13,7 +13,7 @@ import {
     useEffect,
     useState,
 } from 'react';
-import { FieldConstants } from '../constants/field-constants';
+import { FieldConstants } from '../../../utils/field-constants';
 import {
     backToFrontTweak,
     frontToBackTweak,

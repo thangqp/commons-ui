@@ -12,7 +12,7 @@ import { DialogContentText } from '@mui/material';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import { FormattedMessage } from 'react-intl';
-import CancelButton from '../react-hook-form/utils/cancel-button';
+import CancelButton from '../inputs/react-hook-form/utils/cancel-button';
 import { FunctionComponent } from 'react';
 
 export interface PopupConfirmationDialogProps {

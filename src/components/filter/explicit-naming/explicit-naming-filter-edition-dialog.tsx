@@ -7,7 +7,7 @@
 
 import { FunctionComponent, useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { saveExplicitNamingFilter } from '../utils/filters-utils';
+import { saveExplicitNamingFilter } from '../utils/filter-api';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
@@ -17,11 +17,11 @@ import {
     explicitNamingFilterSchema,
     FILTER_EQUIPMENTS_ATTRIBUTES,
 } from './explicit-naming-filter-form';
-import { FieldConstants } from '../constants/field-constants';
+import { FieldConstants } from '../../../utils/field-constants';
 
 import { FilterForm } from '../filter-form';
 import { v4 as uuid4 } from 'uuid';
-import { noSelectionForCopy } from '../constants/equipment-types';
+import { noSelectionForCopy } from '../../../utils/equipment-types';
 import { UUID } from 'crypto';
 import { elementExistsType } from '../criteria-based/criteria-based-filter-edition-dialog';
 import { FilterType } from '../constants/filter-constants';
