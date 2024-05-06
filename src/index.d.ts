@@ -127,6 +127,7 @@ export { default as ExplicitNamingFilterEditionDialog } from './components/filte
 export { default as CriteriaBasedFilterEditionDialog } from './components/filter/criteria-based/criteria-based-filter-edition-dialog';
 export { default as ExpandingTextField } from './components/inputs/react-hook-form/ExpandingTextField';
 export { default as CustomMuiDialog } from './components/dialogs/custom-mui-dialog';
+export { default as DescriptionModificationDialog } from './components/dialogs/description-modification-dialog';
 export {
     genHelperPreviousValue,
     genHelperError,
