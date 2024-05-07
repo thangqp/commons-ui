@@ -14,10 +14,10 @@ import CriteriaBasedForm from './criteria-based-form';
 import Grid from '@mui/material/Grid';
 import { FunctionComponent } from 'react';
 import {
-    FILTER_EQUIPMENTS,
     getCriteriaBasedFormData,
     getCriteriaBasedSchema,
 } from './criteria-based-filter-utils';
+import { FILTER_EQUIPMENTS } from '../utils/filter-form-utils.ts';
 
 export const criteriaBasedFilterSchema = getCriteriaBasedSchema({
     [FieldConstants.ENERGY_SOURCE]: yup.string().nullable(),
