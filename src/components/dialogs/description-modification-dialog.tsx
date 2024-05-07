@@ -7,12 +7,12 @@
 
 import { FunctionComponent, useCallback } from 'react';
 import yup from '../../utils/yup-config';
-import { FieldConstants } from '../filter/constants/field-constants';
+import { FieldConstants } from '../../utils/field-constants';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useSnackMessage } from '../../hooks/useSnackMessage';
 import CustomMuiDialog from './custom-mui-dialog';
-import ExpandingTextField from '../react-hook-form/ExpandingTextField';
+import ExpandingTextField from '../inputs/react-hook-form/ExpandingTextField';
 import { Box } from '@mui/material';
 
 export interface IDescriptionModificationDialog {

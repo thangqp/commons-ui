@@ -54,7 +54,7 @@ it('renders', () => {
                     <TopBar
                         appName="Demo"
                         appColor="#808080"
-                        appLogo={PowsyblLogo}
+                        appLogo={<PowsyblLogo />}
                         onParametersClick={() => {}}
                         onLogoutClick={() => {}}
                         onLogoClick={() => {}}

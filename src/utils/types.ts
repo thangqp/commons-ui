@@ -22,7 +22,7 @@ import {
     TwoWindingTransfo,
     VoltageLevel,
     VSC,
-} from '../components/filter/constants/equipment-types.ts';
+} from './equipment-types.ts';
 
 export type Input = string | number;
 
