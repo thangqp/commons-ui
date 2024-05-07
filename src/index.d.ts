@@ -271,6 +271,7 @@ export const FlatParameters: FunctionComponent<FlatParametersProps>;
 interface OverflowableTextProps {
     sx?: SxProps;
     text?: string | ReactElement;
+    tooltipSx?: SxProps;
 }
 
 export const OverflowableText: FunctionComponent<OverflowableTextProps>;

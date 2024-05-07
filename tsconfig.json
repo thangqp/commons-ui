@@ -10,6 +10,7 @@
         "lib": ["dom", "dom.iterable", "esnext"],
         "allowJs": true,
         "strict": true,
+        "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true,
         "noFallthroughCasesInSwitch": true,
         "allowImportingTsExtensions": true,
