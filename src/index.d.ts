@@ -128,6 +128,7 @@ export { default as CriteriaBasedFilterEditionDialog } from './components/filter
 export { default as ExpandingTextField } from './components/inputs/react-hook-form/ExpandingTextField';
 export { default as CustomMuiDialog } from './components/dialogs/custom-mui-dialog';
 export { default as DescriptionModificationDialog } from './components/dialogs/description-modification-dialog';
+export { default as ModifyElementSelection } from './components/dialogs/modify-element-selection';
 export {
     genHelperPreviousValue,
     genHelperError,

@@ -83,6 +83,10 @@ export interface FilterCreationDialogProps {
         elementTypes?: string[],
         equipmentTypes?: string[]
     ) => Promise<ElementAttributes[]>;
+    sourceFilterForExplicitNamingConversion?: {
+        id: UUID;
+        equipmentType: string;
+    };
 }
 
 const FilterCreationDialog: FunctionComponent<FilterCreationDialogProps> = ({
@@ -95,6 +99,7 @@ const FilterCreationDialog: FunctionComponent<FilterCreationDialogProps> = ({
     fetchDirectoryContent,
     fetchRootFolders,
     fetchElementsInfos,
+    sourceFilterForExplicitNamingConversion = undefined,
 }) => {
     const { snackError } = useSnackMessage();
 
@@ -192,6 +197,9 @@ const FilterCreationDialog: FunctionComponent<FilterCreationDialogProps> = ({
                     creation
                     activeDirectory={activeDirectory}
                     elementExists={elementExists}
+                    sourceFilterForExplicitNamingConversion={
+                        sourceFilterForExplicitNamingConversion
+                    }
                 />
             </FilterContext.Provider>
         </CustomMuiDialog>

@@ -9,7 +9,7 @@ import { UniqueNameInput } from '../inputs/react-hook-form/unique-name-input.tsx
 import { FieldConstants } from '../../utils/field-constants';
 import CriteriaBasedFilterForm from './criteria-based/criteria-based-filter-form';
 import ExplicitNamingFilterForm from './explicit-naming/explicit-naming-filter-form';
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useEffect } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import ExpertFilterForm from './expert/expert-filter-form';
 import { Box, Grid } from '@mui/material';
@@ -24,6 +24,10 @@ interface FilterFormProps {
     creation?: boolean;
     activeDirectory?: UUID;
     elementExists?: elementExistsType;
+    sourceFilterForExplicitNamingConversion?: {
+        id: UUID;
+        equipmentType: string;
+    };
 }
 
 export const FilterForm: FunctionComponent<FilterFormProps> = (props) => {
@@ -38,6 +42,12 @@ export const FilterForm: FunctionComponent<FilterFormProps> = (props) => {
     ) => {
         setValue(FieldConstants.FILTER_TYPE, value);
     };
+
+    useEffect(() => {
+        if (props.sourceFilterForExplicitNamingConversion) {
+            setValue(FieldConstants.FILTER_TYPE, FilterType.EXPLICIT_NAMING.id);
+        }
+    }, [props.sourceFilterForExplicitNamingConversion, setValue]);
 
     return (
         <Grid container spacing={2}>
@@ -63,20 +73,26 @@ export const FilterForm: FunctionComponent<FilterFormProps> = (props) => {
                             />
                         </Box>
                     </Grid>
-                    <Grid item>
-                        <RadioInput
-                            name={FieldConstants.FILTER_TYPE}
-                            options={Object.values(FilterType)}
-                            formProps={{ onChange: handleChange }} // need to override this in order to do not activate the validate button when changing the filter type
-                        />
-                    </Grid>
+                    {!props.sourceFilterForExplicitNamingConversion && (
+                        <Grid item>
+                            <RadioInput
+                                name={FieldConstants.FILTER_TYPE}
+                                options={Object.values(FilterType)}
+                                formProps={{ onChange: handleChange }} // need to override this in order to do not activate the validate button when changing the filter type
+                            />
+                        </Grid>
+                    )}
                 </>
             )}
             {filterType === FilterType.CRITERIA_BASED.id && (
                 <CriteriaBasedFilterForm />
             )}
             {filterType === FilterType.EXPLICIT_NAMING.id && (
-                <ExplicitNamingFilterForm />
+                <ExplicitNamingFilterForm
+                    sourceFilterForExplicitNamingConversion={
+                        props.sourceFilterForExplicitNamingConversion
+                    }
+                />
             )}
             {filterType === FilterType.EXPERT.id && <ExpertFilterForm />}
         </Grid>
