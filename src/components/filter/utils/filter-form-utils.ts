@@ -81,7 +81,7 @@ type FormField = {
         name: string;
     };
 };
-type FormEquipment = {
+export type FormEquipment = {
     id: string;
     label: string;
     fields: FormField[];
