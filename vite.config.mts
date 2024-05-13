@@ -90,7 +90,7 @@ function reactVirtualized(): PluginOption {
                 import.meta.url
             );
             const file = reactVirtualizedFilePath.replace(
-                path.join('dist', 'commonjs', 'index.js'),
+                path.join('dist', 'commonjs', 'index.ts'),
                 path.join(
                     'dist',
                     'es',

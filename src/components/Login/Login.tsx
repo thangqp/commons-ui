@@ -11,23 +11,24 @@ import {
     Button,
     Container,
     Link,
+    Theme,
     Typography,
 } from '@mui/material';
 import { LockOutlined as LockOutlinedIcon } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
 
 const styles = {
-    paper: (theme) => ({
+    paper: (theme: Theme) => ({
         marginTop: theme.spacing(8),
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
     }),
-    avatar: (theme) => ({
+    avatar: (theme: Theme) => ({
         margin: theme.spacing(1),
         backgroundColor: theme.palette.secondary.main,
     }),
-    submit: (theme) => ({
+    submit: (theme: Theme) => ({
         margin: theme.spacing(3, 0, 2),
         borderRadius: '30px',
     }),
@@ -37,7 +38,12 @@ const styles = {
     },
 };
 
-const Login = ({ onLoginClick, disabled }) => {
+interface LoginProps {
+    onLoginClick: () => void;
+    disabled: boolean;
+}
+
+const Login = ({ onLoginClick, disabled }: LoginProps) => {
     return (
         <Container component="main" maxWidth="xs">
             <Box sx={styles.paper}>

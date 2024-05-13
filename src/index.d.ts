@@ -109,7 +109,7 @@ export { useIntlRef } from './hooks/useIntlRef';
 export { default as SelectClearable } from './components/inputs/select-clearable';
 export { useCustomFormContext } from './components/inputs/react-hook-form/provider/use-custom-form-context';
 export { default as CustomFormProvider } from './components/inputs/react-hook-form/provider/custom-form-provider';
-export { default as SliderInput } from './components/inputs/react-hook-form/slider-input';
+export { default as SliderInput } from './components/inputs/react-hook-form/autocomplete-inputs/slider-input';
 export { default as TextFieldWithAdornment } from './components/inputs/react-hook-form/utils/text-field-with-adornment';
 export { default as SelectInput } from './components/inputs/react-hook-form/select-inputs/select-input';
 export { default as ErrorInput } from './components/inputs/react-hook-form/error-management/error-input';
@@ -144,7 +144,6 @@ export { UserManagerMock } from './utils/UserManagerMock';
 export {
     keyGenerator,
     areArrayElementsUnique,
-    mergeSx,
     isObjectEmpty,
 } from './utils/functions';
 
@@ -279,3 +278,5 @@ export {
     getCriteriaBasedFormData,
     getCriteriaBasedSchema,
 } from './components/filter/criteria-based/criteria-based-filter-utils';
+
+export { mergeSx } from './utils/styles';

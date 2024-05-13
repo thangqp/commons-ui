@@ -5,8 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { FunctionComponent } from 'react';
-import { FieldErrors, UseFormReturn } from 'react-hook-form';
+import React from 'react';
+import { FieldErrors, FieldValues, UseFormReturn } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 import {
     Dialog,
@@ -18,15 +18,13 @@ import {
 } from '@mui/material';
 import SubmitButton from '../inputs/react-hook-form/utils/submit-button';
 import CancelButton from '../inputs/react-hook-form/utils/cancel-button';
-import CustomFormProvider, {
-    MergedFormContextProps,
-} from '../inputs/react-hook-form/provider/custom-form-provider';
+import CustomFormProvider from '../inputs/react-hook-form/provider/custom-form-provider';
 import * as yup from 'yup';
 
-interface ICustomMuiDialog {
+interface ICustomMuiDialog<T extends FieldValues = FieldValues> {
     open: boolean;
-    formSchema: yup.AnySchema;
-    formMethods: UseFormReturn<any> | MergedFormContextProps;
+    formSchema: yup.Schema<T>;
+    formMethods: UseFormReturn<T>;
     onClose: (event: React.MouseEvent) => void;
     onSave: (data: any) => void;
     onValidationError?: (errors: FieldErrors) => void;
@@ -48,7 +46,7 @@ const styles = {
     },
 };
 
-const CustomMuiDialog: FunctionComponent<ICustomMuiDialog> = ({
+const CustomMuiDialog = <T extends FieldValues>({
     open,
     formSchema,
     formMethods,
@@ -61,7 +59,7 @@ const CustomMuiDialog: FunctionComponent<ICustomMuiDialog> = ({
     removeOptional = false,
     onCancel,
     children,
-}) => {
+}: ICustomMuiDialog<T>) => {
     const { handleSubmit } = formMethods;
 
     const handleCancel = (event: React.MouseEvent) => {

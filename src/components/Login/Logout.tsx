@@ -11,29 +11,35 @@ import {
     Button,
     Container,
     Link,
+    Theme,
     Typography,
 } from '@mui/material';
 import { LogoutOutlined as LogoutOutlinedIcon } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
 
 const styles = {
-    paper: (theme) => ({
+    paper: (theme: Theme) => ({
         marginTop: theme.spacing(8),
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
     }),
-    avatar: (theme) => ({
+    avatar: (theme: Theme) => ({
         margin: theme.spacing(1),
         backgroundColor: theme.palette.error.main,
     }),
-    submit: (theme) => ({
+    submit: (theme: Theme) => ({
         margin: theme.spacing(3, 0, 2),
         borderRadius: '30px',
     }),
 };
 
-const Logout = ({ onLogoutClick, disabled }) => {
+interface LogoutProps {
+    onLogoutClick: () => void;
+    disabled: boolean;
+}
+
+const Logout = ({ onLogoutClick, disabled }: LogoutProps) => {
     function Copyright() {
         return (
             <Typography variant="body2" color="textSecondary" align="center">

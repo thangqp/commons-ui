@@ -6,9 +6,10 @@
  */
 
 import { Box } from '@mui/material';
+import React from 'react';
 
 // component to display error message in the middle of dialog
-const MidFormError = ({ message }) => {
+const MidFormError = ({ message }: { message: string | React.ReactNode }) => {
     return (
         <Box
             sx={(theme) => ({

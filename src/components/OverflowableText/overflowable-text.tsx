@@ -4,10 +4,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { useCallback, useLayoutEffect, useRef, useState } from 'react';
-import { Box, Tooltip } from '@mui/material';
-import PropTypes from 'prop-types';
+import {
+    ReactElement,
+    useCallback,
+    useLayoutEffect,
+    useRef,
+    useState,
+} from 'react';
+import { Box, BoxProps, SxProps, Tooltip } from '@mui/material';
 import { styled } from '@mui/system';
+import { Style } from 'node:util';
 
 const overflowStyle = {
     overflow: {
@@ -23,9 +29,22 @@ const overflowStyle = {
     },
 };
 
+export interface OverflowableTextProps extends BoxProps {
+    text: ReactElement | string;
+    tooltipStyle?: Style;
+    tooltipSx?: SxProps;
+}
+
 export const OverflowableText = styled(
-    ({ text, tooltipStyle, tooltipSx, className, children, ...props }) => {
-        const element = useRef();
+    ({
+        text,
+        tooltipStyle,
+        tooltipSx,
+        className,
+        children,
+        ...props
+    }: OverflowableTextProps) => {
+        const element = useRef<HTMLHeadingElement>();
 
         const [overflowed, setOverflowed] = useState(false);
 
@@ -77,22 +96,5 @@ export const OverflowableText = styled(
         );
     }
 )({});
-
-OverflowableText.propTypes = {
-    children: PropTypes.array,
-    text: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.number,
-        PropTypes.node,
-    ]),
-    tooltipStyle: PropTypes.string,
-    tooltipSx: PropTypes.object,
-    sx: PropTypes.oneOfType([
-        PropTypes.object,
-        PropTypes.array,
-        PropTypes.func,
-    ]),
-    className: PropTypes.string,
-};
 
 export default OverflowableText;
