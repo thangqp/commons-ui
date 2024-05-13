@@ -5,4 +5,4 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 export { default } from './element-search-dialog';
-export { TagRenderer } from './tag-renderer.tsx';
+export { TagRenderer } from './tag-renderer';

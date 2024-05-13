@@ -7,7 +7,7 @@
 import OverflowableText from '../OverflowableText';
 import clsx from 'clsx';
 import { EQUIPMENT_TYPE, EquipmentType } from '../../utils/EquipmentType';
-import { mergeSx } from '../../utils/styles.ts';
+import { mergeSx } from '../../utils/styles';
 import { SxProps } from '@mui/material';
 
 interface TagRendererProps {

@@ -17,7 +17,7 @@ import {
     getCriteriaBasedFormData,
     getCriteriaBasedSchema,
 } from './criteria-based-filter-utils';
-import { FILTER_EQUIPMENTS } from '../utils/filter-form-utils.ts';
+import { FILTER_EQUIPMENTS } from '../utils/filter-form-utils';
 
 export const criteriaBasedFilterSchema = getCriteriaBasedSchema({
     [FieldConstants.ENERGY_SOURCE]: yup.string().nullable(),

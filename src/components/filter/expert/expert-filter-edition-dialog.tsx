@@ -23,7 +23,7 @@ import { MergedFormContextProps } from '../../inputs/react-hook-form/provider/cu
 import { FilterContext } from '../filter-context';
 import { FilterType } from '../constants/filter-constants';
 import { FetchStatus } from '../../../utils/FetchStatus';
-import { ElementAttributes } from '../../../utils/types.ts';
+import { ElementAttributes } from '../../../utils/types';
 
 const formSchema = yup
     .object()

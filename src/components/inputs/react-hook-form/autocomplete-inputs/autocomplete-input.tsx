@@ -17,11 +17,11 @@ import {
     genHelperPreviousValue,
     identity,
     isFieldRequired,
-} from '../utils/functions.tsx';
-import FieldLabel from '../utils/field-label.tsx';
-import { useCustomFormContext } from '../provider/use-custom-form-context.ts';
+} from '../utils/functions';
+import FieldLabel from '../utils/field-label';
+import { useCustomFormContext } from '../provider/use-custom-form-context';
 import { FunctionComponent } from 'react';
-import { Option } from '../../../../utils/types.ts';
+import { Option } from '../../../../utils/types';
 
 export interface AutocompleteInputProps
     extends Omit<
