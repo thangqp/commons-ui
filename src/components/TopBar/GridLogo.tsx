@@ -5,10 +5,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Typography } from '@mui/material';
+import { Box, SxProps, Typography } from '@mui/material';
 import { BrokenImage } from '@mui/icons-material';
 import { mergeSx } from '../../utils/styles';
-import PropTypes from 'prop-types';
+import { ReactNode } from 'react';
 
 const styles = {
     logo: {
@@ -26,7 +26,16 @@ const styles = {
     },
 };
 
-const GridLogo = ({ appLogo, appName, appColor, onClick }) => {
+export interface GridLogoProps extends Omit<LogoTextProps, 'style'> {
+    appLogo: ReactNode;
+}
+
+const GridLogo = ({
+    appLogo,
+    appName,
+    appColor,
+    onClick,
+}: Partial<GridLogoProps>) => {
     return (
         <>
             <Box
@@ -47,14 +56,19 @@ const GridLogo = ({ appLogo, appName, appColor, onClick }) => {
 
 export default GridLogo;
 
-GridLogo.propTypes = {
-    appLogo: PropTypes.element,
-    appName: PropTypes.string.isRequired,
-    appColor: PropTypes.string.isRequired,
-    onClick: PropTypes.func,
-};
+export interface LogoTextProps {
+    appName: string;
+    appColor: string;
+    style: SxProps;
+    onClick: () => void;
+}
 
-export const LogoText = ({ appName, appColor, style, onClick }) => {
+export const LogoText = ({
+    appName,
+    appColor,
+    style,
+    onClick,
+}: Partial<LogoTextProps>) => {
     return (
         <Typography
             variant="h4"
@@ -65,11 +79,4 @@ export const LogoText = ({ appName, appColor, style, onClick }) => {
             <span style={{ color: appColor }}>{appName}</span>
         </Typography>
     );
-};
-
-LogoText.propTypes = {
-    appName: PropTypes.string.isRequired,
-    appColor: PropTypes.string.isRequired,
-    style: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
-    onClick: PropTypes.func,
 };

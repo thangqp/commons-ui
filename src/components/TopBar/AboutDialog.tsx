@@ -22,6 +22,7 @@ import {
     Fade,
     Grid,
     Stack,
+    Theme,
     Tooltip,
     tooltipClasses,
     Typography,
@@ -40,7 +41,6 @@ import {
     WidgetsOutlined,
 } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
-import PropTypes from 'prop-types';
 import { LogoText } from './GridLogo';
 
 const styles = {
@@ -60,7 +60,7 @@ const styles = {
         textAlign: 'center',
         marginTop: 0,
     },
-    versionField: (isUnknown) =>
+    versionField: (isUnknown: boolean) =>
         isUnknown
             ? {
                   fontSize: '1.5em',
@@ -76,14 +76,19 @@ const styles = {
     },
 };
 
-function getGlobalVersion(fnPromise, type, setData, setLoader) {
+function getGlobalVersion(
+    fnPromise: () => Promise<string>,
+    type: string,
+    setData: (data: string | null) => void,
+    setLoader?: (loader: boolean) => void
+) {
     if (fnPromise) {
         console.debug('Getting', type, 'global version...');
         return new Promise((resolve, reject) => {
             if (setLoader) {
                 setLoader(true);
             }
-            resolve();
+            resolve(null);
         })
             .then(() => fnPromise())
             .then(
@@ -116,12 +121,36 @@ const moduleTypeSort = {
     server: 10,
     other: 20,
 };
-function compareModules(c1, c2) {
+
+type ModuleType = keyof typeof moduleTypeSort;
+
+type ModuleDefinition = { name: string; type: ModuleType };
+
+function compareModules(c1: ModuleDefinition, c2: ModuleDefinition) {
     //sort by type then by name
     return (
-        [moduleTypeSort[c1.type] || 100] - [moduleTypeSort[c2.type] || 100] ||
+        (moduleTypeSort[c1.type] || 100) - (moduleTypeSort[c2.type] || 100) ||
         (c1.name || '').localeCompare(c2.name || '')
     );
+}
+
+type GridSuiteModule = {
+    name: string;
+    type: ModuleType;
+    version: string;
+    gitTag: string;
+    license: string;
+};
+
+export interface AboutDialogProps {
+    open: boolean;
+    onClose: () => void;
+    globalVersionPromise: () => Promise<string>;
+    appName: string;
+    appVersion: string;
+    appGitTag: string;
+    appLicense: string;
+    additionalModulesPromise: () => Promise<GridSuiteModule[]>;
 }
 
 const AboutDialog = ({
@@ -133,14 +162,15 @@ const AboutDialog = ({
     appGitTag,
     appLicense,
     additionalModulesPromise,
-}) => {
+}: AboutDialogProps) => {
     const theme = useTheme();
     const [isRefreshing, setRefreshState] = useState(false);
     const [loadingGlobalVersion, setLoadingGlobalVersion] = useState(false);
     const [showGlobalVersion, setShowGlobalVersion] = useState(false);
 
     /* We want to get the initial version once at first render to detect later a new deploy */
-    const [initialGlobalVersion, setInitialGlobalVersion] = useState(undefined);
+    const [initialGlobalVersion, setInitialGlobalVersion] =
+        useState<unknown>(undefined);
     useEffect(() => {
         if (initialGlobalVersion === undefined) {
             getGlobalVersion(
@@ -152,7 +182,9 @@ const AboutDialog = ({
         }
     }, [globalVersionPromise, initialGlobalVersion]);
 
-    const [actualGlobalVersion, setActualGlobalVersion] = useState(null);
+    const [actualGlobalVersion, setActualGlobalVersion] = useState<
+        string | null
+    >(null);
     useEffect(() => {
         if (open) {
             getGlobalVersion(
@@ -169,10 +201,10 @@ const AboutDialog = ({
 
     const [loadingAdditionalModules, setLoadingAdditionalModules] =
         useState(false);
-    const [modules, setModules] = useState(null);
+    const [modules, setModules] = useState<GridSuiteModule[] | null>(null);
     useEffect(() => {
         if (open) {
-            const currentApp = {
+            const currentApp: GridSuiteModule = {
                 name: `Grid${appName}`,
                 type: 'app',
                 version: appVersion,
@@ -286,7 +318,7 @@ const AboutDialog = ({
                                                 component="span"
                                                 sx={styles.versionField(
                                                     !loadingGlobalVersion &&
-                                                        actualGlobalVersion
+                                                        !!actualGlobalVersion
                                                 )}
                                             >
                                                 {actualGlobalVersion ||
@@ -393,17 +425,6 @@ const AboutDialog = ({
 
 export default AboutDialog;
 
-AboutDialog.propTypes = {
-    open: PropTypes.bool.isRequired,
-    onClose: PropTypes.func,
-    appName: PropTypes.string.isRequired,
-    appVersion: PropTypes.string,
-    appGitTag: PropTypes.string,
-    appLicense: PropTypes.string,
-    globalVersionPromise: PropTypes.func,
-    additionalModulesPromise: PropTypes.func,
-};
-
 const moduleStyles = {
     icons: {
         flexGrow: 0,
@@ -416,7 +437,7 @@ const moduleStyles = {
         alignSelf: 'flex-end',
         flexShrink: 0,
     },
-    tooltip: (theme) => ({
+    tooltip: (theme: Theme) => ({
         [`& .${tooltipClasses.tooltip}`]: {
             border: '1px solid #dadde9',
             boxShadow: theme.shadows[1],
@@ -457,12 +478,12 @@ const ModuleTypesIcons = {
     other: <QuestionMark sx={moduleStyles.icons} fontSize="small" />,
 };
 
-function insensitiveCaseCompare(str, obj) {
+function insensitiveCaseCompare(str: string, obj: string) {
     return str.localeCompare(obj, undefined, {
         sensitivity: 'base',
     });
 }
-function tooltipTypeLabel(type) {
+function tooltipTypeLabel(type: string) {
     if (insensitiveCaseCompare('app', type) === 0) {
         return 'about-dialog/module-tooltip-app';
     } else if (insensitiveCaseCompare('server', type) === 0) {
@@ -472,7 +493,7 @@ function tooltipTypeLabel(type) {
     }
 }
 
-const Module = ({ type, name, version, gitTag, license }) => {
+const Module = ({ type, name, version, gitTag }: GridSuiteModule) => {
     return (
         <Grid
             item
@@ -550,11 +571,4 @@ const Module = ({ type, name, version, gitTag, license }) => {
             </Tooltip>
         </Grid>
     );
-};
-Module.propTypes = {
-    type: PropTypes.string,
-    name: PropTypes.string,
-    version: PropTypes.string,
-    gitTag: PropTypes.string,
-    license: PropTypes.string,
 };
