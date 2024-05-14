@@ -4,16 +4,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+import { User } from 'oidc-client';
 
 export const USER = 'USER';
 
-export function setLoggedUser(user: string) {
+export function setLoggedUser(user: User | null) {
     return { type: USER, user: user };
 }
 
 export const SIGNIN_CALLBACK_ERROR = 'SIGNIN_CALLBACK_ERROR';
 
-export function setSignInCallbackError(signInCallbackError: string) {
+export function setSignInCallbackError(signInCallbackError: string | null) {
     return {
         type: SIGNIN_CALLBACK_ERROR,
         signInCallbackError: signInCallbackError,
@@ -23,7 +24,7 @@ export function setSignInCallbackError(signInCallbackError: string) {
 export const UNAUTHORIZED_USER_INFO = 'UNAUTHORIZED_USER_INFO';
 
 export function setUnauthorizedUserInfo(
-    userName: string,
+    userName: string | undefined,
     unauthorizedUserInfo: string
 ) {
     return {
@@ -37,7 +38,10 @@ export function setUnauthorizedUserInfo(
 
 export const LOGOUT_ERROR = 'LOGOUT_ERROR';
 
-export function setLogoutError(userName: string, logoutError: string) {
+export function setLogoutError(
+    userName: string | undefined,
+    logoutError: { error: Error }
+) {
     return {
         type: LOGOUT_ERROR,
         authenticationRouterError: {
@@ -50,8 +54,8 @@ export function setLogoutError(userName: string, logoutError: string) {
 export const USER_VALIDATION_ERROR = 'USER_VALIDATION_ERROR';
 
 export function setUserValidationError(
-    userName: string,
-    userValidationError: string
+    userName: string | undefined,
+    userValidationError: { error: Error }
 ) {
     return {
         type: USER_VALIDATION_ERROR,
