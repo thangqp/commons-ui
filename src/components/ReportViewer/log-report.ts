@@ -5,12 +5,21 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import LogReportItem from './log-report-item';
+import LogReportItem from './log-report-item.ts';
 
 import { v4 as uuid4 } from 'uuid';
+import { Report } from './report.type';
+import { LogSeverities, LogSeverity } from './log-severity.ts';
 
 export default class LogReport {
-    constructor(jsonReporter, parentReportId) {
+    id: string;
+    key: string;
+    title: string;
+    subReports: LogReport[];
+    logs: LogReportItem[];
+    parentReportId?: string;
+
+    constructor(jsonReporter: Report, parentReportId?: string) {
         this.id = uuid4();
         this.key = jsonReporter.taskKey;
         this.title = LogReportItem.resolveTemplateMessage(
@@ -39,13 +48,13 @@ export default class LogReport {
         return this.logs;
     }
 
-    getAllLogs() {
+    getAllLogs(): LogReportItem[] {
         return this.getLogs().concat(
             this.getSubReports().flatMap((r) => r.getAllLogs())
         );
     }
 
-    init(jsonReporter) {
+    init(jsonReporter: Report) {
         jsonReporter.subReporters.map((value) =>
             this.subReports.push(new LogReport(value, this.id))
         );
@@ -54,8 +63,9 @@ export default class LogReport {
         );
     }
 
-    getHighestSeverity(currentSeverity = LogReportItem.SEVERITY.UNKNOWN) {
-        let reduceFct = (p, c) => (p.level < c.level ? c : p);
+    getHighestSeverity(currentSeverity = LogSeverities.UNKNOWN): LogSeverity {
+        let reduceFct = (p: LogSeverity, c: LogSeverity) =>
+            p.level < c.level ? c : p;
 
         let highestSeverity = this.getLogs()
             .map((r) => r.getSeverity())

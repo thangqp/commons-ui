@@ -4,10 +4,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { useMemo, useState } from 'react';
+import { ChangeEvent, useMemo, useState } from 'react';
 import { Box, IconButton } from '@mui/material';
 import { Menu as MenuIcon } from '@mui/icons-material';
-import { MultiSelectList } from './multi-select-list';
+import { MultiSelectList } from './multi-select-list.tsx';
 
 const styles = {
     notificationDot: {
@@ -28,6 +28,13 @@ const styles = {
     },
 };
 
+export interface FilterButtonProps {
+    selectedItems: Record<string, boolean>;
+    setSelectedItems: (
+        func: (items: Record<string, boolean>) => Record<string, boolean>
+    ) => void;
+}
+
 /**
  * FilterButton wraps a MultiSelectList with a button which has a visual indication to indicate when the user alters the default state of the list
  *
@@ -35,11 +42,14 @@ const styles = {
  * @param {Function} setSelectedItems - Setter needed to update the list underlying data
  */
 
-export const FilterButton = ({ selectedItems, setSelectedItems }) => {
+export const FilterButton = ({
+    selectedItems,
+    setSelectedItems,
+}: FilterButtonProps) => {
     const [initialState] = useState(selectedItems);
-    const [anchorEl, setAnchorEl] = useState();
+    const [anchorEl, setAnchorEl] = useState<any>(null);
 
-    const handleClick = (event) => {
+    const handleClick = (event: any) => {
         setAnchorEl(event.currentTarget);
     };
 
@@ -47,7 +57,7 @@ export const FilterButton = ({ selectedItems, setSelectedItems }) => {
         setAnchorEl(null);
     };
 
-    const handleChange = (event) => {
+    const handleChange = (event: ChangeEvent<any>) => {
         setSelectedItems((previousSelection) => {
             return {
                 ...previousSelection,

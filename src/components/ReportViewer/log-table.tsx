@@ -6,10 +6,11 @@
  */
 import { memo, useCallback, useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
-import { TableCell, useTheme } from '@mui/material';
+import { TableCell, Theme } from '@mui/material';
 import { styled } from '@mui/system';
 import MuiVirtualizedTable from '../MuiVirtualizedTable';
 import { FilterButton } from './filter-button';
+import LogReportItem from './log-report-item.ts';
 
 const SEVERITY_COLUMN_FIXED_WIDTH = 115;
 
@@ -19,7 +20,7 @@ const styles = {
         alignItems: 'center',
         boxSizing: 'border-box',
     },
-    table: (theme) => ({
+    table: (theme: Theme) => ({
         // temporary right-to-left patch, waiting for
         // https://github.com/bvaughn/react-virtualized/issues/454
         '& .ReactVirtualized__Table__headerRow': {
@@ -33,19 +34,26 @@ const styles = {
 
 const VirtualizedTable = styled(MuiVirtualizedTable)(styles);
 
+export interface LogTableProps {
+    logs: LogReportItem[];
+    onRowClick: (data: any) => void;
+    selectedSeverity: Record<string, boolean>;
+    setSelectedSeverity: (
+        func: (items: Record<string, boolean>) => Record<string, boolean>
+    ) => void;
+}
+
 const LogTable = ({
     logs,
     onRowClick,
     selectedSeverity,
     setSelectedSeverity,
-}) => {
+}: LogTableProps) => {
     const intl = useIntl();
 
-    const theme = useTheme();
+    const [_, setSelectedRowIndex] = useState(-1);
 
-    const [selectedRowIndex, setSelectedRowIndex] = useState(-1);
-
-    const severityCellRender = (cellData) => {
+    const severityCellRender = (cellData: any) => {
         return (
             <TableCell
                 component="div"
@@ -105,20 +113,9 @@ const LogTable = ({
         });
     };
 
-    const handleRowClick = (event) => {
-        setSelectedRowIndex(event.index);
-        onRowClick(event.rowData);
-    };
-
-    const rowStyleFormat = (row) => {
-        if (row.index < 0) {
-            return;
-        }
-        if (selectedRowIndex === row.index) {
-            return {
-                backgroundColor: theme.palette.action.selected,
-            };
-        }
+    const handleRowClick = (row: { index: number; rowData: unknown }) => {
+        setSelectedRowIndex(row.index);
+        onRowClick(row.rowData);
     };
 
     useEffect(() => {
@@ -126,7 +123,7 @@ const LogTable = ({
     }, [logs]);
 
     const filter = useCallback(
-        (row) => {
+        (row: { severity: any }) => {
             return (
                 row.severity &&
                 Object.entries(selectedSeverity).some(
@@ -144,7 +141,6 @@ const LogTable = ({
             rows={generateTableRows()}
             sortable={false}
             onRowClick={handleRowClick}
-            rowStyle={rowStyleFormat}
             filter={filter}
         />
     );

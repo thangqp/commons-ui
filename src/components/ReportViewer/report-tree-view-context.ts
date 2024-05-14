@@ -7,7 +7,11 @@
 
 import { createContext } from 'react';
 
-const ReportTreeViewContext = createContext({});
+export interface ReportTreeViewContextProps {
+    isHighlighted?: (nodeId: string) => boolean;
+}
+
+const ReportTreeViewContext = createContext<ReportTreeViewContextProps>({});
 
 if (process.env.NODE_ENV !== 'production') {
     ReportTreeViewContext.displayName = 'ReportTreeViewContext';
