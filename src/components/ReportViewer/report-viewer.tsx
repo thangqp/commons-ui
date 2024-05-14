@@ -42,7 +42,7 @@ const styles = {
 
 export interface ReportViewerProps {
     jsonReport: Report;
-    maxSubReports: number;
+    maxSubReports?: number;
 }
 
 export default function ReportViewer({
