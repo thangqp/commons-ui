@@ -6,7 +6,7 @@
  */
 import { memo, useCallback, useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
-import { TableCell, Theme } from '@mui/material';
+import { TableCell, Theme, useTheme } from '@mui/material';
 import { styled } from '@mui/system';
 import MuiVirtualizedTable from '../MuiVirtualizedTable';
 import { FilterButton } from './filter-button';
@@ -51,7 +51,9 @@ const LogTable = ({
 }: LogTableProps) => {
     const intl = useIntl();
 
-    const [_, setSelectedRowIndex] = useState(-1);
+    const theme = useTheme();
+
+    const [selectedRowIndex, setSelectedRowIndex] = useState(-1);
 
     const severityCellRender = (cellData: any) => {
         return (
@@ -118,6 +120,17 @@ const LogTable = ({
         onRowClick(row.rowData);
     };
 
+    const rowStyleFormat = (row: { index: number }) => {
+        if (row.index < 0) {
+            return;
+        }
+        if (selectedRowIndex === row.index) {
+            return {
+                backgroundColor: theme.palette.action.selected,
+            };
+        }
+    };
+
     useEffect(() => {
         setSelectedRowIndex(-1);
     }, [logs]);
@@ -141,6 +154,9 @@ const LogTable = ({
             rows={generateTableRows()}
             sortable={false}
             onRowClick={handleRowClick}
+            // rowStyle is not recognized as a property should we delete it ?
+            //@ts-ignore
+            rowStyle={rowStyleFormat}
             filter={filter}
         />
     );
