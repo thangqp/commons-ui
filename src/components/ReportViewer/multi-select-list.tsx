@@ -5,7 +5,14 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Checkbox, FormControlLabel, Menu, MenuItem } from '@mui/material';
+import {
+    Checkbox,
+    CheckboxProps,
+    FormControlLabel,
+    Menu,
+    MenuItem,
+    MenuProps,
+} from '@mui/material';
 
 const styles = {
     label: {
@@ -16,6 +23,13 @@ const styles = {
         padding: '0 10px 0 0',
     },
 };
+
+export interface MultiSelectListProps {
+    selectedItems: Record<string, boolean>;
+    handleChange: CheckboxProps['onChange'];
+    handleClose: () => void;
+    anchor: MenuProps['anchorEl'];
+}
 
 /**
  * MultiSelectList allows to manipulate an object where each keys are associated to a boolean in order to determine which are the ones the user wants to select
@@ -31,7 +45,7 @@ export const MultiSelectList = ({
     handleChange,
     handleClose,
     anchor,
-}) => {
+}: MultiSelectListProps) => {
     const open = Boolean(anchor);
     return (
         <Menu open={open} onClose={handleClose} anchorEl={anchor}>

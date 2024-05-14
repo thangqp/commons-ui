@@ -5,18 +5,28 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import {
+    ReactNode,
+    SyntheticEvent,
+    useCallback,
+    useEffect,
+    useMemo,
+    useRef,
+    useState,
+} from 'react';
 import {
     ArrowDropDown as ArrowDropDownIcon,
     ArrowRight as ArrowRightIcon,
 } from '@mui/icons-material';
-import ReportItem from './report-item';
-import LogReport from './log-report';
+import ReportItem from './report-item.tsx';
+import LogReport from './log-report.ts';
 import { Grid } from '@mui/material';
-import LogTable from './log-table';
-import ReportTreeViewContext from './report-tree-view-context';
-import LogReportItem from './log-report-item';
+import LogTable from './log-table.tsx';
+import ReportTreeViewContext from './report-tree-view-context.ts';
+import LogReportItem from './log-report-item.ts';
 import { TreeView } from '@mui/x-tree-view';
+import { Report } from './report.type.ts';
+import { LogSeverities } from './log-severity.ts';
 
 const MAX_SUB_REPORTS = 500;
 
@@ -30,23 +40,30 @@ const styles = {
     },
 };
 
+export interface ReportViewerProps {
+    jsonReport: Report;
+    maxSubReports?: number;
+}
+
 export default function ReportViewer({
     jsonReport,
     maxSubReports = MAX_SUB_REPORTS,
-}) {
-    const [selectedNode, setSelectedNode] = useState(null);
-    const [expandedNodes, setExpandedNodes] = useState([]);
-    const [logs, setLogs] = useState(null);
+}: ReportViewerProps) {
+    const [selectedNode, setSelectedNode] = useState<string | null>(null);
+    const [expandedNodes, setExpandedNodes] = useState<string[]>([]);
+    const [logs, setLogs] = useState<LogReportItem[]>([]);
 
-    const [highlightedReportId, setHighlightedReportId] = useState();
+    const [highlightedReportId, setHighlightedReportId] = useState<
+        string | null
+    >();
 
-    const rootReport = useRef(null);
-    const allReports = useRef({});
-    const treeView = useRef(null);
+    const rootReport = useRef<LogReport | null>(null);
+    const allReports = useRef<Record<string, LogReport>>({});
+    const treeView = useRef<ReactNode | null>(null);
 
     const defaultSeverityFilter = useMemo(() => {
-        const filterConfig = {};
-        Object.values(LogReportItem.SEVERITY).forEach((severity) => {
+        const filterConfig: Record<string, boolean> = {};
+        Object.values(LogSeverities).forEach((severity) => {
             filterConfig[severity.name] = true;
         });
         return filterConfig;
@@ -57,7 +74,7 @@ export default function ReportViewer({
     );
 
     const createReporterItem = useCallback(
-        (logReport) => {
+        (logReport: LogReport) => {
             allReports.current[logReport.getId()] = logReport;
             if (logReport.getSubReports().length > maxSubReports) {
                 console.warn(
@@ -94,19 +111,21 @@ export default function ReportViewer({
         setLogs(rootReport.current.getAllLogs());
     }, [jsonReport, createReporterItem]);
 
-    const handleToggleNode = (event, nodeIds) => {
+    const handleToggleNode = (event: SyntheticEvent, nodeIds: string[]) => {
         event.persist();
+        //@ts-ignore
+        // With SyntheticEvent target is an EventTarget that does not have the 'closest' method so this shouldn't work
         let iconClicked = event.target.closest('.MuiTreeItem-iconContainer');
         if (iconClicked) {
             setExpandedNodes(nodeIds);
         }
     };
 
-    const handleSelectNode = (event, nodeId) => {
+    const handleSelectNode = (event: SyntheticEvent, nodeId: string) => {
         selectNode(nodeId);
     };
 
-    const selectNode = (nodeId) => {
+    const selectNode = (nodeId: string) => {
         if (selectedNode !== nodeId) {
             setSelectedNode(nodeId);
             setLogs(allReports.current[nodeId].getAllLogs());
@@ -117,22 +136,25 @@ export default function ReportViewer({
     // The MUI TreeView/TreeItems use useMemo on our items, so it's important to avoid changing the context
     const isHighlighted = useMemo(
         () => ({
-            isHighlighted: (reportId) => highlightedReportId === reportId,
+            isHighlighted: (reportId: string) =>
+                highlightedReportId === reportId,
         }),
         [highlightedReportId]
     );
 
-    const onRowClick = (data) => {
+    const onRowClick = (data: LogReportItem) => {
         setExpandedNodes((previouslyExpandedNodes) => {
             let nodesToExpand = [];
             let reportId = data.reportId;
             while (allReports.current[reportId]?.parentReportId) {
                 let parentReportId =
                     allReports.current[reportId].parentReportId;
-                if (!previouslyExpandedNodes.includes(parentReportId)) {
-                    nodesToExpand.push(parentReportId);
+                if (parentReportId !== undefined) {
+                    if (!previouslyExpandedNodes.includes(parentReportId)) {
+                        nodesToExpand.push(parentReportId);
+                    }
+                    reportId = parentReportId;
                 }
-                reportId = parentReportId;
             }
             if (nodesToExpand.length > 0) {
                 return nodesToExpand.concat(previouslyExpandedNodes);

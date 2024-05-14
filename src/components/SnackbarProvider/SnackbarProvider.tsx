@@ -5,26 +5,26 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { forwardRef, useRef } from 'react';
+import { useRef } from 'react';
 import { Button } from '@mui/material';
 
-import { SnackbarProvider as OrigSnackbarProvider } from 'notistack';
+import {
+    SnackbarProvider as OrigSnackbarProvider,
+    SnackbarProviderProps,
+} from 'notistack';
 
 /* A wrapper around notistack's SnackbarProvider that provides defaults props */
-const SnackbarProvider = forwardRef((props, ref) => {
-    // create our own ref and use it if the parent
-    // did not create a ref for us.
-    const innerRef = useRef();
-    const notistackRef = ref || innerRef;
+const SnackbarProvider = (props: SnackbarProviderProps) => {
+    const ref = useRef<OrigSnackbarProvider>(null);
 
     return (
         <OrigSnackbarProvider
-            ref={notistackRef}
+            ref={ref}
             anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
             hideIconVariant={true}
             action={(key) => (
                 <Button
-                    onClick={() => notistackRef.current.closeSnackbar(key)}
+                    onClick={() => ref.current?.closeSnackbar(key)}
                     style={{ color: '#fff', fontSize: '20px' }}
                 >
                     ✖
@@ -33,6 +33,6 @@ const SnackbarProvider = forwardRef((props, ref) => {
             {...props}
         />
     );
-});
+};
 
 export default SnackbarProvider;

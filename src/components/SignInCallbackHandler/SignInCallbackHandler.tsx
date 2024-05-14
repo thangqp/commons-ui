@@ -6,8 +6,17 @@
  */
 
 import { useEffect } from 'react';
+import { UserManager } from 'oidc-client';
 
-const SignInCallbackHandler = ({ userManager, handleSignInCallback }) => {
+export interface SignInCallbackHandlerProps {
+    userManager: UserManager;
+    handleSignInCallback: () => void;
+}
+
+const SignInCallbackHandler = ({
+    userManager,
+    handleSignInCallback,
+}: SignInCallbackHandlerProps) => {
     useEffect(() => {
         if (userManager !== null) {
             handleSignInCallback();
