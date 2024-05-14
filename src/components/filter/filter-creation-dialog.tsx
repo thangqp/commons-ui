@@ -34,11 +34,12 @@ import {
 import { yupResolver } from '@hookform/resolvers/yup';
 import { elementExistsType } from './criteria-based/criteria-based-filter-edition-dialog';
 import { UUID } from 'crypto';
-import { StudyMetadata } from '../../hooks/predefined-properties-hook.ts';
+import { MergedFormContextProps } from '../inputs/react-hook-form/provider/custom-form-provider';
+import { StudyMetadata } from '../../hooks/predefined-properties-hook';
 
 import { FilterContext } from './filter-context';
 import { FilterType } from './constants/filter-constants';
-import { ElementAttributes } from '../../utils/types.ts';
+import { ElementAttributes } from '../../utils/types';
 
 const emptyFormData = {
     [FieldConstants.NAME]: '',
@@ -107,10 +108,13 @@ const FilterCreationDialog: FunctionComponent<FilterCreationDialogProps> = ({
 }) => {
     const { snackError } = useSnackMessage();
 
-    const formMethods = useForm({
-        defaultValues: emptyFormData,
-        resolver: yupResolver(formSchema) as unknown as Resolver,
-    });
+    const formMethods = {
+        ...useForm({
+            defaultValues: emptyFormData,
+            resolver: yupResolver(formSchema) as unknown as Resolver,
+        }),
+        language: language,
+    } as MergedFormContextProps;
 
     const {
         formState: { errors },
@@ -192,7 +196,6 @@ const FilterCreationDialog: FunctionComponent<FilterCreationDialogProps> = ({
             titleId={'createNewFilter'}
             removeOptional={true}
             disabledSave={!!nameError || !!isValidating}
-            language={language}
         >
             <FilterContext.Provider
                 value={{

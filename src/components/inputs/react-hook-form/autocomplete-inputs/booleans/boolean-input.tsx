@@ -5,22 +5,28 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useCallback } from 'react';
-import PropTypes from 'prop-types';
+import { ChangeEvent, ReactElement, useCallback } from 'react';
 import { useIntl } from 'react-intl';
 import { FormControlLabel } from '@mui/material';
 import { useController } from 'react-hook-form';
 
-const BooleanInput = ({ name, label, formProps, Input }) => {
+interface BooleanInputProps {
+    name: string;
+    label: string;
+    formProps: any;
+    Input: (props: any) => ReactElement;
+}
+
+const BooleanInput = ({ name, label, formProps, Input }: BooleanInputProps) => {
     const {
         field: { onChange, value, ref },
-    } = useController({ name });
+    } = useController<Record<string, boolean>>({ name });
 
     const intl = useIntl();
 
     const handleChangeValue = useCallback(
-        (event) => {
-            onChange(event.target.checked);
+        (event: ChangeEvent<HTMLInputElement>) => {
+            onChange(event.target?.checked);
         },
         [onChange]
     );
@@ -28,7 +34,9 @@ const BooleanInput = ({ name, label, formProps, Input }) => {
     const CustomInput = (
         <Input
             checked={value}
-            onChange={(e) => handleChangeValue(e)}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                handleChangeValue(e)
+            }
             inputRef={ref}
             inputProps={{
                 'aria-label': 'primary checkbox',
@@ -47,13 +55,6 @@ const BooleanInput = ({ name, label, formProps, Input }) => {
     }
 
     return CustomInput;
-};
-
-BooleanInput.propTypes = {
-    name: PropTypes.string.isRequired,
-    label: PropTypes.string,
-    formProps: PropTypes.object,
-    Input: PropTypes.elementType.isRequired,
 };
 
 export default BooleanInput;

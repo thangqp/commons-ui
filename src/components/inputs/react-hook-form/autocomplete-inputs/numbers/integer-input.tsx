@@ -4,19 +4,20 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+import TextInput, { TextInputProps } from '../../text-input';
+import { isIntegerNumber } from '../../numbers/utils';
 
-import TextInput from '../text-input';
-import { isIntegerNumber } from './utils';
-
-const IntegerInput = (props) => {
-    const inputTransform = (value) => {
+const IntegerInput = (props: TextInputProps) => {
+    const inputTransform = (value: string | number | null) => {
         if ('-' === value) {
             return value;
         }
-        return value === null || isNaN(value) ? '' : value.toString();
+        return value === null || (typeof value === 'number' && isNaN(value))
+            ? ''
+            : value.toString();
     };
 
-    const outputTransform = (value) => {
+    const outputTransform = (value: string) => {
         if (value === '-') {
             return value;
         }
@@ -34,10 +35,6 @@ const IntegerInput = (props) => {
             {...props}
         />
     );
-};
-
-IntegerInput.propTypes = {
-    ...TextInput.propTypes,
 };
 
 export default IntegerInput;

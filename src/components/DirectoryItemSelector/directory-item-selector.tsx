@@ -22,7 +22,7 @@ import {
 } from '../TreeViewFinder/TreeViewFinder';
 import { UUID } from 'crypto';
 import { useSnackMessage } from '../../hooks/useSnackMessage';
-import { ElementAttributes } from '../../utils/types.ts';
+import { ElementAttributes } from '../../utils/types';
 
 const styles = {
     icon: (theme: Theme) => ({

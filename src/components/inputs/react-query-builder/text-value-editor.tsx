@@ -7,9 +7,9 @@
 
 import { ValueEditorProps } from 'react-querybuilder';
 import { MaterialValueEditor } from '@react-querybuilder/material';
-import useConvertValue from './use-convert-value.ts';
+import useConvertValue from './use-convert-value';
 import { Autocomplete, TextField } from '@mui/material';
-import useValid from './use-valid.ts';
+import useValid from './use-valid';
 import { FunctionComponent } from 'react';
 
 const TextValueEditor: FunctionComponent<ValueEditorProps> = (props) => {

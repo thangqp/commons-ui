@@ -6,15 +6,16 @@
  */
 import {
     Article as ArticleIcon,
-    PhotoLibrary as PhotoLibraryIcon,
-    Photo as PhotoIcon,
-    OfflineBolt as OfflineBoltIcon,
-    Settings as SettingsIcon,
     NoteAlt as NoteAltIcon,
+    OfflineBolt as OfflineBoltIcon,
+    Photo as PhotoIcon,
+    PhotoLibrary as PhotoLibraryIcon,
+    Settings as SettingsIcon,
 } from '@mui/icons-material';
 import { ElementType } from './ElementType';
+import { SxProps } from '@mui/material';
 
-export function getFileIcon(type, style) {
+export function getFileIcon(type: ElementType, style: SxProps) {
     switch (type) {
         case ElementType.STUDY:
             return <PhotoLibraryIcon sx={style} />;

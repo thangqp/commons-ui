@@ -6,14 +6,31 @@
  */
 import OverflowableText from '../OverflowableText';
 import clsx from 'clsx';
-import { EQUIPMENT_TYPE } from '../../utils/EquipmentType';
-import PropTypes from 'prop-types';
+import { EQUIPMENT_TYPE, EquipmentType } from '../../utils/EquipmentType';
 import { mergeSx } from '../../utils/styles';
+import { SxProps } from '@mui/material';
 
-export const TagRenderer = ({ props, element }) => {
+interface TagRendererProps {
+    props: {
+        classes?: {
+            equipmentTag?: string;
+            equipmentVlTag?: string;
+        };
+        styles?: {
+            equipmentTag?: SxProps;
+            equipmentVlTag?: SxProps;
+        };
+    };
+    element: {
+        type: EquipmentType;
+        voltageLevelLabel: string;
+    };
+}
+
+export const TagRenderer = ({ props, element }: TagRendererProps) => {
     if (
-        element.type !== EQUIPMENT_TYPE.SUBSTATION.name &&
-        element.type !== EQUIPMENT_TYPE.VOLTAGE_LEVEL.name
+        element.type !== EQUIPMENT_TYPE.SUBSTATION?.name &&
+        element.type !== EQUIPMENT_TYPE.VOLTAGE_LEVEL?.name
     ) {
         return (
             <OverflowableText
@@ -30,9 +47,4 @@ export const TagRenderer = ({ props, element }) => {
         );
     }
     return <></>;
-};
-
-TagRenderer.propTypes = {
-    element: PropTypes.object,
-    props: PropTypes.object,
 };

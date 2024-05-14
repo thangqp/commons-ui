@@ -5,11 +5,16 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import PropTypes from 'prop-types';
 import BooleanInput from './boolean-input';
-import { Switch } from '@mui/material';
+import { Switch, SwitchProps } from '@mui/material';
 
-const SwitchInput = ({ name, label, formProps }) => {
+interface SwitchInputProps {
+    name: string;
+    label: string;
+    formProps: SwitchProps;
+}
+
+const SwitchInput = ({ name, label, formProps }: SwitchInputProps) => {
     return (
         <BooleanInput
             name={name}
@@ -18,12 +23,6 @@ const SwitchInput = ({ name, label, formProps }) => {
             Input={Switch}
         />
     );
-};
-
-SwitchInput.propTypes = {
-    name: PropTypes.string.isRequired,
-    label: PropTypes.string,
-    formProps: PropTypes.object,
 };
 
 export default SwitchInput;

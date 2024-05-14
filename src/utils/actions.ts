@@ -7,13 +7,13 @@
 
 export const USER = 'USER';
 
-export function setLoggedUser(user) {
+export function setLoggedUser(user: string) {
     return { type: USER, user: user };
 }
 
 export const SIGNIN_CALLBACK_ERROR = 'SIGNIN_CALLBACK_ERROR';
 
-export function setSignInCallbackError(signInCallbackError) {
+export function setSignInCallbackError(signInCallbackError: string) {
     return {
         type: SIGNIN_CALLBACK_ERROR,
         signInCallbackError: signInCallbackError,
@@ -22,7 +22,10 @@ export function setSignInCallbackError(signInCallbackError) {
 
 export const UNAUTHORIZED_USER_INFO = 'UNAUTHORIZED_USER_INFO';
 
-export function setUnauthorizedUserInfo(userName, unauthorizedUserInfo) {
+export function setUnauthorizedUserInfo(
+    userName: string,
+    unauthorizedUserInfo: string
+) {
     return {
         type: UNAUTHORIZED_USER_INFO,
         authenticationRouterError: {
@@ -34,7 +37,7 @@ export function setUnauthorizedUserInfo(userName, unauthorizedUserInfo) {
 
 export const LOGOUT_ERROR = 'LOGOUT_ERROR';
 
-export function setLogoutError(userName, logoutError) {
+export function setLogoutError(userName: string, logoutError: string) {
     return {
         type: LOGOUT_ERROR,
         authenticationRouterError: {
@@ -46,7 +49,10 @@ export function setLogoutError(userName, logoutError) {
 
 export const USER_VALIDATION_ERROR = 'USER_VALIDATION_ERROR';
 
-export function setUserValidationError(userName, userValidationError) {
+export function setUserValidationError(
+    userName: string,
+    userValidationError: string
+) {
     return {
         type: USER_VALIDATION_ERROR,
         authenticationRouterError: {
@@ -69,7 +75,7 @@ export function resetAuthenticationRouterError() {
 export const SHOW_AUTH_INFO_LOGIN = 'SHOW_AUTH_INFO_LOGIN';
 
 export function setShowAuthenticationRouterLogin(
-    showAuthenticationRouterLogin
+    showAuthenticationRouterLogin: boolean
 ) {
     return {
         type: SHOW_AUTH_INFO_LOGIN,

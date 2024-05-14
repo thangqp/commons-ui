@@ -14,7 +14,7 @@ import {
 import { mapEquipmentTypeForPredefinedProperties } from '../utils/equipment-types-for-predefined-properties-mapper';
 import { useSnackMessage } from './useSnackMessage';
 import { FilterContext } from '../components/filter/filter-context';
-import { EquipmentType, PredefinedProperties } from '../utils/types.ts';
+import { EquipmentType, PredefinedProperties } from '../utils/types';
 
 interface Metadata {
     name: string;

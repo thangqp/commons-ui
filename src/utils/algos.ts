@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-export function equalsArray(a, b) {
+export function equalsArray(a: Array<any>, b: Array<any>) {
     if (b === a) {
         return true;
     }
