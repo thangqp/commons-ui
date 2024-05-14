@@ -6,7 +6,7 @@
  */
 
 import React, { useCallback } from 'react';
-import { Theme, useTheme } from '@mui/material';
+import { Theme } from '@mui/material/styles/createTheme';
 import { AgGridReact, AgGridReactProps } from 'ag-grid-react';
 import { useIntl } from 'react-intl';
 import 'ag-grid-community/styles/ag-grid.css';
@@ -14,10 +14,12 @@ import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { ColumnResizedEvent, GetLocaleTextParams } from 'ag-grid-community';
 import { Box } from '@mui/system';
 import { mergeSx } from '../../utils/styles';
+import { useTheme } from '@mui/material';
 
 interface CustomAGGGridStyleProps {
     shouldHidePinnedHeaderRightBorder?: boolean;
     showOverlay?: boolean;
+    alternateTheme?: boolean;
 }
 
 interface CustomAGGridProps extends AgGridReactProps, CustomAGGGridStyleProps {}
@@ -31,7 +33,12 @@ const styles = {
         '--ag-value-change-value-highlight-background-color':
             theme.aggridValueChangeHighlightBackgroundColor,
 
-        //overrides the default computed max heigt for ag grid default selector editor to make it more usable
+        '--ag-material-primary-color': theme.aggridMaterialColor,
+        '--ag-material-accent-color': theme.aggridMaterialColor,
+        '--ag-selected-row-background-color': theme.aggridHiglightColor,
+        '--ag-row-hover-color': theme.aggridHiglightColor,
+
+        //overrides the default computed max height for ag grid default selector editor to make it more usable
         //can be removed if a custom selector editor is implemented
         '& .ag-select-list': {
             maxHeight: '300px !important',
@@ -82,8 +89,9 @@ const CustomAGGrid = React.forwardRef<any, CustomAGGridProps>((props, ref) => {
         loadingOverlayComponent,
         loadingOverlayComponentParams,
         showOverlay = false,
+        alternateTheme = false,
     } = props;
-    const theme = useTheme();
+    const theme = useTheme<Theme>();
     const intl = useIntl();
 
     const GRID_PREFIX = 'grid.';
@@ -106,7 +114,7 @@ const CustomAGGrid = React.forwardRef<any, CustomAGGridProps>((props, ref) => {
                 shouldHidePinnedHeaderRightBorder && styles.noBorderRight,
                 showOverlay && styles.overlayBackground
             )}
-            className={theme.aggrid}
+            className={alternateTheme ? theme.alternateTheme : theme.aggrid}
         >
             <AgGridReact
                 ref={ref}
