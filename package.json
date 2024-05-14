@@ -81,6 +81,7 @@
         "@types/eslint-config-prettier": "^6.11.3",
         "@types/json-logic-js": "^2.0.7",
         "@types/license-checker": "^25.0.6",
+        "@types/localized-countries": "^2.0.3",
         "@types/node": "^18.19.31",
         "@types/prop-types": "^15.7.12",
         "@types/react": "^18.2.75",
