@@ -83,6 +83,7 @@ export interface FilterCreationDialogProps {
         elementTypes?: string[],
         equipmentTypes?: string[]
     ) => Promise<ElementAttributes[]>;
+    fetchPath?: (elementUuid: UUID) => Promise<ElementAttributes[]>;
     sourceFilterForExplicitNamingConversion?: {
         id: UUID;
         equipmentType: string;
@@ -99,6 +100,7 @@ const FilterCreationDialog: FunctionComponent<FilterCreationDialogProps> = ({
     fetchDirectoryContent,
     fetchRootFolders,
     fetchElementsInfos,
+    fetchPath,
     sourceFilterForExplicitNamingConversion = undefined,
 }) => {
     const { snackError } = useSnackMessage();
@@ -191,6 +193,7 @@ const FilterCreationDialog: FunctionComponent<FilterCreationDialogProps> = ({
                     fetchRootFolders: fetchRootFolders,
                     fetchElementsInfos: fetchElementsInfos,
                     fetchAppsAndUrls: fetchAppsAndUrls,
+                    fetchPath: fetchPath,
                 }}
             >
                 <FilterForm

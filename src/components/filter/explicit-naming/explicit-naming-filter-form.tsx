@@ -26,6 +26,7 @@ import { UUID } from 'crypto';
 import { useSnackMessage } from '../../../hooks/useSnackMessage.ts';
 import { ElementType } from '../../../utils/ElementType.ts';
 import ModifyElementSelection from '../../dialogs/modify-element-selection.tsx';
+import { exportFilter } from '../../../services/study';
 
 export const FILTER_EQUIPMENTS_ATTRIBUTES = 'filterEquipmentsAttributes';
 

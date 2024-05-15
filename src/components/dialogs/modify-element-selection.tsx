@@ -8,15 +8,13 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Button, Grid, Typography } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
-import {
-    DirectoryItemSelector,
-    TreeViewFinderNodeProps,
-    FieldConstants,
-} from '@gridsuite/commons-ui';
 import { useController } from 'react-hook-form';
 import { ElementType } from '@gridsuite/commons-ui';
 import { UUID } from 'crypto';
 import { FilterContext } from '../filter/filter-context.ts';
+import { TreeViewFinderNodeProps } from '../TreeViewFinder';
+import { FieldConstants } from '../../utils/field-constants.ts';
+import DirectoryItemSelector from '../DirectoryItemSelector/directory-item-selector.tsx';
 
 export interface ModifyElementSelectionProps {
     elementType: ElementType;
