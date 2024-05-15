@@ -182,7 +182,11 @@ const FilterCreationDialog: FunctionComponent<FilterCreationDialogProps> = ({
             onSave={onSubmit}
             formSchema={formSchema}
             formMethods={formMethods}
-            titleId={'createNewFilter'}
+            titleId={
+                sourceFilterForExplicitNamingConversion
+                    ? 'convertIntoExplicitNamingFilter'
+                    : 'createNewFilter'
+            }
             removeOptional={true}
             disabledSave={!!nameError || !!isValidating}
             language={language}
