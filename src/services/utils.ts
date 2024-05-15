@@ -20,7 +20,7 @@ const prepareRequest = (init: any, token?: string) => {
     }
     const initCopy = Object.assign({}, init);
     initCopy.headers = new Headers(initCopy.headers || {});
-    const tokenCopy = token ? token : getUserToken();
+    const tokenCopy = token ?? getUserToken();
     initCopy.headers.append('Authorization', 'Bearer ' + tokenCopy);
     return initCopy;
 };
@@ -35,29 +35,31 @@ const handleError = (response: any) => {
     return response.text().then((text: string) => {
         const errorName = 'HttpResponseError : ';
         const errorJson = parseError(text);
-        let customError: { message?: string; status?: string } = {};
+        let customError: Error & { status?: string };
         if (
             errorJson &&
             errorJson.status &&
             errorJson.error &&
             errorJson.message
         ) {
-            customError.message =
+            customError = new Error(
                 errorName +
-                errorJson.status +
-                ' ' +
-                errorJson.error +
-                ', message : ' +
-                errorJson.message;
+                    errorJson.status +
+                    ' ' +
+                    errorJson.error +
+                    ', message : ' +
+                    errorJson.message
+            );
             customError.status = errorJson.status;
         } else {
-            customError.message =
+            customError = new Error(
                 errorName +
-                response.status +
-                ' ' +
-                response.statusText +
-                ', message : ' +
-                text;
+                    response.status +
+                    ' ' +
+                    response.statusText +
+                    ', message : ' +
+                    text
+            );
             customError.status = response.status;
         }
         throw customError;
