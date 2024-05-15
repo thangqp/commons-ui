@@ -696,6 +696,14 @@ const AppContent = ({ language, onLanguageClick }) => {
                         border: '1px solid black',
                     }}
                 />
+                <OverflowableText
+                    text={overflowableText}
+                    numberOfLinesToDisplay={2}
+                    style={{
+                        width: '200px',
+                        border: '1px solid black',
+                    }}
+                />
             </div>
             <hr />
             <div
