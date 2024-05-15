@@ -23,7 +23,7 @@ interface TagRendererProps {
     };
     element: {
         type: EquipmentType;
-        voltageLevelLabel: string;
+        voltageLevelLabel?: string;
     };
 }
 

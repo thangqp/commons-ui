@@ -30,7 +30,7 @@ const overflowStyle = {
 };
 
 export interface OverflowableTextProps extends BoxProps {
-    text: ReactElement | string;
+    text?: ReactElement | string;
     tooltipStyle?: Style;
     tooltipSx?: SxProps;
 }
