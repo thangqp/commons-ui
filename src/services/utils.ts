@@ -20,10 +20,8 @@ const prepareRequest = (init: any, token?: string) => {
     }
     const initCopy = Object.assign({}, init);
     initCopy.headers = new Headers(initCopy.headers || {});
-    initCopy.headers.append(
-        'Authorization',
-        'Bearer ' + token ?? getUserToken()
-    );
+    const tokenCopy = token ? token : getUserToken();
+    initCopy.headers.append('Authorization', 'Bearer ' + tokenCopy);
     return initCopy;
 };
 
