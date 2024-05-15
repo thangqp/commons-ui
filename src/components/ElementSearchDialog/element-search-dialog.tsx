@@ -26,11 +26,12 @@ interface ElementSearchDialogProps {
     searchTerm: string;
     onSearchTermChange: (searchTerm: string) => void;
     onSelectionChange: (selection: EquipmentInfos) => void;
-    elementsFound: EquipmentInfos[]; // [{ label: aLabel, id: anId }, ...]
+    elementsFound: EquipmentInfos[];
     renderElement: (props: any) => ReactNode;
     searchTermDisabled?: boolean;
     searchTermDisableReason?: string;
     isLoading: boolean;
+    isLoadingText: string;
 }
 
 const ElementSearchDialog = (props: ElementSearchDialogProps) => {
@@ -43,11 +44,12 @@ const ElementSearchDialog = (props: ElementSearchDialogProps) => {
         searchTerm,
         onSearchTermChange,
         onSelectionChange,
-        elementsFound, // [{ label: aLabel, id: anId }, ...]
+        elementsFound,
         renderElement,
         searchTermDisabled,
         searchTermDisableReason,
         isLoading,
+        isLoadingText,
     } = props;
 
     const displayedValue = useMemo(() => {
@@ -118,6 +120,7 @@ const ElementSearchDialog = (props: ElementSearchDialogProps) => {
                     }}
                     options={isLoading ? [] : elementsFound}
                     loading={isLoading}
+                    loadingText={isLoadingText}
                     autoHighlight={true}
                     noOptionsText={intl.formatMessage({
                         id: 'element_search/noResult',
