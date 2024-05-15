@@ -5,11 +5,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import LogReportItem from './log-report-item.ts';
+import LogReportItem from './log-report-item';
 
 import { v4 as uuid4 } from 'uuid';
 import { Report } from './report.type';
-import { LogSeverities, LogSeverity } from './log-severity.ts';
+import { LogSeverities, LogSeverity } from './log-severity';
 
 export default class LogReport {
     id: string;

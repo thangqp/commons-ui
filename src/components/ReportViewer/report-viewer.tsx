@@ -18,15 +18,15 @@ import {
     ArrowDropDown as ArrowDropDownIcon,
     ArrowRight as ArrowRightIcon,
 } from '@mui/icons-material';
-import ReportItem from './report-item.tsx';
-import LogReport from './log-report.ts';
+import ReportItem from './report-item';
+import LogReport from './log-report';
 import { Grid } from '@mui/material';
-import LogTable from './log-table.tsx';
-import ReportTreeViewContext from './report-tree-view-context.ts';
-import LogReportItem from './log-report-item.ts';
+import LogTable from './log-table';
+import ReportTreeViewContext from './report-tree-view-context';
+import LogReportItem from './log-report-item';
 import { TreeView } from '@mui/x-tree-view';
-import { Report } from './report.type.ts';
-import { LogSeverities } from './log-severity.ts';
+import { Report } from './report.type';
+import { LogSeverities } from './log-severity';
 
 const MAX_SUB_REPORTS = 500;
 

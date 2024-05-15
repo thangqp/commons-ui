@@ -10,7 +10,7 @@ import { Box, Theme, Typography } from '@mui/material';
 import { alpha, styled } from '@mui/system';
 import { TreeItem, TreeItemProps } from '@mui/lab';
 import { Label } from '@mui/icons-material';
-import ReportTreeViewContext from './report-tree-view-context.ts';
+import ReportTreeViewContext from './report-tree-view-context';
 
 const styles = {
     root: (theme: Theme) => ({
