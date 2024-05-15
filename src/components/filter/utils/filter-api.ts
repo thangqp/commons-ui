@@ -22,7 +22,7 @@ export const saveExplicitNamingFilter = (
     id: string | null,
     setCreateFilterErr: (value: any) => void,
     handleClose: () => void,
-    activeDirectory: UUID | undefined,
+    activeDirectory?: UUID,
     token?: string
 ) => {
     // we remove unnecessary fields from the table

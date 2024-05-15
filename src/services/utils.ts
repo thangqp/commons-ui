@@ -13,9 +13,9 @@ export const backendFetch = (url: string, init: any, token?: string) => {
 };
 
 const prepareRequest = (init: any, token?: string) => {
-    if (!(typeof init == 'undefined' || typeof init == 'object')) {
+    if (!(typeof init === 'undefined' || typeof init === 'object')) {
         throw new TypeError(
-            'Argument 2 of backendFetch is not an object : ' + typeof init
+            'First argument of prepareRequest is not an object : ' + typeof init
         );
     }
     const initCopy = Object.assign({}, init);

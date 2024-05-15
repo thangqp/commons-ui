@@ -131,8 +131,7 @@ const ExplicitNamingFilterEditionDialog: FunctionComponent<
                         messageTxt: error,
                     });
                 },
-                onClose,
-                undefined
+                onClose
             );
             if (selectionForCopy.sourceItemUuid === id) {
                 setSelectionForCopy(noSelectionForCopy);
