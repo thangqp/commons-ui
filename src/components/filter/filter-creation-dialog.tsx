@@ -108,13 +108,10 @@ const FilterCreationDialog: FunctionComponent<FilterCreationDialogProps> = ({
 }) => {
     const { snackError } = useSnackMessage();
 
-    const formMethods = {
-        ...useForm({
-            defaultValues: emptyFormData,
-            resolver: yupResolver(formSchema) as unknown as Resolver,
-        }),
-        language: language,
-    } as MergedFormContextProps;
+    const formMethods = useForm({
+        defaultValues: emptyFormData,
+        resolver: yupResolver(formSchema) as unknown as Resolver,
+    });
 
     const {
         formState: { errors },
@@ -196,6 +193,7 @@ const FilterCreationDialog: FunctionComponent<FilterCreationDialogProps> = ({
             titleId={'createNewFilter'}
             removeOptional={true}
             disabledSave={!!nameError || !!isValidating}
+            language={language}
         >
             <FilterContext.Provider
                 value={{

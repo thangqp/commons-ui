@@ -19,7 +19,6 @@ import { saveExpertFilter } from '../utils/filter-api';
 import { importExpertRules } from './expert-filter-utils';
 import { UUID } from 'crypto';
 import { elementExistsType } from '../criteria-based/criteria-based-filter-edition-dialog';
-import { MergedFormContextProps } from '../../inputs/react-hook-form/provider/custom-form-provider';
 import { FilterContext } from '../filter-context';
 import { FilterType } from '../constants/filter-constants';
 import { FetchStatus } from '../../../utils/FetchStatus';
@@ -93,12 +92,9 @@ export const ExpertFilterEditionDialog: FunctionComponent<
     const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
 
     // default values are set via reset when we fetch data
-    const formMethods = {
-        ...useForm({
-            resolver: yupResolver(formSchema),
-        }),
-        language: language,
-    } as MergedFormContextProps;
+    const formMethods = useForm({
+        resolver: yupResolver(formSchema),
+    });
 
     const {
         reset,
@@ -186,6 +182,7 @@ export const ExpertFilterEditionDialog: FunctionComponent<
             removeOptional={true}
             disabledSave={!!nameError || !!isValidating}
             isDataFetching={dataFetchStatus === FetchStatus.FETCHING}
+            language={language}
         >
             <FilterContext.Provider
                 value={{
