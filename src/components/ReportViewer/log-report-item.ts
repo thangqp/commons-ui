@@ -4,8 +4,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { ReportValue, SubReport } from './report.type.ts';
-import { LogSeverities, LogSeverity } from './log-severity.ts';
+import { ReportValue, SubReport } from './report.type';
+import { LogSeverities, LogSeverity } from './log-severity';
 
 export default class LogReportItem {
     key: string;

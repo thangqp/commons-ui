@@ -10,7 +10,7 @@ import { TableCell, Theme, useTheme } from '@mui/material';
 import { styled } from '@mui/system';
 import MuiVirtualizedTable from '../MuiVirtualizedTable';
 import { FilterButton } from './filter-button';
-import LogReportItem from './log-report-item.ts';
+import LogReportItem from './log-report-item';
 
 const SEVERITY_COLUMN_FIXED_WIDTH = 115;
 

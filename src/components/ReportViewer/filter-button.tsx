@@ -7,7 +7,7 @@
 import { ChangeEvent, useMemo, useState } from 'react';
 import { Box, IconButton } from '@mui/material';
 import { Menu as MenuIcon } from '@mui/icons-material';
-import { MultiSelectList } from './multi-select-list.tsx';
+import { MultiSelectList } from './multi-select-list';
 
 const styles = {
     notificationDot: {
