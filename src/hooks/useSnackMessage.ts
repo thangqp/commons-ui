@@ -126,19 +126,16 @@ function makeMessage(
         snackInputs.headerId,
         snackInputs.headerValues
     );
-    if (message !== null && header !== null) {
-        let fullMessage = '';
-        if (header) {
-            fullMessage += header;
-        }
-        if (message) {
-            if (header) {
-                fullMessage += '\n\n';
-            }
-            fullMessage += message;
-        }
-        return fullMessage;
-    } else {
-        return null;
+
+    let fullMessage = '';
+    if (header) {
+        fullMessage += header;
     }
+    if (message) {
+        if (header) {
+            fullMessage += '\n\n';
+        }
+        fullMessage += message;
+    }
+    return fullMessage;
 }

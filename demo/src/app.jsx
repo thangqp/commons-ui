@@ -157,6 +157,13 @@ const getMuiTheme = (theme) => {
     }
 };
 
+const style = {
+    button: {
+        float: 'left',
+        margin: '5px',
+    },
+};
+
 /**
  * @param {import('@mui/material/styles').Theme} theme Theme from ThemeProvider
  */
@@ -194,7 +201,7 @@ function SnackErrorButton() {
         <Button
             variant="contained"
             color="error"
-            style={{ float: 'left', margin: '5px' }}
+            style={style.button}
             onClick={() => {
                 snackError({
                     messageTxt: 'Snack error message',
@@ -213,7 +220,7 @@ function SnackWarningButton() {
         <Button
             variant="contained"
             color="warning"
-            style={{ float: 'left', margin: '5px' }}
+            style={style.button}
             onClick={() => {
                 snackWarning({
                     messageTxt: 'Snack warning message',
@@ -232,7 +239,7 @@ function SnackInfoButton() {
         <Button
             variant="contained"
             color="info"
-            style={{ float: 'left', margin: '5px' }}
+            style={style.button}
             onClick={() => {
                 snackInfo({
                     messageTxt: 'Snack info message',
@@ -253,10 +260,10 @@ function PermanentSnackButton() {
             <Button
                 variant="contained"
                 color="info"
-                style={{ float: 'left', margin: '5px' }}
+                style={style.button}
                 onClick={() => {
                     const key = snackInfo({
-                        messageTxt: 'Snack info message',
+                        messageTxt: 'Permanent Snack info message',
                         headerTxt: 'Header',
                         persist: true,
                     });
@@ -268,7 +275,7 @@ function PermanentSnackButton() {
             <Button
                 variant="contained"
                 color="info"
-                style={{ float: 'left', margin: '5px' }}
+                style={style.button}
                 onClick={() => {
                     closeSnackbar(snackKey);
                     setSnackKey(undefined);
