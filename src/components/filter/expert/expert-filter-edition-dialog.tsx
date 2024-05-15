@@ -24,8 +24,6 @@ import { FilterContext } from '../filter-context';
 import { FilterType } from '../constants/filter-constants';
 import { FetchStatus } from '../../../utils/FetchStatus';
 import { ElementAttributes } from '../../../utils/types.ts';
-import { CommonReduxState } from '../../../redux/reducer.type';
-import { useSelector } from 'react-redux';
 
 const formSchema = yup
     .object()
@@ -83,10 +81,6 @@ const ExpertFilterEditionDialog: FunctionComponent<
     fetchElementsInfos,
 }) => {
     const { snackError } = useSnackMessage();
-
-    const userToken = useSelector(
-        (state: CommonReduxState) => state.user.id_token
-    );
 
     const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
 
@@ -148,8 +142,7 @@ const ExpertFilterEditionDialog: FunctionComponent<
                     snackError({
                         messageTxt: error,
                     });
-                },
-                userToken
+                }
             );
             if (selectionForCopy.sourceItemUuid === id) {
                 setSelectionForCopy(noSelectionForCopy);
@@ -165,7 +158,6 @@ const ExpertFilterEditionDialog: FunctionComponent<
             selectionForCopy.sourceItemUuid,
             snackError,
             setSelectionForCopy,
-            userToken,
         ]
     );
 

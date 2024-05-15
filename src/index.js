@@ -211,3 +211,5 @@ export {
     getCriteriaBasedFormData,
     getCriteriaBasedSchema,
 } from './components/filter/criteria-based/criteria-based-filter-utils';
+
+export { setCommonStore } from './redux/commonStore';

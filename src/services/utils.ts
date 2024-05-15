@@ -5,12 +5,14 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-export const backendFetch = (url: string, init: any, token: string) => {
+import { getUserToken } from '../redux/commonStore.ts';
+
+export const backendFetch = (url: string, init: any, token?: string) => {
     const initCopy = prepareRequest(init, token);
     return safeFetch(url, initCopy);
 };
 
-const prepareRequest = (init: any, token: string) => {
+const prepareRequest = (init: any, token?: string) => {
     if (!(typeof init == 'undefined' || typeof init == 'object')) {
         throw new TypeError(
             'Argument 2 of backendFetch is not an object : ' + typeof init
@@ -18,7 +20,10 @@ const prepareRequest = (init: any, token: string) => {
     }
     const initCopy = Object.assign({}, init);
     initCopy.headers = new Headers(initCopy.headers || {});
-    initCopy.headers.append('Authorization', 'Bearer ' + token);
+    initCopy.headers.append(
+        'Authorization',
+        'Bearer ' + token ?? getUserToken()
+    );
     return initCopy;
 };
 

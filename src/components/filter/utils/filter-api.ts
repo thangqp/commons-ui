@@ -23,7 +23,7 @@ export const saveExplicitNamingFilter = (
     setCreateFilterErr: (value: any) => void,
     handleClose: () => void,
     activeDirectory: UUID | undefined,
-    token: string
+    token?: string
 ) => {
     // we remove unnecessary fields from the table
     let cleanedTableValues;
@@ -82,7 +82,7 @@ export const saveCriteriaBasedFilter = (
     activeDirectory: any,
     onClose: () => void,
     onError: (message: string) => void,
-    token: string
+    token?: string
 ) => {
     const filterForBack = frontToBackTweak(undefined, filter); // no need ID for creation
     createFilter(
@@ -110,7 +110,7 @@ export const saveExpertFilter = (
     activeDirectory: any,
     onClose: () => void,
     onError: (message: string) => void,
-    token: string
+    token?: string
 ) => {
     if (isFilterCreation) {
         createFilter(

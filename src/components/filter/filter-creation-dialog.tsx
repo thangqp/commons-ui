@@ -40,8 +40,6 @@ import { StudyMetadata } from '../../hooks/predefined-properties-hook.ts';
 import { FilterContext } from './filter-context';
 import { FilterType } from './constants/filter-constants';
 import { ElementAttributes } from '../../utils/types.ts';
-import { useSelector } from 'react-redux';
-import { CommonReduxState } from '../../redux/reducer.type';
 
 const emptyFormData = {
     [FieldConstants.NAME]: '',
@@ -101,10 +99,6 @@ const FilterCreationDialog: FunctionComponent<FilterCreationDialogProps> = ({
 }) => {
     const { snackError } = useSnackMessage();
 
-    const userToken = useSelector(
-        (state: CommonReduxState) => state.user.id_token
-    );
-
     const formMethods = {
         ...useForm({
             defaultValues: emptyFormData,
@@ -139,8 +133,7 @@ const FilterCreationDialog: FunctionComponent<FilterCreationDialogProps> = ({
                         });
                     },
                     onClose,
-                    activeDirectory,
-                    userToken
+                    activeDirectory
                 );
             } else if (
                 filterForm[FieldConstants.FILTER_TYPE] ===
@@ -154,8 +147,7 @@ const FilterCreationDialog: FunctionComponent<FilterCreationDialogProps> = ({
                         snackError({
                             messageTxt: error,
                         });
-                    },
-                    userToken
+                    }
                 );
             } else if (
                 filterForm[FieldConstants.FILTER_TYPE] === FilterType.EXPERT.id
@@ -173,12 +165,11 @@ const FilterCreationDialog: FunctionComponent<FilterCreationDialogProps> = ({
                         snackError({
                             messageTxt: error,
                         });
-                    },
-                    userToken
+                    }
                 );
             }
         },
-        [activeDirectory, snackError, onClose, userToken]
+        [activeDirectory, snackError, onClose]
     );
 
     return (

@@ -30,8 +30,6 @@ import { FilterType } from '../constants/filter-constants';
 import { FetchStatus } from '../../../utils/FetchStatus.ts';
 import { ElementType } from '../../../utils/ElementType.ts';
 import { saveFilter } from '../../../services/explore';
-import { useSelector } from 'react-redux';
-import { CommonReduxState } from '../../../redux/reducer.type';
 
 export type SelectionCopy = {
     sourceItemUuid: UUID | null;
@@ -98,10 +96,6 @@ const CriteriaBasedFilterEditionDialog: FunctionComponent<
 }) => {
     const { snackError } = useSnackMessage();
 
-    const userToken = useSelector(
-        (state: CommonReduxState) => state.user.id_token
-    );
-
     const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
 
     // default values are set via reset when we fetch data
@@ -148,8 +142,7 @@ const CriteriaBasedFilterEditionDialog: FunctionComponent<
         (filterForm: any) => {
             saveFilter(
                 frontToBackTweak(id, filterForm),
-                filterForm[FieldConstants.NAME],
-                userToken
+                filterForm[FieldConstants.NAME]
             )
                 .then(() => {
                     if (selectionForCopy.sourceItemUuid === id) {
@@ -171,7 +164,6 @@ const CriteriaBasedFilterEditionDialog: FunctionComponent<
             selectionForCopy.sourceItemUuid,
             snackError,
             setSelelectionForCopy,
-            userToken,
         ]
     );
 

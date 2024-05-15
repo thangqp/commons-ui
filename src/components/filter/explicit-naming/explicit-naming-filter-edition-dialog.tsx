@@ -26,8 +26,6 @@ import { UUID } from 'crypto';
 import { elementExistsType } from '../criteria-based/criteria-based-filter-edition-dialog';
 import { FilterType } from '../constants/filter-constants';
 import { FetchStatus } from '../../../utils/FetchStatus.ts';
-import { useSelector } from 'react-redux';
-import { CommonReduxState } from '../../../redux/reducer.type';
 
 const formSchema = yup
     .object()
@@ -72,10 +70,6 @@ const ExplicitNamingFilterEditionDialog: FunctionComponent<
 }) => {
     const { snackError } = useSnackMessage();
     const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
-
-    const userToken = useSelector(
-        (state: CommonReduxState) => state.user.id_token
-    );
 
     // default values are set via reset when we fetch data
     const formMethods = {
@@ -138,8 +132,7 @@ const ExplicitNamingFilterEditionDialog: FunctionComponent<
                     });
                 },
                 onClose,
-                undefined,
-                userToken
+                undefined
             );
             if (selectionForCopy.sourceItemUuid === id) {
                 setSelectionForCopy(noSelectionForCopy);
@@ -155,7 +148,6 @@ const ExplicitNamingFilterEditionDialog: FunctionComponent<
             onClose,
             snackError,
             setSelectionForCopy,
-            userToken,
         ]
     );
 

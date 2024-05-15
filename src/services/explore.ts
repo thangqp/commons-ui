@@ -16,7 +16,7 @@ export function createFilter(
     name: string,
     description: string,
     parentDirectoryUuid: UUID | undefined,
-    token: string
+    token?: string
 ) {
     let urlSearchParams = new URLSearchParams();
     urlSearchParams.append('name', name);
@@ -36,7 +36,7 @@ export function createFilter(
     );
 }
 
-export function saveFilter(filter: any, name: string, token: string) {
+export function saveFilter(filter: any, name: string, token?: string) {
     let urlSearchParams = new URLSearchParams();
     urlSearchParams.append('name', name);
     return backendFetch(
