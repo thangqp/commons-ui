@@ -10,7 +10,7 @@ import {
     saveCriteriaBasedFilter,
     saveExpertFilter,
     saveExplicitNamingFilter,
-} from './utils/filters-utils';
+} from './utils/filter-api';
 import { Resolver, useForm } from 'react-hook-form';
 import { useSnackMessage } from '../../hooks/useSnackMessage';
 import CustomMuiDialog from '../dialogs/custom-mui-dialog';
@@ -23,7 +23,7 @@ import {
     FILTER_EQUIPMENTS_ATTRIBUTES,
     getExplicitNamingFilterEmptyFormData,
 } from './explicit-naming/explicit-naming-filter-form';
-import { FieldConstants } from './constants/field-constants';
+import { FieldConstants } from '../../utils/field-constants';
 import yup from '../../utils/yup-config';
 import { FilterForm } from './filter-form';
 import {
@@ -34,7 +34,6 @@ import {
 import { yupResolver } from '@hookform/resolvers/yup';
 import { elementExistsType } from './criteria-based/criteria-based-filter-edition-dialog';
 import { UUID } from 'crypto';
-import { MergedFormContextProps } from '../react-hook-form/provider/custom-form-provider';
 import { StudyMetadata } from '../../hooks/predefined-properties-hook.ts';
 
 import { FilterContext } from './filter-context';
@@ -108,13 +107,10 @@ const FilterCreationDialog: FunctionComponent<FilterCreationDialogProps> = ({
 }) => {
     const { snackError } = useSnackMessage();
 
-    const formMethods = {
-        ...useForm({
-            defaultValues: emptyFormData,
-            resolver: yupResolver(formSchema) as unknown as Resolver,
-        }),
-        language: language,
-    } as MergedFormContextProps;
+    const formMethods = useForm({
+        defaultValues: emptyFormData,
+        resolver: yupResolver(formSchema) as unknown as Resolver,
+    });
 
     const {
         formState: { errors },
@@ -196,6 +192,7 @@ const FilterCreationDialog: FunctionComponent<FilterCreationDialogProps> = ({
             titleId={'createNewFilter'}
             removeOptional={true}
             disabledSave={!!nameError || !!isValidating}
+            language={language}
         >
             <FilterContext.Provider
                 value={{

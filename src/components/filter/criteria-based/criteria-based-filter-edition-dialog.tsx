@@ -13,7 +13,7 @@ import {
     useEffect,
     useState,
 } from 'react';
-import { FieldConstants } from '../constants/field-constants';
+import { FieldConstants } from '../../../utils/field-constants';
 import {
     backToFrontTweak,
     frontToBackTweak,
@@ -99,12 +99,9 @@ export const CriteriaBasedFilterEditionDialog: FunctionComponent<
     const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
 
     // default values are set via reset when we fetch data
-    const formMethods = {
-        ...useForm({
-            resolver: yupResolver(formSchema),
-        }),
-        language: language,
-    };
+    const formMethods = useForm({
+        resolver: yupResolver(formSchema),
+    });
 
     const {
         reset,
@@ -181,6 +178,7 @@ export const CriteriaBasedFilterEditionDialog: FunctionComponent<
             removeOptional={true}
             disabledSave={!!nameError || !!isValidating}
             isDataFetching={dataFetchStatus === FetchStatus.FETCHING}
+            language={language}
         >
             {isDataReady && (
                 <FilterForm
