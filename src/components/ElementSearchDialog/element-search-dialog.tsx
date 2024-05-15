@@ -5,13 +5,40 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useCallback, useEffect, useState } from 'react';
+import {
+    HTMLAttributes,
+    ReactElement,
+    useCallback,
+    useEffect,
+    useState,
+} from 'react';
 import { Autocomplete, Dialog, DialogContent, TextField } from '@mui/material';
-import PropTypes from 'prop-types';
 import { Search, SearchOff } from '@mui/icons-material';
 import { useIntl } from 'react-intl';
+import { OptionalExceptFor } from '../../utils/type';
+import { EquipmentInfos } from '../../utils/EquipmentType';
 
-const ElementSearchDialog = (props) => {
+type SearchElement = OptionalExceptFor<EquipmentInfos, 'label'>;
+
+type RenderElementProps = HTMLAttributes<HTMLLIElement> & {
+    element: SearchElement;
+    inputValue: string;
+    onClose: () => void;
+};
+
+export interface ElementSearchDialogProps {
+    open: boolean;
+    onClose: () => void;
+    searchingLabel: boolean;
+    onSearchTermChange: (term: string) => void;
+    onSelectionChange: (selection: SearchElement) => void;
+    elementsFound: SearchElement[];
+    renderElement: (props: RenderElementProps) => ReactElement;
+    searchTermDisabled: boolean;
+    searchTermDisableReason: string;
+}
+
+const ElementSearchDialog = (props: ElementSearchDialogProps) => {
     const intl = useIntl();
 
     const {
@@ -27,7 +54,7 @@ const ElementSearchDialog = (props) => {
     } = props;
 
     const [expanded, setExpanded] = useState(false);
-    const [value, setValue] = useState(
+    const [value, setValue] = useState<SearchElement | null>(
         searchTermDisabled && searchTermDisableReason
             ? { label: searchTermDisableReason }
             : null
@@ -52,7 +79,7 @@ const ElementSearchDialog = (props) => {
         setValue((old) => (!open ? null : old));
     }, [open]);
 
-    const handleSearchTermChange = (term) => {
+    const handleSearchTermChange = (term: string) => {
         if (term) {
             setLoading(true);
             onSearchTermChange(term);
@@ -87,7 +114,6 @@ const ElementSearchDialog = (props) => {
                         setExpanded(false);
                     }}
                     fullWidth
-                    freeSolo
                     clearOnBlur
                     onInputChange={(_event, value) => {
                         if (!searchTermDisabled) {
@@ -96,6 +122,7 @@ const ElementSearchDialog = (props) => {
                     }}
                     onChange={(_event, newValue, reason) => {
                         if (reason === 'selectOption') {
+                            //@ts-ignore reason to selectOption should narrow the type and eliminate null
                             onSelectionChange(newValue);
                             setValue(newValue);
                         } else {
@@ -151,18 +178,6 @@ const ElementSearchDialog = (props) => {
             </DialogContent>
         </Dialog>
     );
-};
-
-ElementSearchDialog.propTypes = {
-    open: PropTypes.bool.isRequired,
-    onClose: PropTypes.func.isRequired,
-    searchingLabel: PropTypes.string,
-    onSearchTermChange: PropTypes.func.isRequired,
-    onSelectionChange: PropTypes.func.isRequired,
-    elementsFound: PropTypes.array.isRequired,
-    renderElement: PropTypes.func.isRequired,
-    searchTermDisabled: PropTypes.bool,
-    searchTermDisableReason: PropTypes.string,
 };
 
 export default ElementSearchDialog;
