@@ -95,7 +95,6 @@ const CriteriaBasedFilterEditionDialog: FunctionComponent<
     language,
 }) => {
     const { snackError } = useSnackMessage();
-
     const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
 
     // default values are set via reset when we fetch data
