@@ -8,7 +8,7 @@
 import BooleanInput from './boolean-input';
 import { Checkbox, CheckboxProps } from '@mui/material';
 
-interface CheckboxInputProps {
+export interface CheckboxInputProps {
     name: string;
     label: string;
     formProps: CheckboxProps;

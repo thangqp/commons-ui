@@ -34,7 +34,7 @@ const styles = {
     }),
 };
 
-interface LogoutProps {
+export interface LogoutProps {
     onLogoutClick: () => void;
     disabled: boolean;
 }

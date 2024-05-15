@@ -14,7 +14,7 @@ import { Box, SxProps } from '@mui/material';
 import OverflowableText from '../OverflowableText';
 import { mergeSx } from '../../utils/styles';
 
-interface EquipmentItemProps {
+export interface EquipmentItemProps {
     inputValue: string;
     suffixRenderer: typeof TagRenderer;
     element: {
@@ -24,21 +24,19 @@ interface EquipmentItemProps {
         voltageLevelLabel: string;
     };
     showsJustText: boolean;
-    props: {
-        classes?: {
-            result?: string;
-            equipmentOption?: string;
-            equipmentTag?: string;
-            equipmentTypeTag?: string;
-            equipmentVlTag?: string;
-        };
-        styles?: {
-            result?: SxProps;
-            equipmentOption?: SxProps;
-            equipmentTag?: SxProps;
-            equipmentTypeTag?: SxProps;
-            equipmentVlTag?: SxProps;
-        };
+    classes?: {
+        result?: string;
+        equipmentOption?: string;
+        equipmentTag?: string;
+        equipmentTypeTag?: string;
+        equipmentVlTag?: string;
+    };
+    styles?: {
+        result?: SxProps;
+        equipmentOption?: SxProps;
+        equipmentTag?: SxProps;
+        equipmentTypeTag?: SxProps;
+        equipmentVlTag?: SxProps;
     };
 }
 
@@ -47,7 +45,7 @@ export const EquipmentItem = ({
     suffixRenderer = TagRenderer,
     element,
     showsJustText = false,
-    props,
+    ...props
 }: EquipmentItemProps) => {
     let matches = match(element.label, inputValue, {
         insideWords: true,

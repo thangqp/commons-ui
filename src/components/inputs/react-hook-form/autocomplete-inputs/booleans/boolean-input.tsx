@@ -10,7 +10,7 @@ import { useIntl } from 'react-intl';
 import { FormControlLabel } from '@mui/material';
 import { useController } from 'react-hook-form';
 
-interface BooleanInputProps {
+export interface BooleanInputProps {
     name: string;
     label: string;
     formProps: any;

@@ -8,7 +8,7 @@
 import BooleanInput from './boolean-input';
 import { Switch, SwitchProps } from '@mui/material';
 
-interface SwitchInputProps {
+export interface SwitchInputProps {
     name: string;
     label: string;
     formProps: SwitchProps;
