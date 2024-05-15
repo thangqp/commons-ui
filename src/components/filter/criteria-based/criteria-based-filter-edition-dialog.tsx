@@ -98,12 +98,9 @@ const CriteriaBasedFilterEditionDialog: FunctionComponent<
     const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
 
     // default values are set via reset when we fetch data
-    const formMethods = {
-        ...useForm({
-            resolver: yupResolver(formSchema),
-        }),
-        language: language,
-    };
+    const formMethods = useForm({
+        resolver: yupResolver(formSchema),
+    });
 
     const {
         reset,
@@ -179,6 +176,7 @@ const CriteriaBasedFilterEditionDialog: FunctionComponent<
             removeOptional={true}
             disabledSave={!!nameError || !!isValidating}
             isDataFetching={dataFetchStatus === FetchStatus.FETCHING}
+            language={language}
         >
             {isDataReady && (
                 <FilterForm

@@ -11,13 +11,15 @@ import { Grid } from '@mui/material';
 import SelectInput from '../../inputs/react-hook-form/select-inputs/select-input';
 import InputWithPopupConfirmation from '../../inputs/react-hook-form/select-inputs/input-with-popup-confirmation';
 import { FunctionComponent } from 'react';
-import { FILTER_EQUIPMENTS } from '../utils/filter-form-utils';
+import { FormEquipment } from '../utils/filter-form-utils';
 
 export interface CriteriaBasedFormProps {
+    equipments: Record<string, FormEquipment>;
     defaultValues: Record<string, any>;
 }
 
 const CriteriaBasedForm: FunctionComponent<CriteriaBasedFormProps> = ({
+    equipments,
     defaultValues,
 }) => {
     const { getValues, setValue } = useFormContext();
@@ -48,7 +50,7 @@ const CriteriaBasedForm: FunctionComponent<CriteriaBasedFormProps> = ({
                 <InputWithPopupConfirmation
                     Input={SelectInput}
                     name={FieldConstants.EQUIPMENT_TYPE}
-                    options={Object.values(FILTER_EQUIPMENTS)}
+                    options={Object.values(equipments)}
                     label={'equipmentType'}
                     shouldOpenPopup={openConfirmationPopup}
                     resetOnConfirmation={handleResetOnConfirmation}
@@ -57,7 +59,7 @@ const CriteriaBasedForm: FunctionComponent<CriteriaBasedFormProps> = ({
                 />
             </Grid>
             {watchEquipmentType &&
-                FILTER_EQUIPMENTS[watchEquipmentType].fields.map(
+                equipments[watchEquipmentType].fields.map(
                     (equipment: any, index: number) => {
                         const EquipmentForm = equipment.renderer;
                         return (

@@ -17,6 +17,7 @@ import {
     getCriteriaBasedFormData,
     getCriteriaBasedSchema,
 } from './criteria-based-filter-utils';
+import { FILTER_EQUIPMENTS } from '../utils/filter-form-utils.ts';
 
 export const criteriaBasedFilterSchema = getCriteriaBasedSchema({
     [FieldConstants.ENERGY_SOURCE]: yup.string().nullable(),
@@ -33,6 +34,7 @@ const CriteriaBasedFilterForm: FunctionComponent = () => {
     return (
         <Grid container item spacing={1}>
             <CriteriaBasedForm
+                equipments={FILTER_EQUIPMENTS}
                 defaultValues={
                     criteriaBasedFilterEmptyFormData[
                         FieldConstants.CRITERIA_BASED
