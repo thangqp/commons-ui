@@ -38,7 +38,7 @@ const styles = {
     },
 };
 
-interface LoginProps {
+export interface LoginProps {
     onLoginClick: () => void;
     disabled: boolean;
 }

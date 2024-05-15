@@ -9,7 +9,7 @@ import { Slider, SliderProps } from '@mui/material';
 import { useController } from 'react-hook-form';
 import { identity } from '../utils/functions';
 
-interface SliderInputProps extends SliderProps {
+export interface SliderInputProps extends SliderProps {
     name: string;
     onValueChanged: (value: any) => void;
 }

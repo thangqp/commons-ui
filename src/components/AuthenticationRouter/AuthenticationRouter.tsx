@@ -22,7 +22,7 @@ import { Alert, AlertTitle, Grid } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { UserManager } from 'oidc-client';
 
-interface AuthenticationRouterProps {
+export interface AuthenticationRouterProps {
     userManager: {
         instance: UserManager;
         error: string;

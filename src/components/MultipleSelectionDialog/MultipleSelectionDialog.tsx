@@ -19,7 +19,7 @@ import {
 import { FormattedMessage } from 'react-intl';
 import { useState } from 'react';
 
-interface MultipleSelectionDialogProps {
+export interface MultipleSelectionDialogProps {
     options: string[];
     selectedOptions: string[];
     open: boolean;

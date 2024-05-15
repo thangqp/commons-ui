@@ -18,22 +18,33 @@ import {
     CardHeader,
     Collapse,
     IconButton,
+    IconButtonProps,
     styled,
     Theme,
     Typography,
 } from '@mui/material';
-import { Replay as ReplayIcon } from '@mui/icons-material';
+import {
+    ExpandMore as ExpandMoreIcon,
+    Replay as ReplayIcon,
+} from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
 
-const ExpandMore = styled(IconButton)(
-    ({ theme, expand }: { theme?: Theme; expand: boolean }) => ({
-        transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
-        marginLeft: 'auto',
-        transition: theme?.transitions.create('transform', {
-            duration: theme?.transitions.duration.shortest,
-        }),
-    })
-);
+export interface ExpandMoreProps extends IconButtonProps {
+    expand: boolean;
+}
+
+const ExpandMore = styled((props: ExpandMoreProps) => {
+    const { expand, ...other } = props;
+    return <IconButton {...other} />;
+})(({ theme, expand }: { theme?: Theme; expand: boolean }) => ({
+    transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
+    marginLeft: 'auto',
+    transition: theme?.transitions?.create('transform', {
+        duration: theme?.transitions?.duration?.shortest,
+    }),
+}));
+
+// Extracted from https://react-typescript-cheatsheet.netlify.app/docs/basic/getting-started/error_boundaries/ for types
 
 interface Props {
     children?: ReactNode;
@@ -117,7 +128,9 @@ class CardErrorBoundary extends Component<Props, CardErrorBoundaryState> {
                                 onClick={this.handleExpandClick}
                                 aria-expanded={expanded}
                                 aria-label="show more"
-                            />
+                            >
+                                <ExpandMoreIcon />
+                            </ExpandMore>
                         </CardActions>
                         <Collapse in={expanded}>
                             <CardContent>
