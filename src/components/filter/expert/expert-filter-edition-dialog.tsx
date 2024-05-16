@@ -23,6 +23,7 @@ import { FilterContext } from '../filter-context';
 import { FilterType } from '../constants/filter-constants';
 import { FetchStatus } from '../../../utils/FetchStatus';
 import { ElementAttributes } from '../../../utils/types.ts';
+import { StudyMetadata } from '../../../hooks/predefined-properties-hook.ts';
 
 const formSchema = yup
     .object()
@@ -58,6 +59,7 @@ export interface ExpertFilterEditionDialogProps {
         elementTypes?: string[],
         equipmentTypes?: string[]
     ) => Promise<ElementAttributes[]>;
+    fetchAppsAndUrls: () => Promise<StudyMetadata[]>;
 }
 
 const ExpertFilterEditionDialog: FunctionComponent<
@@ -78,6 +80,7 @@ const ExpertFilterEditionDialog: FunctionComponent<
     fetchDirectoryContent,
     fetchRootFolders,
     fetchElementsInfos,
+    fetchAppsAndUrls,
 }) => {
     const { snackError } = useSnackMessage();
     const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
@@ -176,6 +179,7 @@ const ExpertFilterEditionDialog: FunctionComponent<
                     fetchDirectoryContent: fetchDirectoryContent,
                     fetchRootFolders: fetchRootFolders,
                     fetchElementsInfos: fetchElementsInfos,
+                    fetchAppsAndUrls: fetchAppsAndUrls,
                 }}
             >
                 {isDataReady && (
