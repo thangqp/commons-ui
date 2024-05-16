@@ -102,7 +102,7 @@ export {
     USER_VALIDATION_ERROR,
     RESET_AUTHENTICATION_ROUTER_ERROR,
     SHOW_AUTH_INFO_LOGIN,
-} from './utils/actions';
+} from './redux/actions';
 export { default as report_viewer_en } from './components/translations/report-viewer-en';
 export { default as report_viewer_fr } from './components/translations/report-viewer-fr';
 export { default as login_en } from './components/translations/login-en';
@@ -211,3 +211,5 @@ export {
     getCriteriaBasedFormData,
     getCriteriaBasedSchema,
 } from './components/filter/criteria-based/criteria-based-filter-utils';
+
+export { setCommonStore } from './redux/commonStore';

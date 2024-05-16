@@ -14,7 +14,7 @@ import {
     setUserValidationError,
     resetAuthenticationRouterError,
     setShowAuthenticationRouterLogin,
-} from './actions';
+} from '../redux/actions';
 import { jwtDecode } from 'jwt-decode';
 
 // set as a global variable to allow log level configuration at runtime

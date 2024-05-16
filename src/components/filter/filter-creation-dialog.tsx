@@ -70,13 +70,6 @@ export interface FilterCreationDialogProps {
     open: boolean;
     onClose: () => void;
     activeDirectory?: UUID;
-    createFilter: (
-        filter: any,
-        name: string,
-        description: string,
-        activeDirectory: any
-    ) => Promise<void>;
-    saveFilter: (filter: any, name: string) => Promise<void>;
     fetchAppsAndUrls: () => Promise<StudyMetadata[]>;
     elementExists?: elementExistsType;
     language?: string;
@@ -96,8 +89,6 @@ const FilterCreationDialog: FunctionComponent<FilterCreationDialogProps> = ({
     open,
     onClose,
     activeDirectory,
-    createFilter,
-    saveFilter,
     fetchAppsAndUrls,
     elementExists,
     language,
@@ -138,8 +129,6 @@ const FilterCreationDialog: FunctionComponent<FilterCreationDialogProps> = ({
                         });
                     },
                     onClose,
-                    createFilter,
-                    saveFilter,
                     activeDirectory
                 );
             } else if (
@@ -154,8 +143,7 @@ const FilterCreationDialog: FunctionComponent<FilterCreationDialogProps> = ({
                         snackError({
                             messageTxt: error,
                         });
-                    },
-                    createFilter
+                    }
                 );
             } else if (
                 filterForm[FieldConstants.FILTER_TYPE] === FilterType.EXPERT.id
@@ -173,13 +161,11 @@ const FilterCreationDialog: FunctionComponent<FilterCreationDialogProps> = ({
                         snackError({
                             messageTxt: error,
                         });
-                    },
-                    createFilter,
-                    saveFilter
+                    }
                 );
             }
         },
-        [activeDirectory, snackError, onClose, createFilter, saveFilter]
+        [activeDirectory, snackError, onClose]
     );
 
     return (
