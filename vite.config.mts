@@ -34,7 +34,7 @@ export default defineConfig((config) => ({
     ],
     build: {
         lib: {
-            entry: path.resolve(__dirname, 'src/index.js'),
+            entry: path.resolve(__dirname, 'src/index.ts'),
             formats: ['es'],
         },
         rollupOptions: {
@@ -45,7 +45,6 @@ export default defineConfig((config) => ({
             input: Object.fromEntries(
                 globSync('src/**/*.{js,jsx,ts,tsx}', {
                     ignore: [
-                        'src/index.d.ts',
                         'src/vite-env.d.ts',
                         'src/**/*.test.{js,jsx,ts,tsx}',
                     ],
