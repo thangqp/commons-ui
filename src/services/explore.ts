@@ -15,7 +15,7 @@ export function createFilter(
     newFilter: any,
     name: string,
     description: string,
-    parentDirectoryUuid: UUID | undefined,
+    parentDirectoryUuid?: UUID,
     token?: string
 ) {
     let urlSearchParams = new URLSearchParams();
