@@ -5,7 +5,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import expect from 'expect';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { act } from 'react-dom/test-utils';
@@ -18,7 +17,7 @@ import PowsyblLogo from '../images/powsybl_logo.svg?react';
 
 import { red } from '@mui/material/colors';
 import { createTheme, ThemeProvider } from '@mui/material';
-import { afterEach, beforeEach, it } from 'node:test';
+import { beforeEach, afterEach, it, expect } from '@jest/globals';
 
 let container: Element;
 
