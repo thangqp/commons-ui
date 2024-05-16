@@ -14,7 +14,7 @@ import {
     setUserValidationError,
     resetAuthenticationRouterError,
     setShowAuthenticationRouterLogin,
-} from './actions';
+} from '../redux/actions';
 import { jwtDecode } from 'jwt-decode';
 import { Dispatch } from 'react';
 import { NavigateFunction } from 'react-router-dom';

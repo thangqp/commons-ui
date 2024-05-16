@@ -34,7 +34,6 @@ import {
 import { yupResolver } from '@hookform/resolvers/yup';
 import { elementExistsType } from './criteria-based/criteria-based-filter-edition-dialog';
 import { UUID } from 'crypto';
-import { MergedFormContextProps } from '../inputs/react-hook-form/provider/custom-form-provider';
 import { StudyMetadata } from '../../hooks/predefined-properties-hook';
 
 import { FilterContext } from './filter-context';
@@ -71,13 +70,6 @@ export interface FilterCreationDialogProps {
     open: boolean;
     onClose: () => void;
     activeDirectory?: UUID;
-    createFilter: (
-        filter: any,
-        name: string,
-        description: string,
-        activeDirectory: any
-    ) => Promise<void>;
-    saveFilter: (filter: any, name: string) => Promise<void>;
     fetchAppsAndUrls: () => Promise<StudyMetadata[]>;
     elementExists?: elementExistsType;
     language?: string;
@@ -97,8 +89,6 @@ const FilterCreationDialog: FunctionComponent<FilterCreationDialogProps> = ({
     open,
     onClose,
     activeDirectory,
-    createFilter,
-    saveFilter,
     fetchAppsAndUrls,
     elementExists,
     language,
@@ -108,13 +98,10 @@ const FilterCreationDialog: FunctionComponent<FilterCreationDialogProps> = ({
 }) => {
     const { snackError } = useSnackMessage();
 
-    const formMethods = {
-        ...useForm({
-            defaultValues: emptyFormData,
-            resolver: yupResolver(formSchema) as unknown as Resolver,
-        }),
-        language: language,
-    } as MergedFormContextProps;
+    const formMethods = useForm({
+        defaultValues: emptyFormData,
+        resolver: yupResolver(formSchema) as unknown as Resolver,
+    });
 
     const {
         formState: { errors },
@@ -142,8 +129,6 @@ const FilterCreationDialog: FunctionComponent<FilterCreationDialogProps> = ({
                         });
                     },
                     onClose,
-                    createFilter,
-                    saveFilter,
                     activeDirectory
                 );
             } else if (
@@ -158,8 +143,7 @@ const FilterCreationDialog: FunctionComponent<FilterCreationDialogProps> = ({
                         snackError({
                             messageTxt: error,
                         });
-                    },
-                    createFilter
+                    }
                 );
             } else if (
                 filterForm[FieldConstants.FILTER_TYPE] === FilterType.EXPERT.id
@@ -177,13 +161,11 @@ const FilterCreationDialog: FunctionComponent<FilterCreationDialogProps> = ({
                         snackError({
                             messageTxt: error,
                         });
-                    },
-                    createFilter,
-                    saveFilter
+                    }
                 );
             }
         },
-        [activeDirectory, snackError, onClose, createFilter, saveFilter]
+        [activeDirectory, snackError, onClose]
     );
 
     return (
@@ -196,6 +178,7 @@ const FilterCreationDialog: FunctionComponent<FilterCreationDialogProps> = ({
             titleId={'createNewFilter'}
             removeOptional={true}
             disabledSave={!!nameError || !!isValidating}
+            language={language}
         >
             <FilterContext.Provider
                 value={{
