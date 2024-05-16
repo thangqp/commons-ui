@@ -11,6 +11,7 @@ import { Generator, Load } from '../../../utils/equipment-types';
 import { exportExpertRules } from '../expert/expert-filter-utils';
 import { UUID } from 'crypto';
 import { DISTRIBUTION_KEY, FilterType } from '../constants/filter-constants';
+import { createFilter, saveFilter } from '../../../services/explore';
 
 export const saveExplicitNamingFilter = (
     tableValues: any[],
@@ -21,14 +22,8 @@ export const saveExplicitNamingFilter = (
     id: string | null,
     setCreateFilterErr: (value: any) => void,
     handleClose: () => void,
-    createFilter: (
-        filter: any,
-        name: string,
-        description: string,
-        activeDirectory: any
-    ) => Promise<void>,
-    saveFilter: (filter: any, name: string) => Promise<void>,
-    activeDirectory?: UUID
+    activeDirectory?: UUID,
+    token?: string
 ) => {
     // we remove unnecessary fields from the table
     let cleanedTableValues;
@@ -53,7 +48,8 @@ export const saveExplicitNamingFilter = (
             },
             name,
             description,
-            activeDirectory
+            activeDirectory,
+            token
         )
             .then(() => {
                 handleClose();
@@ -69,7 +65,8 @@ export const saveExplicitNamingFilter = (
                 equipmentType: equipmentType,
                 filterEquipmentsAttributes: cleanedTableValues,
             },
-            name
+            name,
+            token
         )
             .then(() => {
                 handleClose();
@@ -85,19 +82,15 @@ export const saveCriteriaBasedFilter = (
     activeDirectory: any,
     onClose: () => void,
     onError: (message: string) => void,
-    createFilter: (
-        filter: any,
-        name: string,
-        description: string,
-        activeDirectory: any
-    ) => Promise<void>
+    token?: string
 ) => {
     const filterForBack = frontToBackTweak(undefined, filter); // no need ID for creation
     createFilter(
         filterForBack,
         filter[FieldConstants.NAME],
         filter[FieldConstants.DESCRIPTION],
-        activeDirectory
+        activeDirectory,
+        token
     )
         .then(() => {
             onClose();
@@ -117,13 +110,7 @@ export const saveExpertFilter = (
     activeDirectory: any,
     onClose: () => void,
     onError: (message: string) => void,
-    createFilter: (
-        filter: any,
-        name: string,
-        description: string,
-        activeDirectory: any
-    ) => Promise<void>,
-    saveFilter: (filter: any, name: string) => Promise<void>
+    token?: string
 ) => {
     if (isFilterCreation) {
         createFilter(
@@ -134,7 +121,8 @@ export const saveExpertFilter = (
             },
             name,
             description,
-            activeDirectory
+            activeDirectory,
+            token
         )
             .then(() => {
                 onClose();
@@ -150,7 +138,8 @@ export const saveExpertFilter = (
                 equipmentType: equipmentType,
                 rules: exportExpertRules(query),
             },
-            name
+            name,
+            token
         )
             .then(() => {
                 onClose();
