@@ -31,7 +31,7 @@ interface ElementSearchDialogProps {
     searchTermDisabled?: boolean;
     searchTermDisableReason?: string;
     isLoading: boolean;
-    isLoadingText: string;
+    loadingText?: string;
 }
 
 const ElementSearchDialog = (props: ElementSearchDialogProps) => {
@@ -49,7 +49,7 @@ const ElementSearchDialog = (props: ElementSearchDialogProps) => {
         searchTermDisabled,
         searchTermDisableReason,
         isLoading,
-        isLoadingText,
+        loadingText,
     } = props;
 
     const displayedValue = useMemo(() => {
@@ -120,7 +120,7 @@ const ElementSearchDialog = (props: ElementSearchDialogProps) => {
                     }}
                     options={isLoading ? [] : elementsFound}
                     loading={isLoading}
-                    loadingText={isLoadingText}
+                    loadingText={loadingText}
                     autoHighlight={true}
                     noOptionsText={intl.formatMessage({
                         id: 'element_search/noResult',
