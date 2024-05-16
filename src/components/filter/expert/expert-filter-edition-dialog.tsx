@@ -45,13 +45,6 @@ export interface ExpertFilterEditionDialogProps {
     selectionForCopy: any;
     getFilterById: (id: string) => Promise<{ [prop: string]: any }>;
     setSelectionForCopy: (selection: any) => void;
-    createFilter: (
-        filter: any,
-        name: string,
-        description: string,
-        activeDirectory: any
-    ) => Promise<void>;
-    saveFilter: (filter: any, name: string) => Promise<void>;
     activeDirectory?: UUID;
     elementExists?: elementExistsType;
     language?: string;
@@ -67,7 +60,7 @@ export interface ExpertFilterEditionDialogProps {
     ) => Promise<ElementAttributes[]>;
 }
 
-export const ExpertFilterEditionDialog: FunctionComponent<
+const ExpertFilterEditionDialog: FunctionComponent<
     ExpertFilterEditionDialogProps
 > = ({
     id,
@@ -79,8 +72,6 @@ export const ExpertFilterEditionDialog: FunctionComponent<
     selectionForCopy,
     getFilterById,
     setSelectionForCopy,
-    createFilter,
-    saveFilter,
     activeDirectory,
     elementExists,
     language,
@@ -146,9 +137,7 @@ export const ExpertFilterEditionDialog: FunctionComponent<
                     snackError({
                         messageTxt: error,
                     });
-                },
-                createFilter,
-                saveFilter
+                }
             );
             if (selectionForCopy.sourceItemUuid === id) {
                 setSelectionForCopy(noSelectionForCopy);
@@ -164,8 +153,6 @@ export const ExpertFilterEditionDialog: FunctionComponent<
             selectionForCopy.sourceItemUuid,
             snackError,
             setSelectionForCopy,
-            saveFilter,
-            createFilter,
         ]
     );
 
