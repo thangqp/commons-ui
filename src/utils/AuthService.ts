@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { Log, User, UserManager } from 'oidc-client';
-import { UserManagerMock } from './UserManagerMock.ts';
+import { UserManagerMock } from './UserManagerMock';
 import {
     setLoggedUser,
     setSignInCallbackError,
