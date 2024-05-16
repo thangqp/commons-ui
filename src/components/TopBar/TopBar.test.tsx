@@ -18,8 +18,10 @@ import PowsyblLogo from '../images/powsybl_logo.svg?react';
 
 import { red } from '@mui/material/colors';
 import { createTheme, ThemeProvider } from '@mui/material';
+import { afterEach, beforeEach, it } from 'node:test';
 
-let container = null;
+let container: Element;
+
 beforeEach(() => {
     // setup a DOM element as a render target
     container = document.createElement('div');
@@ -28,13 +30,24 @@ beforeEach(() => {
 
 afterEach(() => {
     // cleanup on exiting
-    container.remove();
-    container = null;
+    container?.remove();
 });
 
 const apps = [
-    { name: 'App1', url: '/app1', appColor: 'blue', hiddenInAppsMenu: false },
-    { name: 'App2', url: '/app2' },
+    {
+        name: 'App1',
+        url: '/app1',
+        appColor: 'blue',
+        hiddenInAppsMenu: false,
+        resources: [],
+    },
+    {
+        name: 'App2',
+        url: '/app2',
+        appColor: 'green',
+        resources: [],
+        hiddenInAppsMenu: true,
+    },
 ];
 
 const theme = createTheme({
@@ -58,7 +71,26 @@ it('renders', () => {
                         onParametersClick={() => {}}
                         onLogoutClick={() => {}}
                         onLogoClick={() => {}}
-                        user={{ profile: { name: 'John Doe' } }}
+                        user={{
+                            profile: {
+                                name: 'John Doe',
+                                iss: 'issuer',
+                                sub: 'sub',
+                                aud: 'aud',
+                                exp: 213443,
+                                iat: 3214324,
+                            },
+                            id_token: 'id_token',
+                            access_token: 'access_token',
+                            token_type: 'code',
+                            scope: 'scope',
+                            expires_at: 123343,
+                            scopes: ['code', 'token'],
+                            expired: false,
+                            state: null,
+                            toStorageString: () => 'stored',
+                            expires_in: 1232,
+                        }}
                         appsAndUrls={apps}
                         language={LANG_ENGLISH}
                         onLanguageClick={() => {}}
