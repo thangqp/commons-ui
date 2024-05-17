@@ -75,7 +75,7 @@ export {
     USER_VALIDATION_ERROR,
     RESET_AUTHENTICATION_ROUTER_ERROR,
     SHOW_AUTH_INFO_LOGIN,
-} from './utils/actions';
+} from './redux/actions';
 export { default as report_viewer_en } from './components/translations/report-viewer-en';
 export { default as report_viewer_fr } from './components/translations/report-viewer-fr';
 export { default as login_en } from './components/translations/login-en';
@@ -128,6 +128,7 @@ export { default as CriteriaBasedFilterEditionDialog } from './components/filter
 export { default as ExpandingTextField } from './components/inputs/react-hook-form/ExpandingTextField';
 export { default as CustomMuiDialog } from './components/dialogs/custom-mui-dialog';
 export { default as DescriptionModificationDialog } from './components/dialogs/description-modification-dialog';
+export { default as ModifyElementSelection } from './components/dialogs/modify-element-selection';
 export {
     genHelperPreviousValue,
     genHelperError,
@@ -280,3 +281,5 @@ export {
     getCriteriaBasedFormData,
     getCriteriaBasedSchema,
 } from './components/filter/criteria-based/criteria-based-filter-utils';
+
+export { setCommonStore } from './redux/commonStore';

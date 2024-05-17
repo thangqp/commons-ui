@@ -36,6 +36,7 @@ interface ICustomMuiDialog {
     onCancel?: () => void;
     children: React.ReactNode;
     isDataFetching?: boolean;
+    language?: string;
 }
 
 const styles = {
@@ -61,6 +62,7 @@ const CustomMuiDialog: FunctionComponent<ICustomMuiDialog> = ({
     removeOptional = false,
     onCancel,
     children,
+    language,
 }) => {
     const { handleSubmit } = formMethods;
 
@@ -90,6 +92,7 @@ const CustomMuiDialog: FunctionComponent<ICustomMuiDialog> = ({
             {...formMethods}
             validationSchema={formSchema}
             removeOptional={removeOptional}
+            language={language}
         >
             <Dialog
                 sx={styles.dialogPaper}

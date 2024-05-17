@@ -29,6 +29,7 @@ import { UUID } from 'crypto';
 import { FilterType } from '../constants/filter-constants';
 import { FetchStatus } from '../../../utils/FetchStatus.ts';
 import { ElementType } from '../../../utils/ElementType.ts';
+import { saveFilter } from '../../../services/explore';
 
 export type SelectionCopy = {
     sourceItemUuid: UUID | null;
@@ -68,7 +69,6 @@ interface CriteriaBasedFilterEditionDialogProps {
     onClose: () => void;
     broadcastChannel: BroadcastChannel;
     getFilterById: (id: string) => Promise<any>;
-    saveFilter: (value: any, t: Record<string, any>) => Promise<void>;
     selectionForCopy: SelectionCopy;
     setSelelectionForCopy: (
         selection: SelectionCopy
@@ -78,7 +78,7 @@ interface CriteriaBasedFilterEditionDialogProps {
     language?: string;
 }
 
-export const CriteriaBasedFilterEditionDialog: FunctionComponent<
+const CriteriaBasedFilterEditionDialog: FunctionComponent<
     CriteriaBasedFilterEditionDialogProps
 > = ({
     id,
@@ -88,7 +88,6 @@ export const CriteriaBasedFilterEditionDialog: FunctionComponent<
     onClose,
     broadcastChannel,
     getFilterById,
-    saveFilter,
     selectionForCopy,
     setSelelectionForCopy,
     activeDirectory,
@@ -99,12 +98,9 @@ export const CriteriaBasedFilterEditionDialog: FunctionComponent<
     const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
 
     // default values are set via reset when we fetch data
-    const formMethods = {
-        ...useForm({
-            resolver: yupResolver(formSchema),
-        }),
-        language: language,
-    };
+    const formMethods = useForm({
+        resolver: yupResolver(formSchema),
+    });
 
     const {
         reset,
@@ -163,7 +159,6 @@ export const CriteriaBasedFilterEditionDialog: FunctionComponent<
             id,
             selectionForCopy.sourceItemUuid,
             snackError,
-            saveFilter,
             setSelelectionForCopy,
         ]
     );
@@ -181,6 +176,7 @@ export const CriteriaBasedFilterEditionDialog: FunctionComponent<
             removeOptional={true}
             disabledSave={!!nameError || !!isValidating}
             isDataFetching={dataFetchStatus === FetchStatus.FETCHING}
+            language={language}
         >
             {isDataReady && (
                 <FilterForm
