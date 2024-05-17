@@ -698,7 +698,7 @@ const AppContent = ({ language, onLanguageClick }) => {
                 />
                 <OverflowableText
                     text={overflowableText}
-                    numberOfLinesToDisplay={2}
+                    maxLineCount={2}
                     style={{
                         width: '200px',
                         border: '1px solid black',
