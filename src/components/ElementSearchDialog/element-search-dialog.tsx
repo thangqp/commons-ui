@@ -73,6 +73,7 @@ const ElementSearchDialog = (props: ElementSearchDialogProps) => {
         >
             <DialogContent>
                 <Autocomplete
+                    open={isLoading || elementsFound?.length > 0}
                     id="element-search"
                     forcePopupIcon={false}
                     fullWidth
