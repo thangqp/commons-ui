@@ -5,12 +5,17 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { useCallback } from 'react';
-import { BaseVariant, EnqueueSnackbar, useSnackbar } from 'notistack';
+import { MutableRefObject, useCallback } from 'react';
+import {
+    BaseVariant,
+    OptionsObject,
+    closeSnackbar,
+    useSnackbar,
+} from 'notistack';
 import { useIntlRef } from './useIntlRef';
 import { IntlShape } from 'react-intl';
 
-interface SnackInputs {
+interface SnackInputs extends Omit<OptionsObject, 'variant' | 'style'> {
     messageTxt?: string;
     messageId?: string;
     messageValues?: { [key: string]: string };
@@ -23,85 +28,64 @@ export interface UseSnackMessageReturn {
     snackError: (snackInputs: SnackInputs) => void;
     snackWarning: (snackInputs: SnackInputs) => void;
     snackInfo: (snackInputs: SnackInputs) => void;
+    closeSnackbar: typeof closeSnackbar;
 }
 
 export function useSnackMessage(): UseSnackMessageReturn {
     const intlRef = useIntlRef();
-    const { enqueueSnackbar } = useSnackbar();
+    const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+
+    const enqueue = useCallback(
+        (snackInputs: SnackInputs, variant: BaseVariant) => {
+            const message = makeMessage(intlRef, snackInputs);
+            if (message === null) {
+                return;
+            }
+            return enqueueSnackbar(message, {
+                ...snackInputs,
+                variant: variant,
+                style: { whiteSpace: 'pre-line' },
+            });
+        },
+        [enqueueSnackbar, intlRef]
+    );
 
     /*
         There is two kind of messages : the message itself (bottom of snackbar), and the header (top of snackbar).
         As inputs, you can give either a text message, or an ID with optional values (for translation with intl).
-            snackInputs: {
-                messageTxt,
-                messageId,
-                messageValues,
-                headerTxt,
-                headerId,
-                headerValues,
+          snackInputs: {
+              messageTxt,
+              messageId,
+              messageValues,
+              headerTxt,
+              headerId,
+              headerValues,
+              key?, // optional key to close the snackbar
+              persist
             }
    */
     const snackError = useCallback(
-        (snackInputs: SnackInputs) =>
-            makeSnackbar(snackInputs, intlRef, enqueueSnackbar, 'error', true),
-        [enqueueSnackbar, intlRef]
+        (snackInputs: SnackInputs) => enqueue(snackInputs, 'error'),
+        [enqueue]
     );
 
     /* see snackError */
     const snackWarning = useCallback(
-        (snackInputs: SnackInputs) =>
-            makeSnackbar(
-                snackInputs,
-                intlRef,
-                enqueueSnackbar,
-                'warning',
-                true
-            ),
-        [enqueueSnackbar, intlRef]
+        (snackInputs: SnackInputs) => enqueue(snackInputs, 'warning'),
+        [enqueue]
     );
 
     /* see snackError */
     const snackInfo = useCallback(
-        (snackInputs: SnackInputs) =>
-            makeSnackbar(snackInputs, intlRef, enqueueSnackbar, 'info', false),
-        [enqueueSnackbar, intlRef]
+        (snackInputs: SnackInputs) => enqueue(snackInputs, 'info'),
+        [enqueue]
     );
 
-    return { snackError, snackInfo, snackWarning };
-}
-
-function makeSnackbar(
-    snackInputs: SnackInputs,
-    intlRef: React.MutableRefObject<IntlShape>,
-    enqueueSnackbar: EnqueueSnackbar,
-    level: BaseVariant,
-    persistent: boolean
-) {
-    const message = checkAndTranslateIfNecessary(
-        intlRef,
-        snackInputs.messageTxt,
-        snackInputs.messageId,
-        snackInputs.messageValues
-    );
-    const header = checkAndTranslateIfNecessary(
-        intlRef,
-        snackInputs.headerTxt,
-        snackInputs.headerId,
-        snackInputs.headerValues
-    );
-    if (message !== null && header !== null) {
-        displayMessageWithSnackbar(
-            message,
-            header,
-            enqueueSnackbar,
-            level,
-            persistent
-        );
-    }
+    return { snackError, snackInfo, snackWarning, closeSnackbar };
 }
 
 function checkAndTranslateIfNecessary(
-    intlRef: React.MutableRefObject<IntlShape>,
+    intlRef: MutableRefObject<IntlShape>,
     txt?: string,
     id?: string,
     values?: any
@@ -126,13 +110,23 @@ function checkInputs(txt?: string, id?: string, values?: any) {
     }
 }
 
-function displayMessageWithSnackbar(
-    message: string,
-    header: string,
-    enqueueSnackbar: EnqueueSnackbar,
-    level: BaseVariant,
-    persistent: boolean
-) {
+function makeMessage(
+    intlRef: MutableRefObject<IntlShape>,
+    snackInputs: SnackInputs
+): string | null {
+    const message = checkAndTranslateIfNecessary(
+        intlRef,
+        snackInputs.messageTxt,
+        snackInputs.messageId,
+        snackInputs.messageValues
+    );
+    const header = checkAndTranslateIfNecessary(
+        intlRef,
+        snackInputs.headerTxt,
+        snackInputs.headerId,
+        snackInputs.headerValues
+    );
+
     let fullMessage = '';
     if (header) {
         fullMessage += header;
@@ -143,9 +137,5 @@ function displayMessageWithSnackbar(
         }
         fullMessage += message;
     }
-    enqueueSnackbar(fullMessage, {
-        variant: level,
-        persist: persistent,
-        style: { whiteSpace: 'pre-line' },
-    });
+    return fullMessage;
 }
