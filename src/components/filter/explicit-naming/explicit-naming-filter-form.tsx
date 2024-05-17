@@ -217,11 +217,13 @@ const ExplicitNamingFilterForm: FunctionComponent<
             .then((matchingEquipments: any) => {
                 setValue(
                     FILTER_EQUIPMENTS_ATTRIBUTES,
-                    matchingEquipments.map((equipment: any) => ({
-                        [FieldConstants.AG_GRID_ROW_UUID]: uuid4(),
-                        [FieldConstants.EQUIPMENT_ID]: equipment.id,
-                        [DISTRIBUTION_KEY]: equipment.distributionKey,
-                    }))
+                    matchingEquipments.length === 0
+                        ? makeDefaultTableRows()
+                        : matchingEquipments.map((equipment: any) => ({
+                              [FieldConstants.AG_GRID_ROW_UUID]: uuid4(),
+                              [FieldConstants.EQUIPMENT_ID]: equipment.id,
+                              [DISTRIBUTION_KEY]: equipment.distributionKey,
+                          }))
                 );
             })
             .catch((error: any) =>
