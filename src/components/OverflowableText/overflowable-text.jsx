@@ -29,6 +29,7 @@ const multilineOverflowStyle = (numberOfLinesToDisplay) => ({
     WebkitLineClamp: numberOfLinesToDisplay /* number of lines to show */,
     lineClamp: numberOfLinesToDisplay,
     WebkitBoxOrient: 'vertical',
+    wordWrap: 'break-word', // prevent bug when writing a very long word
 });
 
 export const OverflowableText = styled(
