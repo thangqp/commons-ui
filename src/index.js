@@ -23,6 +23,7 @@ export { default as FlatParameters } from './components/FlatParameters';
 export { default as MultipleSelectionDialog } from './components/MultipleSelectionDialog';
 export { default as CustomMuiDialog } from './components/dialogs/custom-mui-dialog';
 export { default as DescriptionModificationDialog } from './components/dialogs/description-modification-dialog';
+export { default as ModifyElementSelection } from './components/dialogs/modify-element-selection';
 export { default as CriteriaBasedForm } from './components/filter/criteria-based/criteria-based-form';
 export { default as PopupConfirmationDialog } from './components/dialogs/popup-confirmation-dialog';
 export { default as BottomRightButtons } from './components/inputs/react-hook-form/ag-grid-table/bottom-right-buttons';

@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { useCallback, useLayoutEffect, useRef, useState } from 'react';
+import { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Box, Tooltip } from '@mui/material';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/system';
@@ -23,9 +23,31 @@ const overflowStyle = {
     },
 };
 
+const multilineOverflowStyle = (numberOfLinesToDisplay) => ({
+    overflow: 'hidden',
+    display: '-webkit-box',
+    WebkitLineClamp: numberOfLinesToDisplay /* number of lines to show */,
+    lineClamp: numberOfLinesToDisplay,
+    WebkitBoxOrient: 'vertical',
+    wordWrap: 'break-word', // prevent bug when writing a very long word
+});
+
 export const OverflowableText = styled(
-    ({ text, tooltipStyle, tooltipSx, className, children, ...props }) => {
+    ({
+        text,
+        maxLineCount, // overflowable text can be displayed on several lines if this is set to a number > 1
+        tooltipStyle,
+        tooltipSx,
+        className,
+        children,
+        ...props
+    }) => {
         const element = useRef();
+
+        const isMultiLine = useMemo(
+            () => maxLineCount && maxLineCount > 1,
+            [maxLineCount]
+        );
 
         const [overflowed, setOverflowed] = useState(false);
 
@@ -33,10 +55,17 @@ export const OverflowableText = styled(
             if (!element.current) {
                 return;
             }
-            setOverflowed(
-                element.current.scrollWidth > element.current.clientWidth
-            );
-        }, [setOverflowed, element]);
+
+            if (isMultiLine) {
+                setOverflowed(
+                    element.current.scrollHeight > element.current.clientHeight
+                );
+            } else {
+                setOverflowed(
+                    element.current.scrollWidth > element.current.clientWidth
+                );
+            }
+        }, [isMultiLine, setOverflowed, element]);
 
         useLayoutEffect(() => {
             checkOverflow();
@@ -45,6 +74,8 @@ export const OverflowableText = styled(
             text,
             element.current?.scrollWidth,
             element.current?.clientWidth,
+            element.current?.scrollHeight,
+            element.current?.clientHeight,
         ]);
 
         const defaultTooltipSx = !tooltipStyle ? overflowStyle.tooltip : false;
@@ -71,7 +102,11 @@ export const OverflowableText = styled(
                     ref={element}
                     children={children || text}
                     className={className}
-                    sx={overflowStyle.overflow}
+                    sx={
+                        isMultiLine
+                            ? multilineOverflowStyle(maxLineCount)
+                            : overflowStyle.overflow
+                    }
                 />
             </Tooltip>
         );
