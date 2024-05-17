@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { ChangeEvent, useMemo, useState } from 'react';
+import { ChangeEvent, MouseEvent, useMemo, useState } from 'react';
 import { Box, IconButton } from '@mui/material';
 import { Menu as MenuIcon } from '@mui/icons-material';
 import { MultiSelectList } from './multi-select-list';
@@ -47,9 +47,9 @@ export const FilterButton = ({
     setSelectedItems,
 }: FilterButtonProps) => {
     const [initialState] = useState(selectedItems);
-    const [anchorEl, setAnchorEl] = useState<any>(null);
+    const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
-    const handleClick = (event: any) => {
+    const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
     };
 
@@ -57,7 +57,7 @@ export const FilterButton = ({
         setAnchorEl(null);
     };
 
-    const handleChange = (event: ChangeEvent<any>) => {
+    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         setSelectedItems((previousSelection) => {
             return {
                 ...previousSelection,
