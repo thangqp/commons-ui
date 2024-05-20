@@ -63,6 +63,9 @@ const filter_expert_fr = {
     substationProperty: 'Propriété site',
     substationProperty1: 'Propriété site Or',
     substationProperty2: 'Propriété site Ex',
+    voltageLevelProperty: 'Propriété poste',
+    voltageLevelProperty1: 'Propriété poste Or',
+    voltageLevelProperty2: 'Propriété poste Ex',
     ratedVoltage1Or: "Tension d'enroulement Or (kV)",
     ratedVoltage2Ex: "Tension d'enroulement Ex (kV)",
 };
