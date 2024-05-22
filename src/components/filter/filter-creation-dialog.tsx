@@ -83,6 +83,11 @@ export interface FilterCreationDialogProps {
         elementTypes?: string[],
         equipmentTypes?: string[]
     ) => Promise<ElementAttributes[]>;
+    fetchPath?: (elementUuid: UUID) => Promise<ElementAttributes[]>;
+    sourceFilterForExplicitNamingConversion?: {
+        id: UUID;
+        equipmentType: string;
+    };
 }
 
 const FilterCreationDialog: FunctionComponent<FilterCreationDialogProps> = ({
@@ -95,6 +100,8 @@ const FilterCreationDialog: FunctionComponent<FilterCreationDialogProps> = ({
     fetchDirectoryContent,
     fetchRootFolders,
     fetchElementsInfos,
+    fetchPath,
+    sourceFilterForExplicitNamingConversion = undefined,
 }) => {
     const { snackError } = useSnackMessage();
 
@@ -175,7 +182,11 @@ const FilterCreationDialog: FunctionComponent<FilterCreationDialogProps> = ({
             onSave={onSubmit}
             formSchema={formSchema}
             formMethods={formMethods}
-            titleId={'createNewFilter'}
+            titleId={
+                sourceFilterForExplicitNamingConversion
+                    ? 'convertIntoExplicitNamingFilter'
+                    : 'createNewFilter'
+            }
             removeOptional={true}
             disabledSave={!!nameError || !!isValidating}
             language={language}
@@ -186,12 +197,16 @@ const FilterCreationDialog: FunctionComponent<FilterCreationDialogProps> = ({
                     fetchRootFolders: fetchRootFolders,
                     fetchElementsInfos: fetchElementsInfos,
                     fetchAppsAndUrls: fetchAppsAndUrls,
+                    fetchPath: fetchPath,
                 }}
             >
                 <FilterForm
                     creation
                     activeDirectory={activeDirectory}
                     elementExists={elementExists}
+                    sourceFilterForExplicitNamingConversion={
+                        sourceFilterForExplicitNamingConversion
+                    }
                 />
             </FilterContext.Provider>
         </CustomMuiDialog>

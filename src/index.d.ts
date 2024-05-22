@@ -92,6 +92,8 @@ export { default as equipment_search_en } from './components/translations/equipm
 export { default as equipment_search_fr } from './components/translations/equipment-search-fr';
 export { default as filter_en } from './components/translations/filter-en';
 export { default as filter_fr } from './components/translations/filter-fr';
+export { default as filter_expert_en } from './components/translations/filter-expert-en';
+export { default as filter_expert_fr } from './components/translations/filter-expert-fr';
 export { default as card_error_boundary_en } from './components/translations/card-error-boundary-en';
 export { default as card_error_boundary_fr } from './components/translations/card-error-boundary-fr';
 export { default as flat_parameters_en } from './components/translations/flat-parameters-en';
@@ -128,6 +130,7 @@ export { default as CriteriaBasedFilterEditionDialog } from './components/filter
 export { default as ExpandingTextField } from './components/inputs/react-hook-form/ExpandingTextField';
 export { default as CustomMuiDialog } from './components/dialogs/custom-mui-dialog';
 export { default as DescriptionModificationDialog } from './components/dialogs/description-modification-dialog';
+export { default as ModifyElementSelection } from './components/dialogs/modify-element-selection';
 export {
     genHelperPreviousValue,
     genHelperError,
@@ -271,6 +274,7 @@ export const FlatParameters: FunctionComponent<FlatParametersProps>;
 interface OverflowableTextProps {
     sx?: SxProps;
     text?: string | ReactElement;
+    maxLineCount?: number;
 }
 
 export const OverflowableText: FunctionComponent<OverflowableTextProps>;
