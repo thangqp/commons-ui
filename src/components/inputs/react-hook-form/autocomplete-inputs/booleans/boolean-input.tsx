@@ -5,16 +5,16 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { ChangeEvent, ReactElement, useCallback } from 'react';
+import { ChangeEvent, useCallback } from 'react';
 import { useIntl } from 'react-intl';
-import { FormControlLabel } from '@mui/material';
+import { Checkbox, FormControlLabel, Switch } from '@mui/material';
 import { useController } from 'react-hook-form';
 
 export interface BooleanInputProps {
     name: string;
     label: string;
     formProps: any;
-    Input: (props: any) => ReactElement;
+    Input: typeof Switch | typeof Checkbox;
 }
 
 const BooleanInput = ({ name, label, formProps, Input }: BooleanInputProps) => {
@@ -26,7 +26,7 @@ const BooleanInput = ({ name, label, formProps, Input }: BooleanInputProps) => {
 
     const handleChangeValue = useCallback(
         (event: ChangeEvent<HTMLInputElement>) => {
-            onChange(event.target?.checked);
+            onChange(event.target.checked);
         },
         [onChange]
     );
