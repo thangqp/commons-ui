@@ -119,7 +119,7 @@ const moduleTypeSort = {
 function compareModules(c1, c2) {
     //sort by type then by name
     return (
-        [moduleTypeSort[c1.type] || 100] - [moduleTypeSort[c2.type] || 100] ||
+        ((moduleTypeSort[c1.type] || 100) - (moduleTypeSort[c2.type] || 100)) ||
         (c1.name || '').localeCompare(c2.name || '')
     );
 }
