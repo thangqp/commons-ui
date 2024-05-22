@@ -23,6 +23,7 @@ export { default as FlatParameters } from './components/FlatParameters';
 export { default as MultipleSelectionDialog } from './components/MultipleSelectionDialog';
 export { default as CustomMuiDialog } from './components/dialogs/custom-mui-dialog';
 export { default as DescriptionModificationDialog } from './components/dialogs/description-modification-dialog';
+export { default as ModifyElementSelection } from './components/dialogs/modify-element-selection';
 export { default as CriteriaBasedForm } from './components/filter/criteria-based/criteria-based-form';
 export { default as PopupConfirmationDialog } from './components/dialogs/popup-confirmation-dialog';
 export { default as BottomRightButtons } from './components/inputs/react-hook-form/ag-grid-table/bottom-right-buttons';
@@ -119,6 +120,8 @@ export { default as equipment_search_en } from './components/translations/equipm
 export { default as equipment_search_fr } from './components/translations/equipment-search-fr';
 export { default as filter_en } from './components/translations/filter-en';
 export { default as filter_fr } from './components/translations/filter-fr';
+export { default as filter_expert_en } from './components/translations/filter-expert-en';
+export { default as filter_expert_fr } from './components/translations/filter-expert-fr';
 export { default as card_error_boundary_en } from './components/translations/card-error-boundary-en';
 export { default as card_error_boundary_fr } from './components/translations/card-error-boundary-fr';
 export { default as flat_parameters_en } from './components/translations/flat-parameters-en';

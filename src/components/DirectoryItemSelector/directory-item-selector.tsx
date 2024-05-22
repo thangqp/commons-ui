@@ -165,8 +165,9 @@ const DirectoryItemSelector: FunctionComponent<DirectoryItemSelectorProps> = ({
 
     const fetchDirectory = useCallback(
         (nodeId: UUID): void => {
+            const typeList = types.includes(ElementType.DIRECTORY) ? [] : types;
             fetchDirectoryContent &&
-                fetchDirectoryContent(nodeId, types)
+                fetchDirectoryContent(nodeId, typeList)
                     .then((children) => {
                         const childrenMatchedTypes = children.filter(
                             (item: any) => contentFilter().has(item.type)

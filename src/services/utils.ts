@@ -12,6 +12,13 @@ export const backendFetch = (url: string, init: any, token?: string) => {
     return safeFetch(url, initCopy);
 };
 
+export const backendFetchJson = (url: string, init: any, token?: string) => {
+    const initCopy = prepareRequest(init, token);
+    return safeFetch(url, initCopy).then((safeResponse) =>
+        safeResponse.status === 204 ? null : safeResponse.json()
+    );
+};
+
 const prepareRequest = (init: any, token?: string) => {
     if (!(typeof init === 'undefined' || typeof init === 'object')) {
         throw new TypeError(

@@ -56,6 +56,8 @@ import {
     equipment_search_fr,
     filter_en,
     filter_fr,
+    filter_expert_en,
+    filter_expert_fr,
     flat_parameters_en,
     flat_parameters_fr,
     login_en,
@@ -103,6 +105,7 @@ import { toNestedGlobalSelectors } from '../../src/utils/styles';
 import { InputsTab } from './InputsTab';
 import inputs_en from '../../src/components/translations/inputs-en';
 import inputs_fr from '../../src/components/translations/inputs-fr';
+import { EquipmentSearchDialog } from './equipment-search';
 
 const messages = {
     en: {
@@ -114,6 +117,7 @@ const messages = {
         ...element_search_en,
         ...equipment_search_en,
         ...filter_en,
+        ...filter_expert_en,
         ...card_error_boundary_en,
         ...flat_parameters_en,
         ...multiple_selection_dialog_en,
@@ -129,6 +133,7 @@ const messages = {
         ...element_search_fr,
         ...equipment_search_fr,
         ...filter_fr,
+        ...filter_expert_fr,
         ...card_error_boundary_fr,
         ...flat_parameters_fr,
         ...multiple_selection_dialog_fr,
@@ -740,6 +745,14 @@ const AppContent = ({ language, onLanguageClick }) => {
                         border: '1px solid black',
                     }}
                 />
+                <OverflowableText
+                    text={overflowableText}
+                    maxLineCount={2}
+                    style={{
+                        width: '200px',
+                        border: '1px solid black',
+                    }}
+                />
             </div>
             <hr />
             <div
@@ -824,6 +837,7 @@ const AppContent = ({ language, onLanguageClick }) => {
                             appsAndUrls={apps}
                         >
                             <Crasher />
+                            <EquipmentSearchDialog />
                             <div
                                 style={{
                                     paddingLeft: 10,
