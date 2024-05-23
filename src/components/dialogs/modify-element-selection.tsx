@@ -10,11 +10,11 @@ import { Button, Grid, Typography } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useController } from 'react-hook-form';
 import { UUID } from 'crypto';
-import { FilterContext } from '../filter/filter-context.ts';
+import { FilterContext } from '../filter/filter-context';
 import { TreeViewFinderNodeProps } from '../TreeViewFinder';
-import { FieldConstants } from '../../utils/field-constants.ts';
-import DirectoryItemSelector from '../DirectoryItemSelector/directory-item-selector.tsx';
-import { ElementType } from '../../utils/ElementType.ts';
+import { FieldConstants } from '../../utils/field-constants';
+import DirectoryItemSelector from '../DirectoryItemSelector/directory-item-selector';
+import { ElementType } from '../../utils/ElementType';
 
 export interface ModifyElementSelectionProps {
     elementType: ElementType;
