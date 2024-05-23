@@ -63,8 +63,8 @@ const filter_expert_en = {
     substationProperty: 'Substation property',
     substationProperty1: 'Substation property 1',
     substationProperty2: 'Substation property 2',
-    ratedVoltage1Or: 'Rated Voltage 1 (kV)',
-    ratedVoltage2Ex: 'Rated Voltage 2 (kV)',
+    ratedVoltage1KV: 'Rated Voltage 1 (kV)',
+    ratedVoltage2KV: 'Rated Voltage 2 (kV)',
 };
 
 export default filter_expert_en;
