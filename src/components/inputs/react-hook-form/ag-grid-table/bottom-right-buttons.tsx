@@ -9,12 +9,12 @@ import IconButton from '@mui/material/IconButton';
 import { ArrowCircleDown, ArrowCircleUp, Upload } from '@mui/icons-material';
 import AddIcon from '@mui/icons-material/ControlPoint';
 import DeleteIcon from '@mui/icons-material/Delete';
-import CsvUploader from './csv-uploader/csv-uploader.tsx';
+import CsvUploader from './csv-uploader/csv-uploader';
 import { FunctionComponent, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { styled } from '@mui/material/styles';
-import ErrorInput from '../error-management/error-input.tsx';
-import FieldErrorAlert from '../error-management/field-error-alert.tsx';
+import ErrorInput from '../error-management/error-input';
+import FieldErrorAlert from '../error-management/field-error-alert';
 import { FieldValues, UseFieldArrayReturn } from 'react-hook-form';
 
 const InnerColoredButton = styled(IconButton)(({ theme }) => {

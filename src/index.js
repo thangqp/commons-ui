@@ -171,7 +171,6 @@ export {
 export {
     keyGenerator,
     areArrayElementsUnique,
-    mergeSx,
     isObjectEmpty,
 } from './utils/functions';
 export { default as DirectoryItemsInput } from './components/inputs/react-hook-form/directory-items-input';
@@ -215,4 +214,5 @@ export {
     getCriteriaBasedSchema,
 } from './components/filter/criteria-based/criteria-based-filter-utils';
 
+export { mergeSx } from './utils/styles';
 export { setCommonStore } from './redux/commonStore';

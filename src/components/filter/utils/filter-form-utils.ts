@@ -7,8 +7,8 @@
 import { FieldConstants } from '../../../utils/field-constants';
 import RangeInput from '../../inputs/react-hook-form/range-input';
 import { FunctionComponent } from 'react';
-import CountriesInput from '../../inputs/react-hook-form/select-inputs/countries-input.tsx';
-import SelectInput from '../../inputs/react-hook-form/select-inputs/select-input.tsx';
+import CountriesInput from '../../inputs/react-hook-form/select-inputs/countries-input';
+import SelectInput from '../../inputs/react-hook-form/select-inputs/select-input';
 
 const countries = {
     renderer: CountriesInput,

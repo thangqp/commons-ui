@@ -147,7 +147,6 @@ export { UserManagerMock } from './utils/UserManagerMock';
 export {
     keyGenerator,
     areArrayElementsUnique,
-    mergeSx,
     isObjectEmpty,
 } from './utils/functions';
 
@@ -285,3 +284,5 @@ export {
 } from './components/filter/criteria-based/criteria-based-filter-utils';
 
 export { setCommonStore } from './redux/commonStore';
+
+export { mergeSx } from './utils/styles';
