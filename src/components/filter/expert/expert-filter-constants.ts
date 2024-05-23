@@ -53,6 +53,10 @@ export const EXPERT_FILTER_EQUIPMENTS = {
         id: 'SHUNT_COMPENSATOR',
         label: 'ShuntCompensators',
     },
+    STATIC_VAR_COMPENSATOR: {
+        id: 'STATIC_VAR_COMPENSATOR',
+        label: 'StaticVarCompensators',
+    },
 };
 
 export const ENERGY_SOURCE_OPTIONS = [
@@ -84,6 +88,17 @@ export const PHASE_REGULATION_MODE_OPTIONS = [
     { name: 'CURRENT_LIMITER', label: 'CurrentLimiter' },
     { name: 'ACTIVE_POWER_CONTROL', label: 'ActivePowerControl' },
     { name: 'FIXED_TAP', label: 'FixedTap' },
+];
+
+export const SVAR_REGULATION_MODE_OPTIONS = [
+    { name: 'VOLTAGE', label: 'Voltage' },
+    { name: 'REACTIVE_POWER', label: 'ActivePower' },
+    { name: 'OFF', label: 'Off' },
+];
+
+export const REGULATION_TYPE_OPTIONS = [
+    { name: 'DISTANT', label: 'Distant' },
+    { name: 'LOCAL', label: 'Local' },
 ];
 
 // customName is used to export to the server
@@ -321,6 +336,18 @@ export const FIELDS_OPTIONS = {
         dataType: DataType.NUMBER,
         inputType: 'number',
     },
+    MIN_Q_AT_NOMINAL_V: {
+        name: FieldType.MIN_Q_AT_NOMINAL_V,
+        label: 'minQAtNominalV',
+        dataType: DataType.NUMBER,
+        inputType: 'number',
+    },
+    FIX_Q_AT_NOMINAL_V: {
+        name: FieldType.FIX_Q_AT_NOMINAL_V,
+        label: 'fixQAtNominalV',
+        dataType: DataType.NUMBER,
+        inputType: 'number',
+    },
     SWITCHED_ON_Q_AT_NOMINAL_V: {
         name: FieldType.SWITCHED_ON_Q_AT_NOMINAL_V,
         label: 'SwitchedOnMaxQAtNominalV',
@@ -330,6 +357,12 @@ export const FIELDS_OPTIONS = {
     MAX_SUSCEPTANCE: {
         name: FieldType.MAX_SUSCEPTANCE,
         label: 'maxSusceptance',
+        dataType: DataType.NUMBER,
+        inputType: 'number',
+    },
+    MIN_SUSCEPTANCE: {
+        name: FieldType.MIN_SUSCEPTANCE,
+        label: 'minSusceptance',
         dataType: DataType.NUMBER,
         inputType: 'number',
     },
@@ -541,6 +574,86 @@ export const FIELDS_OPTIONS = {
         valueEditorType: 'select',
         defaultValue: '',
     },
+    VOLTAGE_LEVEL_PROPERTY: {
+        name: FieldType.VOLTAGE_LEVEL_PROPERTY,
+        label: 'voltageLevelProperty',
+        dataType: DataType.PROPERTY,
+        valueEditorType: 'select',
+        defaultValue: '',
+    },
+    SVAR_REGULATION_MODE: {
+        name: FieldType.SVAR_REGULATION_MODE,
+        label: 'svarRegulationMode',
+        dataType: DataType.ENUM,
+        values: SVAR_REGULATION_MODE_OPTIONS,
+        valueEditorType: 'select',
+        defaultValue: 'VOLTAGE',
+    },
+    VOLTAGE_SET_POINT: {
+        name: FieldType.VOLTAGE_SET_POINT,
+        label: 'voltageSetPoint',
+        dataType: DataType.NUMBER,
+        inputType: 'number',
+    },
+    REACTIVE_POWER_SET_POINT: {
+        name: FieldType.REACTIVE_POWER_SET_POINT,
+        label: 'reactivePowerSetPoint',
+        dataType: DataType.NUMBER,
+        inputType: 'number',
+    },
+    REGULATING_TERMINAL_VL_ID: {
+        name: FieldType.REGULATING_TERMINAL_VL_ID,
+        label: 'regulatingTerminalVLId',
+        dataType: DataType.STRING,
+    },
+    REGULATING_TERMINAL_CONNECTABLE_ID: {
+        name: FieldType.REGULATING_TERMINAL_CONNECTABLE_ID,
+        label: 'regulatingTerminalConnectableId',
+        dataType: DataType.STRING,
+    },
+    REGULATION_TYPE: {
+        name: FieldType.REGULATION_TYPE,
+        label: 'regulationType',
+        dataType: DataType.ENUM,
+        values: REGULATION_TYPE_OPTIONS,
+        valueEditorType: 'select',
+        defaultValue: 'DISTANT',
+    },
+    AUTOMATE: {
+        name: FieldType.AUTOMATE,
+        label: 'automate',
+        dataType: DataType.NUMBER,
+    },
+    LOW_VOLTAGE_SET_POINT: {
+        name: FieldType.LOW_VOLTAGE_SET_POINT,
+        label: 'lowVoltageSetPoint',
+        dataType: DataType.NUMBER,
+        inputType: 'number',
+    },
+    HIGH_VOLTAGE_SET_POINT: {
+        name: FieldType.HIGH_VOLTAGE_SET_POINT,
+        label: 'highVoltageSetPoint',
+        dataType: DataType.NUMBER,
+        inputType: 'number',
+    },
+    LOW_VOLTAGE_THRESHOLD: {
+        name: FieldType.LOW_VOLTAGE_THRESHOLD,
+        label: 'lowVoltageThreshold',
+        dataType: DataType.NUMBER,
+        inputType: 'number',
+    },
+    HIGH_VOLTAGE_THRESHOLD: {
+        name: FieldType.HIGH_VOLTAGE_THRESHOLD,
+        label: 'highVoltageThreshold',
+        dataType: DataType.NUMBER,
+        inputType: 'number',
+    },
+    SUSCEPTANCE_FIX: {
+        name: FieldType.SUSCEPTANCE_FIX,
+        label: 'susceptanceFix',
+        dataType: DataType.NUMBER,
+        inputType: 'number',
+    },
 };
 
 export const fields: Record<string, Field[]> = {
@@ -676,5 +789,33 @@ export const fields: Record<string, Field[]> = {
         FIELDS_OPTIONS.SWITCHED_ON_SUSCEPTANCE,
         FIELDS_OPTIONS.PROPERTY,
         FIELDS_OPTIONS.SUBSTATION_PROPERTY,
+    ],
+    STATIC_VAR_COMPENSATOR: [
+        FIELDS_OPTIONS.ID,
+        FIELDS_OPTIONS.NAME,
+        FIELDS_OPTIONS.COUNTRY,
+        FIELDS_OPTIONS.VOLTAGE_LEVEL_ID,
+        FIELDS_OPTIONS.NOMINAL_VOLTAGE,
+        FIELDS_OPTIONS.CONNECTED,
+        FIELDS_OPTIONS.REGULATING_TERMINAL_VL_ID,
+        FIELDS_OPTIONS.REGULATING_TERMINAL_CONNECTABLE_ID,
+        FIELDS_OPTIONS.REGULATION_TYPE,
+        FIELDS_OPTIONS.AUTOMATE,
+        FIELDS_OPTIONS.LOW_VOLTAGE_SET_POINT,
+        FIELDS_OPTIONS.HIGH_VOLTAGE_SET_POINT,
+        FIELDS_OPTIONS.LOW_VOLTAGE_THRESHOLD,
+        FIELDS_OPTIONS.HIGH_VOLTAGE_THRESHOLD,
+        FIELDS_OPTIONS.SUSCEPTANCE_FIX,
+        FIELDS_OPTIONS.FIX_Q_AT_NOMINAL_V,
+        FIELDS_OPTIONS.MAX_Q_AT_NOMINAL_V,
+        FIELDS_OPTIONS.MIN_Q_AT_NOMINAL_V,
+        FIELDS_OPTIONS.MAX_SUSCEPTANCE,
+        FIELDS_OPTIONS.MIN_SUSCEPTANCE,
+        FIELDS_OPTIONS.SVAR_REGULATION_MODE,
+        FIELDS_OPTIONS.VOLTAGE_SET_POINT,
+        FIELDS_OPTIONS.REACTIVE_POWER_SET_POINT,
+        FIELDS_OPTIONS.PROPERTY,
+        FIELDS_OPTIONS.SUBSTATION_PROPERTY,
+        FIELDS_OPTIONS.VOLTAGE_LEVEL_PROPERTY,
     ],
 };

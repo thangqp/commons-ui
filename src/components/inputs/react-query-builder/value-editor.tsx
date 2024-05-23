@@ -129,7 +129,8 @@ const ValueEditor: FunctionComponent<ValueEditorProps> = (props) => {
         props.field === FieldType.PROPERTY ||
         props.field === FieldType.SUBSTATION_PROPERTY ||
         props.field === FieldType.SUBSTATION_PROPERTY_1 ||
-        props.field === FieldType.SUBSTATION_PROPERTY_2
+        props.field === FieldType.SUBSTATION_PROPERTY_2 ||
+        props.field === FieldType.VOLTAGE_LEVEL_PROPERTY
     ) {
         let equipmentType;
         if (
@@ -138,6 +139,8 @@ const ValueEditor: FunctionComponent<ValueEditorProps> = (props) => {
             props.field === FieldType.SUBSTATION_PROPERTY_2
         ) {
             equipmentType = Substation.type;
+        } else if (props.field === FieldType.VOLTAGE_LEVEL_PROPERTY) {
+            equipmentType = VoltageLevel.type;
         } else {
             equipmentType = getValues(FieldConstants.EQUIPMENT_TYPE);
         }

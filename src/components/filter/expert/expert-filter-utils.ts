@@ -108,6 +108,11 @@ export const getOperators = (fieldName: string, intl: IntlShape) => {
                 label: intl.formatMessage({ id: operator.label }),
             }));
         case DataType.NUMBER:
+            if (field.name === FieldType.AUTOMATE) {
+                // take only EXISTS and NOT_EXISTS
+                return [OPERATOR_OPTIONS.EXISTS, OPERATOR_OPTIONS.NOT_EXISTS];
+            }
+
             return [
                 OPERATOR_OPTIONS.EQUALS,
                 OPERATOR_OPTIONS.GREATER,
