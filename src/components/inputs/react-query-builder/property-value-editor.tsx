@@ -9,12 +9,12 @@ import { FunctionComponent, useCallback, useEffect, useMemo } from 'react';
 import Grid from '@mui/material/Grid';
 import { Autocomplete, MenuItem, Select, TextField } from '@mui/material';
 import { ValueEditorProps } from 'react-querybuilder';
-import useValid from './use-valid.ts';
+import useValid from './use-valid';
 import { useIntl } from 'react-intl';
 
-import { FieldConstants } from '../../../utils/field-constants.ts';
-import { OPERATOR_OPTIONS } from '../../filter/expert/expert-filter-constants.ts';
-import { usePredefinedProperties } from '../../../hooks/predefined-properties-hook.ts';
+import { FieldConstants } from '../../../utils/field-constants';
+import { OPERATOR_OPTIONS } from '../../filter/expert/expert-filter-constants';
+import { usePredefinedProperties } from '../../../hooks/predefined-properties-hook';
 
 const PROPERTY_VALUE_OPERATORS = [OPERATOR_OPTIONS.IN];
 

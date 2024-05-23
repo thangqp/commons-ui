@@ -34,11 +34,11 @@ import {
 import { yupResolver } from '@hookform/resolvers/yup';
 import { elementExistsType } from './criteria-based/criteria-based-filter-edition-dialog';
 import { UUID } from 'crypto';
-import { StudyMetadata } from '../../hooks/predefined-properties-hook.ts';
+import { StudyMetadata } from '../../hooks/predefined-properties-hook';
 
 import { FilterContext } from './filter-context';
 import { FilterType } from './constants/filter-constants';
-import { ElementAttributes } from '../../utils/types.ts';
+import { ElementAttributes } from '../../utils/types';
 
 const emptyFormData = {
     [FieldConstants.NAME]: '',

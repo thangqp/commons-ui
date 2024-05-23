@@ -19,7 +19,5 @@ export const areArrayElementsUnique = (array: unknown[]) => {
     return uniqueValues.length === array.length;
 };
 
-export const mergeSx = (...allSx: unknown[]) => allSx.flat();
-
 export const isObjectEmpty = (object: object) =>
     object && Object.keys(object).length === 0;
