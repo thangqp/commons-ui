@@ -9,7 +9,10 @@
 //    https://reactjs.org/docs/error-boundaries.html
 //    https://mui.com/material-ui/react-card/#complex-interaction
 
-import { Component, ErrorInfo, ReactNode } from 'react';
+import {
+    ExpandMore as ExpandMoreIcon,
+    Replay as ReplayIcon,
+} from '@mui/icons-material';
 import {
     Box,
     Card,
@@ -19,14 +22,11 @@ import {
     Collapse,
     IconButton,
     IconButtonProps,
-    styled,
     Theme,
     Typography,
+    styled,
 } from '@mui/material';
-import {
-    ExpandMore as ExpandMoreIcon,
-    Replay as ReplayIcon,
-} from '@mui/icons-material';
+import { Component, ErrorInfo, ReactNode } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 export interface ExpandMoreProps extends IconButtonProps {
@@ -36,11 +36,11 @@ export interface ExpandMoreProps extends IconButtonProps {
 const ExpandMore = styled((props: ExpandMoreProps) => {
     const { expand, ...other } = props;
     return <IconButton {...other} />;
-})(({ theme, expand }: { theme?: Theme; expand: boolean }) => ({
+})(({ theme, expand }: { theme: Theme; expand: boolean }) => ({
     transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
     marginLeft: 'auto',
-    transition: theme?.transitions?.create('transform', {
-        duration: theme?.transitions?.duration?.shortest,
+    transition: theme.transitions.create('transform', {
+        duration: theme.transitions.duration.shortest,
     }),
 }));
 
@@ -50,11 +50,21 @@ interface Props {
     children?: ReactNode;
 }
 
-interface CardErrorBoundaryState {
-    hasError: boolean;
+type CardErrorBoundaryStateError = {
+    hasError: true;
+    error: Error;
+};
+
+type CardErrorBoundaryStateSuccess = {
+    hasError: false;
+};
+
+type CardErrorBoundaryState = (
+    | CardErrorBoundaryStateError
+    | CardErrorBoundaryStateSuccess
+) & {
     expanded: boolean;
-    error?: Error;
-}
+};
 
 class CardErrorBoundary extends Component<Props, CardErrorBoundaryState> {
     state: CardErrorBoundaryState;
@@ -64,7 +74,6 @@ class CardErrorBoundary extends Component<Props, CardErrorBoundaryState> {
         this.state = {
             hasError: false,
             expanded: false,
-            error: undefined,
         };
         this.handleExpandClick = this.handleExpandClick.bind(this);
         this.handleReloadClick = this.handleReloadClick.bind(this);
@@ -144,7 +153,7 @@ class CardErrorBoundary extends Component<Props, CardErrorBoundaryState> {
                                     />
                                 </Typography>
                                 <Typography variant="caption">
-                                    {error?.message}
+                                    {error.message}
                                 </Typography>
                             </CardContent>
                         </Collapse>

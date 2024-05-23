@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { FunctionComponent, useCallback, useMemo } from 'react';
+import { FunctionComponent, useCallback, useEffect, useMemo } from 'react';
 import { FieldConstants } from '../../../utils/field-constants';
 import yup from '../../../utils/yup-config';
 import CustomAgGridTable, {
@@ -22,6 +22,11 @@ import { v4 as uuid4 } from 'uuid';
 import { toFloatOrNullValue } from '../../inputs/react-hook-form/utils/functions';
 import { DISTRIBUTION_KEY, FilterType } from '../constants/filter-constants';
 import { FILTER_EQUIPMENTS } from '../utils/filter-form-utils';
+import { UUID } from 'crypto';
+import { useSnackMessage } from '../../../hooks/useSnackMessage.ts';
+import { ElementType } from '../../../utils/ElementType.ts';
+import ModifyElementSelection from '../../dialogs/modify-element-selection.tsx';
+import { exportFilter } from '../../../services/study';
 
 export const FILTER_EQUIPMENTS_ATTRIBUTES = 'filterEquipmentsAttributes';
 
@@ -106,8 +111,20 @@ export function getExplicitNamingFilterEmptyFormData() {
     };
 }
 
-const ExplicitNamingFilterForm: FunctionComponent = () => {
+export interface FilterForExplicitConversionProps {
+    id: UUID;
+    equipmentType: String;
+}
+
+interface ExplicitNamingFilterFormProps {
+    sourceFilterForExplicitNamingConversion?: FilterForExplicitConversionProps;
+}
+
+const ExplicitNamingFilterForm: FunctionComponent<
+    ExplicitNamingFilterFormProps
+> = ({ sourceFilterForExplicitNamingConversion }) => {
     const intl = useIntl();
+    const { snackError } = useSnackMessage();
 
     const { getValues, setValue } = useFormContext();
 
@@ -116,6 +133,15 @@ const ExplicitNamingFilterForm: FunctionComponent = () => {
     });
 
     const forGeneratorOrLoad = isGeneratorOrLoad(watchEquipmentType);
+
+    useEffect(() => {
+        if (sourceFilterForExplicitNamingConversion) {
+            setValue(
+                FieldConstants.EQUIPMENT_TYPE,
+                sourceFilterForExplicitNamingConversion.equipmentType
+            );
+        }
+    }, [sourceFilterForExplicitNamingConversion, setValue]);
 
     const columnDefs = useMemo(() => {
         const columnDefs: any[] = [
@@ -186,6 +212,28 @@ const ExplicitNamingFilterForm: FunctionComponent = () => {
         setValue(FILTER_EQUIPMENTS_ATTRIBUTES, makeDefaultTableRows());
     };
 
+    const onStudySelected = (studyUuid: UUID) => {
+        exportFilter(studyUuid, sourceFilterForExplicitNamingConversion?.id)
+            .then((matchingEquipments: any) => {
+                setValue(
+                    FILTER_EQUIPMENTS_ATTRIBUTES,
+                    matchingEquipments.length === 0
+                        ? makeDefaultTableRows()
+                        : matchingEquipments.map((equipment: any) => ({
+                              [FieldConstants.AG_GRID_ROW_UUID]: uuid4(),
+                              [FieldConstants.EQUIPMENT_ID]: equipment.id,
+                              [DISTRIBUTION_KEY]: equipment.distributionKey,
+                          }))
+                );
+            })
+            .catch((error: any) =>
+                snackError({
+                    messageTxt: error.message,
+                    headerId: 'convertIntoExplicitNamingFilterError',
+                })
+            );
+    };
+
     return (
         <Grid container item spacing={2}>
             <Grid item xs={12}>
@@ -193,12 +241,23 @@ const ExplicitNamingFilterForm: FunctionComponent = () => {
                     Input={SelectInput}
                     name={FieldConstants.EQUIPMENT_TYPE}
                     options={Object.values(FILTER_EQUIPMENTS)}
+                    disabled={sourceFilterForExplicitNamingConversion}
                     label={'equipmentType'}
                     shouldOpenPopup={openConfirmationPopup}
                     resetOnConfirmation={handleResetOnConfirmation}
                     message={'changeTypeMessage'}
                     validateButtonLabel={'button.changeType'}
                 />
+                {sourceFilterForExplicitNamingConversion && (
+                    <ModifyElementSelection
+                        elementType={ElementType.STUDY}
+                        onElementValidated={onStudySelected}
+                        dialogOpeningButtonLabel={'selectStudyDialogButton'}
+                        dialogTitleLabel={'selectStudyDialogTitle'}
+                        dialogMessageLabel={'selectStudyText'}
+                        noElementMessageLabel={'noSelectedStudyText'}
+                    />
+                )}
             </Grid>
             {watchEquipmentType && (
                 <Grid item xs={12}>

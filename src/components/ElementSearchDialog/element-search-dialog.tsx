@@ -5,22 +5,17 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import {
-    HTMLAttributes,
-    ReactElement,
-    useCallback,
-    useEffect,
-    useState,
-} from 'react';
+import { HTMLAttributes, ReactNode, useCallback, useMemo } from 'react';
 import { Autocomplete, Dialog, DialogContent, TextField } from '@mui/material';
 import { Search, SearchOff } from '@mui/icons-material';
 import { useIntl } from 'react-intl';
+import { EquipmentInfos } from '../../index';
+import * as React from 'react';
 import { OptionalExceptFor } from '../../utils/type';
-import { EquipmentInfos } from '../../utils/EquipmentType';
 
-type SearchElement = OptionalExceptFor<EquipmentInfos, 'label'>;
+export type SearchElement = OptionalExceptFor<EquipmentInfos, 'label'>;
 
-type RenderElementProps = HTMLAttributes<HTMLLIElement> & {
+export type RenderElementProps = HTMLAttributes<HTMLLIElement> & {
     element: SearchElement;
     inputValue: string;
     onClose: () => void;
@@ -29,13 +24,16 @@ type RenderElementProps = HTMLAttributes<HTMLLIElement> & {
 export interface ElementSearchDialogProps {
     open: boolean;
     onClose: () => void;
-    searchingLabel: boolean;
-    onSearchTermChange: (term: string) => void;
+    searchingLabel?: string;
+    searchTerm: string;
+    onSearchTermChange: (searchTerm: string) => void;
     onSelectionChange: (selection: SearchElement) => void;
     elementsFound: SearchElement[];
-    renderElement: (props: RenderElementProps) => ReactElement;
-    searchTermDisabled: boolean;
-    searchTermDisableReason: string;
+    renderElement: (props: RenderElementProps) => ReactNode;
+    searchTermDisabled?: boolean;
+    searchTermDisableReason?: string;
+    isLoading: boolean;
+    loadingText?: string;
 }
 
 const ElementSearchDialog = (props: ElementSearchDialogProps) => {
@@ -45,57 +43,27 @@ const ElementSearchDialog = (props: ElementSearchDialogProps) => {
         open,
         onClose,
         searchingLabel,
+        searchTerm,
         onSearchTermChange,
         onSelectionChange,
-        elementsFound, // [{ label: aLabel, id: anId }, ...]
+        elementsFound,
         renderElement,
         searchTermDisabled,
         searchTermDisableReason,
+        isLoading,
+        loadingText,
     } = props;
 
-    const [expanded, setExpanded] = useState(false);
-    const [value, setValue] = useState<SearchElement | null>(
-        searchTermDisabled && searchTermDisableReason
-            ? { label: searchTermDisableReason }
-            : null
-    );
-
-    const [loading, setLoading] = useState(false);
-
-    useEffect(() => {
-        setLoading(false);
-    }, [elementsFound]);
-
-    useEffect(() => {
-        if (!searchTermDisabled || !searchTermDisableReason) {
-            setValue(null);
-        } else {
-            setValue({ label: searchTermDisableReason });
-        }
-    }, [searchTermDisabled, searchTermDisableReason]);
-
-    // to reset the value between the dialog closing and opening
-    useEffect(() => {
-        setValue((old) => (!open ? null : old));
-    }, [open]);
-
-    const handleSearchTermChange = (term: string) => {
-        if (term) {
-            setLoading(true);
-            onSearchTermChange(term);
-            setExpanded(true);
-            setValue({ label: term });
-        } else {
-            setExpanded(false);
-            setValue(null);
-        }
-    };
+    const displayedValue = useMemo((): SearchElement => {
+        return searchTermDisabled || searchTermDisableReason
+            ? { label: searchTermDisableReason ?? 'search disabled' }
+            : { label: searchTerm ?? '' };
+    }, [searchTerm, searchTermDisabled, searchTermDisableReason]);
 
     const handleClose = useCallback(() => {
-        setValue(null);
-        setExpanded(false);
+        onSearchTermChange('');
         onClose();
-    }, [onClose]);
+    }, [onSearchTermChange, onClose]);
 
     return (
         <Dialog
@@ -107,34 +75,28 @@ const ElementSearchDialog = (props: ElementSearchDialogProps) => {
         >
             <DialogContent>
                 <Autocomplete
+                    open={isLoading || elementsFound?.length > 0}
                     id="element-search"
                     forcePopupIcon={false}
-                    open={expanded}
-                    onClose={() => {
-                        setExpanded(false);
-                    }}
                     fullWidth
-                    clearOnBlur
                     onInputChange={(_event, value) => {
                         if (!searchTermDisabled) {
-                            handleSearchTermChange(value);
+                            onSearchTermChange(value);
                         }
                     }}
                     onChange={(_event, newValue, reason) => {
-                        if (reason === 'selectOption') {
-                            //@ts-ignore reason to selectOption should narrow the type and eliminate null
+                        // when calling this method with reason == "selectOption", newValue can't be null or of type "string", since an option has been clicked on
+                        if (newValue !== null && reason === 'selectOption') {
                             onSelectionChange(newValue);
-                            setValue(newValue);
-                        } else {
-                            setValue(null);
                         }
                     }}
                     getOptionLabel={(option) => option.label}
                     isOptionEqualToValue={(option, value) =>
                         option.id === value.id
                     }
-                    options={loading ? [] : elementsFound}
-                    loading={loading}
+                    options={isLoading ? [] : elementsFound}
+                    loading={isLoading}
+                    loadingText={loadingText}
                     autoHighlight={true}
                     noOptionsText={intl.formatMessage({
                         id: 'element_search/noResult',
@@ -147,12 +109,12 @@ const ElementSearchDialog = (props: ElementSearchDialogProps) => {
                             onClose: handleClose,
                         })
                     }
-                    renderInput={(params) => (
+                    renderInput={(params: any) => (
                         <TextField
                             autoFocus={true}
                             {...params}
                             label={
-                                searchingLabel ||
+                                searchingLabel ??
                                 intl.formatMessage({
                                     id: 'element_search/label',
                                 })
@@ -170,9 +132,9 @@ const ElementSearchDialog = (props: ElementSearchDialogProps) => {
                                     </>
                                 ),
                             }}
+                            value={displayedValue}
                         />
                     )}
-                    value={value}
                     disabled={searchTermDisabled}
                 />
             </DialogContent>

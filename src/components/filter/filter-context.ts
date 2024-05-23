@@ -21,10 +21,12 @@ interface FilterContextProps {
         equipmentTypes?: string[]
     ) => Promise<ElementAttributes[]>;
     fetchAppsAndUrls?: () => Promise<StudyMetadata[]>;
+    fetchPath?: (element: UUID) => Promise<ElementAttributes[]>;
 }
 export const FilterContext = createContext<FilterContextProps>({
     fetchDirectoryContent: undefined,
     fetchRootFolders: undefined,
     fetchElementsInfos: undefined,
     fetchAppsAndUrls: undefined,
+    fetchPath: undefined,
 });
