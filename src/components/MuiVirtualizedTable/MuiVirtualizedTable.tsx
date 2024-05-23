@@ -355,7 +355,8 @@ class MuiVirtualizedTable extends PureComponent<
         this._registerHeader = this._registerHeader.bind(this);
         this._registerObserver = this._registerObserver.bind(this);
         this.headers = createRef();
-        // Impossible to assign read-only variable => this.headers.current = {};
+        //@ts-ignore cannot assign read_only variable
+        this.headers.current = {};
         let options = {
             root: null,
             rootMargin: '0px',

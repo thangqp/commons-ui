@@ -55,7 +55,7 @@ export class UserManagerMock {
     getUser() {
         return Promise.resolve(
             JSON.parse(
-                sessionStorage.getItem('powsybl-gridsuite-mock-user') ?? ''
+                sessionStorage.getItem('powsybl-gridsuite-mock-user') ?? 'null'
             )
         );
     }
@@ -63,7 +63,7 @@ export class UserManagerMock {
     signinSilent() {
         console.info('signinSilent..............');
         const localStorageUser = JSON.parse(
-            localStorage.getItem('powsybl-gridsuite-mock-user') ?? ''
+            localStorage.getItem('powsybl-gridsuite-mock-user') ?? 'null'
         );
         if (localStorageUser === null) {
             return Promise.reject(
