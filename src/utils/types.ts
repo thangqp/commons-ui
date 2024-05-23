@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { UUID } from 'crypto';
-import { ElementType } from './ElementType.ts';
+import { ElementType } from './ElementType';
 import {
     Battery,
     BusBar,
@@ -22,7 +22,7 @@ import {
     TwoWindingTransfo,
     VoltageLevel,
     VSC,
-} from './equipment-types.ts';
+} from './equipment-types';
 
 export type Input = string | number;
 

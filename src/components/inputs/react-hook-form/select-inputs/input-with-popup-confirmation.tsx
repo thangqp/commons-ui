@@ -6,7 +6,7 @@
  */
 import { useController } from 'react-hook-form';
 import { useState } from 'react';
-import PopupConfirmationDialog from '../../../dialogs/popup-confirmation-dialog.tsx';
+import PopupConfirmationDialog from '../../../dialogs/popup-confirmation-dialog';
 
 const InputWithPopupConfirmation = ({
     Input,

@@ -10,7 +10,7 @@ import {
     DataType,
     FieldType,
     OperatorType,
-} from '../expert/expert-filter.type.ts';
+} from './expert-filter.type';
 import { Field } from 'react-querybuilder';
 
 export enum RULES {
