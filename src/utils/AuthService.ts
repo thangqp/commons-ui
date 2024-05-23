@@ -21,6 +21,13 @@ import { NavigateFunction } from 'react-router-dom';
 
 type UserValidationFunc = (user: User) => Promise<boolean>;
 
+type CustomUserManager = UserManager & {
+    authorizationCodeFlowEnabled?: boolean;
+    idpSettings?: {
+        maxExpiresIn?: number;
+    };
+};
+
 // set as a global variable to allow log level configuration at runtime
 //@ts-ignore
 window.OIDCLog = Log;
@@ -190,12 +197,10 @@ function initializeAuthenticationProd(
                     accessTokenExpiringNotificationTime,
                 ...responseSettings,
             };
-            let userManager = new UserManager(settings);
+            let userManager: CustomUserManager = new UserManager(settings);
             // Hack to enrich UserManager object
-            //@ts-ignore
             userManager.idpSettings = idpSettings; //store our settings in there as well to use it later
             // Hack to enrich UserManager object
-            //@ts-ignore
             userManager.authorizationCodeFlowEnabled =
                 authorizationCodeFlowEnabled;
             if (!isSilentRenew) {
@@ -216,7 +221,7 @@ function initializeAuthenticationProd(
 function computeMinExpiresIn(
     expiresIn: number,
     idToken: string,
-    maxExpiresIn: number
+    maxExpiresIn: number | undefined
 ) {
     const now = Date.now() / 1000;
     const exp = jwtDecode(idToken).exp;
@@ -298,7 +303,7 @@ function getIdTokenExpiresIn(user: User) {
 
 function dispatchUser(
     dispatch: Dispatch<unknown>,
-    userManagerInstance: UserManager,
+    userManagerInstance: CustomUserManager,
     validateUser: UserValidationFunc
 ) {
     return userManagerInstance.getUser().then((user) => {
@@ -331,7 +336,6 @@ function dispatchUser(
 
                     // In authorization code flow we have to make the oidc-client lib re-evaluate the date of the token renewal timers
                     // because it is not hacked at page loading on the fragment before oidc-client lib initialization
-                    //@ts-ignore
                     if (userManagerInstance.authorizationCodeFlowEnabled) {
                         reloadTimerOnExpiresIn(
                             user,
@@ -339,8 +343,7 @@ function dispatchUser(
                             computeMinExpiresIn(
                                 user.expires_in,
                                 user.id_token,
-                                //@ts-ignore
-                                userManagerInstance.idpSettings.maxExpiresIn
+                                userManagerInstance.idpSettings?.maxExpiresIn
                             )
                         );
                     }
@@ -412,7 +415,7 @@ function handleSilentRenewCallback(userManagerInstance: UserManager) {
 
 function handleUser(
     dispatch: Dispatch<unknown>,
-    userManager: UserManager,
+    userManager: CustomUserManager,
     validateUser: UserValidationFunc
 ) {
     userManager.events.addUserLoaded((user) => {
@@ -446,10 +449,8 @@ function handleUser(
                     // logout during token expiration, show login without errors
                     dispatch(resetAuthenticationRouterError());
                     return dispatch(setLoggedUser(null));
-                    //@ts-ignore
-                } else if (userManager.idpSettings.maxExpiresIn) {
+                } else if (userManager.idpSettings?.maxExpiresIn) {
                     if (
-                        //@ts-ignore
                         idTokenExpiresIn < userManager.idpSettings.maxExpiresIn
                     ) {
                         // TODO here attempt last chance login ? snackbar to notify the user ? Popup ?
@@ -459,7 +460,6 @@ function handleUser(
                                 idTokenExpiresIn +
                                 ') => last chance, next error will logout',
                             'maxExpiresIn = ' +
-                                //@ts-ignore
                                 userManager.idpSettings.maxExpiresIn,
                             'last renew attempt in ' +
                                 (idTokenExpiresIn -
@@ -477,14 +477,12 @@ function handleUser(
                             'Error in silent renew, but idtoken NOT expiring (expiring in' +
                                 idTokenExpiresIn +
                                 ') => postponing expiration to' +
-                                //@ts-ignore
                                 userManager.idpSettings.maxExpiresIn,
                             error
                         );
                         reloadTimerOnExpiresIn(
                             user,
                             userManager,
-                            //@ts-ignore
                             userManager.idpSettings.maxExpiresIn
                         );
                     }
@@ -493,8 +491,7 @@ function handleUser(
                         'Error in silent renew, unsupported configuration: token still valid for ' +
                             idTokenExpiresIn +
                             ' but maxExpiresIn is not configured:' +
-                            //@ts-ignore
-                            userManager.idpSettings.maxExpiresIn,
+                            userManager.idpSettings?.maxExpiresIn,
                         error
                     );
                 }
