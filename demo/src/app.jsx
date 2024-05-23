@@ -173,11 +173,11 @@ const style = {
  * @param {import('@mui/material/styles').Theme} theme Theme from ThemeProvider
  */
 const TreeViewFinderCustomStyles = (theme) => ({
-    '& .icon': {
+    icon: {
         width: '32px',
         height: '32px',
     },
-    '& .labelIcon': {
+    labelIcon: {
         backgroundColor: 'green',
         marginRight: theme.spacing(1),
     },
