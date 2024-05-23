@@ -22,7 +22,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { FunctionComponent, useMemo } from 'react';
 import { Hvdc, Line } from '../../../utils/equipment-types';
 
-import { PredefinedProperties } from '../../../utils/types.ts';
+import { PredefinedProperties } from '../../../utils/types';
 
 interface FilterFreePropertiesProps {
     freePropertiesType: FreePropertiesTypes;

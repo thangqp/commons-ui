@@ -4,10 +4,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { Box, Tooltip } from '@mui/material';
-import PropTypes from 'prop-types';
+import {
+    ReactElement,
+    useCallback,
+    useLayoutEffect,
+    useMemo,
+    useRef,
+    useState,
+} from 'react';
+import { Box, BoxProps, SxProps, Tooltip } from '@mui/material';
 import { styled } from '@mui/system';
+import { Style } from 'node:util';
 
 const overflowStyle = {
     overflow: {
@@ -23,7 +30,7 @@ const overflowStyle = {
     },
 };
 
-const multilineOverflowStyle = (numberOfLinesToDisplay) => ({
+const multilineOverflowStyle = (numberOfLinesToDisplay?: number): SxProps => ({
     overflow: 'hidden',
     display: '-webkit-box',
     WebkitLineClamp: numberOfLinesToDisplay /* number of lines to show */,
@@ -32,17 +39,24 @@ const multilineOverflowStyle = (numberOfLinesToDisplay) => ({
     wordWrap: 'break-word', // prevent bug when writing a very long word
 });
 
+export interface OverflowableTextProps extends BoxProps {
+    text: ReactElement | string;
+    maxLineCount?: number;
+    tooltipStyle?: Style;
+    tooltipSx?: SxProps;
+}
+
 export const OverflowableText = styled(
     ({
         text,
-        maxLineCount, // overflowable text can be displayed on several lines if this is set to a number > 1
+        maxLineCount, // overflowable text can be displayed on several lines if this is set to a number > 1 tooltipStyle,
         tooltipStyle,
         tooltipSx,
         className,
         children,
         ...props
-    }) => {
-        const element = useRef();
+    }: OverflowableTextProps) => {
+        const element = useRef<HTMLHeadingElement>();
 
         const isMultiLine = useMemo(
             () => maxLineCount && maxLineCount > 1,
@@ -112,22 +126,5 @@ export const OverflowableText = styled(
         );
     }
 )({});
-
-OverflowableText.propTypes = {
-    children: PropTypes.array,
-    text: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.number,
-        PropTypes.node,
-    ]),
-    tooltipStyle: PropTypes.string,
-    tooltipSx: PropTypes.object,
-    sx: PropTypes.oneOfType([
-        PropTypes.object,
-        PropTypes.array,
-        PropTypes.func,
-    ]),
-    className: PropTypes.string,
-};
 
 export default OverflowableText;

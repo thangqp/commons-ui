@@ -9,10 +9,36 @@ import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
 import clsx from 'clsx';
 import { FormattedMessage } from 'react-intl';
+import { EQUIPMENT_TYPE, EquipmentType } from '../../utils/EquipmentType';
+import { Box, SxProps } from '@mui/material';
 import OverflowableText from '../OverflowableText';
-import { EQUIPMENT_TYPE } from '../../utils/EquipmentType';
-import { Box } from '@mui/material';
 import { mergeSx } from '../../utils/styles';
+
+export interface EquipmentItemProps {
+    inputValue: string;
+    suffixRenderer: typeof TagRenderer;
+    element: {
+        key: string;
+        label: string;
+        type: EquipmentType;
+        voltageLevelLabel: string;
+    };
+    showsJustText: boolean;
+    classes?: {
+        result?: string;
+        equipmentOption?: string;
+        equipmentTag?: string;
+        equipmentTypeTag?: string;
+        equipmentVlTag?: string;
+    };
+    styles?: {
+        result?: SxProps;
+        equipmentOption?: SxProps;
+        equipmentTag?: SxProps;
+        equipmentTypeTag?: SxProps;
+        equipmentVlTag?: SxProps;
+    };
+}
 
 export const EquipmentItem = ({
     inputValue,
@@ -20,7 +46,7 @@ export const EquipmentItem = ({
     element,
     showsJustText = false,
     ...props
-}) => {
+}: EquipmentItemProps) => {
     let matches = match(element.label, inputValue, {
         insideWords: true,
         findAllOccurrences: true,
@@ -46,7 +72,7 @@ export const EquipmentItem = ({
                         )}
                     >
                         <FormattedMessage
-                            id={EQUIPMENT_TYPE[element.type].tagLabel}
+                            id={EQUIPMENT_TYPE[element.type]?.tagLabel}
                         />
                     </Box>
                 )}

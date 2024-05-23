@@ -11,52 +11,49 @@ import {
     Button,
     Container,
     Link,
+    Theme,
     Typography,
 } from '@mui/material';
-import { LogoutOutlined as LogoutOutlinedIcon } from '@mui/icons-material';
+import { LockOutlined as LockOutlinedIcon } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
 
 const styles = {
-    paper: (theme) => ({
+    paper: (theme: Theme) => ({
         marginTop: theme.spacing(8),
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
     }),
-    avatar: (theme) => ({
+    avatar: (theme: Theme) => ({
         margin: theme.spacing(1),
-        backgroundColor: theme.palette.error.main,
+        backgroundColor: theme.palette.secondary.main,
     }),
-    submit: (theme) => ({
+    submit: (theme: Theme) => ({
         margin: theme.spacing(3, 0, 2),
         borderRadius: '30px',
     }),
+    logo: {
+        width: 64,
+        height: 64,
+    },
 };
 
-const Logout = ({ onLogoutClick, disabled }) => {
-    function Copyright() {
-        return (
-            <Typography variant="body2" color="textSecondary" align="center">
-                {'Copyright © '}
-                <Link color="inherit" href="#">
-                    GridSuite
-                </Link>{' '}
-                {new Date().getFullYear()}
-                {'.'}
-            </Typography>
-        );
-    }
+export interface LoginProps {
+    onLoginClick: () => void;
+    disabled: boolean;
+}
 
+const Login = ({ onLoginClick, disabled }: LoginProps) => {
     return (
         <Container component="main" maxWidth="xs">
             <Box sx={styles.paper}>
                 <Avatar sx={styles.avatar}>
-                    <LogoutOutlinedIcon />
+                    <LockOutlinedIcon />
                 </Avatar>
                 <Typography component="h1" variant="h5">
                     <FormattedMessage
-                        id="login/logout"
-                        defaultMessage={'logout'}
+                        id="login/login"
+                        defaultMessage={'login'}
                     />{' '}
                     ?
                 </Typography>
@@ -66,19 +63,30 @@ const Logout = ({ onLogoutClick, disabled }) => {
                     fullWidth
                     variant="contained"
                     sx={styles.submit}
-                    onClick={onLogoutClick}
+                    onClick={onLoginClick}
                 >
                     <FormattedMessage
-                        id="login/logout"
-                        defaultMessage={'logout'}
+                        id="login/connection"
+                        defaultMessage={'connection'}
                     />
                 </Button>
             </Box>
             <Box mt={2}>
-                <Copyright />
+                <Typography
+                    variant="body2"
+                    color="textSecondary"
+                    align="center"
+                >
+                    {'Copyright © '}
+                    <Link color="inherit" href="#">
+                        GridSuite
+                    </Link>{' '}
+                    {new Date().getFullYear()}
+                    {'.'}
+                </Typography>
             </Box>
         </Container>
     );
 };
 
-export default Logout;
+export default Login;

@@ -29,7 +29,7 @@ import {
     PROPERTY_VALUES_1,
     PROPERTY_VALUES_2,
 } from './filter-property';
-import { usePredefinedProperties } from '../../../hooks/predefined-properties-hook.ts';
+import { usePredefinedProperties } from '../../../hooks/predefined-properties-hook';
 import { FilterType } from '../constants/filter-constants';
 
 export enum FreePropertiesTypes {

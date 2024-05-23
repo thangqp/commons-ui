@@ -27,8 +27,8 @@ import yup from '../../../utils/yup-config';
 import { FilterForm } from '../filter-form';
 import { UUID } from 'crypto';
 import { FilterType } from '../constants/filter-constants';
-import { FetchStatus } from '../../../utils/FetchStatus.ts';
-import { ElementType } from '../../../utils/ElementType.ts';
+import { FetchStatus } from '../../../utils/FetchStatus';
+import { ElementType } from '../../../utils/ElementType';
 import { saveFilter } from '../../../services/explore';
 
 export type SelectionCopy = {

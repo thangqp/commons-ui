@@ -5,10 +5,14 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import PropTypes from 'prop-types';
-import { Slider } from '@mui/material';
+import { Slider, SliderProps } from '@mui/material';
 import { useController } from 'react-hook-form';
-import { identity } from './utils/functions';
+import { identity } from '../utils/functions';
+
+export interface SliderInputProps extends SliderProps {
+    name: string;
+    onValueChanged: (value: any) => void;
+}
 
 const SliderInput = ({
     name,
@@ -16,14 +20,19 @@ const SliderInput = ({
     max,
     step,
     size = 'small',
-    onValueChange = identity,
-}) => {
+    onValueChanged = identity,
+}: SliderInputProps) => {
     const {
         field: { onChange, value },
     } = useController({ name });
 
-    const handleValueChange = (e) => {
-        onChange(onValueChange(e.target.value));
+    const handleValueChange = (
+        event: Event,
+        value: number | number[],
+        activeThumb: number
+    ) => {
+        onValueChanged(value);
+        onChange(value);
     };
 
     return (
@@ -36,15 +45,6 @@ const SliderInput = ({
             onChange={handleValueChange}
         />
     );
-};
-
-SliderInput.propTypes = {
-    name: PropTypes.string.isRequired,
-    min: PropTypes.number.isRequired,
-    max: PropTypes.number.isRequired,
-    step: PropTypes.number.isRequired,
-    size: PropTypes.string,
-    onValueChange: PropTypes.func,
 };
 
 export default SliderInput;

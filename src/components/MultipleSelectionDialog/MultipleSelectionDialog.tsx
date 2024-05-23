@@ -19,6 +19,16 @@ import {
 import { FormattedMessage } from 'react-intl';
 import { useState } from 'react';
 
+export interface MultipleSelectionDialogProps {
+    options: string[];
+    selectedOptions: string[];
+    open: boolean;
+    getOptionLabel: (option: string) => string;
+    handleClose: () => void;
+    handleValidate: (ids: string[]) => void;
+    titleId: string;
+}
+
 const MultipleSelectionDialog = ({
     options,
     selectedOptions,
@@ -27,7 +37,7 @@ const MultipleSelectionDialog = ({
     handleClose,
     handleValidate,
     titleId,
-}) => {
+}: MultipleSelectionDialogProps) => {
     const [selectedIds, setSelectedIds] = useState(selectedOptions ?? []);
     const handleSelectAll = () => {
         if (selectedIds.length !== options.length) {
@@ -36,7 +46,7 @@ const MultipleSelectionDialog = ({
             setSelectedIds([]);
         }
     };
-    const handleOptionSelection = (option) => {
+    const handleOptionSelection = (option: string) => {
         setSelectedIds((oldValues) => {
             if (oldValues.includes(option)) {
                 return oldValues.filter((o) => o !== option);
@@ -74,7 +84,7 @@ const MultipleSelectionDialog = ({
                     <Grid item>
                         <List>
                             {options.map((option) => {
-                                const optionId = option?.id ?? option;
+                                const optionId = option;
                                 const label = getOptionLabel(option);
                                 return (
                                     <Grid item key={optionId}>

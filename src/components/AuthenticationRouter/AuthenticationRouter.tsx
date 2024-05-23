@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useCallback } from 'react';
+import { Dispatch, useCallback } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import SignInCallbackHandler from '../SignInCallbackHandler';
 import {
@@ -20,6 +20,26 @@ import Logout from '../Login/Logout';
 
 import { Alert, AlertTitle, Grid } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
+import { UserManager } from 'oidc-client';
+
+export interface AuthenticationRouterProps {
+    userManager: {
+        instance: UserManager;
+        error: string;
+    };
+    signInCallbackError: { message: string };
+    authenticationRouterError: {
+        userName: string;
+        userValidationError?: { error: Error };
+        logoutError?: { error: Error };
+        unauthorizedUserInfo?: string;
+        error: string;
+    };
+    showAuthenticationRouterLogin: boolean;
+    dispatch: Dispatch<unknown>;
+    navigate: () => void;
+    location: () => void;
+}
 
 const AuthenticationRouter = ({
     userManager,
@@ -29,7 +49,7 @@ const AuthenticationRouter = ({
     dispatch,
     navigate,
     location,
-}) => {
+}: AuthenticationRouterProps) => {
     const handleSigninCallbackClosure = useCallback(
         () => handleSigninCallback(dispatch, navigate, userManager.instance),
         [dispatch, navigate, userManager.instance]

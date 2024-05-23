@@ -9,23 +9,23 @@ import { ValueEditorProps } from 'react-querybuilder';
 import React, { FunctionComponent, useCallback } from 'react';
 import { MaterialValueEditor } from '@react-querybuilder/material';
 
-import CountryValueEditor from './country-value-editor.tsx';
-import TranslatedValueEditor from './translated-value-editor.tsx';
-import TextValueEditor from './text-value-editor.tsx';
+import CountryValueEditor from './country-value-editor';
+import TranslatedValueEditor from './translated-value-editor';
+import TextValueEditor from './text-value-editor';
 import Box from '@mui/material/Box';
 
 import { useFormContext } from 'react-hook-form';
-import { FieldConstants } from '../../../utils/field-constants.ts';
+import { FieldConstants } from '../../../utils/field-constants';
 import {
     DataType,
     FieldType,
     OperatorType,
-} from '../../filter/expert/expert-filter.type.ts';
-import { Substation, VoltageLevel } from '../../../utils/equipment-types.ts';
-import ElementValueEditor from './element-value-editor.tsx';
-import { ElementType } from '../../../utils/ElementType.ts';
-import PropertyValueEditor from './property-value-editor.tsx';
-import { FilterType } from '../../filter/constants/filter-constants.ts';
+} from '../../filter/expert/expert-filter.type';
+import { Substation, VoltageLevel } from '../../../utils/equipment-types';
+import ElementValueEditor from './element-value-editor';
+import { ElementType } from '../../../utils/ElementType';
+import PropertyValueEditor from './property-value-editor';
+import { FilterType } from '../../filter/constants/filter-constants';
 
 const styles = {
     noArrows: {

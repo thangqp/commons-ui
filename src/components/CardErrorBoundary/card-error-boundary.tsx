@@ -9,7 +9,10 @@
 //    https://reactjs.org/docs/error-boundaries.html
 //    https://mui.com/material-ui/react-card/#complex-interaction
 
-import { Component } from 'react';
+import {
+    ExpandMore as ExpandMoreIcon,
+    Replay as ReplayIcon,
+} from '@mui/icons-material';
 import {
     Box,
     Card,
@@ -18,19 +21,22 @@ import {
     CardHeader,
     Collapse,
     IconButton,
-    styled,
+    IconButtonProps,
+    Theme,
     Typography,
+    styled,
 } from '@mui/material';
-import {
-    ExpandMore as ExpandMoreIcon,
-    Replay as ReplayIcon,
-} from '@mui/icons-material';
+import { Component, ErrorInfo, ReactNode } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-const ExpandMore = styled((props) => {
+export interface ExpandMoreProps extends IconButtonProps {
+    expand: boolean;
+}
+
+const ExpandMore = styled((props: ExpandMoreProps) => {
     const { expand, ...other } = props;
     return <IconButton {...other} />;
-})(({ theme, expand }) => ({
+})(({ theme, expand }: { theme: Theme; expand: boolean }) => ({
     transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
     marginLeft: 'auto',
     transition: theme.transitions.create('transform', {
@@ -38,34 +44,59 @@ const ExpandMore = styled((props) => {
     }),
 }));
 
-class CardErrorBoundary extends Component {
-    constructor(props) {
+// Extracted from https://react-typescript-cheatsheet.netlify.app/docs/basic/getting-started/error_boundaries/ for types
+
+interface Props {
+    children?: ReactNode;
+}
+
+type CardErrorBoundaryStateError = {
+    hasError: true;
+    error: Error;
+};
+
+type CardErrorBoundaryStateSuccess = {
+    hasError: false;
+};
+
+type CardErrorBoundaryState = (
+    | CardErrorBoundaryStateError
+    | CardErrorBoundaryStateSuccess
+) & {
+    expanded: boolean;
+};
+
+class CardErrorBoundary extends Component<Props, CardErrorBoundaryState> {
+    state: CardErrorBoundaryState;
+
+    constructor(props: Props) {
         super(props);
         this.state = {
             hasError: false,
             expanded: false,
-            error: undefined,
         };
         this.handleExpandClick = this.handleExpandClick.bind(this);
         this.handleReloadClick = this.handleReloadClick.bind(this);
     }
 
-    static getDerivedStateFromError(error) {
+    static getDerivedStateFromError(error: Error) {
         // Update state so the next render will show the fallback UI.
         return { hasError: true, error };
     }
 
-    componentDidCatch(error, errorInfo) {
+    componentDidCatch(error: Error, errorInfo: ErrorInfo) {
         // You can also log the error to an error reporting service
         console.error('CardErrorBoundary caught: ', error, errorInfo);
     }
 
     handleExpandClick() {
-        this.setState((state) => ({ expanded: !state.expanded }));
+        this.setState((state: CardErrorBoundaryState) => ({
+            expanded: !state.expanded,
+        }));
     }
 
     handleReloadClick() {
-        this.setState((state) => ({
+        this.setState((_) => ({
             hasError: false,
             expanded: false,
             error: undefined,

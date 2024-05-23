@@ -22,8 +22,8 @@ import { elementExistsType } from '../criteria-based/criteria-based-filter-editi
 import { FilterContext } from '../filter-context';
 import { FilterType } from '../constants/filter-constants';
 import { FetchStatus } from '../../../utils/FetchStatus';
-import { ElementAttributes } from '../../../utils/types.ts';
-import { StudyMetadata } from '../../../hooks/predefined-properties-hook.ts';
+import { ElementAttributes } from '../../../utils/types';
+import { StudyMetadata } from '../../../hooks/predefined-properties-hook';
 
 const formSchema = yup
     .object()

@@ -5,25 +5,24 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import PropTypes from 'prop-types';
 import BooleanInput from './boolean-input';
-import { Checkbox } from '@mui/material';
+import { Switch, SwitchProps } from '@mui/material';
 
-const CheckboxInput = ({ name, label, formProps }) => {
+export interface SwitchInputProps {
+    name: string;
+    label: string;
+    formProps: SwitchProps;
+}
+
+const SwitchInput = ({ name, label, formProps }: SwitchInputProps) => {
     return (
         <BooleanInput
             name={name}
             label={label}
             formProps={formProps}
-            Input={Checkbox}
+            Input={Switch}
         />
     );
 };
 
-CheckboxInput.propTypes = {
-    name: PropTypes.string.isRequired,
-    label: PropTypes.string,
-    formProps: PropTypes.object,
-};
-
-export default CheckboxInput;
+export default SwitchInput;
