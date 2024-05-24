@@ -14,7 +14,8 @@ import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { ColumnResizedEvent, GetLocaleTextParams } from 'ag-grid-community';
 import { Box } from '@mui/system';
 import { mergeSx } from '../../utils/styles';
-import { useTheme } from '@mui/material';
+import { SxProps, useTheme } from '@mui/material';
+import { SystemStyleObject } from '@mui/system/styleFunctionSx/styleFunctionSx';
 
 interface CustomAGGGridStyleProps {
     shouldHidePinnedHeaderRightBorder?: boolean;
@@ -25,7 +26,7 @@ interface CustomAGGGridStyleProps {
 interface CustomAGGridProps extends AgGridReactProps, CustomAGGGridStyleProps {}
 
 const styles = {
-    grid: (theme: Theme) => ({
+    grid: (theme: Theme): SystemStyleObject<Theme> => ({
         width: 'auto',
         height: '100%',
         position: 'relative',
@@ -110,9 +111,13 @@ const CustomAGGrid = React.forwardRef<any, CustomAGGridProps>((props, ref) => {
     return (
         <Box
             sx={mergeSx(
-                styles.grid,
-                shouldHidePinnedHeaderRightBorder && styles.noBorderRight,
-                showOverlay && styles.overlayBackground
+                styles.grid as SxProps | undefined,
+                shouldHidePinnedHeaderRightBorder
+                    ? styles.noBorderRight
+                    : undefined,
+                showOverlay
+                    ? (styles.overlayBackground as SxProps | undefined)
+                    : undefined
             )}
             className={alternateTheme ? theme.alternateTheme : theme.aggrid}
         >
