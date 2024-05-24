@@ -15,7 +15,7 @@ import {
     ReactNode,
     MouseEvent,
     KeyboardEvent,
-    RefObject,
+    MutableRefObject,
 } from 'react';
 import { FormattedMessage } from 'react-intl';
 import clsx from 'clsx';
@@ -344,7 +344,7 @@ class MuiVirtualizedTable extends PureComponent<
         classes: {},
     };
 
-    headers: RefObject<any>;
+    headers: MutableRefObject<any>;
     observer: IntersectionObserver;
     dropDownVisible: boolean;
 
@@ -355,7 +355,6 @@ class MuiVirtualizedTable extends PureComponent<
         this._registerHeader = this._registerHeader.bind(this);
         this._registerObserver = this._registerObserver.bind(this);
         this.headers = createRef();
-        //@ts-ignore cannot assign read_only variable
         this.headers.current = {};
         let options = {
             root: null,
@@ -408,7 +407,7 @@ class MuiVirtualizedTable extends PureComponent<
     }
 
     _registerHeader(label: string, header: unknown) {
-        if (header !== null) {
+        if (this.headers.current) {
             this.headers.current[label] = header;
         }
     }
