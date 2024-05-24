@@ -40,7 +40,7 @@ const multilineOverflowStyle = (numberOfLinesToDisplay?: number): SxProps => ({
 });
 
 export interface OverflowableTextProps extends BoxProps {
-    text: ReactElement | string;
+    text?: ReactElement | string;
     maxLineCount?: number;
     tooltipStyle?: Style;
     tooltipSx?: SxProps;

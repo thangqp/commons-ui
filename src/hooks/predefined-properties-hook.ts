@@ -16,7 +16,7 @@ import { useSnackMessage } from './useSnackMessage';
 import { FilterContext } from '../components/filter/filter-context';
 import { EquipmentType, PredefinedProperties } from '../utils/types';
 
-interface Metadata {
+export interface Metadata {
     name: string;
     url: string;
     appColor: string;

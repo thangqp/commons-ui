@@ -67,6 +67,9 @@ const filter_expert_en = {
     ratedVoltage2KV: 'Rated Voltage 2 (kV)',
     nominalVoltage1KV: 'Nominal Voltage 1 (kV)',
     nominalVoltage2KV: 'Nominal Voltage 2 (kV)',
+    voltageLevelProperty: 'Voltage level property',
+    voltageLevelProperty1: 'Voltage level property 1',
+    voltageLevelProperty2: 'Voltage level property 2',
 };
 
 export default filter_expert_en;

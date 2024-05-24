@@ -67,6 +67,9 @@ const filter_expert_fr = {
     ratedVoltage2KV: "Tension d'enroulement 2 (kV)",
     nominalVoltage1KV: 'Tension nominale 1 (kV)',
     nominalVoltage2KV: 'Tension nominale 2 (kV)',
+    voltageLevelProperty: 'Propriété poste',
+    voltageLevelProperty1: 'Propriété poste 1',
+    voltageLevelProperty2: 'Propriété poste 2',
 };
 
 export default filter_expert_fr;
