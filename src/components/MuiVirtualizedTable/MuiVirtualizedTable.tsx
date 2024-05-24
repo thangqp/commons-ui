@@ -354,6 +354,8 @@ class MuiVirtualizedTable extends PureComponent<
         this._computeHeaderSize = this._computeHeaderSize.bind(this);
         this._registerHeader = this._registerHeader.bind(this);
         this._registerObserver = this._registerObserver.bind(this);
+        // we shouldn't use createRef here, just defining an object would be enough
+        // We have to type RefObject to MutableRefObject to enable mutability, and TS enables that...
         this.headers = createRef();
         this.headers.current = {};
         let options = {
