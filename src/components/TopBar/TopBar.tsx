@@ -345,8 +345,7 @@ const TopBar = ({
                     </Box>
                 )}
                 {user && (
-                    //@ts-ignore typo, should be menuContainer
-                    <Box sx={styles.menuContainerg}>
+                    <Box sx={styles.menuContainer}>
                         {/* Button width abbreviation and arrow icon */}
                         <Button
                             aria-controls="settings-menu"

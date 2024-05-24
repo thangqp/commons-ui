@@ -284,8 +284,7 @@ export class KeyedColumnsRowIndexer {
                 if (helper.maintainsStats && acceptsCell) {
                     acceptedOnRow[colIdx] = cellValue;
                 }
-                //@ts-ignore should be &&=
-                acceptsRow &= acceptsCell;
+                acceptsRow &&= acceptsCell;
             }
 
             if (acceptsRow && rowFilter) {
