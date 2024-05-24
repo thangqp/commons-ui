@@ -65,6 +65,8 @@ const filter_expert_fr = {
     substationProperty2: 'Propriété site Ex',
     ratedVoltage1KV: "Tension d'enroulement 1 (kV)",
     ratedVoltage2KV: "Tension d'enroulement 2 (kV)",
+    nominalVoltage1KV: 'Tension nominale 1 (kV)',
+    nominalVoltage2KV: 'Tension nominale 2 (kV)',
 };
 
 export default filter_expert_fr;

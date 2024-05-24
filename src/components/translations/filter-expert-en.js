@@ -65,6 +65,8 @@ const filter_expert_en = {
     substationProperty2: 'Substation property 2',
     ratedVoltage1KV: 'Rated Voltage 1 (kV)',
     ratedVoltage2KV: 'Rated Voltage 2 (kV)',
+    nominalVoltage1KV: 'Nominal Voltage 1 (kV)',
+    nominalVoltage2KV: 'Nominal Voltage 2 (kV)',
 };
 
 export default filter_expert_en;
