@@ -34,12 +34,11 @@ import {
 import { yupResolver } from '@hookform/resolvers/yup';
 import { elementExistsType } from './criteria-based/criteria-based-filter-edition-dialog';
 import { UUID } from 'crypto';
-import { MergedFormContextProps } from '../inputs/react-hook-form/provider/custom-form-provider';
-import { StudyMetadata } from '../../hooks/predefined-properties-hook.ts';
+import { StudyMetadata } from '../../hooks/predefined-properties-hook';
 
 import { FilterContext } from './filter-context';
 import { FilterType } from './constants/filter-constants';
-import { ElementAttributes } from '../../utils/types.ts';
+import { ElementAttributes } from '../../utils/types';
 
 const emptyFormData = {
     [FieldConstants.NAME]: '',
@@ -71,13 +70,6 @@ export interface FilterCreationDialogProps {
     open: boolean;
     onClose: () => void;
     activeDirectory?: UUID;
-    createFilter: (
-        filter: any,
-        name: string,
-        description: string,
-        activeDirectory: any
-    ) => Promise<void>;
-    saveFilter: (filter: any, name: string) => Promise<void>;
     fetchAppsAndUrls: () => Promise<StudyMetadata[]>;
     elementExists?: elementExistsType;
     language?: string;
@@ -91,30 +83,32 @@ export interface FilterCreationDialogProps {
         elementTypes?: string[],
         equipmentTypes?: string[]
     ) => Promise<ElementAttributes[]>;
+    fetchPath?: (elementUuid: UUID) => Promise<ElementAttributes[]>;
+    sourceFilterForExplicitNamingConversion?: {
+        id: UUID;
+        equipmentType: string;
+    };
 }
 
 const FilterCreationDialog: FunctionComponent<FilterCreationDialogProps> = ({
     open,
     onClose,
     activeDirectory,
-    createFilter,
-    saveFilter,
     fetchAppsAndUrls,
     elementExists,
     language,
     fetchDirectoryContent,
     fetchRootFolders,
     fetchElementsInfos,
+    fetchPath,
+    sourceFilterForExplicitNamingConversion = undefined,
 }) => {
     const { snackError } = useSnackMessage();
 
-    const formMethods = {
-        ...useForm({
-            defaultValues: emptyFormData,
-            resolver: yupResolver(formSchema) as unknown as Resolver,
-        }),
-        language: language,
-    } as MergedFormContextProps;
+    const formMethods = useForm({
+        defaultValues: emptyFormData,
+        resolver: yupResolver(formSchema) as unknown as Resolver,
+    });
 
     const {
         formState: { errors },
@@ -142,8 +136,6 @@ const FilterCreationDialog: FunctionComponent<FilterCreationDialogProps> = ({
                         });
                     },
                     onClose,
-                    createFilter,
-                    saveFilter,
                     activeDirectory
                 );
             } else if (
@@ -158,8 +150,7 @@ const FilterCreationDialog: FunctionComponent<FilterCreationDialogProps> = ({
                         snackError({
                             messageTxt: error,
                         });
-                    },
-                    createFilter
+                    }
                 );
             } else if (
                 filterForm[FieldConstants.FILTER_TYPE] === FilterType.EXPERT.id
@@ -177,13 +168,11 @@ const FilterCreationDialog: FunctionComponent<FilterCreationDialogProps> = ({
                         snackError({
                             messageTxt: error,
                         });
-                    },
-                    createFilter,
-                    saveFilter
+                    }
                 );
             }
         },
-        [activeDirectory, snackError, onClose, createFilter, saveFilter]
+        [activeDirectory, snackError, onClose]
     );
 
     return (
@@ -193,9 +182,14 @@ const FilterCreationDialog: FunctionComponent<FilterCreationDialogProps> = ({
             onSave={onSubmit}
             formSchema={formSchema}
             formMethods={formMethods}
-            titleId={'createNewFilter'}
+            titleId={
+                sourceFilterForExplicitNamingConversion
+                    ? 'convertIntoExplicitNamingFilter'
+                    : 'createNewFilter'
+            }
             removeOptional={true}
             disabledSave={!!nameError || !!isValidating}
+            language={language}
         >
             <FilterContext.Provider
                 value={{
@@ -203,12 +197,16 @@ const FilterCreationDialog: FunctionComponent<FilterCreationDialogProps> = ({
                     fetchRootFolders: fetchRootFolders,
                     fetchElementsInfos: fetchElementsInfos,
                     fetchAppsAndUrls: fetchAppsAndUrls,
+                    fetchPath: fetchPath,
                 }}
             >
                 <FilterForm
                     creation
                     activeDirectory={activeDirectory}
                     elementExists={elementExists}
+                    sourceFilterForExplicitNamingConversion={
+                        sourceFilterForExplicitNamingConversion
+                    }
                 />
             </FilterContext.Provider>
         </CustomMuiDialog>

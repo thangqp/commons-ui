@@ -25,7 +25,7 @@ import { noSelectionForCopy } from '../../../utils/equipment-types';
 import { UUID } from 'crypto';
 import { elementExistsType } from '../criteria-based/criteria-based-filter-edition-dialog';
 import { FilterType } from '../constants/filter-constants';
-import { FetchStatus } from '../../../utils/FetchStatus.ts';
+import { FetchStatus } from '../../../utils/FetchStatus';
 
 const formSchema = yup
     .object()
@@ -47,13 +47,6 @@ interface ExplicitNamingFilterEditionDialogProps {
     selectionForCopy: any;
     setSelectionForCopy: (selection: any) => void;
     getFilterById: (id: string) => Promise<any>;
-    createFilter: (
-        filter: any,
-        name: string,
-        description: string,
-        activeDirectory: any
-    ) => Promise<void>;
-    saveFilter: (filter: any, name: string) => Promise<void>;
     activeDirectory?: UUID;
     elementExists?: elementExistsType;
     language?: string;
@@ -71,8 +64,6 @@ const ExplicitNamingFilterEditionDialog: FunctionComponent<
     selectionForCopy,
     setSelectionForCopy,
     getFilterById,
-    createFilter,
-    saveFilter,
     activeDirectory,
     elementExists,
     language,
@@ -81,12 +72,9 @@ const ExplicitNamingFilterEditionDialog: FunctionComponent<
     const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
 
     // default values are set via reset when we fetch data
-    const formMethods = {
-        ...useForm({
-            resolver: yupResolver(formSchema),
-        }),
-        language: language,
-    };
+    const formMethods = useForm({
+        resolver: yupResolver(formSchema),
+    });
 
     const {
         reset,
@@ -140,9 +128,7 @@ const ExplicitNamingFilterEditionDialog: FunctionComponent<
                         messageTxt: error,
                     });
                 },
-                onClose,
-                createFilter,
-                saveFilter
+                onClose
             );
             if (selectionForCopy.sourceItemUuid === id) {
                 setSelectionForCopy(noSelectionForCopy);
@@ -157,8 +143,6 @@ const ExplicitNamingFilterEditionDialog: FunctionComponent<
             selectionForCopy,
             onClose,
             snackError,
-            createFilter,
-            saveFilter,
             setSelectionForCopy,
         ]
     );
@@ -176,6 +160,7 @@ const ExplicitNamingFilterEditionDialog: FunctionComponent<
             removeOptional={true}
             disabledSave={!!nameError || !!isValidating}
             isDataFetching={dataFetchStatus === FetchStatus.FETCHING}
+            language={language}
         >
             {isDataReady && (
                 <FilterForm

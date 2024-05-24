@@ -5,14 +5,14 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { useWatch } from 'react-hook-form';
-import FloatInput from './numbers/float-input.tsx';
-import yup from '../../../utils/yup-config.ts';
+import FloatInput from './numbers/float-input';
+import yup from '../../../utils/yup-config';
 import { FormattedMessage } from 'react-intl';
 import { FunctionComponent, useMemo } from 'react';
 import InputLabel from '@mui/material/InputLabel';
 import { Grid } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
-import MuiSelectInput from './select-inputs/mui-select-input.tsx';
+import MuiSelectInput from './select-inputs/mui-select-input';
 import { FieldConstants } from '../../../utils/field-constants';
 
 const style = {

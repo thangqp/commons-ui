@@ -56,6 +56,8 @@ import {
     equipment_search_fr,
     filter_en,
     filter_fr,
+    filter_expert_en,
+    filter_expert_fr,
     flat_parameters_en,
     flat_parameters_fr,
     login_en,
@@ -95,7 +97,7 @@ import { searchEquipments } from '../data/EquipmentSearchBar';
 import { EquipmentItem } from '../../src/components/ElementSearchDialog/equipment-item';
 import OverflowableText from '../../src/components/OverflowableText';
 
-import { setShowAuthenticationRouterLogin } from '../../src/utils/actions';
+import { setShowAuthenticationRouterLogin } from '../../src/redux/actions';
 import { TableTab } from './TableTab';
 import { FlatParametersTab } from './FlatParametersTab';
 
@@ -103,6 +105,7 @@ import { toNestedGlobalSelectors } from '../../src/utils/styles';
 import { InputsTab } from './InputsTab';
 import inputs_en from '../../src/components/translations/inputs-en';
 import inputs_fr from '../../src/components/translations/inputs-fr';
+import { EquipmentSearchDialog } from './equipment-search';
 
 const messages = {
     en: {
@@ -114,6 +117,7 @@ const messages = {
         ...element_search_en,
         ...equipment_search_en,
         ...filter_en,
+        ...filter_expert_en,
         ...card_error_boundary_en,
         ...flat_parameters_en,
         ...multiple_selection_dialog_en,
@@ -129,6 +133,7 @@ const messages = {
         ...element_search_fr,
         ...equipment_search_fr,
         ...filter_fr,
+        ...filter_expert_fr,
         ...card_error_boundary_fr,
         ...flat_parameters_fr,
         ...multiple_selection_dialog_fr,
@@ -157,15 +162,22 @@ const getMuiTheme = (theme) => {
     }
 };
 
+const style = {
+    button: {
+        float: 'left',
+        margin: '5px',
+    },
+};
+
 /**
  * @param {import('@mui/material/styles').Theme} theme Theme from ThemeProvider
  */
 const TreeViewFinderCustomStyles = (theme) => ({
-    '& .icon': {
+    icon: {
         width: '32px',
         height: '32px',
     },
-    '& .labelIcon': {
+    labelIcon: {
         backgroundColor: 'green',
         marginRight: theme.spacing(1),
     },
@@ -194,7 +206,7 @@ function SnackErrorButton() {
         <Button
             variant="contained"
             color="error"
-            style={{ float: 'left', margin: '5px' }}
+            style={style.button}
             onClick={() => {
                 snackError({
                     messageTxt: 'Snack error message',
@@ -213,7 +225,7 @@ function SnackWarningButton() {
         <Button
             variant="contained"
             color="warning"
-            style={{ float: 'left', margin: '5px' }}
+            style={style.button}
             onClick={() => {
                 snackWarning({
                     messageTxt: 'Snack warning message',
@@ -232,7 +244,7 @@ function SnackInfoButton() {
         <Button
             variant="contained"
             color="info"
-            style={{ float: 'left', margin: '5px' }}
+            style={style.button}
             onClick={() => {
                 snackInfo({
                     messageTxt: 'Snack info message',
@@ -242,6 +254,41 @@ function SnackInfoButton() {
         >
             info snack hook
         </Button>
+    );
+}
+
+function PermanentSnackButton() {
+    const { snackInfo, closeSnackbar } = useSnackMessage();
+    const [snackKey, setSnackKey] = useState(undefined);
+    return (
+        <>
+            <Button
+                variant="contained"
+                color="info"
+                style={style.button}
+                onClick={() => {
+                    const key = snackInfo({
+                        messageTxt: 'Permanent Snack info message',
+                        headerTxt: 'Header',
+                        persist: true,
+                    });
+                    setSnackKey(key);
+                }}
+            >
+                permanent snack
+            </Button>
+            <Button
+                variant="contained"
+                color="info"
+                style={style.button}
+                onClick={() => {
+                    closeSnackbar(snackKey);
+                    setSnackKey(undefined);
+                }}
+            >
+                close snack
+            </Button>
+        </>
     );
 }
 
@@ -539,9 +586,11 @@ const AppContent = ({ language, onLanguageClick }) => {
             {testIcons()}
             <hr />
 
+            <PermanentSnackButton />
             <SnackErrorButton />
             <SnackWarningButton />
             <SnackInfoButton />
+
             <Button
                 variant="contained"
                 style={{
@@ -696,6 +745,14 @@ const AppContent = ({ language, onLanguageClick }) => {
                         border: '1px solid black',
                     }}
                 />
+                <OverflowableText
+                    text={overflowableText}
+                    maxLineCount={2}
+                    style={{
+                        width: '200px',
+                        border: '1px solid black',
+                    }}
+                />
             </div>
             <hr />
             <div
@@ -780,6 +837,7 @@ const AppContent = ({ language, onLanguageClick }) => {
                             appsAndUrls={apps}
                         >
                             <Crasher />
+                            <EquipmentSearchDialog />
                             <div
                                 style={{
                                     paddingLeft: 10,

@@ -19,11 +19,11 @@ import { saveExpertFilter } from '../utils/filter-api';
 import { importExpertRules } from './expert-filter-utils';
 import { UUID } from 'crypto';
 import { elementExistsType } from '../criteria-based/criteria-based-filter-edition-dialog';
-import { MergedFormContextProps } from '../../inputs/react-hook-form/provider/custom-form-provider';
 import { FilterContext } from '../filter-context';
 import { FilterType } from '../constants/filter-constants';
 import { FetchStatus } from '../../../utils/FetchStatus';
-import { ElementAttributes } from '../../../utils/types.ts';
+import { ElementAttributes } from '../../../utils/types';
+import { StudyMetadata } from '../../../hooks/predefined-properties-hook';
 
 const formSchema = yup
     .object()
@@ -46,13 +46,6 @@ export interface ExpertFilterEditionDialogProps {
     selectionForCopy: any;
     getFilterById: (id: string) => Promise<{ [prop: string]: any }>;
     setSelectionForCopy: (selection: any) => void;
-    createFilter: (
-        filter: any,
-        name: string,
-        description: string,
-        activeDirectory: any
-    ) => Promise<void>;
-    saveFilter: (filter: any, name: string) => Promise<void>;
     activeDirectory?: UUID;
     elementExists?: elementExistsType;
     language?: string;
@@ -66,9 +59,10 @@ export interface ExpertFilterEditionDialogProps {
         elementTypes?: string[],
         equipmentTypes?: string[]
     ) => Promise<ElementAttributes[]>;
+    fetchAppsAndUrls: () => Promise<StudyMetadata[]>;
 }
 
-export const ExpertFilterEditionDialog: FunctionComponent<
+const ExpertFilterEditionDialog: FunctionComponent<
     ExpertFilterEditionDialogProps
 > = ({
     id,
@@ -80,25 +74,21 @@ export const ExpertFilterEditionDialog: FunctionComponent<
     selectionForCopy,
     getFilterById,
     setSelectionForCopy,
-    createFilter,
-    saveFilter,
     activeDirectory,
     elementExists,
     language,
     fetchDirectoryContent,
     fetchRootFolders,
     fetchElementsInfos,
+    fetchAppsAndUrls,
 }) => {
     const { snackError } = useSnackMessage();
     const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
 
     // default values are set via reset when we fetch data
-    const formMethods = {
-        ...useForm({
-            resolver: yupResolver(formSchema),
-        }),
-        language: language,
-    } as MergedFormContextProps;
+    const formMethods = useForm({
+        resolver: yupResolver(formSchema),
+    });
 
     const {
         reset,
@@ -150,9 +140,7 @@ export const ExpertFilterEditionDialog: FunctionComponent<
                     snackError({
                         messageTxt: error,
                     });
-                },
-                createFilter,
-                saveFilter
+                }
             );
             if (selectionForCopy.sourceItemUuid === id) {
                 setSelectionForCopy(noSelectionForCopy);
@@ -168,8 +156,6 @@ export const ExpertFilterEditionDialog: FunctionComponent<
             selectionForCopy.sourceItemUuid,
             snackError,
             setSelectionForCopy,
-            saveFilter,
-            createFilter,
         ]
     );
 
@@ -186,12 +172,14 @@ export const ExpertFilterEditionDialog: FunctionComponent<
             removeOptional={true}
             disabledSave={!!nameError || !!isValidating}
             isDataFetching={dataFetchStatus === FetchStatus.FETCHING}
+            language={language}
         >
             <FilterContext.Provider
                 value={{
                     fetchDirectoryContent: fetchDirectoryContent,
                     fetchRootFolders: fetchRootFolders,
                     fetchElementsInfos: fetchElementsInfos,
+                    fetchAppsAndUrls: fetchAppsAndUrls,
                 }}
             >
                 {isDataReady && (

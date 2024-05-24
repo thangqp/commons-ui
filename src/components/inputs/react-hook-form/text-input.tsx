@@ -26,7 +26,7 @@ import {
 } from './utils/functions';
 import { useCustomFormContext } from './provider/use-custom-form-context';
 
-import { Input } from '../../../utils/types.ts';
+import { Input } from '../../../utils/types';
 
 export interface TextInputProps {
     name: string;

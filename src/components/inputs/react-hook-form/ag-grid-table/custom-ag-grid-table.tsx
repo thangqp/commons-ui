@@ -12,7 +12,7 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import 'ag-grid-community/styles/ag-theme-material.css';
 import { Grid, useTheme } from '@mui/material';
-import BottomRightButtons from './bottom-right-buttons.tsx';
+import BottomRightButtons from './bottom-right-buttons';
 import { useIntl } from 'react-intl';
 import { FieldConstants } from '../../../../utils/field-constants';
 

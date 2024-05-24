@@ -75,7 +75,7 @@ export {
     USER_VALIDATION_ERROR,
     RESET_AUTHENTICATION_ROUTER_ERROR,
     SHOW_AUTH_INFO_LOGIN,
-} from './utils/actions';
+} from './redux/actions';
 export { default as report_viewer_en } from './components/translations/report-viewer-en';
 export { default as report_viewer_fr } from './components/translations/report-viewer-fr';
 export { default as login_en } from './components/translations/login-en';
@@ -92,6 +92,8 @@ export { default as equipment_search_en } from './components/translations/equipm
 export { default as equipment_search_fr } from './components/translations/equipment-search-fr';
 export { default as filter_en } from './components/translations/filter-en';
 export { default as filter_fr } from './components/translations/filter-fr';
+export { default as filter_expert_en } from './components/translations/filter-expert-en';
+export { default as filter_expert_fr } from './components/translations/filter-expert-fr';
 export { default as card_error_boundary_en } from './components/translations/card-error-boundary-en';
 export { default as card_error_boundary_fr } from './components/translations/card-error-boundary-fr';
 export { default as flat_parameters_en } from './components/translations/flat-parameters-en';
@@ -127,6 +129,8 @@ export { default as ExplicitNamingFilterEditionDialog } from './components/filte
 export { default as CriteriaBasedFilterEditionDialog } from './components/filter/criteria-based/criteria-based-filter-edition-dialog';
 export { default as ExpandingTextField } from './components/inputs/react-hook-form/ExpandingTextField';
 export { default as CustomMuiDialog } from './components/dialogs/custom-mui-dialog';
+export { default as DescriptionModificationDialog } from './components/dialogs/description-modification-dialog';
+export { default as ModifyElementSelection } from './components/dialogs/modify-element-selection';
 export {
     genHelperPreviousValue,
     genHelperError,
@@ -144,7 +148,6 @@ export { UserManagerMock } from './utils/UserManagerMock';
 export {
     keyGenerator,
     areArrayElementsUnique,
-    mergeSx,
     isObjectEmpty,
 } from './utils/functions';
 
@@ -272,6 +275,7 @@ interface OverflowableTextProps {
     sx?: SxProps;
     text?: string | ReactElement;
     tooltipSx?: SxProps;
+    maxLineCount?: number;
 }
 
 export const OverflowableText: FunctionComponent<OverflowableTextProps>;
@@ -280,3 +284,7 @@ export {
     getCriteriaBasedFormData,
     getCriteriaBasedSchema,
 } from './components/filter/criteria-based/criteria-based-filter-utils';
+
+export { setCommonStore } from './redux/commonStore';
+
+export { mergeSx } from './utils/styles';
