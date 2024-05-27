@@ -6,7 +6,7 @@
  */
 
 import { ValueEditorProps } from 'react-querybuilder';
-import React, { FunctionComponent, useCallback } from 'react';
+import { FunctionComponent, useCallback } from 'react';
 import { MaterialValueEditor } from '@react-querybuilder/material';
 
 import CountryValueEditor from './country-value-editor';
@@ -26,7 +26,7 @@ import ElementValueEditor from './element-value-editor';
 import { ElementType } from '../../../utils/ElementType';
 import PropertyValueEditor from './property-value-editor';
 import { FilterType } from '../../filter/constants/filter-constants';
-import GroupValueEditor from './group-value-editor.tsx';
+import GroupValueEditor from './group-value-editor';
 
 const styles = {
     noArrows: {
@@ -133,7 +133,9 @@ const ValueEditor: FunctionComponent<ValueEditorProps> = (props) => {
         props.field === FieldType.SUBSTATION_PROPERTY ||
         props.field === FieldType.SUBSTATION_PROPERTY_1 ||
         props.field === FieldType.SUBSTATION_PROPERTY_2 ||
-        props.field === FieldType.VOLTAGE_LEVEL_PROPERTY
+        props.field === FieldType.VOLTAGE_LEVEL_PROPERTY ||
+        props.field === FieldType.VOLTAGE_LEVEL_PROPERTY_1 ||
+        props.field === FieldType.VOLTAGE_LEVEL_PROPERTY_2
     ) {
         let equipmentType;
         if (
@@ -142,7 +144,11 @@ const ValueEditor: FunctionComponent<ValueEditorProps> = (props) => {
             props.field === FieldType.SUBSTATION_PROPERTY_2
         ) {
             equipmentType = Substation.type;
-        } else if (props.field === FieldType.VOLTAGE_LEVEL_PROPERTY) {
+        } else if (
+            props.field === FieldType.VOLTAGE_LEVEL_PROPERTY ||
+            props.field === FieldType.VOLTAGE_LEVEL_PROPERTY_1 ||
+            props.field === FieldType.VOLTAGE_LEVEL_PROPERTY_2
+        ) {
             equipmentType = VoltageLevel.type;
         } else {
             equipmentType = getValues(FieldConstants.EQUIPMENT_TYPE);

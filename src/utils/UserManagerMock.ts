@@ -6,12 +6,12 @@
  */
 
 class Events {
-    userLoadedCallbacks = [];
-    addUserLoaded(callback) {
+    userLoadedCallbacks: ((data: any) => void)[] = [];
+    addUserLoaded(callback: (data: any) => void) {
         this.userLoadedCallbacks.push(callback);
     }
 
-    addSilentRenewError(callback) {
+    addSilentRenewError(callback: (data: any) => void) {
         // Nothing to do
     }
 }
@@ -47,21 +47,23 @@ export class UserManagerMock {
         scope: 'scopes',
     };
 
-    constructor(settings) {
+    constructor(settings: unknown) {
         this.settings = settings;
         this.events = new Events();
     }
 
     getUser() {
         return Promise.resolve(
-            JSON.parse(sessionStorage.getItem('powsybl-gridsuite-mock-user'))
+            JSON.parse(
+                sessionStorage.getItem('powsybl-gridsuite-mock-user') ?? 'null'
+            )
         );
     }
 
     signinSilent() {
         console.info('signinSilent..............');
         const localStorageUser = JSON.parse(
-            localStorage.getItem('powsybl-gridsuite-mock-user')
+            localStorage.getItem('powsybl-gridsuite-mock-user') ?? 'null'
         );
         if (localStorageUser === null) {
             return Promise.reject(
@@ -88,14 +90,14 @@ export class UserManagerMock {
             'powsybl-gridsuite-mock-user',
             JSON.stringify(this.user)
         );
-        window.location = './sign-in-callback';
+        window.location.href = './sign-in-callback';
         return Promise.resolve(null);
     }
 
     signoutRedirect() {
         sessionStorage.removeItem('powsybl-gridsuite-mock-user');
         localStorage.removeItem('powsybl-gridsuite-mock-user');
-        window.location = '.';
+        window.location.href = '.';
         return Promise.resolve(null);
     }
     signinRedirectCallback() {

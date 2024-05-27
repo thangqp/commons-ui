@@ -23,9 +23,9 @@ import { toFloatOrNullValue } from '../../inputs/react-hook-form/utils/functions
 import { DISTRIBUTION_KEY, FilterType } from '../constants/filter-constants';
 import { FILTER_EQUIPMENTS } from '../utils/filter-form-utils';
 import { UUID } from 'crypto';
-import { useSnackMessage } from '../../../hooks/useSnackMessage.ts';
-import { ElementType } from '../../../utils/ElementType.ts';
-import ModifyElementSelection from '../../dialogs/modify-element-selection.tsx';
+import { useSnackMessage } from '../../../hooks/useSnackMessage';
+import { ElementType } from '../../../utils/ElementType';
+import ModifyElementSelection from '../../dialogs/modify-element-selection';
 import { exportFilter } from '../../../services/study';
 
 export const FILTER_EQUIPMENTS_ATTRIBUTES = 'filterEquipmentsAttributes';

@@ -11,6 +11,7 @@ import { styled } from '@mui/system';
 import MuiVirtualizedTable from '../MuiVirtualizedTable';
 import { FilterButton } from './filter-button';
 import LogReportItem from './log-report-item';
+import { RowProps } from '../MuiVirtualizedTable/MuiVirtualizedTable';
 
 const SEVERITY_COLUMN_FIXED_WIDTH = 115;
 
@@ -79,6 +80,7 @@ const LogTable = ({
                 .toUpperCase(),
             id: 'severity',
             dataKey: 'severity',
+            width: SEVERITY_COLUMN_FIXED_WIDTH,
             maxWidth: SEVERITY_COLUMN_FIXED_WIDTH,
             minWidth: SEVERITY_COLUMN_FIXED_WIDTH,
             cellRenderer: severityCellRender,
@@ -95,6 +97,7 @@ const LogTable = ({
                 .toUpperCase(),
             id: 'message',
             dataKey: 'message',
+            width: SEVERITY_COLUMN_FIXED_WIDTH,
         },
     ];
 
@@ -111,7 +114,7 @@ const LogTable = ({
                 message: log.getLog(),
                 backgroundColor: log.getColorName(),
                 reportId: log.getReportId(),
-            };
+            } as RowProps;
         });
     };
 

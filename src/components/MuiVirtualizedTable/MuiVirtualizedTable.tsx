@@ -8,9 +8,16 @@
 /**
  * This class has been taken from 'Virtualized Table' example at https://material-ui.com/components/tables/
  */
-import { createRef, PureComponent } from 'react';
+import {
+    createRef,
+    PureComponent,
+    ReactElement,
+    ReactNode,
+    MouseEvent,
+    KeyboardEvent,
+    MutableRefObject,
+} from 'react';
 import { FormattedMessage } from 'react-intl';
-import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import memoize from 'memoize-one';
 import {
@@ -18,12 +25,20 @@ import {
     Chip,
     IconButton,
     Popover,
+    SxProps,
     TableCell,
     TextField,
 } from '@mui/material';
 import { styled } from '@mui/system';
 import { GetApp as GetAppIcon } from '@mui/icons-material';
-import { AutoSizer, Column, Table } from 'react-virtualized';
+import {
+    AutoSizer,
+    Column,
+    ColumnProps,
+    RowMouseEventHandlerParams,
+    Table,
+    TableCellProps,
+} from 'react-virtualized';
 import CsvDownloader from 'react-csv-downloader';
 import OverflowableText from '../OverflowableText/overflowable-text';
 import {
@@ -38,10 +53,12 @@ import {
 } from './KeyedColumnsRowIndexer';
 import ColumnHeader from './ColumnHeader';
 
-function getTextWidth(text) {
+function getTextWidth(text: any): number {
     // re-use canvas object for better performance
     let canvas =
+        //@ts-ignore this is questioning
         getTextWidth.canvas ||
+        //@ts-ignore this is questioning
         (getTextWidth.canvas = document.createElement('canvas'));
     let context = canvas.getContext('2d');
     // TODO find a better way to find Material UI style
@@ -109,18 +126,26 @@ const defaultTooltipSx = {
 };
 
 //TODO do we need to export this to clients (index.js) ?
-export const generateMuiVirtualizedTableClass = (className) =>
+export const generateMuiVirtualizedTableClass = (className: string) =>
     `MuiVirtualizedTable-${className}`;
 const composeClasses = makeComposeClasses(generateMuiVirtualizedTableClass);
 
-const AmongChooser = (props) => {
+interface AmongChooserProps<T extends ReactNode> {
+    options: T[];
+    value?: T[];
+    setValue: (values: T[]) => void;
+    onDropDownVisibility: (visibility: boolean) => void;
+    id: string;
+}
+
+const AmongChooser = <T extends ReactNode>(props: AmongChooserProps<T>) => {
     const { options, value, setValue, id, onDropDownVisibility } = props;
 
     return (
         <span>
             <Autocomplete
                 id={id}
-                value={value ?? []}
+                value={value}
                 multiple={true}
                 onChange={(evt, newVal) => {
                     setValue(newVal);
@@ -146,14 +171,20 @@ const AmongChooser = (props) => {
     );
 };
 
-function makeIndexRecord(viewIndexToModel, rows) {
+function makeIndexRecord(
+    viewIndexToModel: number[] | null,
+    rows: Record<number, RowProps>
+): {
+    viewIndexToModel: number[] | null;
+    rowGetter: (index: number) => RowProps;
+} {
     return {
         viewIndexToModel,
         rowGetter: !viewIndexToModel
-            ? (viewIndex) => rows[viewIndex]
-            : (viewIndex) => {
+            ? (viewIndex: number) => rows[viewIndex]
+            : (viewIndex: number) => {
                   if (viewIndex >= viewIndexToModel.length || viewIndex < 0) {
-                      return {};
+                      return {} as RowProps;
                   }
                   const modelIndex = viewIndexToModel[viewIndex];
                   return rows[modelIndex];
@@ -161,7 +192,26 @@ function makeIndexRecord(viewIndexToModel, rows) {
     };
 }
 
-const initIndexer = (props, oldProps, versionSetter) => {
+export interface CustomColumnProps extends ColumnProps {
+    sortable?: boolean;
+    numeric?: boolean;
+    indexer?: KeyedColumnsRowIndexer;
+    label: string;
+    clickable?: boolean;
+    fractionDigits?: number;
+    unit?: number;
+    extra?: ReactElement;
+    nostat?: boolean;
+}
+
+export interface RowProps {
+    notClickable?: boolean;
+}
+
+const initIndexer = (
+    props: CustomColumnProps,
+    versionSetter: (version: number) => void
+) => {
     if (!props.sortable) {
         return null;
     }
@@ -193,11 +243,14 @@ const reorderIndex = memoize(
         columns,
         filterFromProps,
         sortFromProps
-    ) => {
+    ): {
+        viewIndexToModel: number[] | null;
+        rowGetter: ((index: number) => RowProps) | ((index: number) => number);
+    } => {
         if (!rows) {
             return {
                 viewIndexToModel: [],
-                rowGetter: (viewIndex) => viewIndex,
+                rowGetter: (viewIndex: number) => viewIndex,
             };
         }
 
@@ -241,9 +294,9 @@ const reorderIndex = memoize(
         }
         if (filterFromProps) {
             const viewIndexToModel = rows
-                .map((r, i) => [r, i])
-                .filter(([r, idx]) => filterFromProps(r))
-                .map(([r, j]) => j);
+                .map((r: unknown, i: number) => [r, i])
+                .filter(([r, _]: [unknown, number]) => filterFromProps(r))
+                .map(([_, j]: [unknown, number]) => j);
             return makeIndexRecord(viewIndexToModel, rows);
         }
 
@@ -251,7 +304,39 @@ const reorderIndex = memoize(
     }
 );
 
-class MuiVirtualizedTable extends PureComponent {
+export interface MuiVirtualizedTableProps extends CustomColumnProps {
+    headerHeight: number;
+    columns: CustomColumnProps[];
+    defersFilterChanges: (() => void) | null;
+    rows: RowProps[];
+    filter: unknown;
+    sort: unknown;
+    classes: Record<string, string>;
+    onRowClick?: (event: RowMouseEventHandlerParams) => void;
+    rowHeight: number;
+    onCellClick: (row: RowProps, column: ColumnProps) => void;
+    tooltipSx: SxProps;
+    name: string;
+    exportCSVDataKeys: unknown[];
+    enableExportCSV: boolean;
+}
+
+export interface MuiVirtualizedTableState {
+    headerHeight: number;
+    indexer: KeyedColumnsRowIndexer | null;
+    indirectionVersion: number;
+    popoverAnchorEl: Element | null;
+    popoverColKey: string | null;
+    deferredFilterChange: null | {
+        newVal: unknown[] | null;
+        colKey: string | null;
+    };
+}
+
+class MuiVirtualizedTable extends PureComponent<
+    MuiVirtualizedTableProps,
+    MuiVirtualizedTableState
+> {
     static defaultProps = {
         headerHeight: DEFAULT_HEADER_HEIGHT,
         rowHeight: DEFAULT_ROW_HEIGHT,
@@ -259,12 +344,18 @@ class MuiVirtualizedTable extends PureComponent {
         classes: {},
     };
 
-    constructor(props, context) {
+    headers: MutableRefObject<any>;
+    observer: IntersectionObserver;
+    dropDownVisible: boolean;
+
+    constructor(props: MuiVirtualizedTableProps, context: any) {
         super(props, context);
 
         this._computeHeaderSize = this._computeHeaderSize.bind(this);
         this._registerHeader = this._registerHeader.bind(this);
         this._registerObserver = this._registerObserver.bind(this);
+        // we shouldn't use createRef here, just defining an object would be enough
+        // We have to type RefObject to MutableRefObject to enable mutability, and TS enables that...
         this.headers = createRef();
         this.headers.current = {};
         let options = {
@@ -276,9 +367,10 @@ class MuiVirtualizedTable extends PureComponent {
             this._computeHeaderSize,
             options
         );
+        this.dropDownVisible = false;
         this.state = {
             headerHeight: this.props.headerHeight,
-            indexer: initIndexer(props, null, this.setVersion),
+            indexer: initIndexer(props, this.setVersion),
             indirectionVersion: 0,
             popoverAnchorEl: null,
             popoverColKey: null,
@@ -286,18 +378,18 @@ class MuiVirtualizedTable extends PureComponent {
         };
     }
 
-    setVersion = (v) => {
+    setVersion = (v: number) => {
         this.setState({ indirectionVersion: v });
     };
 
-    componentDidUpdate(oldProps) {
+    componentDidUpdate(oldProps: MuiVirtualizedTableProps) {
         if (
             oldProps.indexer !== this.props.indexer ||
             oldProps.sortable !== this.props.sortable
         ) {
             this.setState((state) => {
                 return {
-                    indexer: initIndexer(this.props, oldProps, this.setVersion),
+                    indexer: initIndexer(this.props, this.setVersion),
                     indirectionVersion: (state?.indirectionVersion ?? 0) + 1,
                 };
             });
@@ -316,25 +408,25 @@ class MuiVirtualizedTable extends PureComponent {
         this.observer.disconnect();
     }
 
-    _registerHeader(label, header) {
-        if (header !== null) {
+    _registerHeader(label: string, header: unknown) {
+        if (this.headers.current) {
             this.headers.current[label] = header;
         }
     }
 
-    _registerObserver(element) {
+    _registerObserver(element: Element) {
         if (element !== null) {
             this.observer.observe(element);
         }
     }
 
-    computeDataWidth = (text) => {
+    computeDataWidth = (text: string) => {
         return getTextWidth(text || '') + 2 * DEFAULT_CELL_PADDING;
     };
 
     sizes = memoize((columns, rows, rowGetter) => {
-        let sizes = {};
-        columns.forEach((col) => {
+        let sizes: Record<string, number> = {};
+        columns.forEach((col: CustomColumnProps) => {
             if (col.width) {
                 sizes[col.dataKey] = col.width;
             } else {
@@ -360,7 +452,7 @@ class MuiVirtualizedTable extends PureComponent {
         return sizes;
     });
 
-    openPopover = (popoverTarget, colKey) => {
+    openPopover = (popoverTarget: Element, colKey: string) => {
         const col = this.props.columns.find((c) => c.dataKey === colKey);
         if (getHelper(col) !== collectibleHelper) {
             return;
@@ -373,18 +465,18 @@ class MuiVirtualizedTable extends PureComponent {
         });
     };
 
-    handleKeyDownOnPopover = (evt) => {
+    handleKeyDownOnPopover = (evt: KeyboardEvent<HTMLDivElement>) => {
         if (evt.key === 'Enter' && !this.dropDownVisible) {
             this.closePopover(evt, 'enterKeyDown');
         }
     };
 
-    closePopover = (evt, reason) => {
+    closePopover = (_: KeyboardEvent<HTMLDivElement>, reason: string) => {
         let bumpsVersion = false;
         if (reason === 'backdropClick' || reason === 'enterKeyDown') {
             bumpsVersion = this._commitFilterChange();
         }
-        this.setState((state, props) => {
+        this.setState((state, _) => {
             return {
                 popoverAnchorEl: null,
                 popoverColKey: null,
@@ -397,11 +489,11 @@ class MuiVirtualizedTable extends PureComponent {
 
     makeColumnFilterEditor = () => {
         const colKey = this.state.popoverColKey;
-        const outerParams = this.state.indexer.getColFilterOuterParams(colKey);
+        const outerParams = this.state.indexer?.getColFilterOuterParams(colKey);
         const userParams =
             !this.props.defersFilterChanges || !this.state.deferredFilterChange
-                ? this.state.indexer.getColFilterUserParams(colKey)
-                : this.state.deferredFilterChange.newVal;
+                ? this.state.indexer?.getColFilterUserParams(colKey)
+                : this.state.deferredFilterChange.newVal ?? undefined;
         const prefiltered = preFilterData(
             this.props.columns,
             this.props.rows,
@@ -414,6 +506,7 @@ class MuiVirtualizedTable extends PureComponent {
         if (outerParams) {
             options.push(...outerParams);
         }
+        // @ts-ignore colKey could be null, how to handle this ?
         const colStat = prefiltered?.colsStats?.[colKey];
         if (colStat?.seen) {
             for (const key of Object.getOwnPropertyNames(colStat.seen)) {
@@ -424,14 +517,11 @@ class MuiVirtualizedTable extends PureComponent {
         }
         options.sort();
 
-        const col = this.props.columns.find((c) => c.dataKey === colKey);
-
         return (
             <AmongChooser
                 options={options}
                 value={userParams}
                 id={'fielt' + colKey}
-                label={col?.label ?? '\u2208'} // "contained in" math symbol
                 setValue={(newVal) => {
                     this.onFilterParamsChange(newVal, colKey);
                 }}
@@ -449,7 +539,7 @@ class MuiVirtualizedTable extends PureComponent {
             if (newVal?.length === 0) {
                 newVal = null;
             }
-            if (this.state.indexer.setColFilterUserParams(colKey, newVal)) {
+            if (this.state.indexer?.setColFilterUserParams(colKey, newVal)) {
                 return true;
             }
         }
@@ -457,14 +547,14 @@ class MuiVirtualizedTable extends PureComponent {
         return false;
     };
 
-    onFilterParamsChange(newVal, colKey) {
-        const nonEmpty = newVal.length === 0 ? null : newVal;
+    onFilterParamsChange(newVal: unknown[] | null, colKey: string | null) {
+        const nonEmpty = newVal?.length === 0 ? null : newVal;
         if (this.props.defersFilterChanges) {
             this.setState({
                 deferredFilterChange: { newVal: newVal, colKey },
             });
         } else if (
-            this.state.indexer.setColFilterUserParams(colKey, nonEmpty)
+            this.state.indexer?.setColFilterUserParams(colKey, nonEmpty)
         ) {
             this.setState({
                 indirectionVersion: this.state.indirectionVersion + 1,
@@ -472,10 +562,11 @@ class MuiVirtualizedTable extends PureComponent {
         }
     }
 
-    sortClickHandler = (evt, name, columnIndex) => {
+    sortClickHandler = (evt: MouseEvent, _: unknown, columnIndex: number) => {
         const colKey = this.props.columns[columnIndex].dataKey;
 
         if (evt.altKey) {
+            //@ts-ignore should be currentTarget maybe ?
             this.openPopover(evt.target, colKey);
             return;
         }
@@ -489,27 +580,38 @@ class MuiVirtualizedTable extends PureComponent {
             way = CHANGE_WAYS.TAIL;
         }
 
-        if (this.state.indexer.updateSortingFromUser(colKey, way)) {
+        if (this.state.indexer?.updateSortingFromUser(colKey, way)) {
             this.setState({
                 indirectionVersion: this.state.indirectionVersion + 1,
             });
         }
     };
 
-    filterClickHandler = (evt, target, columnIndex) => {
+    filterClickHandler = (
+        _: MouseEvent,
+        target: Element | undefined,
+        columnIndex: number
+    ) => {
         // ColumnHeader to (header) TableCell
-        const retargeted = target.parentNode ?? target;
+        const retargeted = target?.parentNode ?? target;
 
         const colKey = this.props.columns[columnIndex].dataKey;
+        //@ts-ignore still not the good types
         this.openPopover(retargeted, colKey);
     };
 
-    sortableHeader = ({ label, columnIndex }) => {
+    sortableHeader = ({
+        label,
+        columnIndex,
+    }: {
+        label: string;
+        columnIndex: number;
+    }) => {
         const { columns } = this.props;
         const indexer = this.state.indexer;
         const colKey = columns[columnIndex].dataKey;
-        const signedRank = indexer.columnSortingSignedRank(colKey);
-        const userParams = indexer.getColFilterUserParams(colKey);
+        const signedRank = indexer?.columnSortingSignedRank(colKey);
+        const userParams = indexer?.getColFilterUserParams(colKey);
         const numeric = columns[columnIndex].numeric;
 
         const prefiltered = preFilterData(
@@ -517,7 +619,7 @@ class MuiVirtualizedTable extends PureComponent {
             this.props.rows,
             this.props.filter,
             indexer,
-            indexer.filterVersion
+            indexer?.filterVersion
         );
         const colStat = prefiltered?.colsStats?.[colKey];
         let filterLevel = 0;
@@ -525,7 +627,9 @@ class MuiVirtualizedTable extends PureComponent {
             filterLevel += 1;
             if (!colStat?.seen) {
                 filterLevel += 2;
-            } else if (userParams.filter((v) => !colStat.seen[v]).length) {
+            } else if (
+                userParams.filter((v: string) => !colStat.seen[v]).length
+            ) {
                 filterLevel += 2;
             }
         }
@@ -537,7 +641,7 @@ class MuiVirtualizedTable extends PureComponent {
         const onFilterClick =
             numeric || this.props.sort || columns[columnIndex].cellRenderer
                 ? undefined
-                : (ev, retargeted) => {
+                : (ev: MouseEvent<SVGSVGElement>, retargeted?: Element) => {
                       this.filterClickHandler(ev, retargeted, columnIndex);
                   };
         return (
@@ -546,8 +650,11 @@ class MuiVirtualizedTable extends PureComponent {
                 ref={(e) => this._registerHeader(label, e)}
                 sortSignedRank={signedRank}
                 filterLevel={filterLevel}
-                numeric={numeric}
-                onSortClick={(ev, name) => {
+                numeric={numeric ?? false}
+                onSortClick={(
+                    ev: MouseEvent<HTMLDivElement>,
+                    name?: Element
+                ) => {
                     this.sortClickHandler(ev, name, columnIndex);
                 }}
                 onFilterClick={onFilterClick}
@@ -555,7 +662,7 @@ class MuiVirtualizedTable extends PureComponent {
         );
     };
 
-    simpleHeaderRenderer = ({ label }) => {
+    simpleHeaderRenderer = ({ label }: { label: string }) => {
         return (
             <div
                 ref={(element) => {
@@ -567,7 +674,13 @@ class MuiVirtualizedTable extends PureComponent {
         );
     };
 
-    getRowClassName = ({ index, rowGetter }) => {
+    getRowClassName = ({
+        index,
+        rowGetter,
+    }: {
+        index: number;
+        rowGetter: any; // Should be ((index: number) => RowProps) | ((index: number) => number) but it's not compatible with the code reorderIndex should be fixed to return only (index: number) => RowProps
+    }) => {
         const { classes, onRowClick } = this.props;
         return clsx(
             composeClasses(classes, cssTableRow),
@@ -583,17 +696,18 @@ class MuiVirtualizedTable extends PureComponent {
         );
     };
 
-    onClickableRowClick = (event) => {
+    onClickableRowClick = (event: RowMouseEventHandlerParams) => {
         if (
             event.rowData?.notClickable !== true ||
             event.event?.shiftKey ||
             event.event?.ctrlKey
         ) {
+            //@ts-ignore onRowClick is possibly undefined
             this.props.onRowClick(event);
         }
     };
 
-    cellRenderer = ({ cellData, columnIndex, rowIndex }) => {
+    cellRenderer = ({ cellData, columnIndex, rowIndex }: TableCellProps) => {
         const { columns, classes, rowHeight, onCellClick, rows, tooltipSx } =
             this.props;
 
@@ -644,15 +758,16 @@ class MuiVirtualizedTable extends PureComponent {
             >
                 <OverflowableText
                     text={displayedValue}
+                    //@ts-ignore not really consistent but it should be legacy
                     tooltipStyle={classes.cellTooltip}
                     tooltipSx={{ ...defaultTooltipSx, ...tooltipSx }}
                 />
             </TableCell>
         );
     };
-
-    getDisplayValue(column, cellData) {
-        let displayedValue;
+    // type check should be increased here
+    getDisplayValue(column: CustomColumnProps, cellData: any) {
+        let displayedValue: any;
         if (!column.numeric) {
             displayedValue = cellData;
         } else if (isNaN(cellData)) {
@@ -681,7 +796,7 @@ class MuiVirtualizedTable extends PureComponent {
         // for now keep 'historical' use of scrollHeight,
         // though it can not make a difference from clientHeight,
         // as overflow-y as no scroll value
-        const scrollHeights = headers.map((header) => header.scrollHeight);
+        const scrollHeights = headers.map((header: any) => header.scrollHeight);
         let headerHeight = Math.max(
             Math.max(...scrollHeights) + DEFAULT_CELL_PADDING,
             this.props.headerHeight
@@ -694,9 +809,9 @@ class MuiVirtualizedTable extends PureComponent {
         }
     }
 
-    makeHeaderRenderer(dataKey, columnIndex) {
+    makeHeaderRenderer(dataKey: string, columnIndex: number) {
         const { columns, classes } = this.props;
-        return (headerProps) => {
+        return (headerProps: any) => {
             return (
                 <TableCell
                     component="div"
@@ -711,7 +826,7 @@ class MuiVirtualizedTable extends PureComponent {
                     align={
                         columns[columnIndex].numeric || false ? 'right' : 'left'
                     }
-                    ref={(e) => this._registerObserver(e)}
+                    ref={(e: Element) => this._registerObserver(e)}
                 >
                     {this.props.sortable && this.state.indexer
                         ? this.sortableHeader({
@@ -728,7 +843,13 @@ class MuiVirtualizedTable extends PureComponent {
         };
     }
 
-    makeSizedTable = (height, width, sizes, reorderedIndex, rowGetter) => {
+    makeSizedTable = (
+        height: number,
+        width: number,
+        sizes: Record<string, number>,
+        reorderedIndex: number[] | null,
+        rowGetter: ((index: number) => RowProps) | ((index: number) => number)
+    ) => {
         const { sort, ...otherProps } = this.props;
 
         return (
@@ -766,6 +887,7 @@ class MuiVirtualizedTable extends PureComponent {
                             cellRenderer={this.cellRenderer}
                             dataKey={dataKey}
                             flexGrow={1}
+                            //@ts-ignore will be overwritten by ...other
                             width={sizes[dataKey]}
                             {...other}
                         />
@@ -800,11 +922,11 @@ class MuiVirtualizedTable extends PureComponent {
 
         const csvData = [];
         for (let index = 0; index < rowsCount; ++index) {
-            const myobj = {};
-            const sortedRow = reorderedIndex.rowGetter(index);
+            const myobj: Record<string, any> = {};
+            const sortedRow: any = reorderedIndex.rowGetter(index);
             const exportedKeys = this.props.exportCSVDataKeys;
             this.props.columns.forEach((col) => {
-                if (exportedKeys?.find((el) => el === col.dataKey)) {
+                if (exportedKeys?.find((el: any) => el === col.dataKey)) {
                     myobj[col.dataKey] = sortedRow[col.dataKey];
                 }
             });
@@ -815,11 +937,11 @@ class MuiVirtualizedTable extends PureComponent {
     };
 
     csvHeaders = memoize((columns, exportCSVDataKeys) => {
-        let tempHeaders = [];
-        columns.forEach((col) => {
+        let tempHeaders: { displayName: string; id: string }[] = [];
+        columns.forEach((col: CustomColumnProps) => {
             if (
                 exportCSVDataKeys !== undefined &&
-                exportCSVDataKeys.find((el) => el === col.dataKey)
+                exportCSVDataKeys.find((el: string) => el === col.dataKey)
             ) {
                 tempHeaders.push({
                     displayName: col.label,
@@ -918,36 +1040,6 @@ class MuiVirtualizedTable extends PureComponent {
         );
     }
 }
-
-MuiVirtualizedTable.propTypes = {
-    name: PropTypes.string,
-    classes: PropTypes.object,
-    rows: PropTypes.array,
-    columns: PropTypes.arrayOf(
-        PropTypes.shape({
-            dataKey: PropTypes.string.isRequired,
-            label: PropTypes.string.isRequired,
-            numeric: PropTypes.bool,
-            width: PropTypes.number,
-            minWidth: PropTypes.number,
-            maxWidth: PropTypes.number,
-            unit: PropTypes.string,
-            fractionDigits: PropTypes.number,
-            extra: PropTypes.element,
-        })
-    ).isRequired,
-    enableExportCSV: PropTypes.bool,
-    exportCSVDataKeys: PropTypes.array,
-    sort: PropTypes.func,
-    sortable: PropTypes.bool,
-    indexer: PropTypes.object,
-    headerHeight: PropTypes.number,
-    onRowClick: PropTypes.func,
-    onCellClick: PropTypes.func,
-    rowHeight: PropTypes.number,
-    filter: PropTypes.func,
-    tooltipSx: PropTypes.object,
-};
 
 const nestedGlobalSelectorsStyles = toNestedGlobalSelectors(
     defaultStyles,

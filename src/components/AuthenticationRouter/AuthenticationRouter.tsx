@@ -38,7 +38,7 @@ export interface AuthenticationRouterProps {
     showAuthenticationRouterLogin: boolean;
     dispatch: Dispatch<unknown>;
     navigate: () => void;
-    location: () => void;
+    location: Location;
 }
 
 const AuthenticationRouter = ({
@@ -119,7 +119,7 @@ const AuthenticationRouter = ({
                         <Logout
                             disabled={userManager.instance === null}
                             onLogoutClick={() =>
-                                logout(location, userManager.instance)
+                                logout(dispatch, userManager.instance)
                             }
                         />
                     </Grid>
