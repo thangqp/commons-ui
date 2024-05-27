@@ -26,6 +26,7 @@ import ElementValueEditor from './element-value-editor';
 import { ElementType } from '../../../utils/ElementType';
 import PropertyValueEditor from './property-value-editor';
 import { FilterType } from '../../filter/constants/filter-constants';
+import GroupValueEditor from './group-value-editor.tsx';
 
 const styles = {
     noArrows: {
@@ -80,6 +81,8 @@ const ValueEditor: FunctionComponent<ValueEditorProps> = (props) => {
         return <CountryValueEditor {...props} />;
     }
     if (
+        props.field === FieldType.REGULATION_TYPE ||
+        props.field === FieldType.SVAR_REGULATION_MODE ||
         props.field === FieldType.ENERGY_SOURCE ||
         props.field === FieldType.SHUNT_COMPENSATOR_TYPE ||
         props.field === FieldType.LOAD_TYPE ||
@@ -151,7 +154,10 @@ const ValueEditor: FunctionComponent<ValueEditorProps> = (props) => {
                 valueEditorProps={props}
             />
         );
+    } else if (props.fieldData.dataType === DataType.COMBINATOR) {
+        return <GroupValueEditor {...props} />;
     }
+
     return (
         <Box sx={props.inputType === 'number' ? styles.noArrows : undefined}>
             <MaterialValueEditor

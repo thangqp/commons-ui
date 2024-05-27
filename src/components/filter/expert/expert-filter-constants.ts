@@ -601,15 +601,24 @@ export const FIELDS_OPTIONS = {
         dataType: DataType.NUMBER,
         inputType: 'number',
     },
-    REGULATING_TERMINAL_VL_ID: {
-        name: FieldType.REGULATING_TERMINAL_VL_ID,
-        label: 'regulatingTerminalVLId',
-        dataType: DataType.STRING,
-    },
-    REGULATING_TERMINAL_CONNECTABLE_ID: {
-        name: FieldType.REGULATING_TERMINAL_CONNECTABLE_ID,
-        label: 'regulatingTerminalConnectableId',
-        dataType: DataType.STRING,
+    REGULATING_TERMINAL: {
+        // group criteria
+        name: FieldType.REGULATING_TERMINAL,
+        label: 'regulatingTerminal',
+        dataType: DataType.COMBINATOR,
+        combinator: CombinatorType.AND,
+        rules: [
+            {
+                name: FieldType.REGULATING_TERMINAL_VL_ID,
+                label: 'regulatingTerminalVLId',
+                dataType: DataType.STRING,
+            },
+            {
+                name: FieldType.REGULATING_TERMINAL_CONNECTABLE_ID,
+                label: 'regulatingTerminalConnectableId',
+                dataType: DataType.STRING,
+            },
+        ],
     },
     REGULATION_TYPE: {
         name: FieldType.REGULATION_TYPE,
@@ -797,8 +806,7 @@ export const fields: Record<string, Field[]> = {
         FIELDS_OPTIONS.VOLTAGE_LEVEL_ID,
         FIELDS_OPTIONS.NOMINAL_VOLTAGE,
         FIELDS_OPTIONS.CONNECTED,
-        FIELDS_OPTIONS.REGULATING_TERMINAL_VL_ID,
-        FIELDS_OPTIONS.REGULATING_TERMINAL_CONNECTABLE_ID,
+        FIELDS_OPTIONS.REGULATING_TERMINAL,
         FIELDS_OPTIONS.REGULATION_TYPE,
         FIELDS_OPTIONS.AUTOMATE,
         FIELDS_OPTIONS.LOW_VOLTAGE_SET_POINT,

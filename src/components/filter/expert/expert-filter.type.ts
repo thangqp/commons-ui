@@ -98,6 +98,7 @@ export enum FieldType {
     SVAR_REGULATION_MODE = 'SVAR_REGULATION_MODE',
     VOLTAGE_SET_POINT = 'VOLTAGE_SET_POINT',
     REACTIVE_POWER_SET_POINT = 'REACTIVE_POWER_SET_POINT',
+    REGULATING_TERMINAL = 'REGULATING_TERMINAL', // composite criteria of REGULATING_TERMINAL_VL_ID and/or REGULATING_TERMINAL_CONNECTABLE_ID
     REGULATING_TERMINAL_VL_ID = 'REGULATING_TERMINAL_VL_ID',
     REGULATING_TERMINAL_CONNECTABLE_ID = 'REGULATING_TERMINAL_CONNECTABLE_ID',
     REGULATION_TYPE = 'REGULATION_TYPE',
@@ -118,6 +119,12 @@ export enum DataType {
     FILTER_UUID = 'FILTER_UUID',
     PROPERTY = 'PROPERTIES',
 }
+
+export type OperatorOption = {
+    name: string;
+    customName: string;
+    label: string;
+};
 
 export interface RuleTypeExport {
     field: FieldType;

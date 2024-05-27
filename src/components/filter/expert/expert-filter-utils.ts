@@ -21,6 +21,7 @@ import {
     CombinatorType,
     DataType,
     FieldType,
+    OperatorOption,
     OperatorType,
     RuleGroupTypeExport,
     RuleTypeExport,
@@ -72,11 +73,7 @@ export const getOperators = (fieldName: string, intl: IntlShape) => {
 
     switch (field?.dataType) {
         case DataType.STRING:
-            let operators: {
-                name: string;
-                customName: string;
-                label: string;
-            }[] = [
+            let stringOperators: OperatorOption[] = [
                 OPERATOR_OPTIONS.CONTAINS,
                 OPERATOR_OPTIONS.IS,
                 OPERATOR_OPTIONS.BEGINS_WITH,
@@ -92,28 +89,23 @@ export const getOperators = (fieldName: string, intl: IntlShape) => {
                 field.name === FieldType.VOLTAGE_LEVEL_ID_2
             ) {
                 // two additional operators when fields ID or VOLTAGE_LEVEL_ID are selected
-                operators.push(OPERATOR_OPTIONS.IS_PART_OF);
-                operators.push(OPERATOR_OPTIONS.IS_NOT_PART_OF);
+                stringOperators.push(OPERATOR_OPTIONS.IS_PART_OF);
+                stringOperators.push(OPERATOR_OPTIONS.IS_NOT_PART_OF);
             }
             if (field.name === FieldType.ID) {
                 // When the ID is selected, the operators EXISTS and NOT_EXISTS must be removed.
-                operators = operators.filter(
+                stringOperators = stringOperators.filter(
                     (field) =>
                         field.name !== OperatorType.EXISTS &&
                         field.name !== OperatorType.NOT_EXISTS
                 );
             }
-            return operators.map((operator) => ({
+            return stringOperators.map((operator) => ({
                 name: operator.name,
                 label: intl.formatMessage({ id: operator.label }),
             }));
         case DataType.NUMBER:
-            if (field.name === FieldType.AUTOMATE) {
-                // take only EXISTS and NOT_EXISTS
-                return [OPERATOR_OPTIONS.EXISTS, OPERATOR_OPTIONS.NOT_EXISTS];
-            }
-
-            return [
+            let numberOperators: OperatorOption[] = [
                 OPERATOR_OPTIONS.EQUALS,
                 OPERATOR_OPTIONS.GREATER,
                 OPERATOR_OPTIONS.GREATER_OR_EQUALS,
@@ -122,7 +114,18 @@ export const getOperators = (fieldName: string, intl: IntlShape) => {
                 OPERATOR_OPTIONS.BETWEEN,
                 OPERATOR_OPTIONS.EXISTS,
                 OPERATOR_OPTIONS.NOT_EXISTS,
-            ].map((operator) => ({
+            ];
+
+            // particulary case
+            if (field.name === FieldType.AUTOMATE) {
+                // take only EXISTS and NOT_EXISTS
+                numberOperators = [
+                    OPERATOR_OPTIONS.EXISTS,
+                    OPERATOR_OPTIONS.NOT_EXISTS,
+                ];
+            }
+
+            return numberOperators.map((operator) => ({
                 name: operator.name,
                 label: intl.formatMessage({ id: operator.label }),
             }));
@@ -132,11 +135,7 @@ export const getOperators = (fieldName: string, intl: IntlShape) => {
                 label: intl.formatMessage({ id: operator.label }),
             }));
         case DataType.ENUM:
-            let enumOperators: {
-                name: string;
-                customName: string;
-                label: string;
-            }[] = [
+            let enumOperators: OperatorOption[] = [
                 OPERATOR_OPTIONS.EQUALS,
                 OPERATOR_OPTIONS.NOT_EQUALS,
                 OPERATOR_OPTIONS.IN,
@@ -152,12 +151,13 @@ export const getOperators = (fieldName: string, intl: IntlShape) => {
                 label: intl.formatMessage({ id: operator.label }),
             }));
         case DataType.PROPERTY:
-            let propertiesOperators: {
-                name: string;
-                customName: string;
-                label: string;
-            }[] = [OPERATOR_OPTIONS.IS];
+            let propertiesOperators: OperatorOption[] = [OPERATOR_OPTIONS.IS];
             return propertiesOperators.map((operator) => ({
+                name: operator.name,
+                label: intl.formatMessage({ id: operator.label }),
+            }));
+        case DataType.COMBINATOR:
+            return [OPERATOR_OPTIONS.IS].map((operator) => ({
                 name: operator.name,
                 label: intl.formatMessage({ id: operator.label }),
             }));
