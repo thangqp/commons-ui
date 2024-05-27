@@ -4,12 +4,34 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { ValueEditorProps } from 'react-querybuilder';
-import { MaterialValueEditor } from '@react-querybuilder/material';
+import { FullField, ValueEditorProps } from 'react-querybuilder';
+import { Grid } from '@mui/material';
+import RuleValueEditor from './rule-value-editor';
 
-const GroupValueEditor = (props: ValueEditorProps) => {
+interface GroupField extends FullField {
+    combinator?: string;
+    rules?: FullField[];
+}
+
+const GroupValueEditor = (props: ValueEditorProps<GroupField>) => {
     console.log('GroupValueEditor props', { props });
-    return <MaterialValueEditor {...props} />;
+    const {
+        fieldData: { rules },
+    } = props;
+
+    return (
+        <Grid container direction={'column'} spacing={1}>
+            {rules?.map((rule) => (
+                <RuleValueEditor
+                    {...{
+                        ...props,
+                        field: rule.name,
+                        fieldData: rule,
+                    }}
+                />
+            ))}
+        </Grid>
+    );
 };
 
 export default GroupValueEditor;

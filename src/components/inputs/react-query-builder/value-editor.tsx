@@ -123,6 +123,8 @@ const ValueEditor: FunctionComponent<ValueEditorProps> = (props) => {
     } else if (
         props.field === FieldType.ID ||
         props.field === FieldType.NAME ||
+        props.field === FieldType.REGULATING_TERMINAL_VL_ID ||
+        props.field === FieldType.REGULATING_TERMINAL_CONNECTABLE_ID ||
         props.field === FieldType.VOLTAGE_LEVEL_ID ||
         props.field === FieldType.VOLTAGE_LEVEL_ID_1 ||
         props.field === FieldType.VOLTAGE_LEVEL_ID_2

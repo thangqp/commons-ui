@@ -612,11 +612,13 @@ export const FIELDS_OPTIONS = {
                 name: FieldType.REGULATING_TERMINAL_VL_ID,
                 label: 'regulatingTerminalVLId',
                 dataType: DataType.STRING,
+                operators: [OPERATOR_OPTIONS.IS, OPERATOR_OPTIONS.IN],
             },
             {
                 name: FieldType.REGULATING_TERMINAL_CONNECTABLE_ID,
                 label: 'regulatingTerminalConnectableId',
                 dataType: DataType.STRING,
+                operators: [OPERATOR_OPTIONS.IS, OPERATOR_OPTIONS.IN],
             },
         ],
     },
