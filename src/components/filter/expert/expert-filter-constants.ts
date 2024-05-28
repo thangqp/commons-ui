@@ -581,6 +581,20 @@ export const FIELDS_OPTIONS = {
         valueEditorType: 'select',
         defaultValue: '',
     },
+    VOLTAGE_LEVEL_PROPERTY_1: {
+        name: FieldType.VOLTAGE_LEVEL_PROPERTY_1,
+        label: 'voltageLevelProperty1',
+        dataType: DataType.PROPERTY,
+        valueEditorType: 'select',
+        defaultValue: '',
+    },
+    VOLTAGE_LEVEL_PROPERTY_2: {
+        name: FieldType.VOLTAGE_LEVEL_PROPERTY_2,
+        label: 'voltageLevelProperty2',
+        dataType: DataType.PROPERTY,
+        valueEditorType: 'select',
+        defaultValue: '',
+    },
     SVAR_REGULATION_MODE: {
         name: FieldType.SVAR_REGULATION_MODE,
         label: 'svarRegulationMode',
@@ -704,6 +718,8 @@ export const fields: Record<string, Field[]> = {
         FIELDS_OPTIONS.PROPERTY,
         FIELDS_OPTIONS.SUBSTATION_PROPERTY_1,
         FIELDS_OPTIONS.SUBSTATION_PROPERTY_2,
+        FIELDS_OPTIONS.VOLTAGE_LEVEL_PROPERTY_1,
+        FIELDS_OPTIONS.VOLTAGE_LEVEL_PROPERTY_2,
     ],
     TWO_WINDINGS_TRANSFORMER: [
         FIELDS_OPTIONS.ID,
@@ -734,6 +750,8 @@ export const fields: Record<string, Field[]> = {
         FIELDS_OPTIONS.PROPERTY,
         FIELDS_OPTIONS.SUBSTATION_PROPERTY_1,
         FIELDS_OPTIONS.SUBSTATION_PROPERTY_2,
+        FIELDS_OPTIONS.VOLTAGE_LEVEL_PROPERTY_1,
+        FIELDS_OPTIONS.VOLTAGE_LEVEL_PROPERTY_2,
     ],
     GENERATOR: [
         FIELDS_OPTIONS.ID,
@@ -756,6 +774,7 @@ export const fields: Record<string, Field[]> = {
         FIELDS_OPTIONS.FORCED_OUTAGE_RATE,
         FIELDS_OPTIONS.PROPERTY,
         FIELDS_OPTIONS.SUBSTATION_PROPERTY,
+        FIELDS_OPTIONS.VOLTAGE_LEVEL_PROPERTY,
     ],
     LOAD: [
         FIELDS_OPTIONS.ID,
@@ -769,6 +788,7 @@ export const fields: Record<string, Field[]> = {
         FIELDS_OPTIONS.Q0,
         FIELDS_OPTIONS.PROPERTY,
         FIELDS_OPTIONS.SUBSTATION_PROPERTY,
+        FIELDS_OPTIONS.VOLTAGE_LEVEL_PROPERTY,
     ],
     BATTERY: [
         FIELDS_OPTIONS.ID,
@@ -783,6 +803,7 @@ export const fields: Record<string, Field[]> = {
         FIELDS_OPTIONS.TARGET_Q,
         FIELDS_OPTIONS.PROPERTY,
         FIELDS_OPTIONS.SUBSTATION_PROPERTY,
+        FIELDS_OPTIONS.VOLTAGE_LEVEL_PROPERTY,
     ],
     SHUNT_COMPENSATOR: [
         FIELDS_OPTIONS.ID,
@@ -800,6 +821,7 @@ export const fields: Record<string, Field[]> = {
         FIELDS_OPTIONS.SWITCHED_ON_SUSCEPTANCE,
         FIELDS_OPTIONS.PROPERTY,
         FIELDS_OPTIONS.SUBSTATION_PROPERTY,
+        FIELDS_OPTIONS.VOLTAGE_LEVEL_PROPERTY,
     ],
     STATIC_VAR_COMPENSATOR: [
         FIELDS_OPTIONS.ID,
