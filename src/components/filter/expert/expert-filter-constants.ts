@@ -10,7 +10,7 @@ import {
     DataType,
     FieldType,
     OperatorType,
-} from '../expert/expert-filter.type.ts';
+} from './expert-filter.type';
 import { Field } from 'react-querybuilder';
 
 export enum RULES {
@@ -363,25 +363,25 @@ export const FIELDS_OPTIONS = {
     },
     NOMINAL_VOLTAGE_1: {
         name: FieldType.NOMINAL_VOLTAGE_1,
-        label: 'nominalVoltage1Or',
+        label: 'nominalVoltage1KV',
         dataType: DataType.NUMBER,
         inputType: 'number',
     },
     NOMINAL_VOLTAGE_2: {
         name: FieldType.NOMINAL_VOLTAGE_2,
-        label: 'nominalVoltage2Ex',
+        label: 'nominalVoltage2KV',
         dataType: DataType.NUMBER,
         inputType: 'number',
     },
     RATED_VOLTAGE_1: {
         name: FieldType.RATED_VOLTAGE_1,
-        label: 'ratedVoltage1Or',
+        label: 'ratedVoltage1KV',
         dataType: DataType.NUMBER,
         inputType: 'number',
     },
     RATED_VOLTAGE_2: {
         name: FieldType.RATED_VOLTAGE_2,
-        label: 'ratedVoltage2Ex',
+        label: 'ratedVoltage2KV',
         dataType: DataType.NUMBER,
         inputType: 'number',
     },

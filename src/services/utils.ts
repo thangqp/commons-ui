@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { getUserToken } from '../redux/commonStore.ts';
+import { getUserToken } from '../redux/commonStore';
 
 export const backendFetch = (url: string, init: any, token?: string) => {
     const initCopy = prepareRequest(init, token);

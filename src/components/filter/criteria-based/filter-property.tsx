@@ -13,7 +13,7 @@ import AutocompleteInput from '../../inputs/react-hook-form/autocomplete-inputs/
 import MultipleAutocompleteInput from '../../inputs/react-hook-form/autocomplete-inputs/multiple-autocomplete-input';
 import { FieldConstants } from '../../../utils/field-constants';
 
-import { PredefinedProperties } from '../../../utils/types.ts';
+import { PredefinedProperties } from '../../../utils/types';
 
 export const PROPERTY_NAME = 'name_property';
 export const PROPERTY_VALUES = 'prop_values';
