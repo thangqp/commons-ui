@@ -140,8 +140,12 @@ export const getOperators = (fieldName: string, intl: IntlShape) => {
                 OPERATOR_OPTIONS.NOT_EQUALS,
                 OPERATOR_OPTIONS.IN,
             ];
-            if (field.name === FieldType.SHUNT_COMPENSATOR_TYPE) {
-                // When the SHUNT_COMPENSATOR_TYPE is selected, the operator IN must be removed.
+            if (
+                field.name === FieldType.SHUNT_COMPENSATOR_TYPE ||
+                field.name === FieldType.REGULATION_TYPE ||
+                field.name === FieldType.SVAR_REGULATION_MODE
+            ) {
+                // When one of above criteria is selected, the operator IN must be removed.
                 enumOperators = enumOperators.filter(
                     (field) => field.customName !== OperatorType.IN
                 );
@@ -157,7 +161,15 @@ export const getOperators = (fieldName: string, intl: IntlShape) => {
                 label: intl.formatMessage({ id: operator.label }),
             }));
         case DataType.COMBINATOR:
-            return [OPERATOR_OPTIONS.IS].map((operator) => ({
+            const combinatorOperators: OperatorOption[] = [OPERATOR_OPTIONS.IS];
+
+            if (field.name === FieldType.REGULATING_TERMINAL) {
+                // add EXISTS and NOT_EXISTS
+                combinatorOperators.push(OPERATOR_OPTIONS.EXISTS);
+                combinatorOperators.push(OPERATOR_OPTIONS.NOT_EXISTS);
+            }
+
+            return combinatorOperators.map((operator) => ({
                 name: operator.name,
                 label: intl.formatMessage({ id: operator.label }),
             }));

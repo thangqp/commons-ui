@@ -25,6 +25,7 @@ const GroupValueEditor = (props: ValueEditorProps<GroupField>) => {
                 <RuleValueEditor
                     {...{
                         ...props,
+                        key: rule.name,
                         field: rule.name,
                         fieldData: rule,
                     }}
