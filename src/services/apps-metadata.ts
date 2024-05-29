@@ -8,7 +8,7 @@ import { PredefinedProperties } from '../utils/types';
 
 // https://github.com/gridsuite/deployment/blob/main/docker-compose/docker-compose.base.yml
 // https://github.com/gridsuite/deployment/blob/main/k8s/resources/common/config/apps-metadata.json
-export type AppsMetadata = MetadataCommon | MetadataStudy;
+export type AppsMetadata = CommonMetadata | StudyMetadata;
 export type Url = string | URL;
 
 export type EnvJson = {
@@ -25,14 +25,14 @@ export async function fetchEnv(): Promise<EnvJson> {
     return (await fetch('env.json')).json();
 }
 
-export type MetadataCommon = {
+export type CommonMetadata = {
     name: string;
     url: Url;
     appColor: string;
     hiddenInAppsMenu: boolean;
 };
 
-export type MetadataStudy = MetadataCommon & {
+export type StudyMetadata = CommonMetadata & {
     readonly name: 'Study';
     resources?: {
         types: string[];
@@ -56,11 +56,11 @@ export async function fetchAppsMetadata(): Promise<AppsMetadata[]> {
     return res.json();
 }
 
-const isStudyMetadata = (metadata: AppsMetadata): metadata is MetadataStudy => {
+const isStudyMetadata = (metadata: AppsMetadata): metadata is StudyMetadata => {
     return metadata.name === 'Study';
 };
 
-export async function fetchStudyMetadata(): Promise<MetadataStudy> {
+export async function fetchStudyMetadata(): Promise<StudyMetadata> {
     console.info(`Fetching study metadata...`);
     const studyMetadata = (await fetchAppsMetadata()).filter(isStudyMetadata);
     if (!studyMetadata) {
