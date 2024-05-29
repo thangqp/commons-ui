@@ -10,7 +10,7 @@ import { PredefinedProperties } from '../utils/types';
 // https://github.com/gridsuite/deployment/blob/main/k8s/resources/common/config/apps-metadata.json
 export type Url = string | URL;
 
-export type EnvJson = {
+export type Env = {
     appsMetadataServerUrl?: Url;
     mapBoxToken?: string;
     // https://github.com/gridsuite/deployment/blob/main/docker-compose/env.json
@@ -20,7 +20,7 @@ export type EnvJson = {
     //[key: string]: string;
 };
 
-export async function fetchEnv(): Promise<EnvJson> {
+export async function fetchEnv(): Promise<Env> {
     return (await fetch('env.json')).json();
 }
 
