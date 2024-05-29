@@ -10,7 +10,7 @@ import { Checkbox, CheckboxProps } from '@mui/material';
 
 export interface CheckboxInputProps {
     name: string;
-    label: string;
+    label?: string;
     formProps?: CheckboxProps;
 }
 
