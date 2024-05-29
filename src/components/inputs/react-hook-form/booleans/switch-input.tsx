@@ -10,8 +10,8 @@ import { Switch, SwitchProps } from '@mui/material';
 
 export interface SwitchInputProps {
     name: string;
-    label: string;
-    formProps: SwitchProps;
+    label?: string;
+    formProps?: SwitchProps;
 }
 
 const SwitchInput = ({ name, label, formProps }: SwitchInputProps) => {
