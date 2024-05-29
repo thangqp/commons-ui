@@ -51,11 +51,9 @@ export type MetadataStudy = MetadataCommon & {
 
 export async function fetchAppsMetadata(): Promise<AppsMetadata[]> {
     console.info(`Fetching apps and urls...`);
-    return (
-        await fetch(
-            (await fetchEnv()).appsMetadataServerUrl + '/apps-metadata.json'
-        )
-    ).json();
+    const env = await fetchEnv();
+    const res = await fetch(env.appsMetadataServerUrl + '/apps-metadata.json');
+    return res.json();
 }
 
 const isStudyMetadata = (metadata: AppsMetadata): metadata is MetadataStudy => {
