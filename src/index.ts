@@ -29,7 +29,7 @@ export { default as PopupConfirmationDialog } from './components/dialogs/popup-c
 export { default as BottomRightButtons } from './components/inputs/react-hook-form/ag-grid-table/bottom-right-buttons';
 export { default as CustomAgGridTable } from './components/inputs/react-hook-form/ag-grid-table/custom-ag-grid-table';
 export { ROW_DRAGGING_SELECTION_COLUMN_DEF } from './components/inputs/react-hook-form/ag-grid-table/custom-ag-grid-table';
-
+export type { Parameter } from './components/FlatParameters/FlatParameters';
 export {
     Line,
     Generator,
