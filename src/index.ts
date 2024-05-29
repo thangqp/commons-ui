@@ -51,6 +51,8 @@ export {
 
 export { FieldConstants } from './utils/field-constants';
 
+export type { TreeViewFinderNodeProps } from './components/TreeViewFinder/TreeViewFinder';
+
 export {
     GRIDSUITE_DEFAULT_PRECISION,
     roundToPrecision,
