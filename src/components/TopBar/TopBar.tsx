@@ -48,7 +48,7 @@ import GridLogo, { GridLogoProps } from './GridLogo';
 import AboutDialog, { AboutDialogProps } from './AboutDialog';
 import { LogoutProps } from '../Login/Logout';
 import { User } from 'oidc-client';
-import { AppsMetadata } from '../../services';
+import { CommonMetadata } from '../../services';
 
 const styles = {
     grow: {
@@ -167,7 +167,7 @@ export type TopBarProps = Omit<GridLogoProps, 'onClick'> &
         onLogoClick: GridLogoProps['onClick'];
         user: User;
         onAboutClick?: () => void;
-        appsAndUrls: AppsMetadata[];
+        appsAndUrls: CommonMetadata[];
         onThemeClick?: (theme: GsTheme) => void;
         theme?: GsTheme;
         onEquipmentLabellingClick?: (toggle: boolean) => void;
