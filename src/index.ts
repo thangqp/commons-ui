@@ -61,7 +61,7 @@ export {
 } from './utils/conversion-utils';
 
 export { ElementType } from './utils/ElementType';
-export type { ElementAttributes } from './utils/ElementAttributes';
+export type { ElementAttributes } from './utils/types';
 
 export {
     EQUIPMENT_TYPE,

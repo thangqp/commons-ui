@@ -7,7 +7,7 @@
 
 import { backendFetchJson, getRequestParamFromList } from './utils';
 import { UUID } from 'crypto';
-import { ElementAttributes } from '../utils/ElementAttributes';
+import { ElementAttributes } from '../utils/types';
 
 const PREFIX_DIRECTORY_SERVER_QUERIES =
     import.meta.env.VITE_API_GATEWAY + '/directory';
