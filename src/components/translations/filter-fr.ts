@@ -26,6 +26,7 @@ const filter_fr = {
         "La valeur de gauche d'une règle 'entre' doit être inférieure à la valeur de droite",
     emptyGroup:
         'Le filtre contient un groupe vide. Supprimez le ou ajoutez des règles à ce groupe',
+    Hvdc: 'HVDC',
 };
 
 export default filter_fr;

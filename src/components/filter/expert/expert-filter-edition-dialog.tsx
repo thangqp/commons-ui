@@ -19,11 +19,8 @@ import { saveExpertFilter } from '../utils/filter-api';
 import { importExpertRules } from './expert-filter-utils';
 import { UUID } from 'crypto';
 import { elementExistsType } from '../criteria-based/criteria-based-filter-edition-dialog';
-import { FilterContext } from '../filter-context';
 import { FilterType } from '../constants/filter-constants';
 import { FetchStatus } from '../../../utils/FetchStatus';
-import { ElementAttributes } from '../../../utils/types';
-import { StudyMetadata } from '../../../hooks/predefined-properties-hook';
 
 const formSchema = yup
     .object()
@@ -49,17 +46,6 @@ export interface ExpertFilterEditionDialogProps {
     activeDirectory?: UUID;
     elementExists?: elementExistsType;
     language?: string;
-    fetchDirectoryContent: (
-        directoryUuid: UUID,
-        elementTypes: string[]
-    ) => Promise<ElementAttributes[]>;
-    fetchRootFolders: (types: string[]) => Promise<ElementAttributes[]>;
-    fetchElementsInfos: (
-        ids: UUID[],
-        elementTypes?: string[],
-        equipmentTypes?: string[]
-    ) => Promise<ElementAttributes[]>;
-    fetchAppsAndUrls: () => Promise<StudyMetadata[]>;
 }
 
 const ExpertFilterEditionDialog: FunctionComponent<
@@ -77,10 +63,6 @@ const ExpertFilterEditionDialog: FunctionComponent<
     activeDirectory,
     elementExists,
     language,
-    fetchDirectoryContent,
-    fetchRootFolders,
-    fetchElementsInfos,
-    fetchAppsAndUrls,
 }) => {
     const { snackError } = useSnackMessage();
     const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
@@ -174,21 +156,12 @@ const ExpertFilterEditionDialog: FunctionComponent<
             isDataFetching={dataFetchStatus === FetchStatus.FETCHING}
             language={language}
         >
-            <FilterContext.Provider
-                value={{
-                    fetchDirectoryContent: fetchDirectoryContent,
-                    fetchRootFolders: fetchRootFolders,
-                    fetchElementsInfos: fetchElementsInfos,
-                    fetchAppsAndUrls: fetchAppsAndUrls,
-                }}
-            >
-                {isDataReady && (
-                    <FilterForm
-                        activeDirectory={activeDirectory}
-                        elementExists={elementExists}
-                    />
-                )}
-            </FilterContext.Provider>
+            {isDataReady && (
+                <FilterForm
+                    activeDirectory={activeDirectory}
+                    elementExists={elementExists}
+                />
+            )}
         </CustomMuiDialog>
     );
 };

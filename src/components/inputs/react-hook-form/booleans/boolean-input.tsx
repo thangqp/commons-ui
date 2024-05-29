@@ -12,8 +12,8 @@ import { useController } from 'react-hook-form';
 
 export interface BooleanInputProps {
     name: string;
-    label: string;
-    formProps: any;
+    label?: string;
+    formProps?: any;
     Input: typeof Switch | typeof Checkbox;
 }
 

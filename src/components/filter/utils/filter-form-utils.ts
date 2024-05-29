@@ -86,7 +86,7 @@ export type FormEquipment = {
     label: string;
     fields: FormField[];
 };
-export const CONTINGENCY_LIST_EQUIPMENTS: Record<string, FormEquipment> = {
+const COMMON_EQUIPMENTS: Record<string, FormEquipment> = {
     LINE: {
         id: 'LINE',
         label: 'Lines',
@@ -109,13 +109,8 @@ export const CONTINGENCY_LIST_EQUIPMENTS: Record<string, FormEquipment> = {
     },
     HVDC_LINE: {
         id: 'HVDC_LINE',
-        label: 'HvdcLines',
+        label: 'Hvdc',
         fields: [countries1, countries2, nominalVoltage],
-    },
-    BUSBAR_SECTION: {
-        id: 'BUSBAR_SECTION',
-        label: 'BusBarSections',
-        fields: [countries, nominalVoltage],
     },
     DANGLING_LINE: {
         id: 'DANGLING_LINE',
@@ -123,8 +118,17 @@ export const CONTINGENCY_LIST_EQUIPMENTS: Record<string, FormEquipment> = {
         fields: [countries, nominalVoltage],
     },
 };
+
+export const CONTINGENCY_LIST_EQUIPMENTS: Record<string, FormEquipment> = {
+    ...COMMON_EQUIPMENTS,
+    BUSBAR_SECTION: {
+        id: 'BUSBAR_SECTION',
+        label: 'BusBarSections',
+        fields: [countries, nominalVoltage],
+    },
+};
 export const FILTER_EQUIPMENTS: Record<string, FormEquipment> = {
-    ...CONTINGENCY_LIST_EQUIPMENTS,
+    ...COMMON_EQUIPMENTS,
     THREE_WINDINGS_TRANSFORMER: {
         id: 'THREE_WINDINGS_TRANSFORMER',
         label: 'ThreeWindingsTransformers',
@@ -143,16 +147,6 @@ export const FILTER_EQUIPMENTS: Record<string, FormEquipment> = {
     BATTERY: {
         id: 'BATTERY',
         label: 'Batteries',
-        fields: [countries, nominalVoltage],
-    },
-    LCC_CONVERTER_STATION: {
-        id: 'LCC_CONVERTER_STATION',
-        label: 'LccConverterStations',
-        fields: [countries, nominalVoltage],
-    },
-    VSC_CONVERTER_STATION: {
-        id: 'VSC_CONVERTER_STATION',
-        label: 'VscConverterStations',
         fields: [countries, nominalVoltage],
     },
     VOLTAGE_LEVEL: {

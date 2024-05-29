@@ -80,3 +80,10 @@ const parseError = (text: string) => {
         return null;
     }
 };
+
+export const getRequestParamFromList = (
+    params: string[] = [],
+    paramName: string
+) => {
+    return new URLSearchParams(params.map((param) => [paramName, param]));
+};

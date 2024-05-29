@@ -15,13 +15,7 @@ import {
 } from '@mui/material';
 import FieldLabel from './utils/field-label';
 import FolderIcon from '@mui/icons-material/Folder';
-import {
-    FunctionComponent,
-    useCallback,
-    useContext,
-    useMemo,
-    useState,
-} from 'react';
+import { FunctionComponent, useCallback, useMemo, useState } from 'react';
 import { useController, useFieldArray } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 import { RawReadOnlyInput } from './raw-read-only-input';
@@ -30,12 +24,12 @@ import { useCustomFormContext } from './provider/use-custom-form-context';
 import { isFieldRequired } from './utils/functions';
 import ErrorInput from './error-management/error-input';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
-import { FilterContext } from '../../filter/filter-context';
 import { TreeViewFinderNodeProps } from '../../TreeViewFinder';
 import { mergeSx } from '../../../utils/styles';
 import OverflowableText from '../../OverflowableText';
 import MidFormError from './error-management/mid-form-error';
 import DirectoryItemSelector from '../../DirectoryItemSelector/directory-item-selector';
+import { fetchDirectoryElementPath } from '../../../services';
 
 export const NAME = 'name';
 
@@ -79,7 +73,6 @@ export interface DirectoryItemsInputProps {
     onChange?: (e: any) => void;
     disable?: boolean;
     labelRequiredFromContext?: boolean;
-    fetchDirectoryElementPath?: (id: UUID) => Promise<any[]>;
 }
 
 const DirectoryItemsInput: FunctionComponent<DirectoryItemsInputProps> = ({
@@ -94,7 +87,6 @@ const DirectoryItemsInput: FunctionComponent<DirectoryItemsInputProps> = ({
     onChange,
     disable = false,
     labelRequiredFromContext = true,
-    fetchDirectoryElementPath,
 }) => {
     const { snackError } = useSnackMessage();
     const intl = useIntl();
@@ -114,9 +106,6 @@ const DirectoryItemsInput: FunctionComponent<DirectoryItemsInputProps> = ({
 
     const formContext = useCustomFormContext();
     const { getValues, validationSchema } = formContext;
-
-    const { fetchDirectoryContent, fetchRootFolders, fetchElementsInfos } =
-        useContext(FilterContext);
 
     const {
         fieldState: { error },
@@ -186,7 +175,7 @@ const DirectoryItemsInput: FunctionComponent<DirectoryItemsInputProps> = ({
         (index: number) => {
             const chips = getValues(name) as any[];
             const chip = chips.at(index)?.id;
-            if (chip && fetchDirectoryElementPath) {
+            if (chip) {
                 fetchDirectoryElementPath(chip).then((response: any[]) => {
                     const path = response
                         .reverse() // we reverse the order so the root parent is first in the list
@@ -200,7 +189,7 @@ const DirectoryItemsInput: FunctionComponent<DirectoryItemsInputProps> = ({
                 });
             }
         },
-        [getValues, name, fetchDirectoryElementPath]
+        [getValues, name]
     );
 
     return (
@@ -278,9 +267,6 @@ const DirectoryItemsInput: FunctionComponent<DirectoryItemsInputProps> = ({
                 equipmentTypes={equipmentTypes}
                 title={intl.formatMessage({ id: titleId })}
                 itemFilter={itemFilter}
-                fetchDirectoryContent={fetchDirectoryContent}
-                fetchRootFolders={fetchRootFolders}
-                fetchElementsInfos={fetchElementsInfos}
                 selected={selected}
                 expanded={expanded}
                 multiSelect={multiSelect}
