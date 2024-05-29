@@ -309,7 +309,7 @@ const TopBar = ({
                                         <Box
                                             component="a"
                                             key={item.name}
-                                            href={item.url as string}
+                                            href={item.url?.toString()}
                                             sx={styles.link}
                                             target="_blank"
                                             rel="noopener noreferrer"

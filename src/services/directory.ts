@@ -42,7 +42,7 @@ export function fetchDirectoryContent(
     ).toString();
 
     let fetchDirectoryContentUrl = `${PREFIX_DIRECTORY_SERVER_QUERIES}/v1/directories/${directoryUuid}/elements${
-        urlSearchParams.toString() ? '?' + urlSearchParams.toString() : ''
+        urlSearchParams ? '?' + urlSearchParams : ''
     }`;
     return backendFetchJson(fetchDirectoryContentUrl, {
         method: 'get',
