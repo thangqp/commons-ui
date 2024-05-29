@@ -86,7 +86,7 @@ export type FormEquipment = {
     label: string;
     fields: FormField[];
 };
-export const COMMON_EQUIPMENTS: Record<string, FormEquipment> = {
+const COMMON_EQUIPMENTS: Record<string, FormEquipment> = {
     LINE: {
         id: 'LINE',
         label: 'Lines',
