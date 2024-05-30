@@ -32,38 +32,44 @@ const RuleValueEditor = (props: RuleValueEditorProps) => {
         ruleValue?.operator ??
         (fieldData.operators as OperatorOption[])?.map((op) => op.name)[0];
 
-    const handleOnChangeOperator = (operator: any) => {
-        console.log('operator', { operator });
-        let updatedRuleValue = {
-            ...(ruleValue ?? {}),
+    const handleOnChangeOperator = (operator: string) => {
+        handleOnChange({
+            ...ruleValue,
             operator: operator,
-        };
-
-        console.log('updatedRuleValue', { updatedRuleValue });
-
-        handleOnChange(updatedRuleValue);
+        });
     };
 
     const handleOnChangeValue = (value: any) => {
-        console.log('value', { value });
-        let updatedRuleValue = {
-            ...(ruleValue ?? {}),
+        handleOnChange({
+            ...ruleValue,
             value: value,
             operator: operator,
-        };
-        console.log('updatedRuleValue', { updatedRuleValue });
-
-        handleOnChange(updatedRuleValue);
+        });
     };
 
     return (
-        <Grid container item spacing={1} alignItems={'center'}>
-            <Grid item xs={4}>
+        <Grid container paddingTop={1}>
+            <Grid
+                container
+                item
+                xs={4}
+                direction={'column'}
+                justifyContent={'flex-end'}
+                alignItems={'baseline'}
+            >
                 <Typography>
                     {intl.formatMessage({ id: props.fieldData.label })}
                 </Typography>
             </Grid>
-            <Grid item xs={2.5}>
+            <Grid
+                container
+                item
+                xs={2.5}
+                paddingLeft={1}
+                direction={'column'}
+                justifyContent={'flex-end'}
+                alignItems={'baseline'}
+            >
                 <Select
                     value={operator}
                     size={'small'}
@@ -81,7 +87,15 @@ const RuleValueEditor = (props: RuleValueEditorProps) => {
                     )}
                 </Select>
             </Grid>
-            <Grid item xs={5.5}>
+            <Grid
+                container
+                item
+                xs={5.5}
+                paddingLeft={1}
+                direction={'column'}
+                justifyContent={'flex-end'}
+                alignItems={'baseline'}
+            >
                 <ValueEditorControlElement
                     {...{
                         ...props,

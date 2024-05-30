@@ -48,15 +48,15 @@ const microUnits = [
 ];
 
 interface TreeNode {
-    [k: string]: any;
-    children?: ObjectTree;
+    [key: string]: any;
+    children?: Tree;
 }
 
-interface ObjectTree {
-    [k: string]: TreeNode;
+interface Tree {
+    [key: string]: TreeNode;
 }
 
-const search = (tree: ObjectTree, value: any, key: string) => {
+const search = (tree: Tree, value: any, key: string) => {
     const stack = Object.values(tree);
     while (stack.length) {
         const node = stack.shift();
@@ -164,7 +164,7 @@ export const getOperators = (fieldName: string, intl: IntlShape) => {
                 field.name === FieldType.REGULATION_TYPE ||
                 field.name === FieldType.SVAR_REGULATION_MODE
             ) {
-                // When one of above criteria is selected, the operator IN must be removed.
+                // When one of above field is selected, the operator IN must be removed.
                 enumOperators = enumOperators.filter(
                     (operator) => operator !== OPERATOR_OPTIONS.IN
                 );
@@ -214,37 +214,16 @@ export function exportExpertRules(query: RuleGroupType): RuleGroupTypeExport {
         const isValueAnArray = Array.isArray(rule.value);
         const dataType = getDataType(rule.field, rule.operator) as DataType;
 
-        // a group rule must contain child rules => build a group with child rules
+        // a group rule is a rule with dataType COMBINATOR  => build a group with child rules
         if (
             dataType === DataType.COMBINATOR &&
             rule.operator !== OPERATOR_OPTIONS.EXISTS.name &&
             rule.operator !== OPERATOR_OPTIONS.NOT_EXISTS.name
         ) {
-            console.log('rules', { rules: rule.value.rules });
-            const transformedRules = Object.entries(
-                rule.value.rules as GroupRule
-            ).map(([field, groupRule]) =>
-                transformRule({
-                    ...rule,
-                    field: field,
-                    operator: groupRule.operator,
-                    value: groupRule.value,
-                })
-            );
-
-            return {
-                combinator: rule.value.combinator as CombinatorType,
-                dataType: DataType.COMBINATOR,
-                rules: transformedRules,
-                // two additional attributes to distinct a grouping rule from a normal rule group
-                operator: Object.values(OPERATOR_OPTIONS).find(
-                    (operator) => operator.name === rule.operator
-                )?.customName as OperatorType,
-                field: rule.field as FieldType,
-            };
+            return transformGroupRule(rule);
         }
 
-        // a single criteria
+        // a single rule
         return {
             field: rule.field as FieldType,
             operator:
@@ -273,6 +252,30 @@ export function exportExpertRules(query: RuleGroupType): RuleGroupTypeExport {
                 dataType === DataType.PROPERTY
                     ? rule.value.propertyValues
                     : undefined,
+        };
+    }
+
+    function transformGroupRule(groupRule: RuleType): RuleGroupTypeExport {
+        const transformedRules = Object.entries(
+            groupRule.value.rules as GroupRule
+        ).map(([field, rule]) =>
+            transformRule({
+                ...rule,
+                field: field,
+                operator: rule.operator,
+                value: rule.value,
+            })
+        );
+
+        return {
+            combinator: groupRule.value.combinator as CombinatorType,
+            dataType: DataType.COMBINATOR,
+            rules: transformedRules,
+            // two additional attributes to distinct a group rule from a normal rule group
+            operator: Object.values(OPERATOR_OPTIONS).find(
+                (operator) => operator.name === groupRule.operator
+            )?.customName as OperatorType,
+            field: groupRule.field as FieldType,
         };
     }
 
@@ -506,7 +509,6 @@ export const queryValidator: QueryValidator = (query) => {
             rule.operator !== OPERATOR_OPTIONS.EXISTS.name &&
             rule.operator !== OPERATOR_OPTIONS.NOT_EXISTS.name
         ) {
-            console.log('rule', { rule });
             const fieldData = search(
                 FIELDS_OPTIONS,
                 rule.field,
@@ -514,16 +516,14 @@ export const queryValidator: QueryValidator = (query) => {
             ) as GroupRuleField;
 
             const rules = (rule.value.rules ?? {}) as GroupRule;
-            Object.entries(fieldData?.children ?? {}).forEach(
-                ([field, fieldData]) => {
-                    validateRule({
-                        ...rule,
-                        field: field,
-                        operator: rules[field]?.operator,
-                        value: rules[field]?.value,
-                    });
-                }
-            );
+            Object.keys(fieldData.children ?? {}).forEach((field) => {
+                validateRule({
+                    ...rule,
+                    field: field,
+                    operator: rules[field]?.operator,
+                    value: rules[field]?.value,
+                });
+            });
         }
     };
     const validateGroup = (ruleGroup: RuleGroupTypeAny) => {

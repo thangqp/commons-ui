@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { ValueEditorProps } from 'react-querybuilder';
-import { Grid } from '@mui/material';
+import { Grid, Theme } from '@mui/material';
 import RuleValueEditor from './rule-value-editor';
 import {
     GroupRuleField,
@@ -13,8 +13,15 @@ import {
 } from '../../../filter/expert/expert-filter.type';
 import { useCallback } from 'react';
 
+const styles = {
+    group: (theme: Theme) => ({
+        border: 1,
+        borderRadius: 1,
+        borderColor: theme.palette.grey[500],
+    }),
+};
+
 const GroupValueEditor = (props: ValueEditorProps<GroupRuleField>) => {
-    console.log('GroupValueEditor props', { props });
     const {
         handleOnChange,
         fieldData: { combinator, children = {} },
@@ -36,17 +43,22 @@ const GroupValueEditor = (props: ValueEditorProps<GroupRuleField>) => {
     );
 
     return (
-        <Grid container direction={'column'} spacing={1}>
+        <Grid
+            container
+            direction={'column'}
+            sx={styles.group}
+            paddingLeft={1}
+            paddingRight={1}
+            paddingBottom={1}
+        >
             {Object.values(children).map((fieldData) => (
                 <RuleValueEditor
-                    {...{
-                        ...props,
-                        key: fieldData.name,
-                        field: fieldData.name,
-                        fieldData: fieldData,
-                        ruleValue: rules?.[fieldData.name],
-                        handleOnChange: generateOnChangeHandler(fieldData.name),
-                    }}
+                    {...props}
+                    key={fieldData.name}
+                    field={fieldData.name}
+                    fieldData={fieldData}
+                    ruleValue={rules?.[fieldData.name]}
+                    handleOnChange={generateOnChangeHandler(fieldData.name)}
                 />
             ))}
         </Grid>

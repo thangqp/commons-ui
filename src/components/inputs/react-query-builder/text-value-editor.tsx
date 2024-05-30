@@ -35,11 +35,7 @@ const TextValueEditor: FunctionComponent<ValueEditorProps> = (props) => {
                 multiple
                 fullWidth
                 renderInput={(params) => (
-                    <TextField
-                        {...params}
-                        error={!valid}
-                        variant={'standard'}
-                    />
+                    <TextField {...params} error={!valid} />
                 )}
             />
         );
