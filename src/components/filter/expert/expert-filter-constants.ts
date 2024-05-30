@@ -91,14 +91,14 @@ export const PHASE_REGULATION_MODE_OPTIONS = [
 ];
 
 export const SVAR_REGULATION_MODE_OPTIONS = [
-    { name: 'VOLTAGE', label: 'Voltage' },
-    { name: 'REACTIVE_POWER', label: 'ActivePower' },
-    { name: 'OFF', label: 'Off' },
+    { name: 'OFF', label: 'svarRegulationMode.off' },
+    { name: 'VOLTAGE', label: 'svarRegulationMode.voltage' },
+    { name: 'REACTIVE_POWER', label: 'svarRegulationMode.reactivePower' },
 ];
 
 export const REGULATION_TYPE_OPTIONS = [
-    { name: 'DISTANT', label: 'Distant' },
-    { name: 'LOCAL', label: 'Local' },
+    { name: 'DISTANT', label: 'regulationType.distant' },
+    { name: 'LOCAL', label: 'regulationType.local' },
 ];
 
 // customName is used to export to the server
@@ -839,9 +839,17 @@ export const fields: Record<string, Field[]> = {
         FIELDS_OPTIONS.HIGH_VOLTAGE_THRESHOLD,
         FIELDS_OPTIONS.SUSCEPTANCE_FIX,
         FIELDS_OPTIONS.FIX_Q_AT_NOMINAL_V,
-        FIELDS_OPTIONS.MAX_Q_AT_NOMINAL_V,
+        // customize label
+        {
+            ...FIELDS_OPTIONS.MAX_Q_AT_NOMINAL_V,
+            label: `${FIELDS_OPTIONS.MAX_Q_AT_NOMINAL_V.label}.svar`,
+        },
         FIELDS_OPTIONS.MIN_Q_AT_NOMINAL_V,
-        FIELDS_OPTIONS.MAX_SUSCEPTANCE,
+        // customize label
+        {
+            ...FIELDS_OPTIONS.MAX_SUSCEPTANCE,
+            label: `${FIELDS_OPTIONS.MAX_SUSCEPTANCE.label}.svar`,
+        },
         FIELDS_OPTIONS.MIN_SUSCEPTANCE,
         FIELDS_OPTIONS.SVAR_REGULATION_MODE,
         FIELDS_OPTIONS.VOLTAGE_SET_POINT,
