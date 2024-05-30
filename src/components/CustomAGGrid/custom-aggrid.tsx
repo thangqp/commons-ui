@@ -15,61 +15,14 @@ import { ColumnResizedEvent, GetLocaleTextParams } from 'ag-grid-community';
 import { Box } from '@mui/system';
 import { mergeSx } from '../../utils/styles';
 import { SxProps, useTheme } from '@mui/material';
-import { SystemStyleObject } from '@mui/system/styleFunctionSx/styleFunctionSx';
+import { styles } from './custom-aggrid.style';
 
 interface CustomAGGGridStyleProps {
     shouldHidePinnedHeaderRightBorder?: boolean;
     showOverlay?: boolean;
-    alternateTheme?: boolean;
 }
 
 interface CustomAGGridProps extends AgGridReactProps, CustomAGGGridStyleProps {}
-
-const styles = {
-    grid: (theme: Theme): SystemStyleObject<Theme> => ({
-        width: 'auto',
-        height: '100%',
-        position: 'relative',
-
-        '--ag-value-change-value-highlight-background-color':
-            theme.aggridValueChangeHighlightBackgroundColor,
-
-        '--ag-material-primary-color': theme.aggridMaterialColor,
-        '--ag-material-accent-color': theme.aggridMaterialColor,
-        '--ag-selected-row-background-color': theme.aggridHiglightColor,
-        '--ag-row-hover-color': theme.aggridHiglightColor,
-
-        //overrides the default computed max height for ag grid default selector editor to make it more usable
-        //can be removed if a custom selector editor is implemented
-        '& .ag-select-list': {
-            maxHeight: '300px !important',
-        },
-
-        //allows to hide the scrollbar in the pinned rows section as it is unecessary to our implementation
-        '& .ag-body-horizontal-scroll:not(.ag-scrollbar-invisible) .ag-horizontal-left-spacer:not(.ag-scroller-corner)':
-            {
-                visibility: 'hidden',
-            },
-        //removes border on focused cell - using "suppressCellFocus" Aggrid option causes side effects and breaks field edition
-        '& .ag-cell-focus, .ag-cell': {
-            border: 'none !important',
-        },
-    }),
-    noBorderRight: {
-        // hides right border for header of "Edit" column due to column being pinned
-        '& .ag-pinned-left-header': {
-            borderRight: 'none',
-        },
-    },
-    overlayBackground: (theme: Theme) => ({
-        '& .ag-overlay-loading-wrapper': {
-            background: theme.overlay.background,
-        },
-        '& .ag-overlay-no-rows-wrapper': {
-            background: 'none',
-        },
-    }),
-};
 
 // We have to define a minWidth to column to activate this feature
 const onColumnResized = (params: ColumnResizedEvent) => {
@@ -90,7 +43,6 @@ const CustomAGGrid = React.forwardRef<any, CustomAGGridProps>((props, ref) => {
         loadingOverlayComponent,
         loadingOverlayComponentParams,
         showOverlay = false,
-        alternateTheme = false,
     } = props;
     const theme = useTheme<Theme>();
     const intl = useIntl();
@@ -119,7 +71,7 @@ const CustomAGGrid = React.forwardRef<any, CustomAGGridProps>((props, ref) => {
                     ? (styles.overlayBackground as SxProps | undefined)
                     : undefined
             )}
-            className={alternateTheme ? theme.alternateTheme : theme.aggrid}
+            className={theme.aggrid}
         >
             <AgGridReact
                 ref={ref}
