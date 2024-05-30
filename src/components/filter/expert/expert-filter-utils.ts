@@ -345,10 +345,7 @@ export function importExpertRules(query: RuleGroupTypeExport): RuleGroupType {
                 (obj, transformedRule) => ({
                     ...obj,
                     [transformedRule.field]: {
-                        operator: Object.values(OPERATOR_OPTIONS).find(
-                            (operator) =>
-                                operator.customName === transformedRule.operator
-                        )?.name as string,
+                        operator: transformedRule.operator,
                         value: transformedRule.value,
                     },
                 }),
