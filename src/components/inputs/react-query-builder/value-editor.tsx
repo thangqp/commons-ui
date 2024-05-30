@@ -16,17 +16,14 @@ import Box from '@mui/material/Box';
 
 import { useFormContext } from 'react-hook-form';
 import { FieldConstants } from '../../../utils/field-constants';
-import {
-    DataType,
-    FieldType,
-    OperatorType,
-} from '../../filter/expert/expert-filter.type';
+import { DataType, FieldType } from '../../filter/expert/expert-filter.type';
 import { Substation, VoltageLevel } from '../../../utils/equipment-types';
 import ElementValueEditor from './element-value-editor';
 import { ElementType } from '../../../utils/ElementType';
 import PropertyValueEditor from './property-value-editor';
 import { FilterType } from '../../filter/constants/filter-constants';
-import GroupValueEditor from './group-value-editor';
+import GroupValueEditor from './group-rule-editor/group-value-editor';
+import { OPERATOR_OPTIONS } from '../../filter/expert/expert-filter-constants';
 
 const styles = {
     noArrows: {
@@ -67,8 +64,8 @@ const ValueEditor: FunctionComponent<ValueEditorProps> = (props) => {
     );
 
     if (
-        props.operator === OperatorType.EXISTS ||
-        props.operator === OperatorType.NOT_EXISTS
+        props.operator === OPERATOR_OPTIONS.EXISTS.name ||
+        props.operator === OPERATOR_OPTIONS.NOT_EXISTS.name
     ) {
         // No value needed for these operators
         return null;
@@ -92,8 +89,8 @@ const ValueEditor: FunctionComponent<ValueEditorProps> = (props) => {
         return <TranslatedValueEditor {...props} />;
     }
     if (
-        props.operator === OperatorType.IS_PART_OF ||
-        props.operator === OperatorType.IS_NOT_PART_OF
+        props.operator === OPERATOR_OPTIONS.IS_PART_OF.name ||
+        props.operator === OPERATOR_OPTIONS.IS_NOT_PART_OF.name
     ) {
         let equipmentTypes;
         if (

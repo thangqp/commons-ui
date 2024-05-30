@@ -7,52 +7,53 @@
 import { ValueEditorProps } from 'react-querybuilder';
 import { Grid, MenuItem, Select, Typography } from '@mui/material';
 import { useIntl } from 'react-intl';
+import {
+    GroupRuleValue,
+    OperatorOption,
+} from '../../../filter/expert/expert-filter.type';
 
-const RuleValueEditor = (props: ValueEditorProps) => {
+type RuleValueEditorProps = ValueEditorProps & {
+    ruleValue: GroupRuleValue;
+};
+
+const RuleValueEditor = (props: RuleValueEditorProps) => {
     const intl = useIntl();
-
     const {
+        handleOnChange,
         schema: {
             controls: { valueEditor: ValueEditorControlElement },
         },
         fieldData,
+        ruleValue,
     } = props;
 
-    const { [props.fieldData.label]: field } = props?.value ?? {};
-
+    // set operator as the previous in rule if exists, otherwise the first operator in schema is selected
     const operator =
-        field?.operator ??
-        fieldData.operators?.map((op) => op.label)?.[0] ??
-        '';
+        ruleValue?.operator ??
+        (fieldData.operators as OperatorOption[])?.map((op) => op.name)[0];
 
     const handleOnChangeOperator = (operator: any) => {
         console.log('operator', { operator });
-        let updatedValue = {
-            ...props?.value,
-            [props.fieldData.label]: {
-                ...props?.value?.[props.fieldData.label],
-                operator: operator,
-            },
+        let updatedRuleValue = {
+            ...(ruleValue ?? {}),
+            operator: operator,
         };
 
-        console.log('updatedValue', { updatedValue });
+        console.log('updatedRuleValue', { updatedRuleValue });
 
-        props.handleOnChange(updatedValue);
+        handleOnChange(updatedRuleValue);
     };
 
     const handleOnChangeValue = (value: any) => {
         console.log('value', { value });
-        let updatedValue = {
-            ...props?.value,
-            [props.fieldData.label]: {
-                ...props?.value?.[props.fieldData.label],
-                value: value,
-            },
+        let updatedRuleValue = {
+            ...(ruleValue ?? {}),
+            value: value,
+            operator: operator,
         };
+        console.log('updatedRuleValue', { updatedRuleValue });
 
-        console.log('updatedValue', { updatedValue });
-
-        props.handleOnChange(updatedValue);
+        handleOnChange(updatedRuleValue);
     };
 
     return (
@@ -71,11 +72,13 @@ const RuleValueEditor = (props: ValueEditorProps) => {
                     }}
                     variant={'standard'}
                 >
-                    {fieldData.operators?.map((operator) => (
-                        <MenuItem key={operator.label} value={operator.label}>
-                            {intl.formatMessage({ id: operator.label })}
-                        </MenuItem>
-                    ))}
+                    {(fieldData.operators as OperatorOption[])?.map(
+                        (operator) => (
+                            <MenuItem key={operator.name} value={operator.name}>
+                                {intl.formatMessage({ id: operator.label })}
+                            </MenuItem>
+                        )
+                    )}
                 </Select>
             </Grid>
             <Grid item xs={5.5}>
@@ -84,7 +87,7 @@ const RuleValueEditor = (props: ValueEditorProps) => {
                         ...props,
                         operator: operator,
                         handleOnChange: handleOnChangeValue,
-                        value: field?.value,
+                        value: ruleValue?.value,
                     }}
                 />
             </Grid>

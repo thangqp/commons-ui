@@ -621,20 +621,20 @@ export const FIELDS_OPTIONS = {
         label: 'regulatingTerminal',
         dataType: DataType.COMBINATOR,
         combinator: CombinatorType.AND,
-        rules: [
-            {
+        children: {
+            REGULATING_TERMINAL_VL_ID: {
                 name: FieldType.REGULATING_TERMINAL_VL_ID,
                 label: 'regulatingTerminalVLId',
                 dataType: DataType.STRING,
                 operators: [OPERATOR_OPTIONS.IS, OPERATOR_OPTIONS.IN],
             },
-            {
+            REGULATING_TERMINAL_CONNECTABLE_ID: {
                 name: FieldType.REGULATING_TERMINAL_CONNECTABLE_ID,
                 label: 'regulatingTerminalConnectableId',
                 dataType: DataType.STRING,
                 operators: [OPERATOR_OPTIONS.IS, OPERATOR_OPTIONS.IN],
             },
-        ],
+        },
     },
     REGULATION_TYPE: {
         name: FieldType.REGULATION_TYPE,

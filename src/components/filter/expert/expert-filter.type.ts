@@ -4,6 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+import { FullField } from 'react-querybuilder';
 
 export enum OperatorType {
     EQUALS = 'EQUALS',
@@ -141,5 +142,22 @@ export interface RuleTypeExport {
 export interface RuleGroupTypeExport {
     combinator: CombinatorType;
     dataType: DataType;
+    field?: FieldType; // used in case of group rule
+    operator?: OperatorType; // used in case of group rule
     rules: (RuleTypeExport | RuleGroupTypeExport)[];
+}
+
+// typing group rule schema
+export interface GroupRuleField extends FullField {
+    combinator?: string;
+    children?: { [field: string]: FullField };
+}
+
+// typing group rule value
+export interface GroupRuleValue {
+    operator: string;
+    value: string;
+}
+export interface GroupRule {
+    [field: string]: GroupRuleValue;
 }

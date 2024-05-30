@@ -21,6 +21,8 @@ import {
     CombinatorType,
     DataType,
     FieldType,
+    GroupRule,
+    GroupRuleField,
     OperatorOption,
     OperatorType,
     RuleGroupTypeExport,
@@ -38,9 +40,6 @@ import {
     unitToMicroUnit,
 } from '../../../utils/conversion-utils';
 
-type CustomRuleType = RuleType & { dataType: DataType };
-type CustomRuleGroupType = RuleGroupType & { dataType: DataType };
-
 const microUnits = [
     FieldType.SHUNT_CONDUCTANCE_1,
     FieldType.SHUNT_CONDUCTANCE_2,
@@ -48,22 +47,42 @@ const microUnits = [
     FieldType.SHUNT_SUSCEPTANCE_2,
 ];
 
+interface TreeNode {
+    [k: string]: any;
+    children?: ObjectTree;
+}
+
+interface ObjectTree {
+    [k: string]: TreeNode;
+}
+
+const search = (tree: ObjectTree, value: any, key: string) => {
+    const stack = Object.values(tree);
+    while (stack.length) {
+        const node = stack.shift();
+        if (node?.[key] === value) {
+            return node;
+        }
+        if (node?.children) {
+            stack.push(...Object.values(node.children));
+        }
+    }
+    return null;
+};
+
 const getDataType = (fieldName: string, operator: string) => {
+    // particular case => set dataType to DataType.FILTER_UUID when exporting rule with OPERATOR_OPTIONS.IS_PART_OF or OPERATOR_OPTIONS.IS_NOT_PART_OF
     if (
-        (fieldName === FieldType.ID ||
-            fieldName === FieldType.VOLTAGE_LEVEL_ID ||
-            fieldName === FieldType.VOLTAGE_LEVEL_ID_1 ||
-            fieldName === FieldType.VOLTAGE_LEVEL_ID_2) &&
-        (operator === OperatorType.IS_PART_OF ||
-            operator === OperatorType.IS_NOT_PART_OF)
+        operator === OPERATOR_OPTIONS.IS_PART_OF.name ||
+        operator === OPERATOR_OPTIONS.IS_NOT_PART_OF.name
     ) {
         return DataType.FILTER_UUID;
     }
-    const field = Object.values(FIELDS_OPTIONS).find(
-        (field) => field.name === fieldName
-    );
 
-    return field?.dataType;
+    // otherwise, lookup in the field options
+    const fieldData = search(FIELDS_OPTIONS, fieldName, 'name');
+
+    return fieldData?.dataType;
 };
 
 export const getOperators = (fieldName: string, intl: IntlShape) => {
@@ -95,9 +114,9 @@ export const getOperators = (fieldName: string, intl: IntlShape) => {
             if (field.name === FieldType.ID) {
                 // When the ID is selected, the operators EXISTS and NOT_EXISTS must be removed.
                 stringOperators = stringOperators.filter(
-                    (field) =>
-                        field.name !== OperatorType.EXISTS &&
-                        field.name !== OperatorType.NOT_EXISTS
+                    (operator) =>
+                        operator !== OPERATOR_OPTIONS.EXISTS &&
+                        operator !== OPERATOR_OPTIONS.NOT_EXISTS
                 );
             }
             return stringOperators.map((operator) => ({
@@ -147,7 +166,7 @@ export const getOperators = (fieldName: string, intl: IntlShape) => {
             ) {
                 // When one of above criteria is selected, the operator IN must be removed.
                 enumOperators = enumOperators.filter(
-                    (field) => field.customName !== OperatorType.IN
+                    (operator) => operator !== OPERATOR_OPTIONS.IN
                 );
             }
             return enumOperators.map((operator) => ({
@@ -188,12 +207,44 @@ function changeValueUnit(value: any, field: FieldType) {
     return value;
 }
 
-export function exportExpertRules(
-    query: CustomRuleGroupType
-): RuleGroupTypeExport {
-    function transformRule(rule: CustomRuleType): RuleTypeExport {
+export function exportExpertRules(query: RuleGroupType): RuleGroupTypeExport {
+    function transformRule(
+        rule: RuleType
+    ): RuleTypeExport | RuleGroupTypeExport {
         const isValueAnArray = Array.isArray(rule.value);
         const dataType = getDataType(rule.field, rule.operator) as DataType;
+
+        // a group rule must contain child rules => build a group with child rules
+        if (
+            dataType === DataType.COMBINATOR &&
+            rule.operator !== OPERATOR_OPTIONS.EXISTS.name &&
+            rule.operator !== OPERATOR_OPTIONS.NOT_EXISTS.name
+        ) {
+            console.log('rules', { rules: rule.value.rules });
+            const transformedRules = Object.entries(
+                rule.value.rules as GroupRule
+            ).map(([field, groupRule]) =>
+                transformRule({
+                    ...rule,
+                    field: field,
+                    operator: groupRule.operator,
+                    value: groupRule.value,
+                })
+            );
+
+            return {
+                combinator: rule.value.combinator as CombinatorType,
+                dataType: DataType.COMBINATOR,
+                rules: transformedRules,
+                // two additional attributes to distinct a grouping rule from a normal rule group
+                operator: Object.values(OPERATOR_OPTIONS).find(
+                    (operator) => operator.name === rule.operator
+                )?.customName as OperatorType,
+                field: rule.field as FieldType,
+            };
+        }
+
+        // a single criteria
         return {
             field: rule.field as FieldType,
             operator:
@@ -204,8 +255,8 @@ export function exportExpertRules(
                     : rule.value.propertyOperator,
             value:
                 !isValueAnArray &&
-                rule.operator !== OperatorType.EXISTS &&
-                rule.operator !== OperatorType.NOT_EXISTS &&
+                rule.operator !== OPERATOR_OPTIONS.EXISTS.name &&
+                rule.operator !== OPERATOR_OPTIONS.NOT_EXISTS.name &&
                 dataType !== DataType.PROPERTY
                     ? changeValueUnit(rule.value, rule.field as FieldType)
                     : undefined,
@@ -225,13 +276,13 @@ export function exportExpertRules(
         };
     }
 
-    function transformGroup(group: CustomRuleGroupType): RuleGroupTypeExport {
+    function transformGroup(group: RuleGroupType): RuleGroupTypeExport {
         // Recursively transform the rules within the group
         const transformedRules = group.rules.map((ruleOrGroup) => {
             if ('rules' in ruleOrGroup) {
-                return transformGroup(ruleOrGroup as CustomRuleGroupType);
+                return transformGroup(ruleOrGroup);
             } else {
-                return transformRule(ruleOrGroup as CustomRuleType);
+                return transformRule(ruleOrGroup);
             }
         });
 
@@ -245,9 +296,7 @@ export function exportExpertRules(
     return transformGroup(query);
 }
 
-export function importExpertRules(
-    query: RuleGroupTypeExport
-): CustomRuleGroupType {
+export function importExpertRules(query: RuleGroupTypeExport): RuleGroupType {
     function parseValue(rule: RuleTypeExport) {
         if (rule.propertyName) {
             return {
@@ -276,7 +325,7 @@ export function importExpertRules(
         }
     }
 
-    function transformRule(rule: RuleTypeExport): CustomRuleType {
+    function transformRule(rule: RuleTypeExport): RuleType {
         return {
             field: rule.field,
             operator:
@@ -284,20 +333,51 @@ export function importExpertRules(
                     ? (Object.values(OPERATOR_OPTIONS).find(
                           (operator) => operator.customName === rule.operator
                       )?.name as string)
-                    : OperatorType.IS,
+                    : OPERATOR_OPTIONS.IS.name,
             value: parseValue(rule),
-            dataType:
-                rule.operator === OperatorType.IS_PART_OF ||
-                rule.operator === OperatorType.IS_NOT_PART_OF
-                    ? DataType.STRING
-                    : rule.dataType,
         };
     }
 
-    function transformGroup(group: RuleGroupTypeExport): CustomRuleGroupType {
+    function transformGroupRule(ruleOrGroup: RuleGroupTypeExport): RuleType {
+        const transformedGroupRules = ruleOrGroup.rules
+            .map((rule) => transformRule(rule as RuleTypeExport))
+            .reduce(
+                (obj, transformedRule) => ({
+                    ...obj,
+                    [transformedRule.field]: {
+                        operator: Object.values(OPERATOR_OPTIONS).find(
+                            (operator) =>
+                                operator.customName === transformedRule.operator
+                        )?.name as string,
+                        value: transformedRule.value,
+                    },
+                }),
+                {}
+            );
+
+        return {
+            field: ruleOrGroup.field as FieldType,
+            operator: Object.values(OPERATOR_OPTIONS).find(
+                (operator) => operator.customName === ruleOrGroup.operator
+            )?.name as string,
+            value: {
+                combinator: ruleOrGroup.combinator,
+                rules: transformedGroupRules,
+            },
+        };
+    }
+
+    function transformGroup(group: RuleGroupTypeExport): RuleGroupType {
         // Recursively transform the rules within the group
         const transformedRules = group.rules.map((ruleOrGroup) => {
             if ('rules' in ruleOrGroup) {
+                // a group rule => aggregate into a group rule
+                if ('field' in ruleOrGroup && 'operator' in ruleOrGroup) {
+                    return transformGroupRule(
+                        ruleOrGroup as RuleGroupTypeExport
+                    );
+                }
+                // a normal group
                 return transformGroup(ruleOrGroup as RuleGroupTypeExport);
             } else {
                 return transformRule(ruleOrGroup as RuleTypeExport);
@@ -306,7 +386,6 @@ export function importExpertRules(
 
         return {
             combinator: group.combinator,
-            dataType: DataType.COMBINATOR,
             rules: transformedRules,
         };
     }
@@ -424,6 +503,30 @@ export const queryValidator: QueryValidator = (query) => {
                 valid: false,
                 reasons: [RULES.EMPTY_RULE],
             };
+        } else if (
+            rule.id &&
+            getDataType(rule.field, rule.operator) === DataType.COMBINATOR &&
+            rule.operator !== OPERATOR_OPTIONS.EXISTS.name &&
+            rule.operator !== OPERATOR_OPTIONS.NOT_EXISTS.name
+        ) {
+            console.log('rule', { rule });
+            const fieldData = search(
+                FIELDS_OPTIONS,
+                rule.field,
+                'name'
+            ) as GroupRuleField;
+
+            const rules = (rule.value.rules ?? {}) as GroupRule;
+            Object.entries(fieldData?.children ?? {}).forEach(
+                ([field, fieldData]) => {
+                    validateRule({
+                        ...rule,
+                        field: field,
+                        operator: rules[field]?.operator,
+                        value: rules[field]?.value,
+                    });
+                }
+            );
         }
     };
     const validateGroup = (ruleGroup: RuleGroupTypeAny) => {
