@@ -93,21 +93,21 @@ function longestCommonPrefix(stringList: string[]) {
     return prefix;
 }
 
-export interface Parameter {
+export type Parameter = {
     type: 'BOOLEAN' | 'DOUBLE' | 'INTEGER' | 'STRING_LIST' | 'STRING';
     description?: string;
     name: string;
     possibleValues: any;
     defaultValue: any;
-}
+};
 
 export interface FlatParametersProps {
     paramsAsArray: Parameter[];
     initValues: Record<string, string>;
     onChange: (paramName: string, value: unknown, isInEdition: boolean) => void;
     variant: TextFieldProps['variant'];
-    showSeparator: boolean;
-    selectionWithDialog: (param: Parameter) => boolean;
+    showSeparator?: boolean;
+    selectionWithDialog?: (param: Parameter) => boolean;
 }
 
 /**

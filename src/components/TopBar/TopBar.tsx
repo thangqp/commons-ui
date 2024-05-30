@@ -48,7 +48,7 @@ import GridLogo, { GridLogoProps } from './GridLogo';
 import AboutDialog, { AboutDialogProps } from './AboutDialog';
 import { LogoutProps } from '../Login/Logout';
 import { User } from 'oidc-client';
-import { Metadata } from '../../hooks/predefined-properties-hook';
+import { CommonMetadata } from '../../services';
 
 const styles = {
     grow: {
@@ -167,7 +167,7 @@ export type TopBarProps = Omit<GridLogoProps, 'onClick'> &
         onLogoClick: GridLogoProps['onClick'];
         user: User;
         onAboutClick?: () => void;
-        appsAndUrls: Metadata[];
+        appsAndUrls: CommonMetadata[];
         onThemeClick?: (theme: GsTheme) => void;
         theme?: GsTheme;
         onEquipmentLabellingClick?: (toggle: boolean) => void;
@@ -309,7 +309,7 @@ const TopBar = ({
                                         <Box
                                             component="a"
                                             key={item.name}
-                                            href={item.url}
+                                            href={item.url?.toString()}
                                             sx={styles.link}
                                             target="_blank"
                                             rel="noopener noreferrer"

@@ -22,7 +22,11 @@ import {
 } from '../TreeViewFinder/TreeViewFinder';
 import { UUID } from 'crypto';
 import { useSnackMessage } from '../../hooks/useSnackMessage';
-import { ElementAttributes } from '../../utils/types';
+import {
+    fetchDirectoryContent,
+    fetchElementsInfos,
+    fetchRootFolders,
+} from '../../services';
 
 const styles = {
     icon: (theme: Theme) => ({
@@ -37,16 +41,6 @@ interface DirectoryItemSelectorProps extends TreeViewFinderProps {
     types: string[];
     equipmentTypes?: string[];
     itemFilter?: any;
-    fetchDirectoryContent?: (
-        directoryUuid: UUID,
-        elementTypes: string[]
-    ) => Promise<ElementAttributes[]>;
-    fetchRootFolders?: (types: string[]) => Promise<ElementAttributes[]>;
-    fetchElementsInfos?: (
-        ids: UUID[],
-        elementTypes: string[],
-        equipmentTypes: string[]
-    ) => Promise<ElementAttributes[]>;
     classes?: any;
     contentText?: string;
     defaultExpanded?: string[];
@@ -64,9 +58,6 @@ const DirectoryItemSelector: FunctionComponent<DirectoryItemSelectorProps> = ({
     types,
     equipmentTypes,
     itemFilter,
-    fetchDirectoryContent,
-    fetchRootFolders,
-    fetchElementsInfos,
     expanded,
     ...otherTreeViewFinderProps
 }) => {
@@ -142,88 +133,70 @@ const DirectoryItemSelector: FunctionComponent<DirectoryItemSelectorProps> = ({
     );
 
     const updateRootDirectories = useCallback(() => {
-        fetchRootFolders &&
-            fetchRootFolders(types)
-                .then((data) => {
-                    let [nrs, mdr] = updatedTree(
-                        rootsRef.current,
-                        nodeMap.current,
-                        null,
-                        data
-                    );
-                    setRootDirectories(nrs);
-                    nodeMap.current = mdr;
-                    setData(convertRoots(nrs));
-                })
-                .catch((error) => {
-                    snackError({
-                        messageTxt: error.message,
-                        headerId: 'DirectoryItemSelector',
-                    });
+        fetchRootFolders(types)
+            .then((data) => {
+                let [nrs, mdr] = updatedTree(
+                    rootsRef.current,
+                    nodeMap.current,
+                    null,
+                    data
+                );
+                setRootDirectories(nrs);
+                nodeMap.current = mdr;
+                setData(convertRoots(nrs));
+            })
+            .catch((error) => {
+                snackError({
+                    messageTxt: error.message,
+                    headerId: 'DirectoryItemSelector',
                 });
-    }, [convertRoots, types, snackError, fetchRootFolders]);
+            });
+    }, [convertRoots, types, snackError]);
 
     const fetchDirectory = useCallback(
         (nodeId: UUID): void => {
             const typeList = types.includes(ElementType.DIRECTORY) ? [] : types;
-            fetchDirectoryContent &&
-                fetchDirectoryContent(nodeId, typeList)
-                    .then((children) => {
-                        const childrenMatchedTypes = children.filter(
-                            (item: any) => contentFilter().has(item.type)
-                        );
+            fetchDirectoryContent(nodeId, typeList)
+                .then((children) => {
+                    const childrenMatchedTypes = children.filter((item: any) =>
+                        contentFilter().has(item.type)
+                    );
 
-                        if (
-                            childrenMatchedTypes.length > 0 &&
-                            equipmentTypes &&
-                            equipmentTypes.length > 0
-                        ) {
-                            fetchElementsInfos &&
-                                fetchElementsInfos(
-                                    childrenMatchedTypes.map(
-                                        (e: any) => e.elementUuid
-                                    ),
-                                    types,
-                                    equipmentTypes
-                                ).then((childrenWithMetadata) => {
-                                    const children = itemFilter
-                                        ? childrenWithMetadata.filter(
-                                              (val: any) => {
-                                                  // Accept every directory
-                                                  if (
-                                                      val.type ===
-                                                      ElementType.DIRECTORY
-                                                  ) {
-                                                      return true;
-                                                  }
-                                                  // otherwise filter with the custom itemFilter func
-                                                  return itemFilter(val);
-                                              }
-                                          )
-                                        : childrenWithMetadata;
-                                    // update directory content
-                                    addToDirectory(nodeId, children);
-                                });
-                        } else {
+                    if (
+                        childrenMatchedTypes.length > 0 &&
+                        equipmentTypes &&
+                        equipmentTypes.length > 0
+                    ) {
+                        fetchElementsInfos(
+                            childrenMatchedTypes.map((e: any) => e.elementUuid),
+                            types,
+                            equipmentTypes
+                        ).then((childrenWithMetadata) => {
+                            const children = itemFilter
+                                ? childrenWithMetadata.filter((val: any) => {
+                                      // Accept every directory
+                                      if (val.type === ElementType.DIRECTORY) {
+                                          return true;
+                                      }
+                                      // otherwise filter with the custom itemFilter func
+                                      return itemFilter(val);
+                                  })
+                                : childrenWithMetadata;
                             // update directory content
-                            addToDirectory(nodeId, childrenMatchedTypes);
-                        }
-                    })
-                    .catch((error) => {
-                        console.warn(
-                            `Could not update subs (and content) of '${nodeId}' : ${error.message}`
-                        );
-                    });
+                            addToDirectory(nodeId, children);
+                        });
+                    } else {
+                        // update directory content
+                        addToDirectory(nodeId, childrenMatchedTypes);
+                    }
+                })
+                .catch((error) => {
+                    console.warn(
+                        `Could not update subs (and content) of '${nodeId}' : ${error.message}`
+                    );
+                });
         },
-        [
-            types,
-            equipmentTypes,
-            itemFilter,
-            contentFilter,
-            addToDirectory,
-            fetchDirectoryContent,
-            fetchElementsInfos,
-        ]
+        [types, equipmentTypes, itemFilter, contentFilter, addToDirectory]
     );
 
     useEffect(() => {

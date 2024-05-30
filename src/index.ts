@@ -29,7 +29,7 @@ export { default as PopupConfirmationDialog } from './components/dialogs/popup-c
 export { default as BottomRightButtons } from './components/inputs/react-hook-form/ag-grid-table/bottom-right-buttons';
 export { default as CustomAgGridTable } from './components/inputs/react-hook-form/ag-grid-table/custom-ag-grid-table';
 export { ROW_DRAGGING_SELECTION_COLUMN_DEF } from './components/inputs/react-hook-form/ag-grid-table/custom-ag-grid-table';
-
+export type { Parameter } from './components/FlatParameters/FlatParameters';
 export {
     Line,
     Generator,
@@ -51,6 +51,8 @@ export {
 
 export { FieldConstants } from './utils/field-constants';
 
+export type { TreeViewFinderNodeProps } from './components/TreeViewFinder/TreeViewFinder';
+
 export {
     GRIDSUITE_DEFAULT_PRECISION,
     roundToPrecision,
@@ -61,6 +63,7 @@ export {
 } from './utils/conversion-utils';
 
 export { ElementType } from './utils/ElementType';
+export type { ElementAttributes, Option } from './utils/types';
 
 export {
     EQUIPMENT_TYPE,
@@ -217,3 +220,6 @@ export {
 export { mergeSx } from './utils/styles';
 export { setCommonStore } from './redux/commonStore';
 export type { EquipmentInfos } from './utils/EquipmentType';
+
+export * from './services';
+export type * from './services';

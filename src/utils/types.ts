@@ -29,7 +29,17 @@ export type Input = string | number;
 export type ElementAttributes = {
     elementUuid: UUID;
     elementName: string;
-    type: keyof typeof ElementType;
+    type: ElementType;
+    accessRights: {
+        isPrivate: boolean;
+    };
+    owner: string;
+    subdirectoriesCount: number;
+    creationDate: string;
+    lastModificationDate: string;
+    lastModifiedBy: string;
+    children: any[];
+    parentUuid: null | UUID;
 };
 
 export type Equipment =
