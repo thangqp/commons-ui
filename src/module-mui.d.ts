@@ -10,9 +10,7 @@
 declare module '@mui/material/styles/createTheme' {
     interface Theme {
         aggrid: string;
-        aggridMaterialColor: string;
         aggridHiglightColor: string;
-        alternateTheme: string;
         aggridValueChangeHighlightBackgroundColor: string;
         overlay: {
             background: string;
