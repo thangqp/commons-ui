@@ -17,6 +17,8 @@ import {
     Select,
     Switch,
     TextField,
+    TextFieldProps,
+    Theme,
     Tooltip,
     Typography,
 } from '@mui/material';
@@ -29,7 +31,7 @@ const styles = {
         width: '100%',
         margin: 0,
     },
-    paramListItem: (theme) => ({
+    paramListItem: (theme: Theme) => ({
         display: 'flex',
         justifyContent: 'space-between',
         gap: theme.spacing(2),
@@ -48,7 +50,7 @@ const IntegerRE = /^-?\d*$/;
 const ListRE = /^\[(.*)]$/;
 const sepRE = /[, ]/;
 
-export function extractDefault(paramDescription) {
+export function extractDefault(paramDescription: any) {
     const d = paramDescription.defaultValue;
     if (paramDescription.type === 'BOOLEAN') {
         return !!d;
@@ -64,22 +66,22 @@ export function extractDefault(paramDescription) {
             return d;
         }
         const mo = ListRE.exec(d);
-        if (mo?.length > 1) {
-            return mo[1]
-                .split(sepRE)
-                .map((s) => s.trim())
-                .filter((s) => !!s);
+        if (mo === null || mo.length <= 1) {
+            return [];
         }
-        return [];
+        return mo[1]
+            .split(sepRE)
+            .map((s) => s.trim())
+            .filter((s) => !!s);
     }
     return d ?? null;
 }
 
-function longestCommonPrefix(stringList) {
+function longestCommonPrefix(stringList: string[]) {
     if (!stringList?.length) {
         return '';
     }
-    let prefix = stringList.reduce((acc, str) =>
+    let prefix = stringList.reduce((acc: string, str: string) =>
         str.length < acc.length ? str : acc
     );
 
@@ -89,6 +91,23 @@ function longestCommonPrefix(stringList) {
         }
     }
     return prefix;
+}
+
+export type Parameter = {
+    type: 'BOOLEAN' | 'DOUBLE' | 'INTEGER' | 'STRING_LIST' | 'STRING';
+    description?: string;
+    name: string;
+    possibleValues: any;
+    defaultValue: any;
+};
+
+export interface FlatParametersProps {
+    paramsAsArray: Parameter[];
+    initValues: Record<string, string>;
+    onChange: (paramName: string, value: unknown, isInEdition: boolean) => void;
+    variant: TextFieldProps['variant'];
+    showSeparator?: boolean;
+    selectionWithDialog?: (param: Parameter) => boolean;
 }
 
 /**
@@ -108,7 +127,7 @@ export const FlatParameters = ({
     variant = 'outlined',
     showSeparator = false,
     selectionWithDialog = (param) => false,
-}) => {
+}: FlatParametersProps) => {
     const intl = useIntl();
 
     const longestPrefix = longestCommonPrefix(paramsAsArray.map((m) => m.name));
@@ -116,11 +135,11 @@ export const FlatParameters = ({
     const prefix = longestPrefix.slice(0, lastDotIndex + 1);
 
     const [uncommitted, setUncommitted] = useState(null);
-    const [inEditionParam, setInEditionParam] = useState(null);
+    const [inEditionParam, setInEditionParam] = useState<string | null>(null);
     const [openSelector, setOpenSelector] = useState(false);
 
     const getTranslatedValue = useCallback(
-        (prefix, value) => {
+        (prefix: string, value: string) => {
             return intl.formatMessage({
                 id: prefix + '.' + value,
                 defaultMessage: value,
@@ -130,7 +149,7 @@ export const FlatParameters = ({
     );
 
     const getSelectionDialogName = useCallback(
-        (paramName) => {
+        (paramName: string) => {
             const defaultMessage = intl.formatMessage({
                 id: paramName,
                 defaultMessage: paramName.slice(prefix.length),
@@ -143,7 +162,7 @@ export const FlatParameters = ({
         [intl, prefix.length]
     );
     const sortPossibleValues = useCallback(
-        (prefix, values) => {
+        (prefix: string, values: string[]) => {
             if (values == null) {
                 return [];
             }
@@ -161,7 +180,7 @@ export const FlatParameters = ({
     );
 
     const onFieldChange = useCallback(
-        (value, param) => {
+        (value: any, param: Parameter) => {
             const paramName = param.name;
             const isInEdition = inEditionParam === paramName;
             if (isInEdition) {
@@ -183,7 +202,7 @@ export const FlatParameters = ({
     );
 
     const onUncommitted = useCallback(
-        (param, inEdit) => {
+        (param: Parameter, inEdit: boolean) => {
             if (inEdit) {
                 setInEditionParam(param.name);
             } else {
@@ -204,7 +223,7 @@ export const FlatParameters = ({
         [uncommitted, onChange]
     );
 
-    function mixInitAndDefault(param) {
+    function mixInitAndDefault(param: Parameter) {
         if (param.name === inEditionParam && uncommitted !== null) {
             return uncommitted;
         } else if (initValues && initValues.hasOwnProperty(param.name)) {
@@ -233,11 +252,14 @@ export const FlatParameters = ({
         }
     }
 
-    const outputTransformFloatString = (value) => {
+    const outputTransformFloatString = (value: string | undefined) => {
         return value?.replace(',', '.') || '';
     };
 
-    const getStringListValue = (allValues, selectValues) => {
+    const getStringListValue = (
+        allValues: string[],
+        selectValues: string[]
+    ) => {
         if (!selectValues || !selectValues.length) {
             return intl.formatMessage({ id: 'flat_parameters/none' });
         }
@@ -249,7 +271,7 @@ export const FlatParameters = ({
         return intl.formatMessage({ id: 'flat_parameters/some' });
     };
 
-    const renderField = (param) => {
+    const renderField = (param: Parameter) => {
         const fieldValue = mixInitAndDefault(param);
         switch (param.type) {
             case 'BOOLEAN':
@@ -410,6 +432,7 @@ export const FlatParameters = ({
                         />
                     );
                 }
+            //@ts-ignore fallthrough is the expected behavior
             case 'STRING':
                 if (param.possibleValues) {
                     return (

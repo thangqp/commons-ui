@@ -6,8 +6,10 @@
  */
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import localizedCountries from 'localized-countries';
+import localizedCountries, { LocalizedCountries } from 'localized-countries';
+// @ts-ignore
 import countriesFr from 'localized-countries/data/fr';
+// @ts-ignore
 import countriesEn from 'localized-countries/data/en';
 import {
     LANG_FRENCH,
@@ -24,12 +26,15 @@ export const getSystemLanguage = () => {
         : LANG_ENGLISH;
 };
 
-export const getComputedLanguage = (language) => {
-    return language === LANG_SYSTEM ? getSystemLanguage() : language;
+export const getComputedLanguage = (language: string | undefined) => {
+    return language === LANG_SYSTEM
+        ? getSystemLanguage()
+        : language ?? LANG_ENGLISH;
 };
 
-export const useLocalizedCountries = (language) => {
-    const [localizedCountriesModule, setLocalizedCountriesModule] = useState();
+export const useLocalizedCountries = (language: string | undefined) => {
+    const [localizedCountriesModule, setLocalizedCountriesModule] =
+        useState<LocalizedCountries>();
 
     //TODO FM this is disgusting, can we make it better ?
     useEffect(() => {
@@ -61,7 +66,7 @@ export const useLocalizedCountries = (language) => {
     );
 
     const translate = useCallback(
-        (countryCode) =>
+        (countryCode: string) =>
             localizedCountriesModule
                 ? localizedCountriesModule.get(countryCode)
                 : '',

@@ -5,10 +5,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { FunctionComponent, useContext, useEffect } from 'react';
+import React, { FunctionComponent, useEffect } from 'react';
 import { validate as uuidValidate } from 'uuid';
-import { DirectoryItemsInput, useCustomFormContext } from '../../../index';
-import { FilterContext } from '../../filter/filter-context';
+import {
+    DirectoryItemsInput,
+    fetchElementsInfos,
+    useCustomFormContext,
+} from '../../../index';
 
 interface ElementValueEditorProps {
     name: string;
@@ -25,7 +28,6 @@ const ElementValueEditor: FunctionComponent<ElementValueEditorProps> = (
     props
 ) => {
     const { setValue } = useCustomFormContext();
-    const { fetchElementsInfos } = useContext(FilterContext);
 
     useEffect(() => {
         if (
@@ -35,29 +37,22 @@ const ElementValueEditor: FunctionComponent<ElementValueEditorProps> = (
             props.defaultValue[0].length > 0 &&
             uuidValidate(props.defaultValue[0])
         ) {
-            fetchElementsInfos &&
-                fetchElementsInfos(props.defaultValue).then(
-                    (childrenWithMetadata) => {
-                        setValue(
-                            props.name,
-                            childrenWithMetadata.map((v: any) => {
-                                return {
-                                    id: v.elementUuid,
-                                    name: v.elementName,
-                                    specificMetadata: v.specificMetadata,
-                                };
-                            })
-                        );
-                    }
-                );
+            fetchElementsInfos(props.defaultValue).then(
+                (childrenWithMetadata) => {
+                    setValue(
+                        props.name,
+                        childrenWithMetadata.map((v: any) => {
+                            return {
+                                id: v.elementUuid,
+                                name: v.elementName,
+                                specificMetadata: v.specificMetadata,
+                            };
+                        })
+                    );
+                }
+            );
         }
-    }, [
-        props.name,
-        props.defaultValue,
-        props.elementType,
-        setValue,
-        fetchElementsInfos,
-    ]);
+    }, [props.name, props.defaultValue, props.elementType, setValue]);
 
     return (
         <DirectoryItemsInput

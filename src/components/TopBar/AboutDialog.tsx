@@ -77,7 +77,7 @@ const styles = {
 };
 
 function getGlobalVersion(
-    fnPromise: () => Promise<string>,
+    fnPromise: (() => Promise<string>) | undefined,
     type: string,
     setData: (data: string | null) => void,
     setLoader?: (loader: boolean) => void
@@ -137,20 +137,20 @@ function compareModules(c1: ModuleDefinition, c2: ModuleDefinition) {
 type GridSuiteModule = {
     name: string;
     type: ModuleType;
-    version: string;
-    gitTag: string;
-    license: string;
+    version?: string;
+    gitTag?: string;
+    license?: string;
 };
 
 export interface AboutDialogProps {
     open: boolean;
     onClose: () => void;
-    globalVersionPromise: () => Promise<string>;
+    globalVersionPromise?: () => Promise<string>;
     appName: string;
-    appVersion: string;
-    appGitTag: string;
-    appLicense: string;
-    additionalModulesPromise: () => Promise<GridSuiteModule[]>;
+    appVersion?: string;
+    appGitTag?: string;
+    appLicense?: string;
+    additionalModulesPromise?: () => Promise<GridSuiteModule[]>;
 }
 
 const AboutDialog = ({

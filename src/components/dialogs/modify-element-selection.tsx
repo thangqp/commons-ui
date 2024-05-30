@@ -5,16 +5,16 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Grid, Typography } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useController } from 'react-hook-form';
 import { UUID } from 'crypto';
-import { FilterContext } from '../filter/filter-context.ts';
 import { TreeViewFinderNodeProps } from '../TreeViewFinder';
-import { FieldConstants } from '../../utils/field-constants.ts';
-import DirectoryItemSelector from '../DirectoryItemSelector/directory-item-selector.tsx';
-import { ElementType } from '../../utils/ElementType.ts';
+import { FieldConstants } from '../../utils/field-constants';
+import DirectoryItemSelector from '../DirectoryItemSelector/directory-item-selector';
+import { ElementType } from '../../utils/ElementType';
+import { fetchDirectoryElementPath } from '../../services';
 
 export interface ModifyElementSelectionProps {
     elementType: ElementType;
@@ -34,13 +34,6 @@ const ModifyElementSelection: React.FunctionComponent<
     const [activeDirectoryName, setActiveDirectoryName] = useState('');
 
     const {
-        fetchDirectoryContent,
-        fetchRootFolders,
-        fetchElementsInfos,
-        fetchPath,
-    } = useContext(FilterContext);
-
-    const {
         field: { onChange, value: directory },
     } = useController({
         name: FieldConstants.DIRECTORY,
@@ -48,17 +41,16 @@ const ModifyElementSelection: React.FunctionComponent<
 
     useEffect(() => {
         if (directory) {
-            fetchPath &&
-                fetchPath(directory).then((res: any) => {
-                    setActiveDirectoryName(
-                        res
-                            .map((element: any) => element.elementName.trim())
-                            .reverse()
-                            .join('/')
-                    );
-                });
+            fetchDirectoryElementPath(directory).then((res: any) => {
+                setActiveDirectoryName(
+                    res
+                        .map((element: any) => element.elementName.trim())
+                        .reverse()
+                        .join('/')
+                );
+            });
         }
-    }, [directory, fetchPath]);
+    }, [directory]);
 
     const handleSelectFolder = () => {
         setOpen(true);
@@ -122,9 +114,6 @@ const ModifyElementSelection: React.FunctionComponent<
                 contentText={intl.formatMessage({
                     id: props.dialogMessageLabel,
                 })}
-                fetchDirectoryContent={fetchDirectoryContent}
-                fetchRootFolders={fetchRootFolders}
-                fetchElementsInfos={fetchElementsInfos}
             />
         </Grid>
     );

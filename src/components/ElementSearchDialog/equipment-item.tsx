@@ -9,7 +9,7 @@ import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
 import clsx from 'clsx';
 import { FormattedMessage } from 'react-intl';
-import { EQUIPMENT_TYPE, EquipmentType } from '../../utils/EquipmentType';
+import { EQUIPMENT_TYPE, EquipmentInfos } from '../../utils/EquipmentType';
 import { Box, SxProps } from '@mui/material';
 import OverflowableText from '../OverflowableText';
 import { mergeSx } from '../../utils/styles';
@@ -17,12 +17,7 @@ import { mergeSx } from '../../utils/styles';
 export interface EquipmentItemProps {
     inputValue: string;
     suffixRenderer: typeof TagRenderer;
-    element: {
-        key: string;
-        label: string;
-        type: EquipmentType;
-        voltageLevelLabel: string;
-    };
+    element: EquipmentInfos;
     showsJustText: boolean;
     classes?: {
         result?: string;

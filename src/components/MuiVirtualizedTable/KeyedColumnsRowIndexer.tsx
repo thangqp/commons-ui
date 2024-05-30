@@ -6,13 +6,14 @@
  */
 
 import { equalsArray } from '../../utils/algos';
+import { CustomColumnProps, RowProps } from './MuiVirtualizedTable';
 
-export const CHANGE_WAYS = {
-    SIMPLE: 'Simple',
-    TAIL: 'Tail',
-    AMEND: 'Amend',
-    REMOVE: 'Remove',
-};
+export enum CHANGE_WAYS {
+    SIMPLE = 'Simple',
+    TAIL = 'Tail',
+    AMEND = 'Amend',
+    REMOVE = 'Remove',
+}
 
 /* This is not real code commented
 const someTypicalColumns = [
@@ -31,12 +32,23 @@ const someTypicalColumns = [
 ];
  */
 
+export interface ColStat {
+    imin?: number | null;
+    imax?: number | null;
+    seen?: any;
+    kept?: any;
+}
+
 export const noOpHelper = Object.freeze({
     debugName: 'noOp',
     maintainsStats: false,
     initStat: () => undefined,
-    updateStat: (colStat, value) => {},
-    accepts: (value, userParams, outerParams) => {
+    updateStat: (colStat: ColStat, value: number) => {},
+    accepts: (
+        value: any,
+        userParams: any[] | undefined,
+        outerParams: any[] | undefined
+    ) => {
         return true;
     },
 });
@@ -47,15 +59,27 @@ const numericHelper = Object.freeze({
     initStat: () => {
         return { imin: null, imax: null };
     },
-    updateStat: (colStat, value) => {
-        if (colStat.imin === null || colStat.imin > value) {
+    updateStat: (colStat: ColStat, value: number) => {
+        if (
+            colStat.imin === undefined ||
+            colStat.imin === null ||
+            colStat.imin > value
+        ) {
             colStat.imin = value;
         }
-        if (colStat.imax === null || colStat.imax < value) {
+        if (
+            colStat.imax === undefined ||
+            colStat.imax === null ||
+            colStat.imax < value
+        ) {
             colStat.imax = value;
         }
     },
-    accepts: (value, userParams, outerParams) => {
+    accepts: (
+        value: number,
+        userParams: any[] | undefined,
+        outerParams: any[] | undefined
+    ) => {
         return true;
     },
 });
@@ -66,7 +90,7 @@ export const collectibleHelper = Object.freeze({
     initStat: () => {
         return { seen: {}, kept: {} };
     },
-    updateStat: (colStat, cellValue, isForKeep) => {
+    updateStat: (colStat: ColStat, cellValue: number, isForKeep: boolean) => {
         const m = isForKeep ? colStat.kept : colStat.seen;
         if (!m[cellValue]) {
             m[cellValue] = 1;
@@ -74,12 +98,16 @@ export const collectibleHelper = Object.freeze({
             m[cellValue] += 1;
         }
     },
-    accepts: (value, userParams, outerParams) => {
+    accepts: (
+        value: number,
+        userParams: any[] | undefined,
+        outerParams: any[] | undefined
+    ) => {
         return !userParams || userParams.some((v) => v === value);
     },
 });
 
-export const getHelper = (column) => {
+export const getHelper = (column?: CustomColumnProps) => {
     if (column?.numeric) {
         return numericHelper;
     } else if (!column?.nostat) {
@@ -88,6 +116,17 @@ export const getHelper = (column) => {
         return noOpHelper;
     }
 };
+
+export interface Preferences {
+    isThreeState: boolean;
+    singleColumnByDefault: boolean;
+}
+
+export interface FilteredRows {
+    rowAndOrigIndex: [RowProps, number][];
+    colsStats: Record<string, ColStat>;
+    rowsCount: number;
+}
 
 /**
  * A rows indexer for MuiVirtualizedTable to delegate to an instance of it
@@ -99,11 +138,32 @@ export class KeyedColumnsRowIndexer {
         return CHANGE_WAYS;
     }
 
+    _versionSetter: ((version: number) => void) | null;
+    byColFilter: Record<
+        string,
+        { userParams?: any[]; outerParams?: any[] }
+    > | null;
+    byRowFilter: ((row: RowProps) => boolean) | null;
+    delegatorCallback:
+        | ((
+              instance: KeyedColumnsRowIndexer,
+              callback: (input: any) => void
+          ) => void)
+        | null;
+    filterVersion: number;
+    groupingCount: number;
+    indirectionStatus: string | null;
+    isThreeState: boolean;
+    lastUsedRank: number;
+    singleColumnByDefault: boolean;
+    sortingState: [string, string | undefined][] | null;
+    version: number;
+
     constructor(
         isThreeState = true,
         singleColumnByDefault = false,
         delegatorCallback = null,
-        versionSetter = null
+        versionSetter: ((version: number) => void) | null = null
     ) {
         this._versionSetter = versionSetter;
         this.version = 0;
@@ -138,7 +198,7 @@ export class KeyedColumnsRowIndexer {
         }
         if (this.delegatorCallback) {
             this.indirectionStatus = 'to sort';
-            this.delegatorCallback(this, (updated_ok) => {
+            this.delegatorCallback(this, (updated_ok: boolean) => {
                 this.indirectionStatus = updated_ok ? 'done' : 'no_luck';
             });
         }
@@ -147,7 +207,7 @@ export class KeyedColumnsRowIndexer {
         }
     };
 
-    updatePreferences = (preferences) => {
+    updatePreferences = (preferences: Preferences) => {
         if (
             preferences.isThreeState === this.isThreeState &&
             preferences.singleColumnByDefault === this.singleColumnByDefault
@@ -179,13 +239,17 @@ export class KeyedColumnsRowIndexer {
     //     }, colKeyN, ...
     //   }
     // }
-    preFilterRowMapping = (columns, rows, rowFilter) => {
+    preFilterRowMapping = (
+        columns: CustomColumnProps[],
+        rows: RowProps[],
+        rowFilter: (row: RowProps) => boolean
+    ): FilteredRows | null => {
         if (!rows?.length || !columns?.length) {
             return null;
         }
 
-        const ri = [];
-        const cs = {};
+        const ri: [RowProps, number][] = [];
+        const cs: Record<string, ColStat> = {};
 
         for (const col of columns) {
             const helper = getHelper(col);
@@ -198,11 +262,12 @@ export class KeyedColumnsRowIndexer {
         for (let rowIdx = 0; rowIdx < rows.length; rowIdx++) {
             const row = rows[rowIdx];
             let acceptsRow = true;
-            let acceptedOnRow = {};
+            let acceptedOnRow: Record<number, any> = {};
             for (let colIdx = 0; colIdx < columns.length; colIdx++) {
                 const col = columns[colIdx];
                 const helper = getHelper(col);
                 const colKey = col.dataKey;
+                // @ts-ignore should not access to value directly
                 const cellValue = row[colKey];
                 helper.updateStat(cs[colKey], cellValue, false);
 
@@ -219,7 +284,7 @@ export class KeyedColumnsRowIndexer {
                 if (helper.maintainsStats && acceptsCell) {
                     acceptedOnRow[colIdx] = cellValue;
                 }
-                acceptsRow &= acceptsCell;
+                acceptsRow &&= acceptsCell;
             }
 
             if (acceptsRow && rowFilter) {
@@ -231,7 +296,7 @@ export class KeyedColumnsRowIndexer {
 
             if (acceptsRow) {
                 for (let [idx, value] of Object.entries(acceptedOnRow)) {
-                    const col = columns[idx];
+                    const col = columns[idx as unknown as number];
                     const helper = getHelper(col);
                     helper.updateStat(cs[col.dataKey], value, true);
                 }
@@ -244,7 +309,10 @@ export class KeyedColumnsRowIndexer {
 
     // Does not mutate any internal
     // returns an array of indexes in rows given to preFilter
-    makeGroupAndSortIndirector = (preFilteredRowPairs, columns) => {
+    makeGroupAndSortIndirector = (
+        preFilteredRowPairs: FilteredRows | null,
+        columns: CustomColumnProps[]
+    ) => {
         if (!preFilteredRowPairs) {
             return null;
         }
@@ -276,7 +344,7 @@ export class KeyedColumnsRowIndexer {
     };
 
     // returns true if really changed (and calls versionSetter if needed)
-    updateSortingFromUser = (colKey, change_way) => {
+    updateSortingFromUser = (colKey: string, change_way: CHANGE_WAYS) => {
         const keyAndDirections = this.sortingState;
 
         if (change_way === CHANGE_WAYS.REMOVE) {
@@ -301,51 +369,60 @@ export class KeyedColumnsRowIndexer {
 
             if (change_way === CHANGE_WAYS.SIMPLE) {
                 if (wasSignDir < 0 && this.isThreeState) {
-                    if (this.sortingState.length === 1) {
+                    if (this.sortingState?.length === 1) {
                         this.sortingState = null;
                     } else {
-                        this.sortingState.splice(wasAtIdx, 1);
+                        this.sortingState?.splice(wasAtIdx, 1);
                     }
                 } else {
                     if (this.singleColumnByDefault || wasAtIdx < 0) {
                         this.sortingState = [];
                     } else {
-                        this.sortingState.splice(wasAtIdx, 1);
+                        this.sortingState?.splice(wasAtIdx, 1);
                     }
                     const nextSign = wasSignDir ? -wasSignDir : 1;
-                    const nextKD = [colKey, canonicalForSign(nextSign)];
-                    this.sortingState.unshift(nextKD);
+                    const nextKD: [string, string | undefined] = [
+                        colKey,
+                        canonicalForSign(nextSign),
+                    ];
+                    this.sortingState?.unshift(nextKD);
                 }
             } else if (change_way === CHANGE_WAYS.TAIL) {
                 if (wasAtIdx < 0) {
-                    this.sortingState.push([colKey, canonicalForSign(1)]);
+                    this.sortingState?.push([colKey, canonicalForSign(1)]);
                 } else if (wasAtIdx !== keyAndDirections.length - 1) {
                     return false;
                 } else if (!(this.isThreeState && wasSignDir === -1)) {
+                    // @ts-ignore could be null but hard to handle with such accesses
                     this.sortingState[wasAtIdx][1] = canonicalForSign(
                         -wasSignDir
                     );
                 } else {
-                    this.sortingState.splice(wasAtIdx, 1);
+                    this.sortingState?.splice(wasAtIdx, 1);
                 }
             } else {
                 // AMEND
                 if (wasAtIdx < 0) {
-                    if (this.lastUsedRank - 1 > this.sortingState.length) {
+                    if (
+                        this.lastUsedRank - 1 >
+                        //@ts-ignore could be undefined, how to handle this case ?
+                        this.sortingState.length
+                    ) {
                         return false;
                     } else {
-                        this.sortingState.splice(this.lastUsedRank - 1, 0, [
+                        this.sortingState?.splice(this.lastUsedRank - 1, 0, [
                             colKey,
                             canonicalForSign(1),
                         ]);
                     }
                 } else if (!(this.isThreeState && wasSignDir === -1)) {
+                    // @ts-ignore could be null but hard to handle with such accesses
                     this.sortingState[wasAtIdx][1] = canonicalForSign(
                         -wasSignDir
                     );
                 } else {
                     this.lastUsedRank = wasAtIdx + 1;
-                    this.sortingState.splice(wasAtIdx, 1);
+                    this.sortingState?.splice(wasAtIdx, 1);
                 }
             }
         }
@@ -353,11 +430,11 @@ export class KeyedColumnsRowIndexer {
         return true;
     };
 
-    codedRankByColumnIndex = (columns) => {
+    codedRankByColumnIndex = (columns: CustomColumnProps[]) => {
         return codedColumnsFromKeyAndDirection(this.sortingState, columns);
     };
 
-    columnSortingSignedRank = (colKey) => {
+    columnSortingSignedRank = (colKey: string) => {
         if (!this?.sortingState?.length) {
             return 0;
         }
@@ -369,7 +446,7 @@ export class KeyedColumnsRowIndexer {
         return giveDirSignFor(colSorting[1]) * (idx + 1);
     };
 
-    highestCodedColumn = (columns) => {
+    highestCodedColumn = (columns: CustomColumnProps[]) => {
         if (!this?.sortingState?.length) {
             return 0;
         }
@@ -382,7 +459,7 @@ export class KeyedColumnsRowIndexer {
         return giveDirSignFor(colSorting[1]) * (idx + 1);
     };
 
-    _getColFilterParams = (colKey, isForUser) => {
+    _getColFilterParams = (colKey: string | null, isForUser: boolean) => {
         if (!colKey || !this.byColFilter) {
             return undefined;
         }
@@ -394,7 +471,11 @@ export class KeyedColumnsRowIndexer {
         return colFilter[isForUser ? 'userParams' : 'outerParams'];
     };
 
-    _setColFilterParams = (colKey, params, isForUser) => {
+    _setColFilterParams = (
+        colKey: string | null,
+        params: any[] | null,
+        isForUser: boolean
+    ) => {
         if (!colKey) {
             if (params) {
                 throw new Error('column key has to be defined');
@@ -408,7 +489,8 @@ export class KeyedColumnsRowIndexer {
             if (!this.byColFilter) {
                 this.byColFilter = {};
             }
-            let colFilter = this.byColFilter[colKey];
+            let colFilter: { userParams?: any[]; outerParams?: any[] } =
+                this.byColFilter[colKey];
             if (!colFilter) {
                 colFilter = {};
                 this.byColFilter[colKey] = colFilter;
@@ -435,36 +517,37 @@ export class KeyedColumnsRowIndexer {
         return true;
     };
 
-    getColFilterOuterParams = (colKey) => {
+    getColFilterOuterParams = (colKey: string | null) => {
         return this._getColFilterParams(colKey, false);
     };
 
-    setColFilterOuterParams = (colKey, outerParams) => {
+    setColFilterOuterParams = (colKey: string, outerParams: any[]) => {
         return this._setColFilterParams(colKey, outerParams, false);
     };
 
-    getColFilterUserParams = (colKey) => {
+    getColFilterUserParams = (colKey: string | null) => {
         return this._getColFilterParams(colKey, true);
     };
 
-    setColFilterUserParams = (colKey, params) => {
+    setColFilterUserParams = (colKey: string | null, params: any[] | null) => {
         return this._setColFilterParams(colKey, params, true);
     };
 
     getUserFiltering = () => {
-        const ret = {};
+        const ret: Record<string, object> = {};
         if (this.byColFilter) {
             Object.entries(this.byColFilter).forEach(([k, v]) => {
                 if (!v.userParams) {
                     return;
                 }
+                // @ts-ignore must be an iterator to use spread iterator
                 ret[k] = [...v.userParams];
             });
         }
         return ret;
     };
 
-    updateRowFiltering = (rowFilterFunc) => {
+    updateRowFiltering = (rowFilterFunc: (row: RowProps) => boolean) => {
         if (typeof rowFilterFunc !== 'function') {
             throw new Error('row filter should be a function');
         }
@@ -473,10 +556,12 @@ export class KeyedColumnsRowIndexer {
     };
 }
 
-const giveDirSignFor = (fuzzySign) => {
+const giveDirSignFor = (fuzzySign: number | string | undefined) => {
+    //@ts-ignore we should check whether it is a string or a number first
     if (fuzzySign < 0) {
         return -1;
     }
+    //@ts-ignore we should check whether it is a string or a number first
     if (fuzzySign > 0) {
         return 1;
     }
@@ -489,7 +574,7 @@ const giveDirSignFor = (fuzzySign) => {
     return 0;
 };
 
-const canonicalForSign = (dirSign) => {
+const canonicalForSign = (dirSign: number): string | undefined => {
     if (dirSign > 0) {
         return 'asc';
     }
@@ -499,13 +584,16 @@ const canonicalForSign = (dirSign) => {
     return undefined;
 };
 
-const codedColumnsFromKeyAndDirection = (keyAndDirections, columns) => {
+const codedColumnsFromKeyAndDirection = (
+    keyAndDirections: [string, string | undefined][] | null,
+    columns: CustomColumnProps[]
+) => {
     if (!keyAndDirections) {
         return null;
     }
 
     const ret = [];
-    const columIndexByKey = {};
+    const columIndexByKey: Record<string, number> = {};
     for (let colIdx = 0; colIdx < columns.length; colIdx++) {
         const col = columns[colIdx];
         const colKey = col.dataKey;
@@ -527,7 +615,12 @@ const codedColumnsFromKeyAndDirection = (keyAndDirections, columns) => {
     return ret;
 };
 
-const compareValue = (a, b, isNumeric, undefSign = -1) => {
+const compareValue = (
+    a: number | string | undefined,
+    b: number | string | undefined,
+    isNumeric: boolean,
+    undefSign: number = -1
+) => {
     if (a === undefined && b === undefined) {
         return 0;
     } else {
@@ -540,12 +633,12 @@ const compareValue = (a, b, isNumeric, undefSign = -1) => {
         }
     }
     if (!isNumeric) {
-        return ('' + a).localeCompare(b);
+        return ('' + a).localeCompare(b as string);
     } else {
-        if (isNaN(a)) {
-            return isNaN(b) ? 0 : 1;
+        if (isNaN(a as number)) {
+            return isNaN(b as number) ? 0 : 1;
         }
-        if (isNaN(b)) {
+        if (isNaN(b as number)) {
             return -1;
         }
         return Math.sign(Number(a) - Number(b));
@@ -553,18 +646,25 @@ const compareValue = (a, b, isNumeric, undefSign = -1) => {
 };
 
 const makeCompositeComparatorFromCodedColumns = (
-    codedColumns,
-    columns,
-    rowExtractor
+    codedColumns: number[] | null,
+    columns: CustomColumnProps[],
+    rowExtractor: (
+        row: [Record<string, number | string | undefined>, number][]
+    ) => Record<string, number | string | undefined>
 ) => {
-    return (row_a_i, row_b_i) => {
+    return (
+        row_a_i: [Record<string, number | string | undefined>, number][],
+        row_b_i: [Record<string, number | string | undefined>, number][]
+    ) => {
         const row_a = rowExtractor(row_a_i);
         const row_b = rowExtractor(row_b_i);
+        //@ts-ignore codedColumns could be null we should add a check
         for (const cc of codedColumns) {
             const i = Math.abs(cc) - 1;
             const mul = Math.sign(cc);
             const col = columns[i];
             const key = col.dataKey;
+            //@ts-ignore numeric could be undefined, how to handle this case ?
             const sgn = compareValue(row_a[key], row_b[key], col.numeric);
             if (sgn) {
                 return mul * sgn;
@@ -574,19 +674,26 @@ const makeCompositeComparatorFromCodedColumns = (
     };
 };
 
-const groupRows = (groupingColumnsCount, columns, indexedArray) => {
+const groupRows = (
+    groupingColumnsCount: number,
+    columns: CustomColumnProps[],
+    indexedArray: [Record<string, number | string | undefined>, number][]
+) => {
     const groupingComparator = makeCompositeComparatorFromCodedColumns(
         Array(groupingColumnsCount).map((x, i) => i + 1),
         columns,
+        //@ts-ignore does not match other pattern
         (ar) => ar[0]
     );
+    //@ts-ignore does not match other pattern
     indexedArray.sort(groupingComparator);
 
-    const groups = [];
+    const groups: any = [];
     let prevSlice = null;
-    let inBuildGroup = [];
+    let inBuildGroup: any = [];
     groups.push(inBuildGroup);
     for (const p of indexedArray) {
+        // @ts-ignore could be undefined how to handle this case ?
         const nextSlice = p[0].slice(0, groupingColumnsCount);
         if (prevSlice === null || !equalsArray(prevSlice, nextSlice)) {
             inBuildGroup = [];
@@ -599,10 +706,10 @@ const groupRows = (groupingColumnsCount, columns, indexedArray) => {
 };
 
 const groupAndSort = (
-    preFilteredRowPairs,
-    codedColumns,
-    groupingColumnsCount,
-    columns
+    preFilteredRowPairs: FilteredRows,
+    codedColumns: number[] | null,
+    groupingColumnsCount: number,
+    columns: CustomColumnProps[]
 ) => {
     const nothingToDo = !codedColumns && !groupingColumnsCount;
 
@@ -621,10 +728,13 @@ const groupAndSort = (
         const sortingComparator = makeCompositeComparatorFromCodedColumns(
             codedColumns,
             columns,
+            //@ts-ignore I don't know how to fix this one
             (ar) => ar[0]
         );
+        //@ts-ignore I don't know how to fix this one
         indexedArray.sort(sortingComparator);
     } else {
+        //@ts-ignore I don't know how to fix this one
         const groups = groupRows(groupingColumnsCount, columns, indexedArray);
 
         const interGroupSortingComparator =
@@ -639,6 +749,7 @@ const groupAndSort = (
             makeCompositeComparatorFromCodedColumns(
                 codedColumns,
                 columns,
+                //@ts-ignore I don't know how to fix this one
                 (ar) => ar[0]
             );
 

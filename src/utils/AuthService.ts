@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Log, UserManager } from 'oidc-client';
+import { Log, User, UserManager } from 'oidc-client';
 import { UserManagerMock } from './UserManagerMock';
 import {
     setLoggedUser,
@@ -16,43 +16,66 @@ import {
     setShowAuthenticationRouterLogin,
 } from '../redux/actions';
 import { jwtDecode } from 'jwt-decode';
+import { Dispatch } from 'react';
+import { NavigateFunction } from 'react-router-dom';
+
+type UserValidationFunc = (user: User) => Promise<boolean>;
+
+type CustomUserManager = UserManager & {
+    authorizationCodeFlowEnabled?: boolean;
+    idpSettings?: {
+        maxExpiresIn?: number;
+    };
+};
 
 // set as a global variable to allow log level configuration at runtime
+//@ts-ignore
 window.OIDCLog = Log;
 
 const hackAuthorityKey = 'oidc.hack.authority';
 const oidcHackReloadedKey = 'gridsuite-oidc-hack-reloaded';
 const pathKey = 'powsybl-gridsuite-current-path';
 
-function isIssuerErrorForCodeFlow(error) {
+function isIssuerErrorForCodeFlow(error: Error) {
     return error.message.includes('Invalid issuer in token');
 }
 
-function extractIssuerToSessionStorage(error) {
+function extractIssuerToSessionStorage(error: Error) {
     const issuer = error.message.split(' ').pop();
-    sessionStorage.setItem(hackAuthorityKey, issuer);
+    if (issuer !== undefined) {
+        sessionStorage.setItem(hackAuthorityKey, issuer);
+    }
 }
 
 function reload() {
     if (!sessionStorage.getItem(oidcHackReloadedKey)) {
-        sessionStorage.setItem(oidcHackReloadedKey, true);
+        sessionStorage.setItem(oidcHackReloadedKey, true.toString());
         console.log('Hack oidc, reload page to make login work');
         window.location.reload();
     }
 }
 
-function reloadTimerOnExpiresIn(user, userManager, expiresIn) {
+function reloadTimerOnExpiresIn(
+    user: User,
+    userManager: UserManager,
+    expiresIn: number
+) {
     // TODO: Can we stop doing it in the hash for implicit flow ? To make it common for both flows
+    // Not allowed by TS because expires_in is supposed to be readonly
+    // @ts-ignore
     user.expires_in = expiresIn;
     userManager.storeUser(user).then(() => {
         userManager.getUser();
     });
 }
 
-function handleSigninSilent(dispatch, userManager) {
+function handleSigninSilent(
+    dispatch: Dispatch<unknown>,
+    userManager: UserManager
+) {
     userManager.getUser().then((user) => {
         if (user == null || getIdTokenExpiresIn(user) < 0) {
-            return userManager.signinSilent().catch((error) => {
+            return userManager.signinSilent().catch((error: Error) => {
                 dispatch(setShowAuthenticationRouterLogin(true));
                 const errorIssuerCodeFlow = isIssuerErrorForCodeFlow(error);
                 const errorIssuerImplicitFlow =
@@ -72,12 +95,14 @@ function handleSigninSilent(dispatch, userManager) {
 }
 
 function initializeAuthenticationDev(
-    dispatch,
-    isSilentRenew,
-    validateUser,
-    isSigninCallback
+    dispatch: Dispatch<unknown>,
+    isSilentRenew: boolean,
+    validateUser: UserValidationFunc,
+    isSigninCallback: boolean
 ) {
-    let userManager = new UserManagerMock({});
+    let userManager: UserManager = new UserManagerMock(
+        {}
+    ) as unknown as UserManager;
     if (!isSilentRenew) {
         handleUser(dispatch, userManager, validateUser);
         if (!isSigninCallback) {
@@ -90,12 +115,12 @@ function initializeAuthenticationDev(
 const accessTokenExpiringNotificationTime = 60; // seconds
 
 function initializeAuthenticationProd(
-    dispatch,
-    isSilentRenew,
-    idpSettings,
-    validateUser,
-    authorizationCodeFlowEnabled,
-    isSigninCallback
+    dispatch: Dispatch<unknown>,
+    isSilentRenew: boolean,
+    idpSettings: Promise<Response>,
+    validateUser: UserValidationFunc,
+    authorizationCodeFlowEnabled: boolean,
+    isSigninCallback: boolean
 ) {
     return idpSettings
         .then((r) => r.json())
@@ -104,7 +129,7 @@ function initializeAuthenticationProd(
             const regextoken = /id_token=[^&]*/;
             const regexstate = /state=[^&]*/;
             const regexexpires = /expires_in=[^&]*/;
-            let authority;
+            let authority: string | undefined;
             if (window.location.hash) {
                 const matched_id_token = window.location.hash.match(regextoken);
                 const matched_state = window.location.hash.match(regexstate);
@@ -127,7 +152,9 @@ function initializeAuthenticationProd(
                             'oidc.' + state,
                             JSON.stringify(storedState)
                         );
-                        sessionStorage.setItem(hackAuthorityKey, authority);
+                        if (authority !== undefined) {
+                            sessionStorage.setItem(hackAuthorityKey, authority);
+                        }
                         const matched_expires =
                             window.location.hash.match(regexexpires);
                         if (matched_expires != null) {
@@ -170,8 +197,10 @@ function initializeAuthenticationProd(
                     accessTokenExpiringNotificationTime,
                 ...responseSettings,
             };
-            let userManager = new UserManager(settings);
+            let userManager: CustomUserManager = new UserManager(settings);
+            // Hack to enrich UserManager object
             userManager.idpSettings = idpSettings; //store our settings in there as well to use it later
+            // Hack to enrich UserManager object
             userManager.authorizationCodeFlowEnabled =
                 authorizationCodeFlowEnabled;
             if (!isSilentRenew) {
@@ -189,9 +218,16 @@ function initializeAuthenticationProd(
         });
 }
 
-function computeMinExpiresIn(expiresIn, idToken, maxExpiresIn) {
-    const now = parseInt(Date.now() / 1000);
+function computeMinExpiresIn(
+    expiresIn: number,
+    idToken: string,
+    maxExpiresIn: number | undefined
+) {
+    const now = Date.now() / 1000;
     const exp = jwtDecode(idToken).exp;
+    if (exp === undefined) {
+        return expiresIn;
+    }
     const idTokenExpiresIn = exp - now;
     let newExpiresIn = expiresIn;
     let newExpiresInReplaceReason;
@@ -221,14 +257,14 @@ function computeMinExpiresIn(expiresIn, idToken, maxExpiresIn) {
     return newExpiresIn;
 }
 
-function login(location, userManagerInstance) {
+function login(location: Location, userManagerInstance: UserManager) {
     sessionStorage.setItem(pathKey, location.pathname + location.search);
     return userManagerInstance
         .signinRedirect()
         .then(() => console.debug('login'));
 }
 
-function logout(dispatch, userManagerInstance) {
+function logout(dispatch: Dispatch<unknown>, userManagerInstance: UserManager) {
     sessionStorage.removeItem(hackAuthorityKey); //To remove when hack is removed
     return userManagerInstance.getUser().then((user) => {
         if (user) {
@@ -256,13 +292,20 @@ function logout(dispatch, userManagerInstance) {
     });
 }
 
-function getIdTokenExpiresIn(user) {
-    const now = parseInt(Date.now() / 1000);
+function getIdTokenExpiresIn(user: User) {
+    const now = Date.now() / 1000;
     const exp = jwtDecode(user.id_token).exp;
+    if (exp === undefined) {
+        return 0;
+    }
     return exp - now;
 }
 
-function dispatchUser(dispatch, userManagerInstance, validateUser) {
+function dispatchUser(
+    dispatch: Dispatch<unknown>,
+    userManagerInstance: CustomUserManager,
+    validateUser: UserValidationFunc
+) {
     return userManagerInstance.getUser().then((user) => {
         if (user) {
             // If session storage contains a expired token at initialization
@@ -284,7 +327,7 @@ function dispatchUser(dispatch, userManagerInstance, validateUser) {
                             "User isn't authorized to log in and will not be dispatched"
                         );
                         return dispatch(
-                            setUnauthorizedUserInfo(user?.profile?.name, {})
+                            setUnauthorizedUserInfo(user?.profile?.name, '')
                         );
                     }
                     console.debug(
@@ -300,7 +343,7 @@ function dispatchUser(dispatch, userManagerInstance, validateUser) {
                             computeMinExpiresIn(
                                 user.expires_in,
                                 user.id_token,
-                                userManagerInstance.idpSettings.maxExpiresIn
+                                userManagerInstance.idpSettings?.maxExpiresIn
                             )
                         );
                     }
@@ -324,12 +367,18 @@ function getPreLoginPath() {
     return sessionStorage.getItem(pathKey);
 }
 
-function navigateToPreLoginPath(navigate) {
+function navigateToPreLoginPath(navigate: NavigateFunction) {
     const previousPath = getPreLoginPath();
-    navigate(previousPath);
+    if (previousPath !== null) {
+        navigate(previousPath);
+    }
 }
 
-function handleSigninCallback(dispatch, navigate, userManagerInstance) {
+function handleSigninCallback(
+    dispatch: Dispatch<unknown>,
+    navigate: NavigateFunction,
+    userManagerInstance: UserManager
+) {
     let reloadAfterNavigate = false;
     userManagerInstance
         .signinRedirectCallback()
@@ -360,11 +409,15 @@ function handleSigninCallback(dispatch, navigate, userManagerInstance) {
         });
 }
 
-function handleSilentRenewCallback(userManagerInstance) {
+function handleSilentRenewCallback(userManagerInstance: UserManager) {
     userManagerInstance.signinSilentCallback();
 }
 
-function handleUser(dispatch, userManager, validateUser) {
+function handleUser(
+    dispatch: Dispatch<unknown>,
+    userManager: CustomUserManager,
+    validateUser: UserValidationFunc
+) {
     userManager.events.addUserLoaded((user) => {
         console.debug('user loaded', user);
         dispatchUser(dispatch, userManager, validateUser);
@@ -381,6 +434,7 @@ function handleUser(dispatch, userManager, validateUser) {
                     console.error(
                         "user is null at silent renew error, it shouldn't happen."
                     );
+                    return;
                 }
                 const idTokenExpiresIn = getIdTokenExpiresIn(user);
                 if (idTokenExpiresIn < 0) {
@@ -395,7 +449,7 @@ function handleUser(dispatch, userManager, validateUser) {
                     // logout during token expiration, show login without errors
                     dispatch(resetAuthenticationRouterError());
                     return dispatch(setLoggedUser(null));
-                } else if (userManager.idpSettings.maxExpiresIn) {
+                } else if (userManager.idpSettings?.maxExpiresIn) {
                     if (
                         idTokenExpiresIn < userManager.idpSettings.maxExpiresIn
                     ) {
@@ -408,8 +462,8 @@ function handleUser(dispatch, userManager, validateUser) {
                             'maxExpiresIn = ' +
                                 userManager.idpSettings.maxExpiresIn,
                             'last renew attempt in ' +
-                                idTokenExpiresIn -
-                                accessTokenExpiringNotificationTime +
+                                (idTokenExpiresIn -
+                                    accessTokenExpiringNotificationTime) +
                                 'seconds',
                             error
                         );
@@ -437,7 +491,7 @@ function handleUser(dispatch, userManager, validateUser) {
                         'Error in silent renew, unsupported configuration: token still valid for ' +
                             idTokenExpiresIn +
                             ' but maxExpiresIn is not configured:' +
-                            userManager.idpSettings.maxExpiresIn,
+                            userManager.idpSettings?.maxExpiresIn,
                         error
                     );
                 }

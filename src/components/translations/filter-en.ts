@@ -26,6 +26,7 @@ const filter_en = {
         "Left value of 'between' rule have to be lower than the right value",
     emptyGroup:
         'Filter contains an empty group. Consider removing it or adding rules to this group',
+    Hvdc: 'HVDC',
 };
 
 export default filter_en;

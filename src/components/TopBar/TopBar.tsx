@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useMemo, useState } from 'react';
+import { MouseEvent, PropsWithChildren, useMemo, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import {
@@ -20,8 +20,10 @@ import {
     Menu,
     MenuItem,
     MenuList,
+    MenuProps,
     Paper,
     Popper,
+    Theme,
     ToggleButton,
     ToggleButtonGroup,
     Toolbar,
@@ -42,8 +44,11 @@ import {
 import { styled } from '@mui/system';
 import PropTypes from 'prop-types';
 
-import GridLogo from './GridLogo';
-import AboutDialog from './AboutDialog';
+import GridLogo, { GridLogoProps } from './GridLogo';
+import AboutDialog, { AboutDialogProps } from './AboutDialog';
+import { LogoutProps } from '../Login/Logout';
+import { User } from 'oidc-client';
+import { CommonMetadata } from '../../services';
 
 const styles = {
     grow: {
@@ -58,7 +63,7 @@ const styles = {
         textDecoration: 'none',
         color: 'inherit',
     },
-    name: (theme) => ({
+    name: (theme: Theme) => ({
         backgroundColor: darken(theme.palette.background.paper, 0.1),
         paddingTop: '10px',
         borderRadius: '100%',
@@ -107,7 +112,7 @@ const styles = {
     },
 };
 
-const StyledMenu = styled((props) => (
+const StyledMenu = styled((props: MenuProps) => (
     <Menu
         elevation={0}
         anchorOrigin={{
@@ -149,6 +154,28 @@ export const LANG_FRENCH = 'fr';
 const EN = 'EN';
 const FR = 'FR';
 
+export type GsLang =
+    | typeof LANG_ENGLISH
+    | typeof LANG_FRENCH
+    | typeof LANG_SYSTEM;
+export type GsTheme = typeof LIGHT_THEME | typeof DARK_THEME;
+
+export type TopBarProps = Omit<GridLogoProps, 'onClick'> &
+    Omit<LogoutProps, 'disabled'> &
+    Omit<AboutDialogProps, 'open' | 'onClose'> & {
+        onParametersClick?: () => void;
+        onLogoClick: GridLogoProps['onClick'];
+        user: User;
+        onAboutClick?: () => void;
+        appsAndUrls: CommonMetadata[];
+        onThemeClick?: (theme: GsTheme) => void;
+        theme?: GsTheme;
+        onEquipmentLabellingClick?: (toggle: boolean) => void;
+        equipmentLabelling?: boolean;
+        onLanguageClick: (value: GsLang) => void;
+        language: GsLang;
+    };
+
 const TopBar = ({
     appName,
     appColor,
@@ -170,11 +197,14 @@ const TopBar = ({
     equipmentLabelling,
     onLanguageClick,
     language,
-}) => {
-    const [anchorElSettingsMenu, setAnchorElSettingsMenu] = useState(null);
-    const [anchorElAppsMenu, setAnchorElAppsMenu] = useState(null);
+}: PropsWithChildren<TopBarProps>) => {
+    const [anchorElSettingsMenu, setAnchorElSettingsMenu] =
+        useState<Element | null>(null);
+    const [anchorElAppsMenu, setAnchorElAppsMenu] = useState<Element | null>(
+        null
+    );
 
-    const handleToggleSettingsMenu = (event) => {
+    const handleToggleSettingsMenu = (event: MouseEvent) => {
         setAnchorElSettingsMenu(event.currentTarget);
     };
 
@@ -182,7 +212,7 @@ const TopBar = ({
         setAnchorElSettingsMenu(null);
     };
 
-    const handleClickAppsMenu = (event) => {
+    const handleClickAppsMenu = (event: MouseEvent) => {
         setAnchorElAppsMenu(event.currentTarget);
     };
 
@@ -197,7 +227,7 @@ const TopBar = ({
         }
     };
 
-    const abbreviationFromUserName = (name) => {
+    const abbreviationFromUserName = (name: string) => {
         const tab = name.split(' ').map((x) => x.charAt(0));
         if (tab.length === 1) {
             return tab[0];
@@ -206,19 +236,19 @@ const TopBar = ({
         }
     };
 
-    const changeTheme = (event, value) => {
+    const changeTheme = (_: MouseEvent, value: GsTheme) => {
         if (onThemeClick && value !== null) {
             onThemeClick(value);
         }
     };
 
-    const changeEquipmentLabelling = (event, value) => {
+    const changeEquipmentLabelling = (_: MouseEvent, value: boolean) => {
         if (onEquipmentLabellingClick && value !== null) {
             onEquipmentLabellingClick(value);
         }
     };
 
-    const changeLanguage = (event, value) => {
+    const changeLanguage = (_: MouseEvent, value: GsLang) => {
         if (onLanguageClick && value !== null) {
             onLanguageClick(value);
         }
@@ -226,6 +256,7 @@ const TopBar = ({
 
     const [isAboutDialogOpen, setAboutDialogOpen] = useState(false);
     const onAboutClicked = () => {
+        // @ts-ignore should be an Element, or maybe we should use null ?
         setAnchorElSettingsMenu(false);
         if (onAboutClick) {
             onAboutClick();
@@ -247,6 +278,7 @@ const TopBar = ({
     );
 
     return (
+        //@ts-ignore appBar style is not defined
         <AppBar position="static" color="default" sx={styles.appBar}>
             <Toolbar>
                 {logo_clickable}
@@ -277,7 +309,7 @@ const TopBar = ({
                                         <Box
                                             component="a"
                                             key={item.name}
-                                            href={item.url}
+                                            href={item.url?.toString()}
                                             sx={styles.link}
                                             target="_blank"
                                             rel="noopener noreferrer"
@@ -313,7 +345,7 @@ const TopBar = ({
                     </Box>
                 )}
                 {user && (
-                    <Box sx={styles.menuContainerg}>
+                    <Box sx={styles.menuContainer}>
                         {/* Button width abbreviation and arrow icon */}
                         <Button
                             aria-controls="settings-menu"
@@ -330,6 +362,7 @@ const TopBar = ({
                             <Box component="span" sx={styles.name}>
                                 {user !== null
                                     ? abbreviationFromUserName(
+                                          //@ts-ignore name could be undefined, how to handle this case ?
                                           user.profile.name
                                       )
                                     : ''}
@@ -361,7 +394,7 @@ const TopBar = ({
                                             <CustomListItemIcon>
                                                 <PersonIcon fontSize="small" />
                                             </CustomListItemIcon>
-                                            <ListItemText disabled={false}>
+                                            <ListItemText>
                                                 {user !== null && (
                                                     <Box
                                                         component="span"
