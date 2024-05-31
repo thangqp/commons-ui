@@ -70,8 +70,21 @@ const search = (tree: Tree, value: any, key: string) => {
     return null;
 };
 
+const getFieldData = (fieldName: string) => {
+    return search(FIELDS_OPTIONS, fieldName, 'name') as GroupRuleField;
+};
+
+/**
+ *  Get dataType configured by default in field options OR return an overridden dataType in some particular case.
+ *  This function should be used only before interfacing to the back-end, eg. exporting or validating an expert filter
+ *
+ * @param fieldName selected field in a rule
+ * @param operator selected operator in a rule
+ *
+ * @return a dataType
+ */
 const getDataType = (fieldName: string, operator: string) => {
-    // particular case => set dataType to DataType.FILTER_UUID when exporting rule with OPERATOR_OPTIONS.IS_PART_OF or OPERATOR_OPTIONS.IS_NOT_PART_OF
+    // particular case => set dataType to FILTER_UUID when exporting rule with operator IS_PART_OF or IS_NOT_PART_OF
     if (
         operator === OPERATOR_OPTIONS.IS_PART_OF.name ||
         operator === OPERATOR_OPTIONS.IS_NOT_PART_OF.name
@@ -79,8 +92,17 @@ const getDataType = (fieldName: string, operator: string) => {
         return DataType.FILTER_UUID;
     }
 
-    // otherwise, lookup in the field options
-    const fieldData = search(FIELDS_OPTIONS, fieldName, 'name');
+    // particular case => set dataType to STRING when exporting group rule REGULATING_TERMINAL with operator EXISTS or NOT_EXISTS
+    if (
+        fieldName === FieldType.REGULATING_TERMINAL &&
+        (operator === OPERATOR_OPTIONS.EXISTS.name ||
+            operator === OPERATOR_OPTIONS.NOT_EXISTS.name)
+    ) {
+        return DataType.STRING;
+    }
+
+    // otherwise, lookup in configuration
+    const fieldData = getFieldData(fieldName);
 
     return fieldData?.dataType;
 };
@@ -215,11 +237,7 @@ export function exportExpertRules(query: RuleGroupType): RuleGroupTypeExport {
         const dataType = getDataType(rule.field, rule.operator) as DataType;
 
         // a group rule is a rule with dataType COMBINATOR  => build a group with child rules
-        if (
-            dataType === DataType.COMBINATOR &&
-            rule.operator !== OPERATOR_OPTIONS.EXISTS.name &&
-            rule.operator !== OPERATOR_OPTIONS.NOT_EXISTS.name
-        ) {
+        if (dataType === DataType.COMBINATOR) {
             return transformGroupRule(rule);
         }
 
@@ -422,12 +440,11 @@ export const queryValidator: QueryValidator = (query) => {
 
     const validateRule = (rule: RuleType) => {
         const isValueAnArray = Array.isArray(rule.value);
-        const isNumberInput =
-            getDataType(rule.field, rule.operator) === DataType.NUMBER &&
-            !isValueAnArray;
-        const isStringInput =
-            getDataType(rule.field, rule.operator) === DataType.STRING &&
-            !isValueAnArray;
+        const dataType = getDataType(rule.field, rule.operator);
+
+        const isNumberInput = dataType === DataType.NUMBER && !isValueAnArray;
+        const isStringInput = dataType === DataType.STRING && !isValueAnArray;
+
         if (
             rule.id &&
             (rule.operator === OPERATOR_OPTIONS.EXISTS.name ||
@@ -483,8 +500,7 @@ export const queryValidator: QueryValidator = (query) => {
             };
         } else if (
             rule.id &&
-            (rule.operator === OPERATOR_OPTIONS.IS_PART_OF.name ||
-                rule.operator === OPERATOR_OPTIONS.IS_NOT_PART_OF.name) &&
+            dataType === DataType.FILTER_UUID &&
             (!rule.value?.length || !uuidValidate(rule.value[0]))
         ) {
             result[rule.id] = {
@@ -493,7 +509,7 @@ export const queryValidator: QueryValidator = (query) => {
             };
         } else if (
             rule.id &&
-            getDataType(rule.field, rule.operator) === DataType.PROPERTY &&
+            dataType === DataType.PROPERTY &&
             (isBlankOrEmpty(rule.value?.propertyName) ||
                 isBlankOrEmpty(rule.value?.propertyOperator) ||
                 isBlankOrEmpty(rule.value?.propertyValues) ||
@@ -503,20 +519,15 @@ export const queryValidator: QueryValidator = (query) => {
                 valid: false,
                 reasons: [RULES.EMPTY_RULE],
             };
-        } else if (
-            rule.id &&
-            getDataType(rule.field, rule.operator) === DataType.COMBINATOR &&
-            rule.operator !== OPERATOR_OPTIONS.EXISTS.name &&
-            rule.operator !== OPERATOR_OPTIONS.NOT_EXISTS.name
-        ) {
-            const fieldData = search(
-                FIELDS_OPTIONS,
-                rule.field,
-                'name'
-            ) as GroupRuleField;
-
+        } else if (rule.id && dataType === DataType.COMBINATOR) {
+            // based on FIELDS_OPTIONS configuration and group rule value, validate for each child rule in a group rule
+            const childFields = Object.keys(
+                getFieldData(rule.field).children ?? {}
+            );
             const rules = (rule.value.rules ?? {}) as GroupRule;
-            Object.keys(fieldData.children ?? {}).forEach((field) => {
+
+            // call validate recursively
+            childFields.forEach((field) => {
                 validateRule({
                     ...rule,
                     field: field,
