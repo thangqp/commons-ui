@@ -211,6 +211,7 @@ export {
     FILTER_EQUIPMENTS,
     CONTINGENCY_LIST_EQUIPMENTS,
 } from './components/filter/utils/filter-form-utils';
+export type { FormEquipment } from './components/filter/utils/filter-form-utils';
 
 export {
     getCriteriaBasedFormData,
