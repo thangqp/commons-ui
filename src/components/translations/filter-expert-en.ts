@@ -81,7 +81,7 @@ const filter_expert_en = {
     'svarRegulationMode.reactivePower': 'Reactive power regulation',
     voltageSetPoint: 'Voltage set point',
     reactivePowerSetPoint: 'Reactive power set point',
-    regulatingTerminal: 'Regulating terminal',
+    regulatingTerminal: 'Regulated terminal',
     regulatingTerminalVLId: 'Voltage Level ID',
     regulatingTerminalConnectableId: 'Equipment ID',
     regulationType: 'Regulation type',
