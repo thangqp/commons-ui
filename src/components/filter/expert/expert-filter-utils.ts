@@ -524,7 +524,7 @@ export const queryValidator: QueryValidator = (query) => {
             const childFields = Object.keys(
                 getFieldData(rule.field).children ?? {}
             );
-            const rules = (rule.value.rules ?? {}) as GroupRule;
+            const rules = (rule.value?.rules ?? {}) as GroupRule;
 
             // call validate recursively
             childFields.forEach((field) => {

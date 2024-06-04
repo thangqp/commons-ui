@@ -25,7 +25,7 @@ const GroupValueEditor = (props: ValueEditorProps<GroupRuleField>) => {
     const {
         handleOnChange,
         fieldData: { combinator, children = {} },
-        value: { rules },
+        value: { rules } = {},
     } = props;
 
     const generateOnChangeHandler = useCallback(
