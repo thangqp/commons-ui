@@ -9,6 +9,7 @@ import RangeInput from '../../inputs/react-hook-form/range-input';
 import { FunctionComponent } from 'react';
 import CountriesInput from '../../inputs/react-hook-form/select-inputs/countries-input';
 import SelectInput from '../../inputs/react-hook-form/select-inputs/select-input';
+import { EquipmentType } from '../../../utils/EquipmentType';
 
 const countries = {
     renderer: CountriesInput,
@@ -86,7 +87,17 @@ export type FormEquipment = {
     label: string;
     fields: FormField[];
 };
-const COMMON_EQUIPMENTS: Record<string, FormEquipment> = {
+
+export const CONTINGENCY_LIST_EQUIPMENTS: Record<
+    | EquipmentType.BUSBAR_SECTION
+    | EquipmentType.LINE
+    | EquipmentType.TWO_WINDINGS_TRANSFORMER
+    | EquipmentType.GENERATOR
+    | EquipmentType.SHUNT_COMPENSATOR
+    | EquipmentType.HVDC_LINE
+    | EquipmentType.DANGLING_LINE,
+    FormEquipment
+> = {
     LINE: {
         id: 'LINE',
         label: 'Lines',
@@ -117,18 +128,52 @@ const COMMON_EQUIPMENTS: Record<string, FormEquipment> = {
         label: 'DanglingLines',
         fields: [countries, nominalVoltage],
     },
-};
-
-export const CONTINGENCY_LIST_EQUIPMENTS: Record<string, FormEquipment> = {
-    ...COMMON_EQUIPMENTS,
     BUSBAR_SECTION: {
         id: 'BUSBAR_SECTION',
         label: 'BusBarSections',
         fields: [countries, nominalVoltage],
     },
 };
-export const FILTER_EQUIPMENTS: Record<string, FormEquipment> = {
-    ...COMMON_EQUIPMENTS,
+export const FILTER_EQUIPMENTS: Record<
+    | EquipmentType.LINE
+    | EquipmentType.TWO_WINDINGS_TRANSFORMER
+    | EquipmentType.GENERATOR
+    | EquipmentType.SHUNT_COMPENSATOR
+    | EquipmentType.HVDC_LINE
+    | EquipmentType.DANGLING_LINE
+    | EquipmentType.THREE_WINDINGS_TRANSFORMER
+    | EquipmentType.LOAD
+    | EquipmentType.BATTERY
+    | EquipmentType.VOLTAGE_LEVEL
+    | EquipmentType.SUBSTATION
+    | EquipmentType.STATIC_VAR_COMPENSATOR,
+    FormEquipment
+> = {
+    LINE: {
+        id: 'LINE',
+        label: 'Lines',
+        fields: [countries1, countries2, nominalVoltage1, nominalVoltage2],
+    },
+    TWO_WINDINGS_TRANSFORMER: {
+        id: 'TWO_WINDINGS_TRANSFORMER',
+        label: 'TwoWindingsTransformers',
+        fields: [countries, nominalVoltage1, nominalVoltage2],
+    },
+    SHUNT_COMPENSATOR: {
+        id: 'SHUNT_COMPENSATOR',
+        label: 'ShuntCompensators',
+        fields: [countries, nominalVoltage],
+    },
+    HVDC_LINE: {
+        id: 'HVDC_LINE',
+        label: 'Hvdc',
+        fields: [countries1, countries2, nominalVoltage],
+    },
+    DANGLING_LINE: {
+        id: 'DANGLING_LINE',
+        label: 'DanglingLines',
+        fields: [countries, nominalVoltage],
+    },
     THREE_WINDINGS_TRANSFORMER: {
         id: 'THREE_WINDINGS_TRANSFORMER',
         label: 'ThreeWindingsTransformers',
