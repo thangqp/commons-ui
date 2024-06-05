@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, RTE (http://www.rte-france.com)
+ * Copyright (c) 2024, RTE (http://www.rte-france.com)
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -14,10 +14,10 @@ export const styles = {
         position: 'relative',
 
         '--ag-value-change-value-highlight-background-color':
-            theme.aggridValueChangeHighlightBackgroundColor,
+            theme.aggrid.valueChangeHighlightBackgroundColor,
 
-        '--ag-selected-row-background-color': theme.aggridHiglightColor,
-        '--ag-row-hover-color': theme.aggridHiglightColor,
+        '--ag-selected-row-background-color': theme.aggrid.highlightColor,
+        '--ag-row-hover-color': theme.aggrid.highlightColor,
 
         //overrides the default computed max height for ag grid default selector editor to make it more usable
         //can be removed if a custom selector editor is implemented
@@ -43,7 +43,7 @@ export const styles = {
     },
     overlayBackground: (theme: Theme) => ({
         '& .ag-overlay-loading-wrapper': {
-            background: theme.overlay.background,
+            background: theme.aggrid.overlay.background,
         },
         '& .ag-overlay-no-rows-wrapper': {
             background: 'none',

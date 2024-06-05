@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, RTE (http://www.rte-france.com)
+ * Copyright (c) 2024, RTE (http://www.rte-france.com)
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -36,56 +36,60 @@ const onColumnResized = (params: ColumnResizedEvent) => {
     }
 };
 
-const CustomAGGrid = React.forwardRef<any, CustomAGGridProps>((props, ref) => {
-    const {
-        shouldHidePinnedHeaderRightBorder = false,
-        overlayNoRowsTemplate,
-        loadingOverlayComponent,
-        loadingOverlayComponentParams,
-        showOverlay = false,
-    } = props;
-    const theme = useTheme<Theme>();
-    const intl = useIntl();
+const CustomAGGrid = React.forwardRef<AgGridReact, CustomAGGridProps>(
+    (props, ref) => {
+        const {
+            shouldHidePinnedHeaderRightBorder = false,
+            overlayNoRowsTemplate,
+            loadingOverlayComponent,
+            loadingOverlayComponentParams,
+            showOverlay = false,
+        } = props;
+        const theme = useTheme<Theme>();
+        const intl = useIntl();
 
-    const GRID_PREFIX = 'grid.';
+        const GRID_PREFIX = 'grid.';
 
-    const getLocaleText = useCallback(
-        (params: GetLocaleTextParams) => {
-            const key = GRID_PREFIX + params.key;
-            return intl.formatMessage({
-                id: key,
-                defaultMessage: params.defaultValue,
-            });
-        },
-        [intl]
-    );
+        const getLocaleText = useCallback(
+            (params: GetLocaleTextParams) => {
+                const key = GRID_PREFIX + params.key;
+                return intl.formatMessage({
+                    id: key,
+                    defaultMessage: params.defaultValue,
+                });
+            },
+            [intl]
+        );
 
-    return (
-        <Box
-            sx={mergeSx(
-                styles.grid as SxProps | undefined,
-                shouldHidePinnedHeaderRightBorder
-                    ? styles.noBorderRight
-                    : undefined,
-                showOverlay
-                    ? (styles.overlayBackground as SxProps | undefined)
-                    : undefined
-            )}
-            className={theme.aggrid}
-        >
-            <AgGridReact
-                ref={ref}
-                getLocaleText={getLocaleText}
-                suppressPropertyNamesCheck={true}
-                loadingOverlayComponent={loadingOverlayComponent}
-                loadingOverlayComponentParams={loadingOverlayComponentParams}
-                overlayNoRowsTemplate={overlayNoRowsTemplate}
-                onColumnResized={onColumnResized}
-                enableCellTextSelection
-                {...props}
-            />
-        </Box>
-    );
-});
+        return (
+            <Box
+                sx={mergeSx(
+                    styles.grid as SxProps | undefined,
+                    shouldHidePinnedHeaderRightBorder
+                        ? styles.noBorderRight
+                        : undefined,
+                    showOverlay
+                        ? (styles.overlayBackground as SxProps | undefined)
+                        : undefined
+                )}
+                className={theme.aggrid.theme}
+            >
+                <AgGridReact
+                    ref={ref}
+                    getLocaleText={getLocaleText}
+                    suppressPropertyNamesCheck={true}
+                    loadingOverlayComponent={loadingOverlayComponent}
+                    loadingOverlayComponentParams={
+                        loadingOverlayComponentParams
+                    }
+                    overlayNoRowsTemplate={overlayNoRowsTemplate}
+                    onColumnResized={onColumnResized}
+                    enableCellTextSelection
+                    {...props}
+                />
+            </Box>
+        );
+    }
+);
 
 export default CustomAGGrid;
