@@ -98,6 +98,11 @@ export const CONTINGENCY_LIST_EQUIPMENTS: Record<
     | EquipmentType.DANGLING_LINE,
     FormEquipment
 > = {
+    BUSBAR_SECTION: {
+        id: 'BUSBAR_SECTION',
+        label: 'BusBarSections',
+        fields: [countries, nominalVoltage],
+    },
     LINE: {
         id: 'LINE',
         label: 'Lines',
@@ -128,27 +133,32 @@ export const CONTINGENCY_LIST_EQUIPMENTS: Record<
         label: 'DanglingLines',
         fields: [countries, nominalVoltage],
     },
-    BUSBAR_SECTION: {
-        id: 'BUSBAR_SECTION',
-        label: 'BusBarSections',
-        fields: [countries, nominalVoltage],
-    },
 };
 export const FILTER_EQUIPMENTS: Record<
+    | EquipmentType.SUBSTATION
+    | EquipmentType.VOLTAGE_LEVEL
     | EquipmentType.LINE
     | EquipmentType.TWO_WINDINGS_TRANSFORMER
-    | EquipmentType.GENERATOR
-    | EquipmentType.SHUNT_COMPENSATOR
-    | EquipmentType.HVDC_LINE
-    | EquipmentType.DANGLING_LINE
     | EquipmentType.THREE_WINDINGS_TRANSFORMER
-    | EquipmentType.LOAD
+    | EquipmentType.GENERATOR
     | EquipmentType.BATTERY
-    | EquipmentType.VOLTAGE_LEVEL
-    | EquipmentType.SUBSTATION
-    | EquipmentType.STATIC_VAR_COMPENSATOR,
+    | EquipmentType.LOAD
+    | EquipmentType.SHUNT_COMPENSATOR
+    | EquipmentType.STATIC_VAR_COMPENSATOR
+    | EquipmentType.HVDC_LINE
+    | EquipmentType.DANGLING_LINE,
     FormEquipment
 > = {
+    SUBSTATION: {
+        id: 'SUBSTATION',
+        label: 'Substations',
+        fields: [countries, nominalVoltage],
+    },
+    VOLTAGE_LEVEL: {
+        id: 'VOLTAGE_LEVEL',
+        label: 'VoltageLevels',
+        fields: [countries, nominalVoltage],
+    },
     LINE: {
         id: 'LINE',
         label: 'Lines',
@@ -158,21 +168,6 @@ export const FILTER_EQUIPMENTS: Record<
         id: 'TWO_WINDINGS_TRANSFORMER',
         label: 'TwoWindingsTransformers',
         fields: [countries, nominalVoltage1, nominalVoltage2],
-    },
-    SHUNT_COMPENSATOR: {
-        id: 'SHUNT_COMPENSATOR',
-        label: 'ShuntCompensators',
-        fields: [countries, nominalVoltage],
-    },
-    HVDC_LINE: {
-        id: 'HVDC_LINE',
-        label: 'Hvdc',
-        fields: [countries1, countries2, nominalVoltage],
-    },
-    DANGLING_LINE: {
-        id: 'DANGLING_LINE',
-        label: 'DanglingLines',
-        fields: [countries, nominalVoltage],
     },
     THREE_WINDINGS_TRANSFORMER: {
         id: 'THREE_WINDINGS_TRANSFORMER',
@@ -184,29 +179,34 @@ export const FILTER_EQUIPMENTS: Record<
         label: 'Generators',
         fields: [countries, energySource, nominalVoltage],
     },
-    LOAD: {
-        id: 'LOAD',
-        label: 'Loads',
-        fields: [countries, nominalVoltage],
-    },
     BATTERY: {
         id: 'BATTERY',
         label: 'Batteries',
         fields: [countries, nominalVoltage],
     },
-    VOLTAGE_LEVEL: {
-        id: 'VOLTAGE_LEVEL',
-        label: 'VoltageLevels',
+    LOAD: {
+        id: 'LOAD',
+        label: 'Loads',
         fields: [countries, nominalVoltage],
     },
-    SUBSTATION: {
-        id: 'SUBSTATION',
-        label: 'Substations',
+    SHUNT_COMPENSATOR: {
+        id: 'SHUNT_COMPENSATOR',
+        label: 'ShuntCompensators',
         fields: [countries, nominalVoltage],
     },
     STATIC_VAR_COMPENSATOR: {
         id: 'STATIC_VAR_COMPENSATOR',
         label: 'StaticVarCompensators',
+        fields: [countries, nominalVoltage],
+    },
+    HVDC_LINE: {
+        id: 'HVDC_LINE',
+        label: 'Hvdc',
+        fields: [countries1, countries2, nominalVoltage],
+    },
+    DANGLING_LINE: {
+        id: 'DANGLING_LINE',
+        label: 'DanglingLines',
         fields: [countries, nominalVoltage],
     },
 };

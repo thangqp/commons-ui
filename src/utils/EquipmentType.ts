@@ -52,11 +52,15 @@ export const equipmentStyles = {
 };
 
 /**
- * The order of the equipments in this list is important, because many UI follow it directly
+ * The order of the equipments in this list is important, as many UI follow it directly.
+ * When EquipmentType is used for an interface this order must be maintained.
  */
-export enum EquipmentType { // TODO : identical to EQUIPMENT_TYPES => shouldn't EQUIPMENT_TYPES be removed ? => TIE_LINE is missing
+export enum EquipmentType {
     SUBSTATION = 'SUBSTATION',
     VOLTAGE_LEVEL = 'VOLTAGE_LEVEL',
+    BUS = 'BUS',
+    BUSBAR_SECTION = 'BUSBAR_SECTION',
+    SWITCH = 'SWITCH',
     LINE = 'LINE',
     TWO_WINDINGS_TRANSFORMER = 'TWO_WINDINGS_TRANSFORMER',
     THREE_WINDINGS_TRANSFORMER = 'THREE_WINDINGS_TRANSFORMER',
@@ -70,9 +74,6 @@ export enum EquipmentType { // TODO : identical to EQUIPMENT_TYPES => shouldn't 
     VSC_CONVERTER_STATION = 'VSC_CONVERTER_STATION',
     LCC_CONVERTER_STATION = 'LCC_CONVERTER_STATION',
     DANGLING_LINE = 'DANGLING_LINE',
-    BUSBAR_SECTION = 'BUSBAR_SECTION',
-    BUS = 'BUS',
-    SWITCH = 'SWITCH',
 }
 
 // Must be equivalent as the back enum
