@@ -15,7 +15,7 @@ import { ColumnResizedEvent, GetLocaleTextParams } from 'ag-grid-community';
 import { Box } from '@mui/system';
 import { mergeSx } from '../../utils/styles';
 import { SxProps, useTheme } from '@mui/material';
-import { styles } from './custom-aggrid.style';
+import { styles, CUSTOM_AGGRID_THEME } from './custom-aggrid.style';
 
 interface CustomAGGGridStyleProps {
     shouldHidePinnedHeaderRightBorder?: boolean;
@@ -72,7 +72,7 @@ const CustomAGGrid = React.forwardRef<AgGridReact, CustomAGGridProps>(
                         ? (styles.overlayBackground as SxProps | undefined)
                         : undefined
                 )}
-                className={theme.aggrid.theme}
+                className={`${theme.aggrid.theme} ${CUSTOM_AGGRID_THEME}`}
             >
                 <AgGridReact
                     ref={ref}

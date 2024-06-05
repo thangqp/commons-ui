@@ -7,17 +7,20 @@
 import { Theme } from '@mui/material/styles/createTheme';
 import { SystemStyleObject } from '@mui/system/styleFunctionSx/styleFunctionSx';
 
+export const CUSTOM_AGGRID_THEME = 'aggrid-custom-theme';
+
 export const styles = {
     grid: (theme: Theme): SystemStyleObject<Theme> => ({
         width: 'auto',
         height: '100%',
         position: 'relative',
 
-        '--ag-value-change-value-highlight-background-color':
-            theme.aggrid.valueChangeHighlightBackgroundColor,
-
-        '--ag-selected-row-background-color': theme.aggrid.highlightColor,
-        '--ag-row-hover-color': theme.aggrid.highlightColor,
+        [`&.${CUSTOM_AGGRID_THEME}`]: {
+            '--ag-value-change-value-highlight-background-color':
+                theme.aggrid.valueChangeHighlightBackgroundColor,
+            '--ag-selected-row-background-color': theme.aggrid.highlightColor,
+            '--ag-row-hover-color': theme.aggrid.highlightColor,
+        },
 
         //overrides the default computed max height for ag grid default selector editor to make it more usable
         //can be removed if a custom selector editor is implemented
