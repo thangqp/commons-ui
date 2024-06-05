@@ -7,7 +7,7 @@
 import { Theme } from '@mui/material/styles/createTheme';
 import { SystemStyleObject } from '@mui/system/styleFunctionSx/styleFunctionSx';
 
-export const CUSTOM_AGGRID_THEME = 'aggrid-custom-theme';
+export const CUSTOM_AGGRID_THEME = 'custom-aggrid-theme';
 
 export const styles = {
     grid: (theme: Theme): SystemStyleObject<Theme> => ({
