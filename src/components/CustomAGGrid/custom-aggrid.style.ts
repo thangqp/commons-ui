@@ -22,6 +22,10 @@ export const styles = {
             '--ag-row-hover-color': theme.aggrid.highlightColor,
         },
 
+        '& .ag-checkbox-input': {
+            cursor: 'pointer',
+        },
+
         //overrides the default computed max height for ag grid default selector editor to make it more usable
         //can be removed if a custom selector editor is implemented
         '& .ag-select-list': {
