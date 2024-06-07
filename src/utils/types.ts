@@ -46,6 +46,7 @@ export type ElementAttributes = {
         equipmentType: string;
         format: string | null;
     };
+    uploading?: boolean;
 };
 
 export type Equipment =
