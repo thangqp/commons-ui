@@ -45,6 +45,7 @@ const CsvUploader: FunctionComponent<CsvUploaderProps> = ({
     validateData = (_rows) => true,
     getDataFromCsv,
     useFieldArrayOutput,
+    ...props
 }) => {
     const watchTableValues = useWatch({ name });
     const { append, replace } = useFieldArrayOutput;
@@ -215,6 +216,7 @@ const CsvUploader: FunctionComponent<CsvUploaderProps> = ({
                                         setImportedData([...results.data]);
                                         setCreateError('');
                                     }}
+                                    {...props}
                                 >
                                     {({ getRootProps, acceptedFile }: any) => (
                                         <>
