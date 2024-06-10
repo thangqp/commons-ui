@@ -21,11 +21,10 @@ const styles = {
 };
 
 type RuleValueEditorProps = ValueEditorProps & {
-    compositeRule: CompositeRule;
+    compositeRule?: CompositeRule;
 };
 
 const CompositeRuleValueEditor = (props: RuleValueEditorProps) => {
-    const intl = useIntl();
     const {
         handleOnChange,
         schema: {
@@ -34,6 +33,7 @@ const CompositeRuleValueEditor = (props: RuleValueEditorProps) => {
         fieldData,
         compositeRule,
     } = props;
+    const intl = useIntl();
 
     // set operator as the previous in rule if exists, otherwise the first operator in schema is selected
     const operator =
@@ -59,7 +59,7 @@ const CompositeRuleValueEditor = (props: RuleValueEditorProps) => {
         <Grid container paddingTop={1}>
             <Grid container item xs={4} sx={styles.gridItem}>
                 <Typography>
-                    {intl.formatMessage({ id: props.fieldData.label })}
+                    {intl.formatMessage({ id: fieldData.label })}
                 </Typography>
             </Grid>
             <Grid container item xs={2.5} sx={styles.gridItem} paddingLeft={1}>
@@ -82,12 +82,10 @@ const CompositeRuleValueEditor = (props: RuleValueEditorProps) => {
             </Grid>
             <Grid container item xs={5.5} sx={styles.gridItem} paddingLeft={1}>
                 <ValueEditorControlElement
-                    {...{
-                        ...props,
-                        operator: operator,
-                        handleOnChange: handleOnChangeValue,
-                        value: compositeRule?.value,
-                    }}
+                    {...props}
+                    operator={operator}
+                    handleOnChange={handleOnChangeValue}
+                    value={compositeRule?.value}
                 />
             </Grid>
         </Grid>

@@ -24,22 +24,22 @@ const styles = {
 const CompositeGroupValueEditor = (props: ValueEditorProps<CompositeField>) => {
     const {
         handleOnChange,
-        fieldData: { combinator, children = {} },
-        value: { rules } = {},
+        fieldData: { combinator, children },
+        value,
     } = props;
 
     const generateOnChangeHandler = useCallback(
         (field: string) => (compositeRule: CompositeRule) => {
             handleOnChange({
-                ...(props.value ?? {}),
+                ...value,
                 combinator: combinator,
                 rules: {
-                    ...(rules ?? {}),
+                    ...value?.rules,
                     [field]: compositeRule,
                 },
             });
         },
-        [handleOnChange, combinator, rules, props.value]
+        [handleOnChange, combinator, value]
     );
 
     return (
@@ -51,16 +51,17 @@ const CompositeGroupValueEditor = (props: ValueEditorProps<CompositeField>) => {
             paddingRight={1}
             paddingBottom={1}
         >
-            {Object.values(children).map((fieldData) => (
-                <CompositeRuleValueEditor
-                    {...props}
-                    key={fieldData.name}
-                    field={fieldData.name}
-                    fieldData={fieldData}
-                    compositeRule={rules?.[fieldData.name]}
-                    handleOnChange={generateOnChangeHandler(fieldData.name)}
-                />
-            ))}
+            {children &&
+                Object.values(children).map((fieldData) => (
+                    <CompositeRuleValueEditor
+                        {...props}
+                        key={fieldData.name}
+                        field={fieldData.name}
+                        fieldData={fieldData}
+                        compositeRule={value?.rules?.[fieldData.name]}
+                        handleOnChange={generateOnChangeHandler(fieldData.name)}
+                    />
+                ))}
         </Grid>
     );
 };
