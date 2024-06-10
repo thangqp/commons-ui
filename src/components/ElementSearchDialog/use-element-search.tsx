@@ -40,6 +40,7 @@ export const useElementSearch = <T,>(props: UseElementSearch<T>) => {
                 })
                 .catch((error) => {
                     if (newSearchTerm === lastSearchTermRef.current) {
+                        setElementsFound([]);
                         setIsLoading(false);
                     } // else ignore errors of outdated fetch if changing "isLoading state"
                     snackError({

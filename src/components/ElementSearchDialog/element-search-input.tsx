@@ -81,7 +81,6 @@ export const ElementSearchInput = <T,>(props: ElementSearchInputProps<T>) => {
             }}
             onChange={(_event, newValue, reason) => {
                 // when calling this method with reason == "selectOption", newValue can't be null or of type "string", since an option has been clicked on
-                // when calling this method with reason == "selectOption", newValue can't be null or of type "string", since an option has been clicked on
                 if (
                     newValue != null &&
                     typeof newValue !== 'string' &&
