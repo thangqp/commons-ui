@@ -156,11 +156,15 @@ export interface CompositeField extends FullField {
     children?: { [field: string]: FullField };
 }
 
-// typing composite rule
+// typing composite rule value
+export interface CompositeGroup {
+    combinator: string;
+    rules: {
+        [field: string]: CompositeRule;
+    };
+}
+
 export interface CompositeRule {
     operator: string;
-    value: string;
-}
-export interface CompositeGroup {
-    [field: string]: CompositeRule;
+    value: any;
 }

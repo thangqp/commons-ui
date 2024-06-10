@@ -19,10 +19,10 @@ import {
 import { IntlShape } from 'react-intl';
 import {
     CombinatorType,
+    CompositeField,
+    CompositeGroup,
     DataType,
     FieldType,
-    CompositeGroup,
-    CompositeField,
     OperatorOption,
     OperatorType,
     RuleGroupTypeExport,
@@ -276,19 +276,19 @@ export function exportExpertRules(query: RuleGroupType): RuleGroupTypeExport {
     function transformCompositeRule(
         compositeRule: RuleType
     ): RuleGroupTypeExport {
-        const transformedRules = Object.entries(
-            compositeRule.value.rules as CompositeGroup
-        ).map(([field, rule]) =>
-            transformRule({
-                ...rule,
-                field: field,
-                operator: rule.operator,
-                value: rule.value,
-            })
+        const compositeGroup = compositeRule.value as CompositeGroup;
+        const transformedRules = Object.entries(compositeGroup.rules).map(
+            ([field, rule]) =>
+                transformRule({
+                    ...rule,
+                    field: field,
+                    operator: rule.operator,
+                    value: rule.value,
+                })
         );
 
         return {
-            combinator: compositeRule.value.combinator as CombinatorType,
+            combinator: compositeGroup.combinator as CombinatorType,
             dataType: DataType.COMBINATOR,
             rules: transformedRules,
             // two additional attributes to distinct a composite rule from a normal rule group
@@ -361,10 +361,8 @@ export function importExpertRules(query: RuleGroupTypeExport): RuleGroupType {
         };
     }
 
-    function transformCompositeGroup(
-        ruleOrGroup: RuleGroupTypeExport
-    ): RuleType {
-        const transformedGroupRules = ruleOrGroup.rules
+    function transformCompositeGroup(group: RuleGroupTypeExport): RuleType {
+        const transformedRules = group.rules
             .map((rule) => transformRule(rule as RuleTypeExport))
             .reduce(
                 (obj, transformedRule) => ({
@@ -378,13 +376,13 @@ export function importExpertRules(query: RuleGroupTypeExport): RuleGroupType {
             );
 
         return {
-            field: ruleOrGroup.field as FieldType,
+            field: group.field as FieldType,
             operator: Object.values(OPERATOR_OPTIONS).find(
-                (operator) => operator.customName === ruleOrGroup.operator
+                (operator) => operator.customName === group.operator
             )?.name as string,
             value: {
-                combinator: ruleOrGroup.combinator,
-                rules: transformedGroupRules,
+                combinator: group.combinator,
+                rules: transformedRules,
             },
         };
     }
@@ -528,15 +526,15 @@ export const queryValidator: QueryValidator = (query) => {
             const childrenFields = Object.keys(
                 getFieldData(rule.field).children ?? {}
             );
-            const rules = (rule.value?.rules ?? {}) as CompositeGroup;
+            const compositeGroup = rule.value as CompositeGroup;
 
             // call validate recursively
             childrenFields.forEach((field) => {
                 validateRule({
                     ...rule,
                     field: field,
-                    operator: rules[field]?.operator,
-                    value: rules[field]?.value,
+                    operator: compositeGroup?.rules?.[field]?.operator,
+                    value: compositeGroup?.rules?.[field]?.value,
                 });
             });
         }

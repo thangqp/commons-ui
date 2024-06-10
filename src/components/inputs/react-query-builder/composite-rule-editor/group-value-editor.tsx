@@ -6,9 +6,10 @@
  */
 import { ValueEditorProps } from 'react-querybuilder';
 import { Grid, Theme } from '@mui/material';
-import CompositeRuleValueEditor from './composite-rule-value-editor';
+import RuleValueEditor from './rule-value-editor';
 import {
     CompositeField,
+    CompositeGroup,
     CompositeRule,
 } from '../../../filter/expert/expert-filter.type';
 import { useCallback } from 'react';
@@ -21,23 +22,25 @@ const styles = {
     }),
 };
 
-const CompositeGroupValueEditor = (props: ValueEditorProps<CompositeField>) => {
+const GroupValueEditor = (props: ValueEditorProps<CompositeField>) => {
     const {
-        handleOnChange,
         fieldData: { combinator, children },
         value,
+        handleOnChange,
     } = props;
 
-    const generateOnChangeHandler = useCallback(
-        (field: string) => (compositeRule: CompositeRule) => {
-            handleOnChange({
+    const generateOnChangeRuleHandler = useCallback(
+        (field: string) => (rule: CompositeRule) => {
+            const compositeGroup: CompositeGroup = {
                 ...value,
                 combinator: combinator,
                 rules: {
                     ...value?.rules,
-                    [field]: compositeRule,
+                    [field]: rule,
                 },
-            });
+            };
+
+            handleOnChange(compositeGroup);
         },
         [handleOnChange, combinator, value]
     );
@@ -53,17 +56,19 @@ const CompositeGroupValueEditor = (props: ValueEditorProps<CompositeField>) => {
         >
             {children &&
                 Object.values(children).map((fieldData) => (
-                    <CompositeRuleValueEditor
+                    <RuleValueEditor
                         {...props}
                         key={fieldData.name}
                         field={fieldData.name}
                         fieldData={fieldData}
-                        compositeRule={value?.rules?.[fieldData.name]}
-                        handleOnChange={generateOnChangeHandler(fieldData.name)}
+                        rule={value?.rules?.[fieldData.name]}
+                        handleOnChangeRule={generateOnChangeRuleHandler(
+                            fieldData.name
+                        )}
                     />
                 ))}
         </Grid>
     );
 };
 
-export default CompositeGroupValueEditor;
+export default GroupValueEditor;
