@@ -12,6 +12,14 @@ import {
     OperatorOption,
 } from '../../../filter/expert/expert-filter.type';
 
+const styles = {
+    gridItem: {
+        flexDirection: 'column',
+        justifyContent: 'flex-end',
+        alignItems: 'baseline',
+    },
+};
+
 type RuleValueEditorProps = ValueEditorProps & {
     compositeRule: CompositeRule;
 };
@@ -49,27 +57,12 @@ const CompositeRuleValueEditor = (props: RuleValueEditorProps) => {
 
     return (
         <Grid container paddingTop={1}>
-            <Grid
-                container
-                item
-                xs={4}
-                direction={'column'}
-                justifyContent={'flex-end'}
-                alignItems={'baseline'}
-            >
+            <Grid container item xs={4} sx={styles.gridItem}>
                 <Typography>
                     {intl.formatMessage({ id: props.fieldData.label })}
                 </Typography>
             </Grid>
-            <Grid
-                container
-                item
-                xs={2.5}
-                paddingLeft={1}
-                direction={'column'}
-                justifyContent={'flex-end'}
-                alignItems={'baseline'}
-            >
+            <Grid container item xs={2.5} sx={styles.gridItem} paddingLeft={1}>
                 <Select
                     value={operator}
                     size={'small'}
@@ -87,15 +80,7 @@ const CompositeRuleValueEditor = (props: RuleValueEditorProps) => {
                     )}
                 </Select>
             </Grid>
-            <Grid
-                container
-                item
-                xs={5.5}
-                paddingLeft={1}
-                direction={'column'}
-                justifyContent={'flex-end'}
-                alignItems={'baseline'}
-            >
+            <Grid container item xs={5.5} sx={styles.gridItem} paddingLeft={1}>
                 <ValueEditorControlElement
                     {...{
                         ...props,
