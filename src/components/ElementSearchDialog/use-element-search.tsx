@@ -27,8 +27,6 @@ export const useElementSearch = <T,>(props: UseElementSearch<T>) => {
     const searchMatchingElements = useCallback(
         (newSearchTerm: string) => {
             if (newSearchTerm.length === 0) {
-                setElementsFound([]);
-                setIsLoading(false);
                 return;
             }
 
@@ -62,14 +60,15 @@ export const useElementSearch = <T,>(props: UseElementSearch<T>) => {
         (newSearchTerm: string) => {
             setSearchTerm(newSearchTerm);
 
-            // if user input is empty, return empty array and set isLoading to false without debouncing
+            // if user input is empty, return empty array and set isLoading to false
+            // still debouncing to cancel previous call, otherwise last call will still trigger
             if (newSearchTerm.length === 0) {
                 setElementsFound([]);
                 setIsLoading(false);
-                return;
+            } else {
+                setIsLoading(true);
             }
 
-            setIsLoading(true);
             debouncedSearchMatchingElements(newSearchTerm);
         },
         [debouncedSearchMatchingElements]

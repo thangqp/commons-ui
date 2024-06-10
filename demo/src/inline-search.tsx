@@ -1,6 +1,10 @@
 import { useState } from 'react';
-import { ElementSearchInput } from '../../src/components/ElementSearchDialog/element-search-input';
-import { EquipmentItem, EquipmentType, equipmentStyles } from '../../src';
+import {
+    ElementSearchInput,
+    EquipmentItem,
+    EquipmentType,
+    equipmentStyles,
+} from '../../src';
 import { TextField } from '@mui/material';
 import { Search } from '@mui/icons-material';
 import { useIntl } from 'react-intl';
@@ -19,7 +23,6 @@ export const InlineSearch = () => {
 
     return (
         <ElementSearchInput
-            searchingLabel={'testInlineSearch'}
             onSearchTermChange={updateSearchTerm}
             onSelectionChange={(element: any) => {
                 console.log(element);
@@ -50,7 +53,7 @@ export const InlineSearch = () => {
                 />
             )}
             searchTerm={searchTerm}
-            isLoading={isLoading}
+            loading={isLoading}
             getOptionLabel={(option) => option.label}
             isOptionEqualToValue={(option1, option2) =>
                 option1.id === option2.id

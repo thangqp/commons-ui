@@ -13,16 +13,16 @@ export type RenderElementProps<T> = HTMLAttributes<HTMLLIElement> & {
 };
 
 export interface ElementSearchInputProps<T>
-    extends Omit<
-        AutocompleteProps<T, false, false, false>,
-        // we already defined them in our custom Autocomplete
-        'value' | 'onChange' | 'renderInput' | 'options' | 'renderOption'
+    extends Pick<
+        AutocompleteProps<T, false, false, true>,
+        'sx' | 'size' | 'loadingText' | 'loading'
     > {
-    searchingLabel?: string;
     searchTerm: string;
     onClose?: () => void;
     onSearchTermChange: (searchTerm: string) => void;
     onSelectionChange: (selection: T) => void;
+    getOptionLabel: (option: T) => string;
+    isOptionEqualToValue: (option1: T, option2: T) => boolean;
     elementsFound: T[];
     renderElement: (props: RenderElementProps<T>) => ReactNode;
     renderInput: (
@@ -31,26 +31,27 @@ export interface ElementSearchInputProps<T>
     ) => ReactNode;
     searchTermDisabled?: boolean;
     searchTermDisableReason?: string;
-    isLoading: boolean;
-    loadingText?: string;
+    showResults?: boolean;
 }
 
 export const ElementSearchInput = <T,>(props: ElementSearchInputProps<T>) => {
     const {
         elementsFound,
-        isLoading,
+        loading,
         onSearchTermChange,
         onSelectionChange,
         renderElement,
         renderInput,
+        getOptionLabel,
+        isOptionEqualToValue,
         onClose: handleClose,
+        showResults,
         searchTerm,
         loadingText,
         searchTermDisableReason,
         searchTermDisabled,
-        searchingLabel,
-        open,
-        ...rest
+        size,
+        sx,
     } = props;
 
     const intl = useIntl();
@@ -66,8 +67,10 @@ export const ElementSearchInput = <T,>(props: ElementSearchInputProps<T>) => {
 
     return (
         <Autocomplete
-            {...rest}
-            open={open}
+            sx={sx}
+            open={showResults}
+            freeSolo
+            size={size}
             id="element-search"
             forcePopupIcon={false}
             fullWidth
@@ -78,12 +81,17 @@ export const ElementSearchInput = <T,>(props: ElementSearchInputProps<T>) => {
             }}
             onChange={(_event, newValue, reason) => {
                 // when calling this method with reason == "selectOption", newValue can't be null or of type "string", since an option has been clicked on
-                if (newValue !== null && reason === 'selectOption') {
+                // when calling this method with reason == "selectOption", newValue can't be null or of type "string", since an option has been clicked on
+                if (
+                    newValue != null &&
+                    typeof newValue !== 'string' &&
+                    reason === 'selectOption'
+                ) {
                     onSelectionChange(newValue);
                 }
             }}
-            options={isLoading ? [] : elementsFound}
-            loading={isLoading}
+            options={loading ? [] : elementsFound}
+            loading={loading}
             loadingText={loadingText}
             autoHighlight={true}
             noOptionsText={intl.formatMessage({
@@ -100,6 +108,19 @@ export const ElementSearchInput = <T,>(props: ElementSearchInputProps<T>) => {
             renderInput={(params: AutocompleteRenderInputParams) =>
                 renderInput(displayedValue, params)
             }
+            getOptionLabel={(option) => {
+                if (typeof option === 'string') {
+                    return option;
+                }
+                return getOptionLabel(option);
+            }}
+            isOptionEqualToValue={(option: T | string, value: T | string) => {
+                if (typeof option === 'string' || typeof value === 'string') {
+                    return option === value;
+                } else {
+                    return isOptionEqualToValue(option, value);
+                }
+            }}
             disabled={searchTermDisabled}
         />
     );

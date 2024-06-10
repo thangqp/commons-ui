@@ -62,7 +62,6 @@ export const EquipmentSearchDialog = () => {
             <ElementSearchDialog
                 open={isSearchOpen}
                 onClose={() => setIsSearchOpen(false)}
-                searchingLabel={'testSearch'}
                 onSearchTermChange={updateSearchTerm}
                 onSelectionChange={(element: any) => {
                     console.log(element);
@@ -76,7 +75,7 @@ export const EquipmentSearchDialog = () => {
                     />
                 )}
                 searchTerm={searchTerm}
-                isLoading={isLoading}
+                loading={isLoading}
                 getOptionLabel={(option) => option.label}
                 isOptionEqualToValue={(option1, option2) =>
                     option1.id === option2.id
