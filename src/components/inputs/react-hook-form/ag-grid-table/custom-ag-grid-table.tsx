@@ -232,7 +232,7 @@ export const CustomAgGridTable: FunctionComponent<CustomAgGridTableProps> = ({
             <Grid
                 item
                 xs={12}
-                className={theme.aggrid}
+                className={theme.aggrid.theme}
                 sx={style(cssProps).grid}
             >
                 <AgGridReact
