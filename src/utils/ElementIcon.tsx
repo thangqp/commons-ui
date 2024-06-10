@@ -13,9 +13,9 @@ import {
     Settings as SettingsIcon,
 } from '@mui/icons-material';
 import { ElementType } from './ElementType';
-import { SxProps } from '@mui/material';
+import { SxProps, Theme } from '@mui/material';
 
-export function getFileIcon(type: ElementType, style: SxProps) {
+export function getFileIcon(type: ElementType, style: SxProps<Theme>) {
     switch (type) {
         case ElementType.STUDY:
             return <PhotoLibraryIcon sx={style} />;
