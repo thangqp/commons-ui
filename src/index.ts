@@ -136,7 +136,11 @@ export { default as common_button_fr } from './components/translations/common-bu
 export { default as directory_items_input_en } from './components/translations/directory-items-input-en';
 export { default as directory_items_input_fr } from './components/translations/directory-items-input-fr';
 
-export { TagRenderer } from './components/ElementSearchDialog';
+export {
+    TagRenderer,
+    ElementSearchInput,
+    useElementSearch,
+} from './components/ElementSearchDialog';
 export { EquipmentItem } from './components/ElementSearchDialog/equipment-item';
 export { default as CardErrorBoundary } from './components/CardErrorBoundary';
 export { useIntlRef } from './hooks/useIntlRef';
