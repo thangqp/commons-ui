@@ -41,11 +41,7 @@ export type ElementAttributes = {
     lastModifiedBy: string;
     children: any[];
     parentUuid: null | UUID;
-    specificMetadata: {
-        type: string;
-        equipmentType: string;
-        format: string | null;
-    };
+    specificMetadata: Record<string, object>;
     uploading?: boolean;
 };
 
