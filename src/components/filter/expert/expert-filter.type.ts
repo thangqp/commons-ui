@@ -101,7 +101,7 @@ export enum FieldType {
     SVAR_REGULATION_MODE = 'SVAR_REGULATION_MODE',
     VOLTAGE_SET_POINT = 'VOLTAGE_SET_POINT',
     REACTIVE_POWER_SET_POINT = 'REACTIVE_POWER_SET_POINT',
-    REGULATING_TERMINAL = 'REGULATING_TERMINAL', // group rule of REGULATING_TERMINAL_VL_ID and/or REGULATING_TERMINAL_CONNECTABLE_ID
+    REGULATING_TERMINAL = 'REGULATING_TERMINAL', // composite rule of REGULATING_TERMINAL_VL_ID and/or REGULATING_TERMINAL_CONNECTABLE_ID
     REGULATING_TERMINAL_VL_ID = 'REGULATING_TERMINAL_VL_ID',
     REGULATING_TERMINAL_CONNECTABLE_ID = 'REGULATING_TERMINAL_CONNECTABLE_ID',
     REGULATION_TYPE = 'REGULATION_TYPE',
@@ -145,8 +145,8 @@ export interface RuleTypeExport {
 export interface RuleGroupTypeExport {
     combinator: CombinatorType;
     dataType: DataType;
-    field?: FieldType; // used in case of group rule
-    operator?: OperatorType; // used in case of group rule
+    field?: FieldType; // used in case of composite rule
+    operator?: OperatorType; // used in case of composite rule
     rules: (RuleTypeExport | RuleGroupTypeExport)[];
 }
 
