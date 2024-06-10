@@ -21,8 +21,8 @@ import {
     CombinatorType,
     DataType,
     FieldType,
-    GroupRule,
-    GroupRuleField,
+    CompositeGroup,
+    CompositeField,
     OperatorOption,
     OperatorType,
     RuleGroupTypeExport,
@@ -56,7 +56,7 @@ interface Tree {
     [key: string]: TreeNode;
 }
 
-const search = (tree: Tree, value: any, key: string) => {
+const searchTree = (tree: Tree, key: string, value: any) => {
     const stack = Object.values(tree);
     while (stack.length) {
         const node = stack.shift();
@@ -71,7 +71,7 @@ const search = (tree: Tree, value: any, key: string) => {
 };
 
 const getFieldData = (fieldName: string) => {
-    return search(FIELDS_OPTIONS, fieldName, 'name') as GroupRuleField;
+    return searchTree(FIELDS_OPTIONS, 'name', fieldName) as CompositeField;
 };
 
 /**
@@ -92,7 +92,7 @@ const getDataType = (fieldName: string, operator: string) => {
         return DataType.FILTER_UUID;
     }
 
-    // particular case => set dataType to STRING when exporting group rule REGULATING_TERMINAL with operator EXISTS or NOT_EXISTS
+    // particular case => set dataType to STRING when exporting composite rule REGULATING_TERMINAL with operator EXISTS or NOT_EXISTS
     if (
         fieldName === FieldType.REGULATING_TERMINAL &&
         (operator === OPERATOR_OPTIONS.EXISTS.name ||
@@ -157,7 +157,7 @@ export const getOperators = (fieldName: string, intl: IntlShape) => {
                 OPERATOR_OPTIONS.NOT_EXISTS,
             ];
 
-            // particulary case
+            // particular case
             if (field.name === FieldType.AUTOMATE) {
                 // take only EXISTS and NOT_EXISTS
                 numberOperators = [
@@ -236,9 +236,9 @@ export function exportExpertRules(query: RuleGroupType): RuleGroupTypeExport {
         const isValueAnArray = Array.isArray(rule.value);
         const dataType = getDataType(rule.field, rule.operator) as DataType;
 
-        // a group rule is a rule with dataType COMBINATOR  => build a group with child rules
+        // a composite rule is a rule with dataType COMBINATOR  => build a group with child rules
         if (dataType === DataType.COMBINATOR) {
-            return transformGroupRule(rule);
+            return transformCompositeRule(rule);
         }
 
         // a single rule
@@ -273,9 +273,11 @@ export function exportExpertRules(query: RuleGroupType): RuleGroupTypeExport {
         };
     }
 
-    function transformGroupRule(groupRule: RuleType): RuleGroupTypeExport {
+    function transformCompositeRule(
+        compositeRule: RuleType
+    ): RuleGroupTypeExport {
         const transformedRules = Object.entries(
-            groupRule.value.rules as GroupRule
+            compositeRule.value.rules as CompositeGroup
         ).map(([field, rule]) =>
             transformRule({
                 ...rule,
@@ -286,14 +288,14 @@ export function exportExpertRules(query: RuleGroupType): RuleGroupTypeExport {
         );
 
         return {
-            combinator: groupRule.value.combinator as CombinatorType,
+            combinator: compositeRule.value.combinator as CombinatorType,
             dataType: DataType.COMBINATOR,
             rules: transformedRules,
-            // two additional attributes to distinct a group rule from a normal rule group
+            // two additional attributes to distinct a composite rule from a normal rule group
             operator: Object.values(OPERATOR_OPTIONS).find(
-                (operator) => operator.name === groupRule.operator
+                (operator) => operator.name === compositeRule.operator
             )?.customName as OperatorType,
-            field: groupRule.field as FieldType,
+            field: compositeRule.field as FieldType,
         };
     }
 
@@ -359,7 +361,9 @@ export function importExpertRules(query: RuleGroupTypeExport): RuleGroupType {
         };
     }
 
-    function transformGroupRule(ruleOrGroup: RuleGroupTypeExport): RuleType {
+    function transformCompositeGroup(
+        ruleOrGroup: RuleGroupTypeExport
+    ): RuleType {
         const transformedGroupRules = ruleOrGroup.rules
             .map((rule) => transformRule(rule as RuleTypeExport))
             .reduce(
@@ -389,9 +393,9 @@ export function importExpertRules(query: RuleGroupTypeExport): RuleGroupType {
         // Recursively transform the rules within the group
         const transformedRules = group.rules.map((ruleOrGroup) => {
             if ('rules' in ruleOrGroup) {
-                // a group rule => aggregate into a group rule
+                // a composite group => aggregate into a composite rule
                 if ('field' in ruleOrGroup && 'operator' in ruleOrGroup) {
-                    return transformGroupRule(
+                    return transformCompositeGroup(
                         ruleOrGroup as RuleGroupTypeExport
                     );
                 }
@@ -520,14 +524,14 @@ export const queryValidator: QueryValidator = (query) => {
                 reasons: [RULES.EMPTY_RULE],
             };
         } else if (rule.id && dataType === DataType.COMBINATOR) {
-            // based on FIELDS_OPTIONS configuration and group rule value, validate for each child rule in a group rule
-            const childFields = Object.keys(
+            // based on FIELDS_OPTIONS configuration and composite group, validate for each children composite rule in a composite group
+            const childrenFields = Object.keys(
                 getFieldData(rule.field).children ?? {}
             );
-            const rules = (rule.value?.rules ?? {}) as GroupRule;
+            const rules = (rule.value?.rules ?? {}) as CompositeGroup;
 
             // call validate recursively
-            childFields.forEach((field) => {
+            childrenFields.forEach((field) => {
                 validateRule({
                     ...rule,
                     field: field,

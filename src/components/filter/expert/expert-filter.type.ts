@@ -129,6 +129,8 @@ export type OperatorOption = {
     label: string;
 };
 
+// This type is equivalent to a (partial) union type of BooleanExpertRule,
+// NumberExpertRule, StringExpertRule, PropertiesExpertRule in filter library
 export interface RuleTypeExport {
     field: FieldType;
     operator: OperatorType;
@@ -139,6 +141,7 @@ export interface RuleTypeExport {
     propertyValues?: string[];
 }
 
+// This type is equivalent to CombinatorExpertRule in filter library
 export interface RuleGroupTypeExport {
     combinator: CombinatorType;
     dataType: DataType;
@@ -147,17 +150,17 @@ export interface RuleGroupTypeExport {
     rules: (RuleTypeExport | RuleGroupTypeExport)[];
 }
 
-// typing group rule schema
-export interface GroupRuleField extends FullField {
+// typing composite rule schema
+export interface CompositeField extends FullField {
     combinator?: string;
     children?: { [field: string]: FullField };
 }
 
-// typing group rule value
-export interface GroupRuleValue {
+// typing composite rule
+export interface CompositeRule {
     operator: string;
     value: string;
 }
-export interface GroupRule {
-    [field: string]: GroupRuleValue;
+export interface CompositeGroup {
+    [field: string]: CompositeRule;
 }

@@ -8,15 +8,15 @@ import { ValueEditorProps } from 'react-querybuilder';
 import { Grid, MenuItem, Select, Typography } from '@mui/material';
 import { useIntl } from 'react-intl';
 import {
-    GroupRuleValue,
+    CompositeRule,
     OperatorOption,
 } from '../../../filter/expert/expert-filter.type';
 
 type RuleValueEditorProps = ValueEditorProps & {
-    ruleValue: GroupRuleValue;
+    compositeRule: CompositeRule;
 };
 
-const RuleValueEditor = (props: RuleValueEditorProps) => {
+const CompositeRuleValueEditor = (props: RuleValueEditorProps) => {
     const intl = useIntl();
     const {
         handleOnChange,
@@ -24,24 +24,24 @@ const RuleValueEditor = (props: RuleValueEditorProps) => {
             controls: { valueEditor: ValueEditorControlElement },
         },
         fieldData,
-        ruleValue,
+        compositeRule,
     } = props;
 
     // set operator as the previous in rule if exists, otherwise the first operator in schema is selected
     const operator =
-        ruleValue?.operator ??
+        compositeRule?.operator ??
         (fieldData.operators as OperatorOption[])?.map((op) => op.name)[0];
 
     const handleOnChangeOperator = (operator: string) => {
         handleOnChange({
-            ...ruleValue,
+            ...compositeRule,
             operator: operator,
         });
     };
 
     const handleOnChangeValue = (value: any) => {
         handleOnChange({
-            ...ruleValue,
+            ...compositeRule,
             value: value,
             operator: operator,
         });
@@ -101,7 +101,7 @@ const RuleValueEditor = (props: RuleValueEditorProps) => {
                         ...props,
                         operator: operator,
                         handleOnChange: handleOnChangeValue,
-                        value: ruleValue?.value,
+                        value: compositeRule?.value,
                     }}
                 />
             </Grid>
@@ -109,4 +109,4 @@ const RuleValueEditor = (props: RuleValueEditorProps) => {
     );
 };
 
-export default RuleValueEditor;
+export default CompositeRuleValueEditor;

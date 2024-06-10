@@ -22,7 +22,7 @@ import ElementValueEditor from './element-value-editor';
 import { ElementType } from '../../../utils/ElementType';
 import PropertyValueEditor from './property-value-editor';
 import { FilterType } from '../../filter/constants/filter-constants';
-import GroupValueEditor from './group-rule-editor/group-value-editor';
+import CompositeGroupValueEditor from './composite-rule-editor/composite-group-value-editor';
 import { OPERATOR_OPTIONS } from '../../filter/expert/expert-filter-constants';
 
 const styles = {
@@ -160,7 +160,7 @@ const ValueEditor: FunctionComponent<ValueEditorProps> = (props) => {
             />
         );
     } else if (props.fieldData.dataType === DataType.COMBINATOR) {
-        return <GroupValueEditor {...props} />;
+        return <CompositeGroupValueEditor {...props} />;
     }
 
     return (

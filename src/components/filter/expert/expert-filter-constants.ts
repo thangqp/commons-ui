@@ -41,13 +41,13 @@ export const EXPERT_FILTER_EQUIPMENTS = {
         id: 'GENERATOR',
         label: 'Generators',
     },
-    LOAD: {
-        id: 'LOAD',
-        label: 'Loads',
-    },
     BATTERY: {
         id: 'BATTERY',
         label: 'Batteries',
+    },
+    LOAD: {
+        id: 'LOAD',
+        label: 'Loads',
     },
     SHUNT_COMPENSATOR: {
         id: 'SHUNT_COMPENSATOR',
@@ -616,7 +616,7 @@ export const FIELDS_OPTIONS = {
         inputType: 'number',
     },
     REGULATING_TERMINAL: {
-        // group criteria
+        // composite rule
         name: FieldType.REGULATING_TERMINAL,
         label: 'regulatingTerminal',
         dataType: DataType.COMBINATOR,

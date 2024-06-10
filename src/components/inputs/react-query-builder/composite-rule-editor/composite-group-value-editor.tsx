@@ -6,10 +6,10 @@
  */
 import { ValueEditorProps } from 'react-querybuilder';
 import { Grid, Theme } from '@mui/material';
-import RuleValueEditor from './rule-value-editor';
+import CompositeRuleValueEditor from './composite-rule-value-editor';
 import {
-    GroupRuleField,
-    GroupRuleValue,
+    CompositeField,
+    CompositeRule,
 } from '../../../filter/expert/expert-filter.type';
 import { useCallback } from 'react';
 
@@ -21,7 +21,7 @@ const styles = {
     }),
 };
 
-const GroupValueEditor = (props: ValueEditorProps<GroupRuleField>) => {
+const CompositeGroupValueEditor = (props: ValueEditorProps<CompositeField>) => {
     const {
         handleOnChange,
         fieldData: { combinator, children = {} },
@@ -29,13 +29,13 @@ const GroupValueEditor = (props: ValueEditorProps<GroupRuleField>) => {
     } = props;
 
     const generateOnChangeHandler = useCallback(
-        (field: string) => (ruleValue: GroupRuleValue) => {
+        (field: string) => (compositeRule: CompositeRule) => {
             handleOnChange({
                 ...(props.value ?? {}),
                 combinator: combinator,
                 rules: {
                     ...(rules ?? {}),
-                    [field]: ruleValue,
+                    [field]: compositeRule,
                 },
             });
         },
@@ -52,12 +52,12 @@ const GroupValueEditor = (props: ValueEditorProps<GroupRuleField>) => {
             paddingBottom={1}
         >
             {Object.values(children).map((fieldData) => (
-                <RuleValueEditor
+                <CompositeRuleValueEditor
                     {...props}
                     key={fieldData.name}
                     field={fieldData.name}
                     fieldData={fieldData}
-                    ruleValue={rules?.[fieldData.name]}
+                    compositeRule={rules?.[fieldData.name]}
                     handleOnChange={generateOnChangeHandler(fieldData.name)}
                 />
             ))}
@@ -65,4 +65,4 @@ const GroupValueEditor = (props: ValueEditorProps<GroupRuleField>) => {
     );
 };
 
-export default GroupValueEditor;
+export default CompositeGroupValueEditor;
