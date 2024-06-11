@@ -129,19 +129,21 @@ export const CustomAgGridTable: FunctionComponent<CustomAgGridTableProps> = ({
 
     const rowData = watch(name);
 
-    const isFirstSelected =
+    const isFirstSelected = Boolean(
         rowData?.length &&
-        gridApi?.api
-            .getRowNode(rowData[0][FieldConstants.AG_GRID_ROW_UUID])
-            ?.isSelected();
+            gridApi?.api
+                .getRowNode(rowData[0][FieldConstants.AG_GRID_ROW_UUID])
+                ?.isSelected()
+    );
 
-    const isLastSelected =
+    const isLastSelected = Boolean(
         rowData?.length &&
-        gridApi?.api
-            .getRowNode(
-                rowData[rowData.length - 1][FieldConstants.AG_GRID_ROW_UUID]
-            )
-            ?.isSelected();
+            gridApi?.api
+                .getRowNode(
+                    rowData[rowData.length - 1][FieldConstants.AG_GRID_ROW_UUID]
+                )
+                ?.isSelected()
+    );
 
     const noRowSelected = selectedRows.length === 0;
 
@@ -230,11 +232,11 @@ export const CustomAgGridTable: FunctionComponent<CustomAgGridTableProps> = ({
             <Grid
                 item
                 xs={12}
-                className={theme.aggrid}
+                className={theme.aggrid.theme}
                 sx={style(cssProps).grid}
             >
                 <AgGridReact
-                    rowData={gridApi && rowData?.length ? rowData : null} // to display loader at first render before we get the initial data and before the columns are sized to avoid glitch
+                    rowData={rowData}
                     onGridReady={onGridReady}
                     getLocaleText={getLocaleText}
                     cacheOverflowSize={10}
