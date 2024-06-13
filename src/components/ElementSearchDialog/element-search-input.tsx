@@ -79,6 +79,7 @@ export const ElementSearchInput = <T,>(props: ElementSearchInputProps<T>) => {
             size={size}
             id="element-search"
             forcePopupIcon={false}
+            disableClearable={true}
             fullWidth
             onInputChange={(_event, value, reason) => {
                 if (!searchTermDisabled && (reason !== 'reset' || !value)) {
