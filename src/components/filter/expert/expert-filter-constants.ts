@@ -647,7 +647,7 @@ export const FIELDS_OPTIONS = {
     AUTOMATE: {
         name: FieldType.AUTOMATE,
         label: 'automate',
-        dataType: DataType.NUMBER,
+        dataType: DataType.BOOLEAN,
     },
     LOW_VOLTAGE_SET_POINT: {
         name: FieldType.LOW_VOLTAGE_SET_POINT,

@@ -92,13 +92,13 @@ const getDataType = (fieldName: string, operator: string) => {
         return DataType.FILTER_UUID;
     }
 
-    // particular case => set dataType to STRING when exporting composite rule REGULATING_TERMINAL with operator EXISTS or NOT_EXISTS
+    // particular case => set dataType to BOOLEAN when exporting composite rule REGULATING_TERMINAL with operator EXISTS or NOT_EXISTS
     if (
         fieldName === FieldType.REGULATING_TERMINAL &&
         (operator === OPERATOR_OPTIONS.EXISTS.name ||
             operator === OPERATOR_OPTIONS.NOT_EXISTS.name)
     ) {
-        return DataType.STRING;
+        return DataType.BOOLEAN;
     }
 
     // otherwise, lookup in configuration
@@ -157,21 +157,22 @@ export const getOperators = (fieldName: string, intl: IntlShape) => {
                 OPERATOR_OPTIONS.NOT_EXISTS,
             ];
 
-            // particular case
-            if (field.name === FieldType.AUTOMATE) {
-                // take only EXISTS and NOT_EXISTS
-                numberOperators = [
-                    OPERATOR_OPTIONS.EXISTS,
-                    OPERATOR_OPTIONS.NOT_EXISTS,
-                ];
-            }
-
             return numberOperators.map((operator) => ({
                 name: operator.name,
                 label: intl.formatMessage({ id: operator.label }),
             }));
         case DataType.BOOLEAN:
-            return [OPERATOR_OPTIONS.EQUALS].map((operator) => ({
+            let booleanOperators: OperatorOption[] = [OPERATOR_OPTIONS.EQUALS];
+
+            // particular case
+            if (field.name === FieldType.AUTOMATE) {
+                // take only EXISTS and NOT_EXISTS
+                booleanOperators = [
+                    OPERATOR_OPTIONS.EXISTS,
+                    OPERATOR_OPTIONS.NOT_EXISTS,
+                ];
+            }
+            return booleanOperators.map((operator) => ({
                 name: operator.name,
                 label: intl.formatMessage({ id: operator.label }),
             }));
