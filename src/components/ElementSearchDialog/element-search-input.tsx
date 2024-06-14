@@ -15,7 +15,6 @@ import { useIntl } from 'react-intl';
 export type RenderElementProps<T> = HTMLAttributes<HTMLLIElement> & {
     element: T;
     inputValue: string;
-    onClose?: () => void;
 };
 
 export interface ElementSearchInputProps<T>
@@ -24,7 +23,6 @@ export interface ElementSearchInputProps<T>
         'sx' | 'size' | 'loadingText' | 'loading'
     > {
     searchTerm: string;
-    onClose?: () => void;
     onSearchTermChange: (searchTerm: string) => void;
     onSelectionChange: (selection: T) => void;
     getOptionLabel: (option: T) => string;
@@ -50,7 +48,6 @@ export const ElementSearchInput = <T,>(props: ElementSearchInputProps<T>) => {
         renderInput,
         getOptionLabel,
         isOptionEqualToValue,
-        onClose: handleClose,
         showResults,
         searchTerm,
         loadingText,
@@ -63,12 +60,16 @@ export const ElementSearchInput = <T,>(props: ElementSearchInputProps<T>) => {
     const intl = useIntl();
 
     const displayedValue = useMemo(() => {
-        return searchTermDisabled || searchTermDisableReason
-            ? searchTermDisableReason ??
-                  intl.formatMessage({
-                      id: 'element_search/searchDisabled',
-                  })
-            : searchTerm ?? '';
+        if (searchTermDisabled || searchTermDisableReason) {
+            return (
+                searchTermDisableReason ??
+                intl.formatMessage({
+                    id: 'element_search/searchDisabled',
+                })
+            );
+        } else {
+            return searchTerm ?? '';
+        }
     }, [searchTerm, searchTermDisabled, searchTermDisableReason, intl]);
 
     return (
@@ -81,7 +82,7 @@ export const ElementSearchInput = <T,>(props: ElementSearchInputProps<T>) => {
             forcePopupIcon={false}
             fullWidth
             onInputChange={(_event, value, reason) => {
-                if (!searchTermDisabled && (reason !== 'reset' || !value)) {
+                if (!searchTermDisabled && reason !== 'reset') {
                     onSearchTermChange(value);
                 }
             }}
@@ -107,7 +108,6 @@ export const ElementSearchInput = <T,>(props: ElementSearchInputProps<T>) => {
                     ...optionProps,
                     element,
                     inputValue,
-                    onClose: handleClose,
                 })
             }
             renderInput={(params: AutocompleteRenderInputParams) =>

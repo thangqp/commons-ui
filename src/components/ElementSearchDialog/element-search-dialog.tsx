@@ -14,6 +14,7 @@ import {
 
 export interface ElementSearchDialogProps<T>
     extends ElementSearchInputProps<T> {
+    onClose?: () => void;
     open: boolean;
 }
 
@@ -35,7 +36,6 @@ export const ElementSearchDialog = <T,>(props: ElementSearchDialogProps<T>) => {
         >
             <DialogContent>
                 <ElementSearchInput
-                    onClose={onClose}
                     onSearchTermChange={onSearchTermChange}
                     {...rest}
                 />

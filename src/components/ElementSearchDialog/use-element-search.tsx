@@ -39,14 +39,15 @@ export const useElementSearch = <T,>(props: UseElementSearch<T>) => {
                     } // else ignore results of outdated fetch
                 })
                 .catch((error) => {
+                    // else ignore errors of outdated fetch if changing "isLoading state"
                     if (newSearchTerm === lastSearchTermRef.current) {
                         setElementsFound([]);
                         setIsLoading(false);
-                    } // else ignore errors of outdated fetch if changing "isLoading state"
-                    snackError({
-                        messageTxt: error.message,
-                        headerId: 'equipmentsSearchingError',
-                    });
+                        snackError({
+                            messageTxt: error.message,
+                            headerId: 'equipmentsSearchingError',
+                        });
+                    }
                 });
         },
         [snackError, fetchElements]
