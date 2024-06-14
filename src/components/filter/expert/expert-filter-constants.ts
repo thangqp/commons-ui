@@ -91,9 +91,9 @@ export const PHASE_REGULATION_MODE_OPTIONS = [
 ];
 
 export const SVAR_REGULATION_MODE_OPTIONS = [
-    { name: 'OFF', label: 'svarRegulationMode.off' },
-    { name: 'VOLTAGE', label: 'svarRegulationMode.voltage' },
-    { name: 'REACTIVE_POWER', label: 'svarRegulationMode.reactivePower' },
+    { name: 'OFF', label: 'regulationMode.off' },
+    { name: 'VOLTAGE', label: 'regulationMode.voltage' },
+    { name: 'REACTIVE_POWER', label: 'regulationMode.reactivePower' },
 ];
 
 export const REGULATION_TYPE_OPTIONS = [
@@ -597,7 +597,7 @@ export const FIELDS_OPTIONS = {
     },
     SVAR_REGULATION_MODE: {
         name: FieldType.SVAR_REGULATION_MODE,
-        label: 'svarRegulationMode',
+        label: 'regulationMode',
         dataType: DataType.ENUM,
         values: SVAR_REGULATION_MODE_OPTIONS,
         valueEditorType: 'select',
@@ -830,30 +830,39 @@ export const fields: Record<string, Field[]> = {
         FIELDS_OPTIONS.VOLTAGE_LEVEL_ID,
         FIELDS_OPTIONS.NOMINAL_VOLTAGE,
         FIELDS_OPTIONS.CONNECTED,
-        FIELDS_OPTIONS.REGULATING_TERMINAL,
-        FIELDS_OPTIONS.REGULATION_TYPE,
-        FIELDS_OPTIONS.AUTOMATE,
-        FIELDS_OPTIONS.LOW_VOLTAGE_SET_POINT,
-        FIELDS_OPTIONS.HIGH_VOLTAGE_SET_POINT,
-        FIELDS_OPTIONS.LOW_VOLTAGE_THRESHOLD,
-        FIELDS_OPTIONS.HIGH_VOLTAGE_THRESHOLD,
-        FIELDS_OPTIONS.SUSCEPTANCE_FIX,
-        FIELDS_OPTIONS.FIX_Q_AT_NOMINAL_V,
         // customize label
         {
             ...FIELDS_OPTIONS.MAX_Q_AT_NOMINAL_V,
             label: `${FIELDS_OPTIONS.MAX_Q_AT_NOMINAL_V.label}.svar`,
         },
-        FIELDS_OPTIONS.MIN_Q_AT_NOMINAL_V,
+        {
+            ...FIELDS_OPTIONS.MIN_Q_AT_NOMINAL_V,
+            label: `${FIELDS_OPTIONS.MIN_Q_AT_NOMINAL_V.label}.svar`,
+        },
         // customize label
         {
             ...FIELDS_OPTIONS.MAX_SUSCEPTANCE,
             label: `${FIELDS_OPTIONS.MAX_SUSCEPTANCE.label}.svar`,
         },
-        FIELDS_OPTIONS.MIN_SUSCEPTANCE,
+        {
+            ...FIELDS_OPTIONS.MIN_SUSCEPTANCE,
+            label: `${FIELDS_OPTIONS.MIN_SUSCEPTANCE.label}.svar`,
+        },
         FIELDS_OPTIONS.SVAR_REGULATION_MODE,
+        FIELDS_OPTIONS.REGULATION_TYPE,
+        FIELDS_OPTIONS.REGULATING_TERMINAL,
         FIELDS_OPTIONS.VOLTAGE_SET_POINT,
         FIELDS_OPTIONS.REACTIVE_POWER_SET_POINT,
+        FIELDS_OPTIONS.AUTOMATE,
+        FIELDS_OPTIONS.HIGH_VOLTAGE_SET_POINT,
+        FIELDS_OPTIONS.LOW_VOLTAGE_SET_POINT,
+        FIELDS_OPTIONS.HIGH_VOLTAGE_THRESHOLD,
+        FIELDS_OPTIONS.LOW_VOLTAGE_THRESHOLD,
+        {
+            ...FIELDS_OPTIONS.FIX_Q_AT_NOMINAL_V,
+            label: `${FIELDS_OPTIONS.FIX_Q_AT_NOMINAL_V.label}.svar`,
+        },
+        FIELDS_OPTIONS.SUSCEPTANCE_FIX,
         FIELDS_OPTIONS.PROPERTY,
         FIELDS_OPTIONS.SUBSTATION_PROPERTY,
         FIELDS_OPTIONS.VOLTAGE_LEVEL_PROPERTY,
