@@ -92,9 +92,9 @@ const getDataType = (fieldName: string, operator: string) => {
         return DataType.FILTER_UUID;
     }
 
-    // particular case => set dataType to BOOLEAN when exporting composite rule REGULATING_TERMINAL with operator EXISTS or NOT_EXISTS
+    // particular case => set dataType to BOOLEAN when exporting composite rule REMOTE_REGULATED_TERMINAL with operator EXISTS or NOT_EXISTS
     if (
-        fieldName === FieldType.REGULATING_TERMINAL &&
+        fieldName === FieldType.REMOTE_REGULATED_TERMINAL &&
         (operator === OPERATOR_OPTIONS.EXISTS.name ||
             operator === OPERATOR_OPTIONS.NOT_EXISTS.name)
     ) {
@@ -205,7 +205,7 @@ export const getOperators = (fieldName: string, intl: IntlShape) => {
         case DataType.COMBINATOR:
             const combinatorOperators: OperatorOption[] = [OPERATOR_OPTIONS.IS];
 
-            if (field.name === FieldType.REGULATING_TERMINAL) {
+            if (field.name === FieldType.REMOTE_REGULATED_TERMINAL) {
                 // add EXISTS and NOT_EXISTS
                 combinatorOperators.push(OPERATOR_OPTIONS.EXISTS);
                 combinatorOperators.push(OPERATOR_OPTIONS.NOT_EXISTS);

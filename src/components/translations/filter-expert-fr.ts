@@ -81,7 +81,7 @@ const filter_expert_fr = {
     'regulationMode.reactivePower': 'Réglage du réactif',
     voltageSetPoint: 'Tension',
     reactivePowerSetPoint: 'Puissance réactive',
-    regulatingTerminal: 'Terminal distant réglé',
+    remoteRegulatedTerminal: 'Terminal distant réglé',
     regulatingTerminalVLId: 'ID de poste',
     regulatingTerminalConnectableId: "ID d'ouvrage",
     regulationType: 'Type de réglage',

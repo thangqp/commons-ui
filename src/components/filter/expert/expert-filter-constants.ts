@@ -615,10 +615,10 @@ export const FIELDS_OPTIONS = {
         dataType: DataType.NUMBER,
         inputType: 'number',
     },
-    REGULATING_TERMINAL: {
+    REMOTE_REGULATED_TERMINAL: {
         // composite rule
-        name: FieldType.REGULATING_TERMINAL,
-        label: 'regulatingTerminal',
+        name: FieldType.REMOTE_REGULATED_TERMINAL,
+        label: 'remoteRegulatedTerminal',
         dataType: DataType.COMBINATOR,
         combinator: CombinatorType.AND,
         children: {
@@ -642,7 +642,7 @@ export const FIELDS_OPTIONS = {
         dataType: DataType.ENUM,
         values: REGULATION_TYPE_OPTIONS,
         valueEditorType: 'select',
-        defaultValue: 'DISTANT',
+        defaultValue: 'LOCAL',
     },
     AUTOMATE: {
         name: FieldType.AUTOMATE,
@@ -850,7 +850,7 @@ export const fields: Record<string, Field[]> = {
         },
         FIELDS_OPTIONS.SVAR_REGULATION_MODE,
         FIELDS_OPTIONS.REGULATION_TYPE,
-        FIELDS_OPTIONS.REGULATING_TERMINAL,
+        FIELDS_OPTIONS.REMOTE_REGULATED_TERMINAL,
         FIELDS_OPTIONS.VOLTAGE_SET_POINT,
         FIELDS_OPTIONS.REACTIVE_POWER_SET_POINT,
         FIELDS_OPTIONS.AUTOMATE,
