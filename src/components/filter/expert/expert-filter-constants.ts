@@ -97,8 +97,8 @@ export const SVAR_REGULATION_MODE_OPTIONS = [
 ];
 
 export const REGULATION_TYPE_OPTIONS = [
-    { name: 'DISTANT', label: 'regulationType.distant' },
     { name: 'LOCAL', label: 'regulationType.local' },
+    { name: 'DISTANT', label: 'regulationType.distant' },
 ];
 
 // customName is used to export to the server
