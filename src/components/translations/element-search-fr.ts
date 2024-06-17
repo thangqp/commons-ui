@@ -8,6 +8,7 @@
 const element_search_fr = {
     'element_search/label': 'Rechercher un élément',
     'element_search/noResult': 'Aucun résultat',
+    'element_search/searchDisabled': 'Recherche suspendue',
 };
 
 export default element_search_fr;

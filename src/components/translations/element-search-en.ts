@@ -8,6 +8,7 @@
 const element_search_en = {
     'element_search/label': 'Search for an element',
     'element_search/noResult': 'No result',
+    'element_search/searchDisabled': 'Search disabled',
 };
 
 export default element_search_en;
