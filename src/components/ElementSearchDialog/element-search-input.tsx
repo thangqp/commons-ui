@@ -82,6 +82,7 @@ export const ElementSearchInput = <T,>(props: ElementSearchInputProps<T>) => {
             forcePopupIcon={false}
             fullWidth
             onInputChange={(_event, value, reason) => {
+                // if rease is 'reset', we don't wan't to update "searchTerm" to prevent fetching
                 if (!searchTermDisabled && reason !== 'reset') {
                     onSearchTermChange(value);
                 }
@@ -120,10 +121,13 @@ export const ElementSearchInput = <T,>(props: ElementSearchInputProps<T>) => {
                 return getOptionLabel(option);
             }}
             isOptionEqualToValue={(option: T | string, value: T | string) => {
-                if (typeof option === 'string' || typeof value === 'string') {
-                    return option === value;
-                } else {
+                /** freeSolo is not used for inputs, but only because the way "Autocomplete" works
+                 ** suits our needs better when freeSolo is set to true
+                 ** this method is only relevant when both params are of type T, the else block should not be useful */
+                if (typeof option !== 'string' && typeof value !== 'string') {
                     return isOptionEqualToValue(option, value);
+                } else {
+                    return option === value;
                 }
             }}
             disabled={searchTermDisabled}
