@@ -24,6 +24,11 @@ export const styles = {
 
         '& .ag-checkbox-input': {
             cursor: 'pointer',
+            //Enlarge checkbox area to be more permissive when selecting it
+            padding: '25px',
+            position: 'absolute',
+            top: '-15px',
+            left: '-15px',
         },
 
         //overrides the default computed max height for ag grid default selector editor to make it more usable
