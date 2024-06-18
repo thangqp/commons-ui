@@ -80,6 +80,7 @@ export const ElementSearchInput = <T,>(props: ElementSearchInputProps<T>) => {
             size={size}
             id="element-search"
             forcePopupIcon={false}
+            disableClearable={true}
             fullWidth
             onInputChange={(_event, value, reason) => {
                 // if rease is 'reset', we don't wan't to update "searchTerm" to prevent fetching
