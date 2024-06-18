@@ -20,6 +20,7 @@ import { DialogContentText } from '@mui/material';
 import { useWatch } from 'react-hook-form';
 import { CancelButton } from '../../../../../index';
 import { FieldConstants } from '../../../../../utils/field-constants';
+import { RECORD_SEP, UNIT_SEP } from 'papaparse';
 
 interface CsvUploaderProps {
     name: string;
@@ -45,7 +46,6 @@ const CsvUploader: FunctionComponent<CsvUploaderProps> = ({
     validateData = (_rows) => true,
     getDataFromCsv,
     useFieldArrayOutput,
-    ...props
 }) => {
     const watchTableValues = useWatch({ name });
     const { append, replace } = useFieldArrayOutput;
@@ -216,7 +216,16 @@ const CsvUploader: FunctionComponent<CsvUploaderProps> = ({
                                         setImportedData([...results.data]);
                                         setCreateError('');
                                     }}
-                                    {...props}
+                                    config={{
+                                        // We use | for multi values in one cell, then we remove it from the default value for this config, to avoid delimiter autodetection
+                                        delimitersToGuess: [
+                                            ',',
+                                            '	',
+                                            ';',
+                                            RECORD_SEP,
+                                            UNIT_SEP,
+                                        ],
+                                    }}
                                 >
                                     {({ getRootProps, acceptedFile }: any) => (
                                         <>
