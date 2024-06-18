@@ -125,7 +125,7 @@ export const CONTINGENCY_LIST_EQUIPMENTS: Record<
     },
     HVDC_LINE: {
         id: 'HVDC_LINE',
-        label: 'Hvdc',
+        label: 'HvdcLines',
         fields: [countries1, countries2, nominalVoltage],
     },
     DANGLING_LINE: {
