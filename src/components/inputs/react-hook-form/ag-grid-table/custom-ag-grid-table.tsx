@@ -248,8 +248,8 @@ export const CustomAgGridTable: FunctionComponent<CustomAgGridTableProps> = ({
     );
 
     const onSortChanged = useCallback((event: SortChangedEvent) => {
-        const isAnycolumnhasSort = event?.api
-            ?.getColumnState()
+        const isAnycolumnhasSort = event.api
+            .getColumnState()
             .some((col: ColumnState) => col.sort);
         setIsSortApplied(isAnycolumnhasSort);
     }, []);
