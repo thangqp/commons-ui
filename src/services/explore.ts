@@ -10,6 +10,7 @@ import {
     backendFetch,
     backendFetchJson,
     getRequestParamFromList,
+    Token,
 } from './utils';
 import { ElementAttributes } from '../utils/types';
 
@@ -21,7 +22,7 @@ export function createFilter(
     name: string,
     description: string,
     parentDirectoryUuid?: UUID,
-    token?: string
+    token?: Token
 ) {
     let urlSearchParams = new URLSearchParams();
     urlSearchParams.append('name', name);
@@ -63,7 +64,7 @@ export function fetchElementsInfos(
     ids: UUID[],
     elementTypes?: string[],
     equipmentTypes?: string[]
-): Promise<ElementAttributes[]> {
+) {
     console.info('Fetching elements metadata');
 
     // Add params to Url
@@ -93,5 +94,5 @@ export function fetchElementsInfos(
     return backendFetchJson(url, {
         method: 'get',
         headers: { 'Content-Type': 'application/json' },
-    });
+    }) as Promise<ElementAttributes[]>;
 }

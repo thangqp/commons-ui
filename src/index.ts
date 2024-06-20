@@ -48,11 +48,9 @@ export {
     Substation,
     noSelectionForCopy,
 } from './utils/equipment-types';
-
 export { FieldConstants } from './utils/field-constants';
 
 export type { TreeViewFinderNodeProps } from './components/TreeViewFinder/TreeViewFinder';
-
 export {
     GRIDSUITE_DEFAULT_PRECISION,
     roundToPrecision,
@@ -224,7 +222,7 @@ export {
 } from './components/filter/criteria-based/criteria-based-filter-utils';
 
 export { mergeSx } from './utils/styles';
-export { setCommonStore } from './redux/commonStore';
+export { setCommonStore, getUserToken } from './redux/commonStore';
 export type { EquipmentInfos } from './utils/EquipmentType';
 
 export * from './services';

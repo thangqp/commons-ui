@@ -6,14 +6,14 @@
  */
 
 import { UUID } from 'crypto';
-import { backendFetchJson } from './utils';
+import { backendFetchJson, Token } from './utils';
 
 const PREFIX_STUDY_QUERIES = import.meta.env.VITE_API_GATEWAY + '/study';
 
 export function exportFilter(
     studyUuid: UUID,
     filterUuid?: UUID,
-    token?: string
+    token?: Token
 ) {
     console.info('get filter export on study root node');
     return backendFetchJson(

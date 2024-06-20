@@ -16,14 +16,12 @@ import { Box, Grid } from '@mui/material';
 import RadioInput from '../inputs/react-hook-form/radio-input';
 import { ElementType } from '../../utils/ElementType';
 import { UUID } from 'crypto';
-import { elementExistsType } from './criteria-based/criteria-based-filter-edition-dialog';
 import ExpandingTextField from '../inputs/react-hook-form/ExpandingTextField';
 import { FilterType } from './constants/filter-constants';
 
 interface FilterFormProps {
     creation?: boolean;
     activeDirectory?: UUID;
-    elementExists?: elementExistsType;
     sourceFilterForExplicitNamingConversion?: {
         id: UUID;
         equipmentType: string;
@@ -58,7 +56,6 @@ export const FilterForm: FunctionComponent<FilterFormProps> = (props) => {
                     elementType={ElementType.FILTER}
                     autoFocus={props.creation}
                     activeDirectory={props.activeDirectory}
-                    elementExists={props.elementExists}
                 />
             </Grid>
             {props.creation && (

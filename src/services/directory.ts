@@ -5,7 +5,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { backendFetchJson, getRequestParamFromList } from './utils';
+import {
+    backendFetch,
+    backendFetchJson,
+    getRequestParamFromList,
+} from './utils';
 import { UUID } from 'crypto';
 import { ElementAttributes } from '../utils/types';
 
@@ -26,13 +30,10 @@ export function fetchRootFolders(
     return backendFetchJson(fetchRootFoldersUrl, {
         method: 'get',
         headers: { 'Content-Type': 'application/json' },
-    });
+    }) as Promise<ElementAttributes[]>;
 }
 
-export function fetchDirectoryContent(
-    directoryUuid: UUID,
-    types?: string[]
-): Promise<ElementAttributes[]> {
+export function fetchDirectoryContent(directoryUuid: UUID, types?: string[]) {
     console.info("Fetching Folder content '%s'", directoryUuid);
 
     // Add params to Url
@@ -47,12 +48,10 @@ export function fetchDirectoryContent(
     return backendFetchJson(fetchDirectoryContentUrl, {
         method: 'get',
         headers: { 'Content-Type': 'application/json' },
-    });
+    }) as Promise<ElementAttributes[]>;
 }
 
-export function fetchDirectoryElementPath(
-    elementUuid: UUID
-): Promise<ElementAttributes[]> {
+export function fetchDirectoryElementPath(elementUuid: UUID) {
     console.info(`Fetching element '${elementUuid}' and its parents info ...`);
     const fetchPathUrl = `${PREFIX_DIRECTORY_SERVER_QUERIES}/v1/elements/${encodeURIComponent(
         elementUuid
@@ -61,5 +60,20 @@ export function fetchDirectoryElementPath(
     return backendFetchJson(fetchPathUrl, {
         method: 'get',
         headers: { 'Content-Type': 'application/json' },
-    });
+    }) as Promise<ElementAttributes[]>;
+}
+
+export function elementExists(
+    directoryUuid: UUID,
+    elementName: string,
+    type: string
+): Promise<boolean> {
+    const existsElementUrl = `${PREFIX_DIRECTORY_SERVER_QUERIES}/v1/directories/${directoryUuid}/elements/${elementName}/types/${type}`;
+
+    console.debug(existsElementUrl);
+    return backendFetch(existsElementUrl, { method: 'head' }).then(
+        (response) => {
+            return response.status !== 204; // HTTP 204 : No-content
+        }
+    );
 }

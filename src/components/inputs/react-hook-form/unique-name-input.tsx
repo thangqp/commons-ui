@@ -16,7 +16,7 @@ import TextField from '@mui/material/TextField';
 import { FieldConstants } from '../../../utils/field-constants';
 import { ElementType } from '../../../utils/ElementType';
 import { UUID } from 'crypto';
-import { elementExistsType } from '../../filter/criteria-based/criteria-based-filter-edition-dialog';
+import { elementExists } from '../../../services';
 
 interface UniqueNameInputProps {
     name: string;
@@ -35,7 +35,6 @@ interface UniqueNameInputProps {
         | 'InputProps'
     >;
     activeDirectory?: UUID;
-    elementExists?: elementExistsType;
 }
 
 /**
@@ -49,7 +48,6 @@ export const UniqueNameInput: FunctionComponent<UniqueNameInputProps> = ({
     onManualChangeCallback,
     formProps,
     activeDirectory,
-    elementExists,
 }) => {
     const {
         field: { onChange, onBlur, value, ref },
@@ -78,29 +76,28 @@ export const UniqueNameInput: FunctionComponent<UniqueNameInputProps> = ({
     const handleCheckName = useCallback(
         (value: string) => {
             if (value) {
-                elementExists &&
-                    elementExists(directory, value, elementType)
-                        .then((alreadyExist) => {
-                            if (alreadyExist) {
-                                setError(name, {
-                                    type: 'validate',
-                                    message: 'nameAlreadyUsed',
-                                });
-                            }
-                        })
-                        .catch((error) => {
+                elementExists(directory, value, elementType)
+                    .then((alreadyExist) => {
+                        if (alreadyExist) {
                             setError(name, {
                                 type: 'validate',
-                                message: 'nameValidityCheckErrorMsg',
+                                message: 'nameAlreadyUsed',
                             });
-                            console.error(error?.message);
-                        })
-                        .finally(() => {
-                            clearErrors('root.isValidating');
+                        }
+                    })
+                    .catch((error) => {
+                        setError(name, {
+                            type: 'validate',
+                            message: 'nameValidityCheckErrorMsg',
                         });
+                        console.error(error?.message);
+                    })
+                    .finally(() => {
+                        clearErrors('root.isValidating');
+                    });
             }
         },
-        [setError, clearErrors, name, elementType, elementExists, directory]
+        [setError, clearErrors, name, elementType, directory]
     );
 
     const debouncedHandleCheckName = useDebounce(handleCheckName, 700);

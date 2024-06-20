@@ -12,6 +12,7 @@ import { exportExpertRules } from '../expert/expert-filter-utils';
 import { UUID } from 'crypto';
 import { DISTRIBUTION_KEY, FilterType } from '../constants/filter-constants';
 import { createFilter, saveFilter } from '../../../services/explore';
+import { Token } from '../../../services';
 
 export const saveExplicitNamingFilter = (
     tableValues: any[],
@@ -23,7 +24,7 @@ export const saveExplicitNamingFilter = (
     setCreateFilterErr: (value: any) => void,
     handleClose: () => void,
     activeDirectory?: UUID,
-    token?: string
+    token?: Token
 ) => {
     // we remove unnecessary fields from the table
     let cleanedTableValues;
@@ -82,7 +83,7 @@ export const saveCriteriaBasedFilter = (
     activeDirectory: any,
     onClose: () => void,
     onError: (message: string) => void,
-    token?: string
+    token?: Token
 ) => {
     const filterForBack = frontToBackTweak(undefined, filter); // no need ID for creation
     createFilter(
@@ -110,7 +111,7 @@ export const saveExpertFilter = (
     activeDirectory: any,
     onClose: () => void,
     onError: (message: string) => void,
-    token?: string
+    token?: Token
 ) => {
     if (isFilterCreation) {
         createFilter(

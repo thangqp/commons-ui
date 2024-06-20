@@ -28,8 +28,7 @@ import { FilterForm } from '../filter-form';
 import { UUID } from 'crypto';
 import { FilterType } from '../constants/filter-constants';
 import { FetchStatus } from '../../../utils/FetchStatus';
-import { ElementType } from '../../../utils/ElementType';
-import { saveFilter } from '../../../services/explore';
+import { saveFilter } from '../../../services';
 
 export type SelectionCopy = {
     sourceItemUuid: UUID | null;
@@ -37,12 +36,6 @@ export type SelectionCopy = {
     description: string | null;
     parentDirectoryUuid: UUID | null;
 };
-
-export type elementExistsType = (
-    directory: UUID,
-    value: string,
-    elementType: ElementType
-) => Promise<boolean>;
 
 export const noSelectionForCopy: SelectionCopy = {
     sourceItemUuid: null,
@@ -74,7 +67,6 @@ interface CriteriaBasedFilterEditionDialogProps {
         selection: SelectionCopy
     ) => Dispatch<SetStateAction<SelectionCopy>>;
     activeDirectory?: UUID;
-    elementExists?: elementExistsType;
     language?: string;
 }
 
@@ -91,7 +83,6 @@ const CriteriaBasedFilterEditionDialog: FunctionComponent<
     selectionForCopy,
     setSelelectionForCopy,
     activeDirectory,
-    elementExists,
     language,
 }) => {
     const { snackError } = useSnackMessage();
@@ -178,12 +169,7 @@ const CriteriaBasedFilterEditionDialog: FunctionComponent<
             isDataFetching={dataFetchStatus === FetchStatus.FETCHING}
             language={language}
         >
-            {isDataReady && (
-                <FilterForm
-                    activeDirectory={activeDirectory}
-                    elementExists={elementExists}
-                />
-            )}
+            {isDataReady && <FilterForm activeDirectory={activeDirectory} />}
         </CustomMuiDialog>
     );
 };

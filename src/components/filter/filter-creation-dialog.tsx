@@ -32,7 +32,6 @@ import {
     getExpertFilterEmptyFormData,
 } from './expert/expert-filter-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { elementExistsType } from './criteria-based/criteria-based-filter-edition-dialog';
 import { UUID } from 'crypto';
 import { FilterType } from './constants/filter-constants';
 
@@ -66,7 +65,6 @@ export interface FilterCreationDialogProps {
     open: boolean;
     onClose: () => void;
     activeDirectory?: UUID;
-    elementExists?: elementExistsType;
     language?: string;
     sourceFilterForExplicitNamingConversion?: {
         id: UUID;
@@ -78,7 +76,6 @@ const FilterCreationDialog: FunctionComponent<FilterCreationDialogProps> = ({
     open,
     onClose,
     activeDirectory,
-    elementExists,
     language,
     sourceFilterForExplicitNamingConversion = undefined,
 }) => {
@@ -173,7 +170,6 @@ const FilterCreationDialog: FunctionComponent<FilterCreationDialogProps> = ({
             <FilterForm
                 creation
                 activeDirectory={activeDirectory}
-                elementExists={elementExists}
                 sourceFilterForExplicitNamingConversion={
                     sourceFilterForExplicitNamingConversion
                 }

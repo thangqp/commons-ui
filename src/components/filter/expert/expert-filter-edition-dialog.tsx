@@ -18,7 +18,6 @@ import { EXPERT_FILTER_QUERY, expertFilterSchema } from './expert-filter-form';
 import { saveExpertFilter } from '../utils/filter-api';
 import { importExpertRules } from './expert-filter-utils';
 import { UUID } from 'crypto';
-import { elementExistsType } from '../criteria-based/criteria-based-filter-edition-dialog';
 import { FilterType } from '../constants/filter-constants';
 import { FetchStatus } from '../../../utils/FetchStatus';
 
@@ -39,12 +38,10 @@ export interface ExpertFilterEditionDialogProps {
     open: boolean;
     onClose: () => void;
     broadcastChannel: BroadcastChannel;
-
     selectionForCopy: any;
     getFilterById: (id: string) => Promise<{ [prop: string]: any }>;
     setSelectionForCopy: (selection: any) => void;
     activeDirectory?: UUID;
-    elementExists?: elementExistsType;
     language?: string;
 }
 
@@ -61,7 +58,6 @@ const ExpertFilterEditionDialog: FunctionComponent<
     getFilterById,
     setSelectionForCopy,
     activeDirectory,
-    elementExists,
     language,
 }) => {
     const { snackError } = useSnackMessage();
@@ -156,12 +152,7 @@ const ExpertFilterEditionDialog: FunctionComponent<
             isDataFetching={dataFetchStatus === FetchStatus.FETCHING}
             language={language}
         >
-            {isDataReady && (
-                <FilterForm
-                    activeDirectory={activeDirectory}
-                    elementExists={elementExists}
-                />
-            )}
+            {isDataReady && <FilterForm activeDirectory={activeDirectory} />}
         </CustomMuiDialog>
     );
 };

@@ -23,7 +23,6 @@ import { FilterForm } from '../filter-form';
 import { v4 as uuid4 } from 'uuid';
 import { noSelectionForCopy } from '../../../utils/equipment-types';
 import { UUID } from 'crypto';
-import { elementExistsType } from '../criteria-based/criteria-based-filter-edition-dialog';
 import { FilterType } from '../constants/filter-constants';
 import { FetchStatus } from '../../../utils/FetchStatus';
 
@@ -48,7 +47,6 @@ interface ExplicitNamingFilterEditionDialogProps {
     setSelectionForCopy: (selection: any) => void;
     getFilterById: (id: string) => Promise<any>;
     activeDirectory?: UUID;
-    elementExists?: elementExistsType;
     language?: string;
 }
 
@@ -65,7 +63,6 @@ const ExplicitNamingFilterEditionDialog: FunctionComponent<
     setSelectionForCopy,
     getFilterById,
     activeDirectory,
-    elementExists,
     language,
 }) => {
     const { snackError } = useSnackMessage();
@@ -162,12 +159,7 @@ const ExplicitNamingFilterEditionDialog: FunctionComponent<
             isDataFetching={dataFetchStatus === FetchStatus.FETCHING}
             language={language}
         >
-            {isDataReady && (
-                <FilterForm
-                    activeDirectory={activeDirectory}
-                    elementExists={elementExists}
-                />
-            )}
+            {isDataReady && <FilterForm activeDirectory={activeDirectory} />}
         </CustomMuiDialog>
     );
 };

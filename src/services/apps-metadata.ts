@@ -5,6 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { PredefinedProperties } from '../utils/types';
+import { getErrorMessage } from './utils';
 
 // https://github.com/gridsuite/deployment/blob/main/docker-compose/docker-compose.base.yml
 // https://github.com/gridsuite/deployment/blob/main/k8s/resources/common/config/apps-metadata.json
@@ -18,6 +19,10 @@ export type Env = {
     // https://github.com/gridsuite/deployment/blob/main/k8s/live/azure-integ/env.json
     // https://github.com/gridsuite/deployment/blob/main/k8s/live/local/env.json
     //[key: string]: string;
+};
+
+export type VersionJson = {
+    deployVersion?: string;
 };
 
 export async function fetchEnv(): Promise<Env> {
@@ -69,4 +74,26 @@ export async function fetchStudyMetadata(): Promise<StudyMetadata> {
     } else {
         return studyMetadata[0]; // There should be only one study metadata
     }
+}
+
+export const fetchDefaultParametersValues = () => {
+    return fetchStudyMetadata().then((studyMetadata) => {
+        console.info(
+            'fetching default parameters values from apps-metadata file'
+        );
+        return studyMetadata.defaultParametersValues;
+    });
+};
+
+export function fetchVersion(): Promise<VersionJson> {
+    console.debug(`Fetching global metadata...`);
+    return fetchEnv()
+        .then((env: Env) => fetch(`${env.appsMetadataServerUrl}/version.json`))
+        .then((response: Response) => response.json())
+        .catch((error) => {
+            console.error(
+                `Error while fetching the version: ${getErrorMessage(error)}`
+            );
+            throw error;
+        });
 }
