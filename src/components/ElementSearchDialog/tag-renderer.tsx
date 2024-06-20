@@ -4,11 +4,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import OverflowableText from '../OverflowableText';
 import clsx from 'clsx';
+import { SxProps, Theme } from '@mui/material';
+import OverflowableText from '../OverflowableText';
 import { EQUIPMENT_TYPE, EquipmentType } from '../../utils/EquipmentType';
 import { mergeSx } from '../../utils/styles';
-import { SxProps, Theme } from '@mui/material';
 
 interface TagRendererProps {
     props: {
@@ -27,7 +27,7 @@ interface TagRendererProps {
     };
 }
 
-export const TagRenderer = ({ props, element }: TagRendererProps) => {
+function TagRenderer({ props, element }: Readonly<TagRendererProps>) {
     if (
         element.type !== EQUIPMENT_TYPE.SUBSTATION?.name &&
         element.type !== EQUIPMENT_TYPE.VOLTAGE_LEVEL?.name
@@ -46,5 +46,7 @@ export const TagRenderer = ({ props, element }: TagRendererProps) => {
             />
         );
     }
-    return <></>;
-};
+    return null;
+}
+
+export default TagRenderer;

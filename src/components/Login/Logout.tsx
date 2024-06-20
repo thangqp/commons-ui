@@ -39,20 +39,19 @@ export interface LogoutProps {
     disabled: boolean;
 }
 
-const Logout = ({ onLogoutClick, disabled }: LogoutProps) => {
-    function Copyright() {
-        return (
-            <Typography variant="body2" color="textSecondary" align="center">
-                {'Copyright © '}
-                <Link color="inherit" href="#">
-                    GridSuite
-                </Link>{' '}
-                {new Date().getFullYear()}
-                {'.'}
-            </Typography>
-        );
-    }
+function Copyright() {
+    return (
+        <Typography variant="body2" color="textSecondary" align="center">
+            {'Copyright © '}
+            <Link color="inherit" href="https://example.com">
+                GridSuite
+            </Link>{' '}
+            {new Date().getFullYear()}.
+        </Typography>
+    );
+}
 
+function Logout({ onLogoutClick, disabled }: Readonly<LogoutProps>) {
     return (
         <Container component="main" maxWidth="xs">
             <Box sx={styles.paper}>
@@ -62,7 +61,7 @@ const Logout = ({ onLogoutClick, disabled }: LogoutProps) => {
                 <Typography component="h1" variant="h5">
                     <FormattedMessage
                         id="login/logout"
-                        defaultMessage={'logout'}
+                        defaultMessage="logout"
                     />{' '}
                     ?
                 </Typography>
@@ -76,7 +75,7 @@ const Logout = ({ onLogoutClick, disabled }: LogoutProps) => {
                 >
                     <FormattedMessage
                         id="login/logout"
-                        defaultMessage={'logout'}
+                        defaultMessage="logout"
                     />
                 </Button>
             </Box>
@@ -85,6 +84,6 @@ const Logout = ({ onLogoutClick, disabled }: LogoutProps) => {
             </Box>
         </Container>
     );
-};
+}
 
 export default Logout;

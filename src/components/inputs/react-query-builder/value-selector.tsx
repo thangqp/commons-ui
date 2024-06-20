@@ -6,15 +6,14 @@
  */
 
 import { ValueSelectorProps } from 'react-querybuilder';
-import React from 'react';
 import { MaterialValueSelector } from '@react-querybuilder/material';
 
-const ValueSelector = (props: ValueSelectorProps) => {
+function ValueSelector(props: Readonly<ValueSelectorProps>) {
     return (
         <MaterialValueSelector
             {...props}
             title={undefined} // disable the tooltip
         />
     );
-};
+}
 export default ValueSelector;

@@ -5,11 +5,14 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-const FetchStatus = {
-    IDLE: 'IDLE',
-    FETCHING: 'FETCHING',
-    FETCH_SUCCESS: 'FETCH_SUCCESS',
-    FETCH_ERROR: 'FETCH_ERROR',
-};
+export default class Events {
+    userLoadedCallbacks: ((data: any) => void)[] = [];
 
-export default FetchStatus;
+    addUserLoaded(callback: (data: any) => void) {
+        this.userLoadedCallbacks.push(callback);
+    }
+
+    static addSilentRenewError() {
+        // Nothing to do
+    }
+}

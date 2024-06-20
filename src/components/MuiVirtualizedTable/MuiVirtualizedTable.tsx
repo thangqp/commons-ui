@@ -4,7 +4,32 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-
+/* eslint-disable react/jsx-curly-brace-presence */
+/* eslint-disable react/jsx-boolean-value */
+/* eslint-disable @typescript-eslint/no-shadow */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-restricted-globals */
+/* eslint-disable no-else-return */
+/* eslint-disable react/no-unstable-nested-components */
+/* eslint-disable react/function-component-definition */
+/* eslint-disable react/no-this-in-sfc */
+/* eslint-disable react/require-default-props */
+/* eslint-disable react/no-access-state-in-setstate */
+/* eslint-disable spaced-comment */
+/* eslint-disable object-shorthand */
+/* eslint-disable prefer-destructuring */
+/* eslint-disable prefer-template */
+/* eslint-disable no-return-assign */
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable react/static-property-placement */
+/* eslint-disable @typescript-eslint/lines-between-class-members */
+/* eslint-disable react/default-props-match-prop-types */
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable class-methods-use-this */
+/* eslint-disable react/sort-comp */
+/* eslint-disable prefer-const */
+/* eslint-disable no-plusplus */
 /**
  * This class has been taken from 'Virtualized Table' example at https://material-ui.com/components/tables/
  */
@@ -40,18 +65,18 @@ import {
     TableCellProps,
 } from 'react-virtualized';
 import CsvDownloader from 'react-csv-downloader';
-import OverflowableText from '../OverflowableText/overflowable-text';
+import { OverflowableText } from '../OverflowableText/overflowable-text';
 import {
     makeComposeClasses,
     toNestedGlobalSelectors,
 } from '../../utils/styles';
 import {
-    CHANGE_WAYS,
+    ChangeWays,
     collectibleHelper,
     getHelper,
     KeyedColumnsRowIndexer,
 } from './KeyedColumnsRowIndexer';
-import ColumnHeader from './ColumnHeader';
+import { ColumnHeader } from './ColumnHeader';
 
 function getTextWidth(text: any): number {
     // re-use canvas object for better performance
@@ -571,13 +596,13 @@ class MuiVirtualizedTable extends PureComponent<
             return;
         }
 
-        let way = CHANGE_WAYS.SIMPLE;
+        let way = ChangeWays.SIMPLE;
         if (evt.ctrlKey && evt.shiftKey) {
-            way = CHANGE_WAYS.AMEND;
+            way = ChangeWays.AMEND;
         } else if (evt.ctrlKey) {
-            way = CHANGE_WAYS.REMOVE;
+            way = ChangeWays.REMOVE;
         } else if (evt.shiftKey) {
-            way = CHANGE_WAYS.TAIL;
+            way = ChangeWays.TAIL;
         }
 
         if (this.state.indexer?.updateSortingFromUser(colKey, way)) {

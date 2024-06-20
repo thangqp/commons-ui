@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import {
     Avatar,
     Box,
@@ -43,7 +43,7 @@ export interface LoginProps {
     disabled: boolean;
 }
 
-const Login = ({ onLoginClick, disabled }: LoginProps) => {
+function Login({ onLoginClick, disabled }: Readonly<LoginProps>) {
     return (
         <Container component="main" maxWidth="xs">
             <Box sx={styles.paper}>
@@ -51,10 +51,7 @@ const Login = ({ onLoginClick, disabled }: LoginProps) => {
                     <LockOutlinedIcon />
                 </Avatar>
                 <Typography component="h1" variant="h5">
-                    <FormattedMessage
-                        id="login/login"
-                        defaultMessage={'login'}
-                    />{' '}
+                    <FormattedMessage id="login/login" defaultMessage="login" />{' '}
                     ?
                 </Typography>
 
@@ -67,7 +64,7 @@ const Login = ({ onLoginClick, disabled }: LoginProps) => {
                 >
                     <FormattedMessage
                         id="login/connection"
-                        defaultMessage={'connection'}
+                        defaultMessage="connection"
                     />
                 </Button>
             </Box>
@@ -81,12 +78,11 @@ const Login = ({ onLoginClick, disabled }: LoginProps) => {
                     <Link color="inherit" href="#">
                         GridSuite
                     </Link>{' '}
-                    {new Date().getFullYear()}
-                    {'.'}
+                    {new Date().getFullYear()}.
                 </Typography>
             </Box>
         </Container>
     );
-};
+}
 
 export default Login;

@@ -5,6 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+import { UUID } from 'crypto';
+
 export enum ElementType {
     DIRECTORY = 'DIRECTORY',
     STUDY = 'STUDY',
@@ -17,3 +19,9 @@ export enum ElementType {
     LOADFLOW_PARAMETERS = 'LOADFLOW_PARAMETERS',
     SENSITIVITY_PARAMETERS = 'SENSITIVITY_PARAMETERS',
 }
+
+export type ElementExistsType = (
+    directory: UUID,
+    value: string,
+    elementType: ElementType
+) => Promise<boolean>;

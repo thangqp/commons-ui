@@ -37,7 +37,9 @@ export interface ReportViewerDialogProps {
     jsonReport: Report;
 }
 
-export default function ReportViewerDialog(props: ReportViewerDialogProps) {
+export default function ReportViewerDialog(
+    props: Readonly<ReportViewerDialogProps>
+) {
     const { title, open, onClose, jsonReport } = props;
 
     const [fullScreen, setFullScreen] = useState(false);
@@ -56,14 +58,14 @@ export default function ReportViewerDialog(props: ReportViewerDialogProps) {
             onClose={onClose}
             fullScreen={fullScreen}
             aria-labelledby="dialog-title-report"
-            fullWidth={true}
+            fullWidth
             maxWidth="lg"
             sx={{
                 '& .MuiDialog-paperFullWidth': styles.paperFullWidth,
             }}
         >
             <DialogTitle>{title}</DialogTitle>
-            <DialogContent dividers={true}>
+            <DialogContent dividers>
                 <ReportViewer jsonReport={jsonReport} />
             </DialogContent>
             <DialogActions>

@@ -42,12 +42,11 @@ import {
     WbSunny as WbSunnyIcon,
 } from '@mui/icons-material';
 import { styled } from '@mui/system';
-import PropTypes from 'prop-types';
 
+import { User } from 'oidc-client';
 import GridLogo, { GridLogoProps } from './GridLogo';
 import AboutDialog, { AboutDialogProps } from './AboutDialog';
 import { LogoutProps } from '../Login/Logout';
-import { User } from 'oidc-client';
 import { CommonMetadata } from '../../services';
 
 const styles = {
@@ -176,7 +175,7 @@ export type TopBarProps = Omit<GridLogoProps, 'onClick'> &
         language: GsLang;
     };
 
-const TopBar = ({
+function TopBar({
     appName,
     appColor,
     appLogo,
@@ -197,7 +196,7 @@ const TopBar = ({
     equipmentLabelling,
     onLanguageClick,
     language,
-}: PropsWithChildren<TopBarProps>) => {
+}: Readonly<PropsWithChildren<TopBarProps>>) {
     const [anchorElSettingsMenu, setAnchorElSettingsMenu] =
         useState<Element | null>(null);
     const [anchorElAppsMenu, setAnchorElAppsMenu] = useState<Element | null>(
@@ -231,9 +230,8 @@ const TopBar = ({
         const tab = name.split(' ').map((x) => x.charAt(0));
         if (tab.length === 1) {
             return tab[0];
-        } else {
-            return tab[0] + tab[tab.length - 1];
         }
+        return tab[0] + tab[tab.length - 1];
     };
 
     const changeTheme = (_: MouseEvent, value: GsTheme) => {
@@ -265,7 +263,7 @@ const TopBar = ({
         }
     };
 
-    const logo_clickable = useMemo(
+    const logoClickable = useMemo(
         () => (
             <GridLogo
                 onClick={onLogoClick}
@@ -278,10 +276,10 @@ const TopBar = ({
     );
 
     return (
-        //@ts-ignore appBar style is not defined
+        // @ts-ignore appBar style is not defined
         <AppBar position="static" color="default" sx={styles.appBar}>
             <Toolbar>
-                {logo_clickable}
+                {logoClickable}
                 <Box sx={styles.grow}>{children}</Box>
                 {user && (
                     <Box>
@@ -354,7 +352,7 @@ const TopBar = ({
                             onClick={handleToggleSettingsMenu}
                             color="inherit"
                             style={
-                                Boolean(anchorElSettingsMenu)
+                                anchorElSettingsMenu
                                     ? { cursor: 'initial' }
                                     : { cursor: 'pointer' }
                             }
@@ -362,7 +360,7 @@ const TopBar = ({
                             <Box component="span" sx={styles.name}>
                                 {user !== null
                                     ? abbreviationFromUserName(
-                                          //@ts-ignore name could be undefined, how to handle this case ?
+                                          // @ts-ignore name could be undefined, how to handle this case ?
                                           user.profile.name
                                       )
                                     : ''}
@@ -388,7 +386,7 @@ const TopBar = ({
                                         {/* user info */}
                                         <StyledMenuItem
                                             sx={styles.borderBottom}
-                                            disabled={true}
+                                            disabled
                                             style={{ opacity: '1' }}
                                         >
                                             <CustomListItemIcon>
@@ -415,7 +413,7 @@ const TopBar = ({
 
                                         {/* Display mode */}
                                         <StyledMenuItem
-                                            disabled={true}
+                                            disabled
                                             style={{
                                                 opacity: '1',
                                                 paddingTop: '10px',
@@ -429,9 +427,7 @@ const TopBar = ({
                                                 >
                                                     <FormattedMessage
                                                         id="top-bar/displayMode"
-                                                        defaultMessage={
-                                                            'Display mode'
-                                                        }
+                                                        defaultMessage="Display mode"
                                                     />
                                                 </Typography>
                                             </ListItemText>
@@ -459,11 +455,11 @@ const TopBar = ({
                                             </ToggleButtonGroup>
                                         </StyledMenuItem>
 
-                                        {/*/!* Equipment labelling *!/*/}
-                                        {/*If the callback onEquipmentLabellingClick is undefined, equipment labelling component should not be displayed*/}
+                                        {/* /!* Equipment labelling *!/ */}
+                                        {/* If the callback onEquipmentLabellingClick is undefined, equipment labelling component should not be displayed */}
                                         {onEquipmentLabellingClick && (
                                             <StyledMenuItem
-                                                disabled={true}
+                                                disabled
                                                 style={{
                                                     opacity: '1',
                                                     // padding: '0',
@@ -479,9 +475,7 @@ const TopBar = ({
                                                     >
                                                         <FormattedMessage
                                                             id="top-bar/equipmentLabel"
-                                                            defaultMessage={
-                                                                'Equipment label'
-                                                            }
+                                                            defaultMessage="Equipment label"
                                                         />
                                                     </Typography>
                                                 </ListItemText>
@@ -501,28 +495,24 @@ const TopBar = ({
                                                     >
                                                         <FormattedMessage
                                                             id="top-bar/id"
-                                                            defaultMessage={
-                                                                'Id'
-                                                            }
+                                                            defaultMessage="Id"
                                                         />
                                                     </ToggleButton>
                                                     <ToggleButton
-                                                        value={true}
+                                                        value
                                                         sx={styles.toggleButton}
                                                     >
                                                         <FormattedMessage
                                                             id="top-bar/name"
-                                                            defaultMessage={
-                                                                'Name'
-                                                            }
+                                                            defaultMessage="Name"
                                                         />
                                                     </ToggleButton>
                                                 </ToggleButtonGroup>
                                             </StyledMenuItem>
                                         )}
-                                        {/*Languages */}
+                                        {/* Languages */}
                                         <StyledMenuItem
-                                            disabled={true}
+                                            disabled
                                             style={{
                                                 opacity: '1',
                                                 paddingTop: '10px',
@@ -536,9 +526,7 @@ const TopBar = ({
                                                 >
                                                     <FormattedMessage
                                                         id="top-bar/language"
-                                                        defaultMessage={
-                                                            'Language'
-                                                        }
+                                                        defaultMessage="Language"
                                                     />
                                                 </Typography>
                                             </ListItemText>
@@ -577,7 +565,7 @@ const TopBar = ({
                                         </StyledMenuItem>
 
                                         {/* Settings */}
-                                        {/*If the callback onParametersClicked is undefined, parameters component should be disabled*/}
+                                        {/* If the callback onParametersClicked is undefined, parameters component should be disabled */}
                                         {onParametersClick && (
                                             <StyledMenuItem
                                                 onClick={onParametersClicked}
@@ -592,9 +580,7 @@ const TopBar = ({
                                                     >
                                                         <FormattedMessage
                                                             id="top-bar/settings"
-                                                            defaultMessage={
-                                                                'Settings'
-                                                            }
+                                                            defaultMessage="Settings"
                                                         />
                                                     </Typography>
                                                 </ListItemText>
@@ -602,7 +588,7 @@ const TopBar = ({
                                         )}
 
                                         {/* About */}
-                                        {/*If the callback onAboutClick is undefined, we open default about dialog*/}
+                                        {/* If the callback onAboutClick is undefined, we open default about dialog */}
                                         <StyledMenuItem
                                             sx={styles.borderBottom}
                                             style={{ opacity: '1' }}
@@ -617,7 +603,7 @@ const TopBar = ({
                                                 >
                                                     <FormattedMessage
                                                         id="top-bar/about"
-                                                        defaultMessage={'About'}
+                                                        defaultMessage="About"
                                                     />
                                                 </Typography>
                                             </ListItemText>
@@ -634,9 +620,7 @@ const TopBar = ({
                                                 >
                                                     <FormattedMessage
                                                         id="top-bar/logout"
-                                                        defaultMessage={
-                                                            'Logout'
-                                                        }
+                                                        defaultMessage="Logout"
                                                     />
                                                 </Typography>
                                             </ListItemText>
@@ -659,29 +643,6 @@ const TopBar = ({
             </Toolbar>
         </AppBar>
     );
-};
-
-TopBar.propTypes = {
-    onParametersClick: PropTypes.func,
-    onLogoutClick: PropTypes.func,
-    onLogoClick: PropTypes.func,
-    appName: PropTypes.string,
-    appColor: PropTypes.string,
-    appLogo: PropTypes.object,
-    appVersion: PropTypes.string,
-    appLicense: PropTypes.string,
-    user: PropTypes.object,
-    children: PropTypes.node,
-    appsAndUrls: PropTypes.array,
-    onThemeClick: PropTypes.func,
-    theme: PropTypes.string,
-    onAboutClick: PropTypes.func,
-    globalVersionPromise: PropTypes.func,
-    additionalModulesPromise: PropTypes.func,
-    onEquipmentLabellingClick: PropTypes.func,
-    equipmentLabelling: PropTypes.bool,
-    onLanguageClick: PropTypes.func.isRequired,
-    language: PropTypes.string.isRequired,
-};
+}
 
 export default TopBar;

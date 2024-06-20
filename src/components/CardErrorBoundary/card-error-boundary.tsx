@@ -47,6 +47,7 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 // Extracted from https://react-typescript-cheatsheet.netlify.app/docs/basic/getting-started/error_boundaries/ for types
 
 interface Props {
+    // eslint-disable-next-line react/require-default-props
     children?: ReactNode;
 }
 
@@ -67,8 +68,6 @@ type CardErrorBoundaryState = (
 };
 
 class CardErrorBoundary extends Component<Props, CardErrorBoundaryState> {
-    state: CardErrorBoundaryState;
-
     constructor(props: Props) {
         super(props);
         this.state = {
@@ -96,7 +95,7 @@ class CardErrorBoundary extends Component<Props, CardErrorBoundaryState> {
     }
 
     handleReloadClick() {
-        this.setState((_) => ({
+        this.setState(() => ({
             hasError: false,
             expanded: false,
             error: undefined,
@@ -104,7 +103,9 @@ class CardErrorBoundary extends Component<Props, CardErrorBoundaryState> {
     }
 
     render() {
-        if (this.state.hasError) {
+        const { hasError } = this.state;
+        const { children } = this.props;
+        if (hasError) {
             const { error, expanded } = this.state;
             return (
                 <Box sx={{ p: 4 }}>
@@ -161,7 +162,7 @@ class CardErrorBoundary extends Component<Props, CardErrorBoundaryState> {
                 </Box>
             );
         }
-        return this.props.children;
+        return children;
     }
 }
 
