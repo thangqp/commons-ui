@@ -51,6 +51,17 @@ export {
 
 export { FieldConstants } from './utils/field-constants';
 
+export { fields as EXPERT_FILTER_FIELDS } from './components/filter/expert/expert-filter-constants';
+export { default as CustomReactQueryBuilder } from './components/inputs/react-query-builder/custom-react-query-builder';
+export {
+    EXPERT_FILTER_QUERY,
+    expertFilterSchema as EXPERT_FILTER_SCHEMA,
+    getExpertFilterEmptyFormData,
+} from './components/filter/expert/expert-filter-form';
+export { importExpertRules } from './components/filter/expert/expert-filter-utils';
+
+export { default as yup } from './utils/yup-config';
+
 export type { TreeViewFinderNodeProps } from './components/TreeViewFinder/TreeViewFinder';
 
 export {
